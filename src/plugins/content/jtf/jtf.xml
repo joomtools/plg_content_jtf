@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.7" type="plugin" group="content" method="upgrade">
+	<name>JTF_XML_NAME</name>
+	<creationDate>##DATE##</creationDate>
+	<author>Guido De Gobbis</author>
+	<authorEmail>support@joomtools.de</authorEmail>
+	<authorUrl>www.joomtools.de</authorUrl>
+	<copyright>Copyright (C) ##YEAR## JoomTools.de. All rights reserved.</copyright>
+	<license>GPL v3</license>
+	<version>##VERSION##</version>
+	<description>JTF_XML_DESC</description>
+
+	<files>
+		##FILES##
+	</files>
+
+	<languages folder="language">
+		##LANGUAGE_FILES##
+	</languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+				<field name="captcha"
+				       type="list"
+				       class="chzn-color-state"
+				       default="custom"
+				       label="JTF_XML_CAPTCHA_LABEL"
+				       description="JTF_XML_CAPTCHA_DESC">
+					<option value="0">JOPTION_DO_NOT_USE</option>
+					<option value="joomla">JTF_XML_CAPTCHA_VALUE_JOOMLA</option>
+				</field>
+
+				<field name="file_path"
+				       type="text"
+				       default="uploads"
+				       label="JTF_XML_FILE_PATH_LABEL"
+				       description="JTF_XML_FILE_PATH_DESC"/>
+
+				<field name="file_clear"
+				       type="integer"
+				       default="30"
+				       first="0"
+				       last="365"
+				       step="5"
+				       label="JTF_XML_FILE_CLEAR_LABEL"
+				       description="JTF_XML_FILE_CLEAR_DESC"/>
+
+				<field name="error_class"
+				       type="text"
+				       default=""
+				       label="JTF_XML_ERROR_CLASS_LABEL"
+				       description="JTF_XML_ERROR_CLASS_DESC"/>
+
+				<field name="framework"
+				       type="list"
+				       default="custom"
+				       label="JTF_XML_FRAMEWORK_LABEL"
+				       description="JTF_XML_FRAMEWORK_DESC">
+					<option value="0">JTF_XML_FRAMEWORK_VALUE_CORE</option>
+					<option value="bs3">JTF_XML_FRAMEWORK_VALUE_BS3</option>
+					<option value="bs4">JTF_XML_FRAMEWORK_VALUE_BS4</option>
+					<option value="uikit">JTF_XML_CAPTCHA_VALUE_UIKIT2</option>
+					<option value="uikit3">JTF_XML_CAPTCHA_VALUE_UIKIT3</option>
+				</field>
+
+				<field name="debug"
+				       type="radio"
+				       class="btn-group btn-group-yesno"
+				       default="0"
+				       label="JTF_XML_DEBUG_LABEL"
+				       description="JTF_XML_DEBUG_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+			</fieldset>
+		</fields>
+	</config>
+	
+	<updateservers>
+		<server type="extension" priority="1" name="JTF_XML_NAME">https://raw.githubusercontent.com/JoomTools/updateserver/master/plg_content_jtf.xml</server>
+	</updateservers>
+</extension>

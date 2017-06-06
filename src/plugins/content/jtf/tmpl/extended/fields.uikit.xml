@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset class="uk-form-horizontal">
+		<field name="anrede"
+		       type="list"
+		       class="uk-width-1-1"
+		       icon="uk-icon-calendar"
+		       description="JTF_ANREDE_DESC"
+		       label="JTF_ANREDE_LABEL"
+		       default=""
+		       validate="options"
+		       required="true"
+		>
+			<option value="">JTF_ANREDE_OPTION_NONE</option>
+			<option value="JTF_ANREDE_OPTION_HERR">JTF_ANREDE_OPTION_HERR</option>
+			<option value="JTF_ANREDE_OPTION_FRAU">JTF_ANREDE_OPTION_FRAU</option>
+		</field>
+		<field name="vorname"
+		       type="text"
+		       class="uk-width-1-1"
+		       size="30"
+		       description="JTF_VNAME_DESC"
+		       label="JTF_VNAME_LABEL"
+		       required="true"
+		/>
+		<field name="nachname"
+		       type="text"
+		       class="uk-width-1-1"
+		       size="30"
+		       description="JTF_NAME_DESC"
+		       label="JTF_NAME_LABEL"
+		       required="true"
+		/>
+		<field name="email"
+		       type="email"
+		       class="uk-width-1-1"
+		       size="30"
+		       description="JTF_EMAIL_DESC"
+		       label="JTF_EMAIL_LABEL"
+		       validate="email"
+		       required="true"
+		/>
+		<field name="tel"
+		       type="tel"
+		       class="uk-width-1-1"
+		       size="30"
+		       description="JTF_TEL_DESC"
+		       label="JTF_TEL_LABEL"
+		       validate="tel"
+		/>
+		<field name="subject"
+		       type="text"
+		       class="uk-width-1-1"
+		       size="30"
+		       description="JTF_SUBJECT_DESC"
+		       label="JTF_SUBJECT_LABEL"
+		       required="true"
+		/>
+		<field name="message"
+		       type="textarea"
+		       class="uk-width-1-1"
+		       cols="25"
+		       rows="10"
+		       description="JTF_MESSAGE_DESC"
+		       label="JTF_MESSAGE_LABEL"
+		       required="true"
+		/>
+	</fieldset>
+</form>

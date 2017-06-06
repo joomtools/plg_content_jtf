@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset class="uk-form-horizontal">
+		<field name="name"
+		       type="text"
+		       class="uk-width-1-1"
+		       icon="uk-icon-user"
+		       size="30"
+		       description="JTF_NAME_DESC"
+		       label="JTF_NAME_LABEL"
+		       filter="string"
+		       required="true"
+		/>
+		<field name="email"
+		       type="email"
+		       class="uk-width-1-1"
+		       icon="uk-icon-envelope-o"
+		       size="30"
+		       description="JTF_EMAIL_DESC"
+		       label="JTF_EMAIL_LABEL"
+		       filter="string"
+		       validate="email"
+		       required="true"
+		/>
+		<field name="subject"
+		       type="text"
+		       class="uk-width-1-1"
+		       size="60"
+		       description="JTF_SUBJECT_DESC"
+		       label="JTF_SUBJECT_LABEL"
+		       filter="string"
+		       required="true"
+		/>
+		<field name="message"
+		       type="textarea"
+		       class="uk-width-1-1 uk-height-1-1"
+		       cols="50"
+		       rows="10"
+		       description="JTF_MESSAGE_DESC"
+		       label="JTF_MESSAGE_LABEL"
+		       filter="safehtml"
+		       required="true"
+		/>
+	</fieldset>
+</form>
