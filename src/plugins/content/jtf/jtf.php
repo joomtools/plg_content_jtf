@@ -502,11 +502,11 @@ class plgContentJtf extends JPlugin
 
 		if (file_exists($path . '/assets/frameworks/' . $framework . '.php'))
 		{
-			include $path . '/assets/frameworks/' . $framework . '.php';
+			include_once $path . '/assets/frameworks/' . $framework . '.php';
 		}
 		else
 		{
-			include $path . '/assets/frameworks/joomla.php';
+			include_once $path . '/assets/frameworks/joomla.php';
 			$framework = 'joomla';
 		}
 
