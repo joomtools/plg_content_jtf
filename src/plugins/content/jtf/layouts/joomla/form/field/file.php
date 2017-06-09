@@ -111,7 +111,7 @@ CSS
 );
 ?>
 <div id="uploader-wrapper-<?php echo $id; ?>">
-	<div class="dragarea">
+	<div class="dragarea" style="display:none;">
 		<div class="dragarea-content">
 			<p>
 				<span class="upload-icon <?php echo $uploadicon;?>" aria-hidden="true"></span>
@@ -131,7 +131,7 @@ CSS
 		</div>
 		<div class="upload-list"></div>
 	</div>
-	<div class="legacy-uploader" style="display: none;">
+	<div class="legacy-uploader">
 		<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $uploadmaxsize; ?>">
 		<input type="file"
 			   name="<?php echo $name; ?>"

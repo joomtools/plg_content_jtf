@@ -18,6 +18,9 @@
 			maxsize      = optionlist.uploadMaxSize,
 			errorMessage = optionlist.errorMessage;
 
+		$('#' + containerId + ' .legacy-uploader').hide();
+		$('#' + containerId + ' .dragarea').show();
+
 		function getFilesize(files) {
 			var size = 0;
 
@@ -73,7 +76,6 @@
 		if (typeof FormData == 'undefined') {
 			$('#' + containerId + ' .legacy-uploader').show();
 			$('#' + containerId + ' .dragarea').hide();
-			return;
 		}
 
 		fileInput.on('change', dateiauswahl);
