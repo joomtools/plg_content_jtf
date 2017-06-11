@@ -21,6 +21,11 @@
 		$('#' + containerId + ' .legacy-uploader').hide();
 		$('#' + containerId + ' .dragarea').show();
 
+		if (typeof FormData == 'undefined') {
+			$('#' + containerId + ' .legacy-uploader').show();
+			$('#' + containerId + ' .dragarea').hide();
+		}
+
 		function getFilesize(files) {
 			var size = 0;
 
@@ -73,11 +78,6 @@
 			uploadList.html(uploadError + '<ul style="text-align: left;">' + output.join('') + '</ul>');
 		}
 
-		if (typeof FormData == 'undefined') {
-			$('#' + containerId + ' .legacy-uploader').show();
-			$('#' + containerId + ' .dragarea').hide();
-		}
-
 		fileInput.on('change', dateiauswahl);
 
 		button.on('click', function() {
@@ -92,18 +92,5 @@
 		}).on('dragleave drop', function() {
 			dragZone.removeClass('hover');
 		}).on('drop', dateiauswahl);
-
-		/*
-				dragZone.on('dragenter dragover dragleave drop', function(e) {
-					e.preventDefault();
-					e.stopPropagation();
-				}).on('dragenter dragover', function() {
-					dragZone.addClass('hover');
-				}).on('dragleave drop', function() {
-					dragZone.removeClass('hover');
-				}).on('drop', function(e) {
-					fileInput.prop('files', e.originalEvent.dataTransfer.files);
-				});
-		*/
 	};
 })(jQuery);

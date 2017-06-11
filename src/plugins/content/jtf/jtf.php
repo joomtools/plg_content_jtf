@@ -785,6 +785,8 @@ class plgContentJtf extends JPlugin
 		$validate      = $field->validate;
 		$required      = $field->required;
 		$fieldName     = $field->fieldname;
+		$uploadmaxsize = $field->uploadmaxsize;
+		$uploadmaxsize = number_format((float) $uploadmaxsize, 2) * 1024 * 1024;
 
 		if ($showon)
 		{
@@ -817,7 +819,13 @@ class plgContentJtf extends JPlugin
 		{
 			if ($type == 'file')
 			{
-				$value = $this->getSubmittedFiles($fieldName);
+				$submittedFiles = $this->getSubmittedFiles($fieldName);
+				$value = $submittedFiles['files'];
+
+				if ($submittedFiles['sumsize'] > $uploadmaxsize)
+				{
+					$validateField = false;
+				}
 			}
 
 			if (in_array($type, array('radio', 'checkboxes', 'list')))
@@ -905,7 +913,8 @@ class plgContentJtf extends JPlugin
 	 */
 	protected function getSubmittedFiles($fieldName)
 	{
-		$value       = null;
+		$value       = array();
+		$sumSize     = 0;
 		$index       = (int) $this->uParams['index'];
 		$jinput      = JFactory::getApplication()->input;
 		$submitFiles = $jinput->files->get($this->uParams['theme'] . $index);
@@ -925,9 +934,16 @@ class plgContentJtf extends JPlugin
 
 		if ($issetFiles)
 		{
-			$value                           = $files;
+			$value['files']                  = $files;
 			$this->submitedFiles[$fieldName] = $files;
 			$this->fileFields[]              = $fieldName;
+
+			foreach ($files as $file)
+			{
+				$sumSize += $file['size'];
+			}
+
+			$value['sumsize'] = $sumSize;
 		}
 
 		return $value;
@@ -956,6 +972,13 @@ class plgContentJtf extends JPlugin
 		{
 			JFactory::getApplication()
 				->enqueueMessage((string) $this->validCaptcha, 'error');
+		}
+		elseif ($type == 'file')
+		{
+			JFactory::getApplication()
+				->enqueueMessage(
+					JText::sprintf('JTF_FILE_FIELD_ERROR', $label), 'error'
+				);
 		}
 		else
 		{

@@ -101,7 +101,7 @@ class JFormFieldFile extends JFormField
 				break;
 
 			case 'uploadmaxsize':
-				$this->{$name} = (int) $value;
+				$this->{$name} = (string) $value;
 				break;
 
 			default:
@@ -131,7 +131,7 @@ class JFormFieldFile extends JFormField
 		{
 			$this->accept        = (string) $this->element['accept'];
 			$this->uploadicon    = isset($this->element['uploadicon']) ? (string) $this->element['uploadicon'] : null;
-			$this->uploadmaxsize = isset($this->element['uploadmaxsize']) ? (int) $this->element['uploadmaxsize'] : null;
+			$this->uploadmaxsize = isset($this->element['uploadmaxsize']) ? (string) $this->element['uploadmaxsize'] : null;
 		}
 
 		return $return;
@@ -171,10 +171,10 @@ class JFormFieldFile extends JFormField
 		}
 		else
 		{
-			$uploadmaxsize = ((int) $this->uploadmaxsize) * 1024 * 1024;
+			$uploadmaxsize = number_format((float) $this->uploadmaxsize, 2) * 1024 * 1024;
 		}
 
-		if ($uploadmaxsize == 0)
+		if ($uploadmaxsize === 0)
 		{
 			$uploadmaxsize = JUtility::getMaxUploadSize();
 		}
