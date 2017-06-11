@@ -49,6 +49,9 @@ class JTFFrameworkUikit3
 		$classes = array();
 		$inline = in_array('uk-form-inline', $formclass);
 
+		$classes['css'] = '';
+
+		$classes['class']['form']        = array_unique(array_merge(array('uk-form', 'form-validate'), $formclass));
 		$classes['class']['default'][]   = 'uk-input';
 		$classes['class']['gridgroup'][] = 'uk-form-row';
 
@@ -102,6 +105,11 @@ class JTFFrameworkUikit3
 
 	public function getClasses()
 	{
-		return $this->classes;
+		return $this->classes['class'];
+	}
+
+	public function getCss()
+	{
+		return $this->classes['css'];
 	}
 }

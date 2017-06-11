@@ -488,11 +488,12 @@ class plgContentJtf extends JPlugin
 		return false;
 	}
 
-	protected function setFrameworkFieldClass()
+
+	protected function getFrameworkClass()
 	{
-		$form          = $this->getForm();
-		$formclass     = explode(' ', $form->getAttribute('class', ''));
-		$path = dirname(__FILE__);
+		$form      = $this->getForm();
+		$formclass = explode(' ', $form->getAttribute('class', ''));
+		$path      = dirname(__FILE__);
 		$framework = 'joomla';
 
 		if (!empty($form->framework[0]))
@@ -511,17 +512,30 @@ class plgContentJtf extends JPlugin
 		}
 
 		$frwkClassName = 'JTFFramework' . ucfirst($framework);
-		$frwkClasses = new $frwkClassName($formclass);
-		$classes = $frwkClasses->getClasses();
+		$frwkClasses   = new $frwkClassName($formclass);
+
+		return $frwkClasses;
+	}
+
+	protected function setFrameworkFieldClass()
+	{
+		$form        = $this->getForm();
+		$frwkClasses = $this->getFrameworkClass();
+		$classes     = $frwkClasses->getClasses();
+
+		if (!empty($classes['form']))
+		{
+			$form->setAttribute('class', implode(' ', $classes['form']));
+		}
 
 		if (!empty($form->getAttribute('gridlabel')))
 		{
-			$classes['class']['gridlabel'][] = $form->getAttribute('gridlabel');
+			$classes['gridlabel'][] = $form->getAttribute('gridlabel');
 		}
 
 		if (!empty($form->getAttribute('gridfield')))
 		{
-			$classes['class']['gridfield'][] = $form->getAttribute('gridfield');
+			$classes['gridfield'][] = $form->getAttribute('gridfield');
 		}
 
 		$fields = $form->getFieldset();
@@ -550,15 +564,15 @@ class plgContentJtf extends JPlugin
 
 		if (in_array($type, array('text', 'plz', 'tel')))
 		{
-			if (!empty($frwkClasses['class']['default']))
+			if (!empty($frwkClasses['default']))
 			{
-				$classes['frwkDefaultClass'] = array_flip($frwkClasses['class']['default']);
+				$classes['frwkDefaultClass'] = array_flip($frwkClasses['default']);
 			}
 		}
 
-		if (!empty($frwkClasses['class'][$type]['field']))
+		if (!empty($frwkClasses[$type]['field']))
 		{
-			$classes['frwkFieldClass'] = array_flip($frwkClasses['class'][$type]['field']);
+			$classes['frwkFieldClass'] = array_flip($frwkClasses[$type]['field']);
 		}
 
 		if (!empty($form->getFieldAttribute($fieldname, 'class')))
@@ -576,7 +590,7 @@ class plgContentJtf extends JPlugin
 
 		if (in_array($type, array('checkboxes', 'radio')))
 		{
-			$field->setOptionsClass($frwkClasses['class'][$type]['options']);
+			$field->setOptionsClass($frwkClasses[$type]['options']);
 		}
 
 		if (in_array($type, array('submit', 'calendar', 'color', 'file')))
@@ -585,19 +599,19 @@ class plgContentJtf extends JPlugin
 			$buttonicon  = null;
 			$buttonclass = null;
 
-			if (!empty($frwkClasses['class'][$type]['uploadicon']))
+			if (!empty($frwkClasses[$type]['uploadicon']))
 			{
-				$uploadicon = $frwkClasses['class'][$type]['uploadicon'];
+				$uploadicon = $frwkClasses[$type]['uploadicon'];
 			}
 
-			if (!empty($frwkClasses['class'][$type]['buttons']['class']))
+			if (!empty($frwkClasses[$type]['buttons']['class']))
 			{
-				$buttonclass = $frwkClasses['class'][$type]['buttons']['class'];
+				$buttonclass = $frwkClasses[$type]['buttons']['class'];
 			}
 
-			if (!empty($frwkClasses['class'][$type]['buttons']['icon']))
+			if (!empty($frwkClasses[$type]['buttons']['icon']))
 			{
-				$buttonicon = $frwkClasses['class'][$type]['buttons']['icon'];
+				$buttonicon = $frwkClasses[$type]['buttons']['icon'];
 			}
 
 			if (!empty($form->getFieldAttribute($fieldname, 'icon')))
@@ -660,9 +674,9 @@ class plgContentJtf extends JPlugin
 
 		$form->setFieldAttribute($fieldname, 'class', implode(' ', $fieldClass));
 
-		$grid['group']['frwk'] = !empty($frwkClasses['class']['gridgroup']) ? array_flip($frwkClasses['class']['gridgroup']) : array();
-		$grid['label']['frwk'] = !empty($frwkClasses['class']['gridlabel']) ? array_flip($frwkClasses['class']['gridlabel']) : array();
-		$grid['field']['frwk'] = !empty($frwkClasses['class']['gridfield']) ? array_flip($frwkClasses['class']['gridfield']) : array();
+		$grid['group']['frwk'] = !empty($frwkClasses['gridgroup']) ? array_flip($frwkClasses['gridgroup']) : array();
+		$grid['label']['frwk'] = !empty($frwkClasses['gridlabel']) ? array_flip($frwkClasses['gridlabel']) : array();
+		$grid['field']['frwk'] = !empty($frwkClasses['gridfield']) ? array_flip($frwkClasses['gridfield']) : array();
 		$grid['group']['field'] = array();
 		$grid['label']['field'] = array();
 		$grid['field']['field'] = array();
@@ -863,13 +877,16 @@ class plgContentJtf extends JPlugin
 				}
 			}
 
-			if ($validate)
+			if ($validateField)
 			{
-				$rule = JFormHelper::loadRuleType($validate);
-			}
-			else
-			{
-				$rule = JFormHelper::loadRuleType($type);
+				if ($validate)
+				{
+					$rule = JFormHelper::loadRuleType($validate);
+				}
+				else
+				{
+					$rule = JFormHelper::loadRuleType($type);
+				}
 			}
 
 			if (!empty($rule) && $required)
@@ -952,6 +969,7 @@ class plgContentJtf extends JPlugin
 	protected function invalidField($fieldName)
 	{
 		$form       = $this->getForm();
+		$type       = $form->getFieldAttribute($fieldName, 'type');
 		$label      = JText::_($form->getFieldAttribute($fieldName, 'label'));
 		$errorClass = 'invalid';
 
@@ -1075,22 +1093,34 @@ class plgContentJtf extends JPlugin
 
 	protected function getTmpl($filename)
 	{
-		$index   = $this->uParams['index'];
-		$id      = $this->uParams['theme'];
-		$form    = $this->getForm();
-		$enctype = '';
+		$index         = $this->uParams['index'];
+		$id            = $this->uParams['theme'];
+		$form          = $this->getForm();
+		$formclass     = $form->getAttribute('class', '');
+		$frwkClasses   = $this->getFrameworkClass();
+		$frwkCss        = $frwkClasses->getCss();
+		$enctype       = '';
+		$controlFields = '<input type="hidden" name="option" value="' . JFactory::getApplication()->input->get('option') . '" />'
+			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
+			. '<input type="hidden" name="view" value="' . JFactory::getApplication()->input->get('view') . '" />'
+			. '<input type="hidden" name="itemid" value="' . JFactory::getApplication()->input->get('idemid') . '" />'
+			. '<input type="hidden" name="id" value="' . JFactory::getApplication()->input->get('id') . '" />';
 
 		if ($this->setEnctype)
 		{
 			$enctype = ' enctype="multipart/form-data"';
 		}
 
+
 		$displayData = array(
-			'id'        => $id,
-			'index'     => (int) $index,
-			'fileClear' => $this->params->get('file_clear'),
-			'form'      => $form,
-			'enctype'   => $enctype,
+			'id'            => $id,
+			'index'         => (int) $index,
+			'fileClear'     => $this->params->get('file_clear'),
+			'form'          => $form,
+			'formclass'     => $formclass,
+			'enctype'       => $enctype,
+			'frwkCss'       => $frwkCss,
+			'controlFields' => $controlFields,
 		);
 
 		$renderer = new JTLayoutFile($filename);
@@ -1110,8 +1140,7 @@ class plgContentJtf extends JPlugin
 	protected function sendMail()
 	{
 		$jConfig = JFactory::getConfig();
-		$index   = $this->uParams['index'];
-		$data    = $this->form[$this->uParams['theme'] . $index]->getData()->toArray();
+		$data    = $this->getForm()->getData()->toArray();
 
 		if ($this->mail)
 		{

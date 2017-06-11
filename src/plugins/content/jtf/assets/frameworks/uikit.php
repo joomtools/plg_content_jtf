@@ -47,8 +47,11 @@ class JTFFrameworkUikit
 	public function __construct($formclass = array())
 	{
 		$classes = array();
-		$inline = in_array('uk-form-inline', $formclass);
+		$inline  = in_array('uk-form-inline', $formclass);
 
+		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
+
+		$classes['class']['form']        = array_unique(array_merge(array('uk-form', 'form-validate'), $formclass));
 		$classes['class']['default'][]   = 'uk-input';
 		$classes['class']['gridgroup'][] = 'uk-form-row';
 
@@ -111,6 +114,11 @@ class JTFFrameworkUikit
 
 	public function getClasses()
 	{
-		return $this->classes;
+		return $this->classes['class'];
+	}
+
+	public function getCss()
+	{
+		return $this->classes['css'];
 	}
 }

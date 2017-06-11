@@ -49,6 +49,9 @@ class JTFFrameworkBs4
 		$classes = array();
 		$inline = in_array('form-inline', $formclass);
 
+		$classes['css'] = '';
+
+		$classes['class']['form']        = array_unique(array_merge(array('form-validate'), $formclass));
 		$classes['class']['default'][]   = 'input';
 		$classes['class']['gridgroup'][] = 'control-group';
 
@@ -106,6 +109,11 @@ class JTFFrameworkBs4
 
 	public function getClasses()
 	{
-		return $this->classes;
+		return $this->classes['class'];
+	}
+
+	public function getCss()
+	{
+		return $this->classes['css'];
 	}
 }

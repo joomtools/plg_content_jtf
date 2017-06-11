@@ -47,6 +47,9 @@ class JTFFrameworkJoomla
 		$classes = array();
 		$inline = in_array('form-inline', $formclass);
 
+		$classes['css'] = '';
+
+		$classes['class']['form']        = array_unique(array_merge(array('form-validate'), $formclass));
 		$classes['class']['default'][]   = 'input';
 		$classes['class']['gridgroup'][] = 'control-group';
 
@@ -104,6 +107,11 @@ class JTFFrameworkJoomla
 
 	public function getClasses()
 	{
-		return $this->classes;
+		return $this->classes['class'];
+	}
+
+	public function getCss()
+	{
+		return $this->classes['css'];
 	}
 }

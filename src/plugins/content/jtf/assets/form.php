@@ -2345,6 +2345,39 @@ class JForm
 	}
 
 	/**
+	 * Aet the value of an attribute of the form itself
+	 *
+	 * @param   string  $name   Name of the attribute to get
+	 * @param   string  $value  Value to set for the attribute
+	 *
+	 * @return  void
+	 *
+	 * @since   3.7
+	 */
+	public function setAttribute($name, $value = null)
+	{
+		if ($this->xml instanceof SimpleXMLElement)
+		{
+			$attributes = $this->xml->attributes();
+
+			if (!empty($value))
+			{
+				// Ensure that the attribute exists
+				if (empty($attributes))
+				{
+					$this->xml->addAttribute($name, trim($value));
+				}
+				else
+				{
+					$attributes[$name] = trim($value);
+				}
+			}
+		}
+
+		$this->syncPaths();
+	}
+
+	/**
 	 * Getter for the form data
 	 *
 	 * @return   Registry  Object with the data
