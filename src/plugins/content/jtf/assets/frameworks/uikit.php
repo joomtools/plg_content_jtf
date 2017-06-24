@@ -61,6 +61,13 @@ class JTFFrameworkUikit
 			$classes['class']['gridfield'][] = 'uk-form-controls';
 		}
 
+		$classes['class']['note'] = array(
+			'buttons' => array(
+				'class' => 'uk-alert-close uk-close',
+				'icon'  => '',
+			),
+		);
+
 		$classes['class']['calendar'] = array(
 			'buttons' => array(
 				'class' => 'uk-button uk-button-small',

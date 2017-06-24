@@ -28,8 +28,7 @@ JHtml::_('behavior.formvalidation');
 	      action="<?php echo JRoute::_("index.php"); ?>"
 	      method="post"
 	      class="form-validate"
-	      enctype="multipart/form-data"
-	>
+	      enctype="multipart/form-data">
 		<?php
 
 		$fieldsets         = $form->getXML();
@@ -44,7 +43,7 @@ JHtml::_('behavior.formvalidation');
 			$fieldsetDesc  = (string) $fieldset['description'];
 			$sumFields     = count($fieldset->field);
 			$fieldsetClass = (string) $fieldset['class']
-				? (string) $fieldset['class'] . ' uk-fieldset'
+				? 'uk-fieldset ' . (string) $fieldset['class']
 				: 'uk-fieldset';
 
 			if ($fieldsetName == 'submit' && $sumFields == 0)
@@ -57,7 +56,7 @@ JHtml::_('behavior.formvalidation');
 					<!--<div class="row">-->
 				<?php endif; ?>
 
-				<fieldset class="<?php echo $fieldsetClass; ?>">
+				<fieldset class="<?php echo $fieldsetClass; ?>" data-uk-grid-margin>
 					<?php if (isset($fieldsetLabel) && strlen($legend = trim(JText::_($fieldsetLabel)))) : ?>
 						<legend class="uk-legend"><?php echo $legend; ?></legend>
 					<?php endif; ?>

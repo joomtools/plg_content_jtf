@@ -4,73 +4,85 @@
 <!--
 <form>
 -->
-	<fieldset>
-		<field name="list"
+	<fieldset gridlabel="span3"
+	          gridfield="span9"
+	          description="JTF_FIELDSET_DEFAULT_DESC"
+	          label="JTF_FIELDSET_DEFAULT_LABEL">
+
+		<field name="note"
+		       type="note"
+		       class="uk-alert uk-alert-warning"
+		       description="JTF_NOTE_DESC"
+		       label="JTF_NOTE_LABEL"
+		       close="true"
+		       heading="h4"/>
+
+L		<field name="list"
 		       type="list"
 		       icon="uk-icon-list"
 		       description="JTF_LIST_DESC"
 		       label="JTF_LIST_LABEL"
 		       default=""
 		       validate="options"
-		       required="true"
-		>
+		       required="true">
 			<option value="">JTF_OPTION_NONE</option>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
+
 		<field name="checkboxes"
 		       type="checkboxes"
 		       description="JTF_CHK_DESC"
 		       label="JTF_CHK_LABEL"
 		       validate="options"
-		       optionlabelclass="uk-display-block"
-		>
+		       optionlabelclass="uk-display-block">
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 			<option value="JTF_OPTION3">JTF_OPTION3</option>
 		</field>
+
 		<field name="checkbox_inline"
 		       type="checkboxes"
 		       description="JTF_CHK_INLINE_DESC"
 		       label="JTF_CHK_INLINE_LABEL"
-		       validate="options"
-		>
+		       validate="options">
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 			<option value="JTF_OPTION3">JTF_OPTION3</option>
 		</field>
+
 		<field name="radiobox"
 		       type="radio"
 		       description="JTF_RADIO_DESC"
 		       label="JTF_RADIO_LABEL"
 		       default="JTF_OPTION1"
 		       validate="options"
-		       optionlabelclass="uk-display-block"
-		>
+		       optionlabelclass="uk-display-block">
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
+
 		<field name="radiobox_inline"
 		       type="radio"
 		       description="JTF_RADIO_INLINE_DESC"
 		       label="JTF_RADIO_INLINE_LABEL"
 		       default="JTF_OPTION2"
-		       validate="options"
-		>
+		       validate="options">
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
+
 		<field name="showon_switch"
 		       type="radio"
 		       description="JTF_SHW_SWITCH_DESC"
 		       label="JTF_SHW_SWITCH_LABEL"
 		       default="0"
 		       validate="options"
-		       notmail="1"
-		>
+		       notmail="1">
 			<option value="1">JON</option>
 			<option value="0">JOFF</option>
 		</field>
+
 		<field name="showon_text"
 		       type="text"
 		       icon="uk-icon-pencil"
@@ -78,16 +90,16 @@
 		       description="JTF_SHW_TXT_DESC"
 		       label="JTF_SHW_TXT_LABEL"
 		       required="true"
-		       showon="showon_switch:1"
-		/>
+		       showon="showon_switch:1"/>
+
 		<field name="text"
 		       type="text"
 		       icon="uk-icon-pencil"
 		       maxlength="30"
 		       description="JTF_TXT_DESC"
 		       label="JTF_TXT_LABEL"
-		       required="true"
-		/>
+		       required="true"/>
+
 		<field name="email"
 		       type="email"
 		       icon="uk-icon-envelope"
@@ -95,8 +107,8 @@
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
 		       validate="email"
-		       required="true"
-		/>
+		       required="true"/>
+
 		<field name="tel"
 		       type="tel"
 		       icon="uk-icon-phone"
@@ -104,77 +116,82 @@
 		       description="JTF_TEL_DESC"
 		       label="JTF_TEL_LABEL"
 		       validate="tel"
-		       required="true"
-		/>
-		<field name="plz"
+		       required="true"/>
+
+	</fieldset>
+
+	<fieldset description="JTF_FIELDSET_SPECIAL_DESC"
+	          label="JTF_FIELDSET_SPECIAL_LABEL">
+
+	<field name="plz"
 		       type="plz"
 		       icon="uk-icon-map-marker"
 		       maxlength="30"
 		       description="JTF_PLZ_DESC"
 		       label="JTF_PLZ_LABEL"
 		       validate="plz"
-		       required="true"
-		/>
+		       required="true"/>
+
 		<field name="subject"
 		       type="text"
 		       icon="uk-icon-info"
 		       maxlength="30"
 		       description="JTF_SUBJECT_DESC"
-		       label="JTF_SUBJECT_LABEL"
-		/>
+		       label="JTF_SUBJECT_LABEL"/>
+
 		<field name="textarea"
 		       type="textarea"
 		       cols="25"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
 		       label="JTF_MESSAGE_LABEL"
-		       required="true"
-		/>
+		       required="true"/>
+
 		<field name="calendar"
 		       type="calendar"
 		       default="NOW"
 		       description="JTF_CAL_DESC"
 		       label="JTF_CAL_LABEL"
 		       format="%d.%m.%Y %H:%I:%S"
-		       showtime="false"
-		/>
+		       showtime="false"/>
+
 		<field name="color_simple"
 		       type="color"
 		       control="simple"
 		       colors="none, #049cdb, #46a546, #9d261d, #eeeeee, #ffc40d, #f89406, #c3325f, #7a43b6, #ffffff, #999999, #555555, #000000"
 		       split="4"
 		       description="JTF_COLOR_SIMPLE_DESC"
-		       label="JTF_COLOR_SIMPLE_LABEL"
-		/>
+		       label="JTF_COLOR_SIMPLE_LABEL"/>
+
 		<field name="color"
 		       type="color"
 		       default="#eee"
 		       description="JTF_COLOR_DESC"
-		       label="JTF_COLOR_LABEL"
-		/>
+		       label="JTF_COLOR_LABEL"/>
+
 		<field name="tinymce"
 		       type="editor"
 		       description="JTF_EDITOR_TINYMCE_DESC"
 		       label="JTF_EDITOR_TINYMCE_LABEL"
 		       width="300"
 		       editor="tinymce"
-		       filter="safehtml"
-		/>
+		       filter="safehtml"/>
+
 		<field name="combobox"
 		       type="combo"
 		       description="JTF_COMBO_DESC"
 		       label="JTF_COMBO_LABEL"
-		       size="7"
-		>
+		       size="7">
 			<option value="1">Option 1</option>
 			<option value="2">Option 2</option>
 		</field>
+
 		<field name="category_com_content"
 		       type="category"
 		       extension="com_content"
 		       description="JTF_CATEGORY_DESC"
-		       label="JTF_CATEGORY_LABEL"
-		/>
+		       label="JTF_CATEGORY_LABEL"/>
+
 		<field name="file"
 		       type="file"
 		       description="JTF_FILE_DESC"
@@ -183,7 +200,7 @@
 		       validate="file"
 		       accept=".zip,.pdf,image/*"
 		       multiple="multiple"
-		       uploadmaxsize="1"
-		/>
+		       uploadmaxsize="1"/>
+
 	</fieldset>
 </form>

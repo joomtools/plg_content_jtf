@@ -20,7 +20,7 @@
 
 	<config>
 		<fields name="params">
-			<fieldset name="basic">
+			<fieldset name="basic" addfieldpath="/plugins/content/jtf/assets/fields">
 
 				<field name="captcha"
 				       type="list"
@@ -54,16 +54,10 @@
 				       description="JTF_XML_ERROR_CLASS_DESC"/>
 
 				<field name="framework"
-				       type="list"
-				       default="custom"
+				       type="frwk"
+				       default="0"
 				       label="JTF_XML_FRAMEWORK_LABEL"
-				       description="JTF_XML_FRAMEWORK_DESC">
-					<option value="0">JTF_XML_FRAMEWORK_VALUE_CORE</option>
-					<option value="bs3">JTF_XML_FRAMEWORK_VALUE_BS3</option>
-					<option value="bs4">JTF_XML_FRAMEWORK_VALUE_BS4</option>
-					<option value="uikit">JTF_XML_CAPTCHA_VALUE_UIKIT2</option>
-					<option value="uikit3">JTF_XML_CAPTCHA_VALUE_UIKIT3</option>
-				</field>
+				       description="JTF_XML_FRAMEWORK_DESC"/>
 
 				<field name="debug"
 				       type="radio"

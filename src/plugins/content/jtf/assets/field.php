@@ -1140,7 +1140,7 @@ abstract class JFormField
 		$renderer = new JTLayoutFile($layoutId);
 
 		// Set Framwork as Layout->Suffix
-		if (!empty($this->form->framework))
+		if (!empty($this->form->framework) && $this->form->framework[0] != 'joomla')
 		{
 			$renderer->setSuffixes($this->form->framework);
 		}

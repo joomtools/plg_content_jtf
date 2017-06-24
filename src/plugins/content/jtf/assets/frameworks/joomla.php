@@ -40,6 +40,8 @@ defined('_JEXEC') or die('Restricted access');
 
 class JTFFrameworkJoomla
 {
+	public static $name = 'Joomla Core (Bootstrap v2)';
+
 	private $classes;
 
 	public function __construct($formclass = array())
@@ -58,6 +60,13 @@ class JTFFrameworkJoomla
 			$classes['class']['gridlabel'][] = 'control-label';
 			$classes['class']['gridfield'][] = 'controls';
 		}
+
+		$classes['class']['note'] = array(
+			'buttons' => array(
+				'class' => 'close',
+				'icon'  => '&times;',
+			),
+		);
 
 		$classes['class']['calendar'] = array(
 			'buttons' => array(

@@ -158,6 +158,7 @@ class plgContentJtf extends JPlugin
 		JLoader::register('JForm', dirname(__FILE__) . '/assets/form.php');
 		JLoader::register('JTLayoutFile', dirname(__FILE__) . '/assets/file.php');
 		JLoader::register('JFormField', dirname(__FILE__) . '/assets/field.php');
+		JLoader::discover('JTFFramework', dirname(__FILE__) . '/assets/frameworks');
 
 		// Add form fields
 		JFormHelper::addFieldPath(dirname(__FILE__) . '/assets/fields');
@@ -311,14 +312,14 @@ class plgContentJtf extends JPlugin
 	protected function resetUserParams()
 	{
 		$this->uParams       = array();
-		$version             = new JVersion();
-		$joomla_main_version = substr($version->RELEASE, 0, strpos($version->RELEASE, '.'));
+		$version             = new JVersion;
+		$joomlaMainVersion = substr($version->RELEASE, 0, strpos($version->RELEASE, '.'));
 
 		// Set default captcha value
 		$this->uParams['captcha'] = $this->params->get('captcha');
 
 		// Set Joomla main version
-		$this->uParams['jversion'] = $joomla_main_version;
+		$this->uParams['jversion'] = $joomlaMainVersion;
 
 		// Set default recipient
 		$this->uParams['mailto'] = JFactory::getConfig()->get('mailfrom');
@@ -493,22 +494,11 @@ class plgContentJtf extends JPlugin
 	{
 		$form      = $this->getForm();
 		$formclass = explode(' ', $form->getAttribute('class', ''));
-		$path      = dirname(__FILE__);
 		$framework = 'joomla';
 
 		if (!empty($form->framework[0]))
 		{
 			$framework = $form->framework[0];
-		}
-
-		if (file_exists($path . '/assets/frameworks/' . $framework . '.php'))
-		{
-			include_once $path . '/assets/frameworks/' . $framework . '.php';
-		}
-		else
-		{
-			include_once $path . '/assets/frameworks/joomla.php';
-			$framework = 'joomla';
 		}
 
 		$frwkClassName = 'JTFFramework' . ucfirst($framework);
@@ -593,11 +583,18 @@ class plgContentJtf extends JPlugin
 			$field->setOptionsClass($frwkClasses[$type]['options']);
 		}
 
-		if (in_array($type, array('submit', 'calendar', 'color', 'file')))
+		if (in_array($type, array('submit', 'calendar', 'color', 'file', 'note')))
 		{
 			$uploadicon  = null;
 			$buttonicon  = null;
 			$buttonclass = null;
+
+			if ($type == 'note')
+			{
+				$form->setFieldAttribute($fieldname, 'icon', null);
+				$form->setFieldAttribute($fieldname, 'buttonicon', null);
+				$form->setFieldAttribute($fieldname, 'buttonclass', null);
+			}
 
 			if (!empty($frwkClasses[$type]['uploadicon']))
 			{
@@ -1126,7 +1123,7 @@ class plgContentJtf extends JPlugin
 		$renderer = new JTLayoutFile($filename);
 
 		// Set Framwork as Layout->Suffix
-		if (!empty($this->uParams['framework']))
+		if (!empty($this->uParams['framework']) && $this->uParams['framework'] != 'joomla')
 		{
 			$renderer->setSuffixes(array($this->uParams['framework']));
 		}

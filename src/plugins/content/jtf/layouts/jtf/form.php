@@ -1,12 +1,12 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.jtf
+ * @package          Joomla.Plugin
+ * @subpackage       Content.jtf
  *
- * @author       Guido De Gobbis
+ * @author           Guido De Gobbis
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
-**/
+ * @license          GNU General Public License version 3 or later
+ **/
 
 defined('_JEXEC') or die;
 
@@ -18,7 +18,7 @@ JHtml::_('behavior.formvalidator');
 $invalidColor = '#ff0000';
 
 JFactory::getDocument()->addScriptDeclaration(
-<<<JS
+	<<<JS
 	jQuery(document).ready(function($){
 		$("body").on('DOMSubtreeModified', "#system-message-container", function() {
 			var error = $(this).find('alert-error');
@@ -33,7 +33,7 @@ JS
 );
 
 JFactory::getDocument()->addStyleDeclaration(
-<<<CSS
+	<<<CSS
 	.invalid { 
 		border-color:{$invalidColor}!important;
 		color:{$invalidColor}!important;
@@ -54,7 +54,7 @@ CSS
 		<?php echo $enctype ?>>
 
 		<?php
-		$fieldsets = $form->getXML();
+		$fieldsets         = $form->getXML();
 
 		foreach ($fieldsets->fieldset as $fieldset) :
 			$fieldsetLabel = (string) $fieldset['label'];
@@ -62,6 +62,7 @@ CSS
 			$fieldsetClass = (string) $fieldset['class']
 				? ' class="' . (string) $fieldset['class'] . '"'
 				: '';
+
 			$gridFieldset          = array();
 			$gridFieldset['label'] = array();
 			$gridFieldset['field'] = array();

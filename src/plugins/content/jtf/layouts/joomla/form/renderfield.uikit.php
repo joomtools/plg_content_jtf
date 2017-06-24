@@ -44,38 +44,46 @@ if (!empty($options['rel']))
 <div<?php echo implode(' ', $container); ?>>
 <?php endif; ?>
 
-	<?php if (empty($options['hiddenLabel'])) : ?>
-
-		<?php if (!empty($options['gridlabel'])) : ?>
-            <div class="<?php echo $options['gridlabel']; ?>">
-		<?php endif; ?>
+	<?php if (empty($input)) : ?>
 
 		<?php echo $label; ?>
 
-		<?php if (!empty($options['gridlabel'])) : ?>
-            </div>
+	<?php else : ?>
+
+		<?php if (empty($options['hiddenLabel'])) : ?>
+
+			<?php if (!empty($options['gridlabel'])) : ?>
+				<div class="<?php echo $options['gridlabel']; ?>">
+			<?php endif; ?>
+
+			<?php echo $label; ?>
+
+			<?php if (!empty($options['gridlabel'])) : ?>
+				</div>
+			<?php endif; ?>
+
+		<?php endif; ?>
+
+		<?php if (!empty($options['gridfield'])) : ?>
+		<div class="<?php echo $options['gridfield']; ?>">
+		<?php endif; ?>
+
+			<?php if (!empty($options['icon'])) : ?>
+			<div class="uk-form-icon">
+				<span class="<?php echo $options['icon']; ?>"></span>
+			<?php endif; ?>
+
+				<?php echo $input; ?>
+
+			<?php if (!empty($options['icon'])) : ?>
+			</div>
+			<?php endif; ?>
+
+		<?php if (!empty($options['gridfield'])) : ?>
+		</div>
 		<?php endif; ?>
 
 	<?php endif; ?>
-
-	<?php if (!empty($options['gridfield'])) : ?>
-    <div class="<?php echo $options['gridfield']; ?>">
-    <?php endif; ?>
-
-		<?php if (!empty($options['icon'])) : ?>
-        <div class="uk-form-icon">
-            <span class="<?php echo $options['icon']; ?>"></span>
-        <?php endif; ?>
-
-			<?php echo $input; ?>
-
-        <?php if (!empty($options['icon'])) : ?>
-        </div>
-	    <?php endif; ?>
-
-    <?php if (!empty($options['gridfield'])) : ?>
-    </div>
-    <?php endif; ?>
 
 <?php if (!empty($container)) : ?>
 </div>
