@@ -11,15 +11,8 @@
 	          gridlabel="span3"
 	          gridfield="span9"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
-	          label="JTF_FIELDSET_DEFAULT_LABEL">
-
-		<field name="note"
-		       type="note"
-		       class="alert alert-info"
-		       description="JTF_NOTE_DESC"
-		       label="JTF_NOTE_LABEL"
-		       close="true"
-		       heading="h4"/>
+	          label="JTF_FIELDSET_DEFAULT_LABEL"
+	>
 
 		<field name="list"
 		       type="list"
@@ -30,7 +23,8 @@
 		       label="JTF_LIST_LABEL"
 		       default=""
 		       validate="options"
-		       required="true">
+		       required="true"
+		>
 			<option value="">JTF_OPTION_NONE</option>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -40,7 +34,8 @@
 		       type="checkboxes"
 		       description="JTF_CHK_DESC"
 		       label="JTF_CHK_LABEL"
-		       validate="options">
+		       validate="options"
+		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 			<option value="JTF_OPTION3">JTF_OPTION3</option>
@@ -51,7 +46,8 @@
 		       description="JTF_CHK_INLINE_DESC"
 		       label="JTF_CHK_INLINE_LABEL"
 		       validate="options"
-		       optionlabelclass="inline">
+		       optionlabelclass="inline"
+		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 			<option value="JTF_OPTION3">JTF_OPTION3</option>
@@ -62,7 +58,8 @@
 		       description="JTF_RADIO_DESC"
 		       label="JTF_RADIO_LABEL"
 		       default="JTF_OPTION1"
-		       validate="options">
+		       validate="options"
+		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
@@ -73,7 +70,8 @@
 		       label="JTF_RADIO_INLINE_LABEL"
 		       default="JTF_OPTION2"
 		       validate="options"
-		       optionlabelclass="inline">
+		       optionlabelclass="inline"
+		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
@@ -84,7 +82,8 @@
 		       label="JTF_SHW_SWITCH_LABEL"
 		       default="JNO"
 		       validate="options"
-		       notmail="1">
+		       notmail="1"
+		>
 			<option value="JYES">JON</option>
 			<option value="JNO">JOFF</option>
 		</field>
@@ -96,7 +95,8 @@
 		       description="JTF_SHW_TXT_DESC"
 		       label="JTF_SHW_TXT_LABEL"
 		       required="true"
-		       showon="showon_switch:JYES"/>
+		       showon="showon_switch:JYES"
+		/>
 
 		<field name="text"
 		       type="text"
@@ -104,7 +104,8 @@
 		       maxlength="30"
 		       description="JTF_TXT_DESC"
 		       label="JTF_TXT_LABEL"
-		       required="true"/>
+		       required="true"
+		/>
 
 		<field name="email"
 		       type="email"
@@ -113,7 +114,8 @@
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
 		       validate="email"
-		       required="true"/>
+		       required="true"
+		/>
 
 		<field name="tel"
 		       type="tel"
@@ -122,14 +124,16 @@
 		       description="JTF_TEL_DESC"
 		       label="JTF_TEL_LABEL"
 		       validate="tel"
-		       required="true"/>
+		       required="true"
+		/>
 
 		<field name="subject"
 		       type="text"
 		       icon="icon-info"
 		       maxlength="30"
 		       description="JTF_SUBJECT_DESC"
-		       label="JTF_SUBJECT_LABEL"/>
+		       label="JTF_SUBJECT_LABEL"
+		/>
 
 		<field name="textarea"
 		       type="textarea"
@@ -137,12 +141,23 @@
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
 		       label="JTF_MESSAGE_LABEL"
-		       required="true"/>
+		       required="true"
+		/>
 
 	</fieldset>
 
 	<fieldset description="JTF_FIELDSET_SPECIAL_DESC"
-	          label="JTF_FIELDSET_SPECIAL_LABEL">
+	          label="JTF_FIELDSET_SPECIAL_LABEL"
+	>
+
+		<field name="note"
+		       type="note"
+		       class="alert alert-info"
+		       description="JTF_NOTE_DESC"
+		       label="JTF_NOTE_LABEL"
+		       close="true"
+		       heading="h4"
+		/>
 
 		<field name="plz"
 		       type="plz"
@@ -151,7 +166,8 @@
 		       description="JTF_PLZ_DESC"
 		       label="JTF_PLZ_LABEL"
 		       validate="plz"
-		       required="true"/>
+		       required="true"
+		/>
 
 		<field name="calendar"
 		       type="calendar"
@@ -159,7 +175,8 @@
 		       description="JTF_CAL_DESC"
 		       label="JTF_CAL_LABEL"
 		       format="%d.%m.%Y %H:%I:%S"
-		       showtime="false"/>
+		       showtime="false"
+		/>
 
 		<field name="color_simple"
 		       type="color"
@@ -167,13 +184,15 @@
 		       colors="none, #049cdb, #46a546, #9d261d, #eeeeee, #ffc40d, #f89406, #c3325f, #7a43b6, #ffffff, #999999, #555555, #000000"
 		       split="4"
 		       description="JTF_COLOR_SIMPLE_DESC"
-		       label="JTF_COLOR_SIMPLE_LABEL"/>
+		       label="JTF_COLOR_SIMPLE_LABEL"
+		/>
 
 		<field name="color"
 		       type="color"
 		       default="#eee"
 		       description="JTF_COLOR_DESC"
-		       label="JTF_COLOR_LABEL"/>
+		       label="JTF_COLOR_LABEL"
+		/>
 
 		<field name="tinymce"
 		       type="editor"
@@ -181,13 +200,15 @@
 		       label="JTF_EDITOR_TINYMCE_LABEL"
 		       width="300"
 		       editor="tinymce"
-		       filter="safehtml"/>
+		       filter="safehtml"
+		/>
 
 		<field name="combobox"
 		       type="combo"
 		       description="JTF_COMBO_DESC"
 		       label="JTF_COMBO_LABEL"
-		       size="7">
+		       size="7"
+		>
 			<option value="1">Option 1</option>
 			<option value="2">Option 2</option>
 		</field>
@@ -196,7 +217,8 @@
 		       type="category"
 		       extension="com_content"
 		       description="JTF_CATEGORY_DESC"
-		       label="JTF_CATEGORY_LABEL"/>
+		       label="JTF_CATEGORY_LABEL"
+		/>
 
 		<field name="file"
 		       type="file"
@@ -206,7 +228,8 @@
 		       validate="file"
 		       accept=".zip,.pdf,image/*"
 		       multiple="multiple"
-		       uploadmaxsize="1"/>
+		       uploadmaxsize="1"
+		/>
 
 	</fieldset>
 </form>

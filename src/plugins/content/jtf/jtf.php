@@ -21,28 +21,20 @@ class plgContentJtf extends JPlugin
 	const PLUGIN_REGEX = "@(<(\w+)[^>]*>|){jtf(\s.*)?}(</\\2>|)@";
 
 	/**
-	 * Honeypot
+	 * Set captcha name
 	 *
 	 * @var     string
 	 * @since   1.0
 	 */
-	protected $honeypot;
+	private $issetCaptcha;
 
 	/**
-	 * TODO Desctiption
-	 *
-	 * @var     string
-	 * @since   1.0
-	 */
-	protected $issetCaptcha;
-
-	/**
-	 * TODO Desctiption
+	 * Set result of captcha validation
 	 *
 	 * @var     boolean
 	 * @since   1.0
 	 */
-	protected $validCaptcha = true;
+	private $validCaptcha = true;
 
 	/**
 	 * Set enctype in form field if a file field is set

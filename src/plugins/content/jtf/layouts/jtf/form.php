@@ -113,9 +113,12 @@ CSS
 				}
 				?>
 			</fieldset>
-		<?php endforeach; ?>
-		<?php echo $controlFields ?>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php endforeach;
+
+		// Set hidden control fields to evaluate Form
+		echo $controlFields;
+		echo JHtml::_('form.token');
+		?>
 
 	</form>
 </div>
