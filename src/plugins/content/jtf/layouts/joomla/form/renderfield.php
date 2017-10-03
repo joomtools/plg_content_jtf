@@ -45,11 +45,8 @@ if (!empty($options['rel']))
 <?php endif; ?>
 
 	<?php if (empty($input)) : ?>
-
 		<?php echo $label; ?>
-
 	<?php else : ?>
-
 		<?php if (empty($options['hiddenLabel'])) : ?>
 
 			<?php if (!empty($options['gridlabel'])) : ?>

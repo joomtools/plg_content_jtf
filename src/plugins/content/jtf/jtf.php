@@ -10,7 +10,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class plgContentJtf extends JPlugin
+//use Joomla\CMS\Application\CMSApplication;
+//use Joomla\Registry\Registry;
+//use Joomla\CMS\Layout\FileLayout;
+
+/**
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
+ *
+ * @since       3.7
+ */
+class PlgContentJtf extends JPlugin
 {
 	/**
 	 * The regular expression to identify Plugin call.
@@ -101,6 +111,38 @@ class plgContentJtf extends JPlugin
 	protected $debug = false;
 
 	/**
+	 * Global application object
+	 *
+	 * @var    JApplication
+	 * @since  11.1
+	 */
+	protected $app = null;
+
+	/**
+	 * A Registry object holding the parameters for the plugin
+	 *
+	 * @var    Registry
+	 * @since  1.5
+	 */
+	public $params = null;
+
+	/**
+	 * The name of the plugin
+	 *
+	 * @var    string
+	 * @since  1.5
+	 */
+	protected $_name = null;
+
+	/**
+	 * The plugin type
+	 *
+	 * @var    string
+	 * @since  1.5
+	 */
+	protected $_type = null;
+
+	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
 	 * @var     boolean
@@ -121,10 +163,8 @@ class plgContentJtf extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		$app = JFactory::getApplication();
-
 		// Don't run in administration Panel or when the content is being indexed
-		if ($app->isAdmin()
+		if ($this->app->isClient('administrator')
 			|| $context == 'com_finder.indexer'
 			|| strpos($article->text, '{jtf') === false
 		)
@@ -134,7 +174,7 @@ class plgContentJtf extends JPlugin
 
 		$this->debug = (boolean) $this->params->get('debug', 0);
 		$cIndex      = 0;
-		$template    = $app->getTemplate();
+		$template    = $this->app->getTemplate();
 		$lang        = JFactory::getLanguage();
 		$langTag     = $lang->getTag();
 
@@ -144,13 +184,41 @@ class plgContentJtf extends JPlugin
 			return;
 		}
 
+		$code = array_keys($matches[1], '<code>');
+		$pre = array_keys($matches[1], '<pre>');
+
+		if (!empty($code) || !empty($pre))
+		{
+			array_walk($matches,
+				function (&$array, $key, $tags) {
+					foreach ($tags as $tag)
+					{
+						if ($tag !== null && $tag !== false)
+						{
+							unset($array[$tag]);
+						}
+					}
+				},
+				array_merge($code, $pre)
+			);
+		}
+
 		$pluginReplacements = $matches[0];
 		$userParams         = $matches[3];
 
-		JLoader::register('JForm', dirname(__FILE__) . '/assets/form.php');
-		JLoader::register('JTLayoutFile', dirname(__FILE__) . '/assets/file.php');
-		JLoader::register('JFormField', dirname(__FILE__) . '/assets/field.php');
 		JLoader::discover('JTFFramework', dirname(__FILE__) . '/assets/frameworks');
+
+		if (version_compare(JVERSION, '3.8', 'lt'))
+		{
+			JLoader::register('JTLayoutFile', dirname(__FILE__) . '/assets/j3.7.x/file.php');
+			JLoader::register('JForm', dirname(__FILE__) . '/assets/j3.7.x/form.php');
+			JLoader::register('JFormField', dirname(__FILE__) . '/assets/j3.7.x/field.php');
+		}
+		else
+		{
+			JLoader::register('JForm', dirname(__FILE__) . '/assets/j3.8.x/Form.php');
+			JLoader::register('JFormField', dirname(__FILE__) . '/assets/j3.8.x/FormField.php');
+		}
 
 		// Add form fields
 		JFormHelper::addFieldPath(dirname(__FILE__) . '/assets/fields');
@@ -227,7 +295,7 @@ class plgContentJtf extends JPlugin
 				$this->setFrameworkFieldClass();
 
 				// Get form submit task
-				$task = $app->input->get('task', false, 'post');
+				$task = $this->app->input->get('task', false, 'post');
 
 				if ($task == $formTheme . "_sendmail")
 				{
@@ -268,7 +336,7 @@ class plgContentJtf extends JPlugin
 				{
 					if (!empty($submitValues['jtf_important_notices']))
 					{
-						$app->redirect(JRoute::_('index.php', false));
+						$this->app->redirect(JRoute::_('index.php', false));
 					}
 
 					if ($valid)
@@ -277,8 +345,8 @@ class plgContentJtf extends JPlugin
 
 						if ($sendmail)
 						{
-							$app->enqueueMessage(JText::_('JTF_EMAIL_THANKS'), 'message');
-							$app->redirect(JRoute::_('index.php', false));
+							$this->app->enqueueMessage(JText::_('JTF_EMAIL_THANKS'), 'message');
+							$this->app->redirect(JRoute::_('index.php', false));
 						}
 					}
 
@@ -365,13 +433,12 @@ class plgContentJtf extends JPlugin
 	/**
 	 * Checks if all needed files for Forms are found
 	 *
-	 * @return   bool
+	 * @return   string|boolean
 	 * @since    1.0
 	 */
 	protected function getFieldsFile()
 	{
-		$app       = JFactory::getApplication();
-		$template  = $app->getTemplate();
+		$template  = $this->app->getTemplate();
 		$framework = !empty($this->uParams['framework']) ? '.' . $this->uParams['framework'] : '';
 		$file      = 'fields' . $framework . '.xml';
 
@@ -393,9 +460,9 @@ class plgContentJtf extends JPlugin
 			}
 		}
 
-		$app->enqueueMessage(
-			JText::sprintf('JTF_THEME_ERROR', $this->uParams['theme'])
-			, 'error'
+		$this->app->enqueueMessage(
+			JText::sprintf('JTF_THEME_ERROR', $this->uParams['theme']),
+			'error'
 		);
 
 		return false;
@@ -403,7 +470,7 @@ class plgContentJtf extends JPlugin
 
 	protected function getLanguagePath($filename)
 	{
-		$template = JFactory::getApplication()->getTemplate();
+		$template = $this->app->getTemplate();
 
 		// Build template override path for theme
 		$tAbsPath = JPATH_THEMES . '/' . $template
@@ -712,13 +779,12 @@ class plgContentJtf extends JPlugin
 	 */
 	protected function getTranslatedSubmittedFormValues($submittedValues = array())
 	{
-		$app       = JFactory::getApplication();
 		$formTheme = $this->uParams['theme'] . $this->uParams['index'];
 
 		// Get Form values
 		if (empty($submittedValues))
 		{
-			$submittedValues = $app->input->get($formTheme, array(), 'post', 'array');
+			$submittedValues = $this->app->input->get($formTheme, array(), 'post', 'array');
 		}
 
 		foreach ($submittedValues as $subKey => $_subValue)
@@ -922,7 +988,7 @@ class plgContentJtf extends JPlugin
 		$value       = array();
 		$sumSize     = 0;
 		$index       = (int) $this->uParams['index'];
-		$jinput      = JFactory::getApplication()->input;
+		$jinput      = $this->app->input;
 		$submitFiles = $jinput->files->get($this->uParams['theme'] . $index);
 
 		$issetFiles = false;
@@ -977,20 +1043,17 @@ class plgContentJtf extends JPlugin
 
 		if ($fieldName == $this->issetCaptcha)
 		{
-			JFactory::getApplication()
-				->enqueueMessage((string) $this->validCaptcha, 'error');
+			$this->app->enqueueMessage((string) $this->validCaptcha, 'error');
 		}
 		elseif ($type == 'file')
 		{
-			JFactory::getApplication()
-				->enqueueMessage(
+			$this->app->enqueueMessage(
 					JText::sprintf('JTF_FILE_FIELD_ERROR', $label), 'error'
 				);
 		}
 		else
 		{
-			JFactory::getApplication()
-				->enqueueMessage(
+			$this->app->enqueueMessage(
 					JText::sprintf('JTF_FIELD_ERROR', $label), 'error'
 				);
 		}
@@ -1089,11 +1152,11 @@ class plgContentJtf extends JPlugin
 		$frwkClasses   = $this->getFrameworkClass();
 		$frwkCss        = $frwkClasses->getCss();
 		$enctype       = '';
-		$controlFields = '<input type="hidden" name="option" value="' . JFactory::getApplication()->input->get('option') . '" />'
+		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
-			. '<input type="hidden" name="view" value="' . JFactory::getApplication()->input->get('view') . '" />'
-			. '<input type="hidden" name="itemid" value="' . JFactory::getApplication()->input->get('idemid') . '" />'
-			. '<input type="hidden" name="id" value="' . JFactory::getApplication()->input->get('id') . '" />';
+			. '<input type="hidden" name="view" value="' . $this->app->input->get('view') . '" />'
+			. '<input type="hidden" name="itemid" value="' . $this->app->input->get('idemid') . '" />'
+			. '<input type="hidden" name="id" value="' . $this->app->input->get('id') . '" />';
 
 		if ($this->setEnctype)
 		{
@@ -1112,7 +1175,14 @@ class plgContentJtf extends JPlugin
 			'controlFields' => $controlFields,
 		);
 
-		$renderer = new JTLayoutFile($filename);
+		if (version_compare(JVERSION, '3.8', 'lt'))
+		{
+			$renderer = new JTLayoutFile($filename);
+		}
+		else
+		{
+			$renderer = new JLayoutFile($filename);
+		}
 
 		// Set Framwork as Layout->Suffix
 		if (!empty($this->uParams['framework']) && $this->uParams['framework'] != 'joomla')

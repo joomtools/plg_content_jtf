@@ -93,22 +93,6 @@ CSS
 				{
 					$fieldname = (string) $field['name'];
 
-					$gridlabel = $form->getFieldAttribute($fieldname, 'gridlabel');
-					$gridfield = $form->getFieldAttribute($fieldname, 'gridfield');
-
-					$gridlabel = array_merge($gridFieldset['label'], explode(' ', $gridlabel));
-					$gridfield = array_merge($gridFieldset['field'], explode(' ', $gridfield));
-
-					if (!empty($gridlabel))
-					{
-						$form->setFieldAttribute($fieldname, 'gridlabel', implode(' ', array_unique($gridlabel)));
-					}
-
-					if (!empty($gridfield))
-					{
-						$form->setFieldAttribute($fieldname, 'gridfield', implode(' ', array_unique($gridfield)));
-					}
-
 					echo $form->renderField($fieldname);
 				}
 				?>

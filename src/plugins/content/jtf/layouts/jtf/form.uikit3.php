@@ -68,11 +68,7 @@ JHtml::_('behavior.formvalidation');
 
 						$fieldName = (string) $field['name'];
 
-						$renderOptions['gridgroup'] = (string) $field['gridgroup'];
-						$renderOptions['gridlabel'] = (string) $field['gridlabel'];
-						$renderOptions['gridfield'] = (string) $field['gridfield'];
-
-						echo $form->renderField($fieldName, null, null, $renderOptions);
+						echo $form->renderField($fieldName);
 					}
 
 					if ($fieldsetName == 'submit') :
