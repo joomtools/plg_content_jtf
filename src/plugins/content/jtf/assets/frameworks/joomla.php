@@ -6,7 +6,7 @@
  * @author       Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
-**/
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -44,14 +44,29 @@ class JTFFrameworkJoomla
 
 	private $classes;
 
-	public function __construct($formclass = array())
+	public function __construct($orientation = array())
 	{
-		$classes = array();
-		$inline = in_array('form-inline', $formclass);
-
+		$inline         = false;
+		$classes        = array();
 		$classes['css'] = '';
 
-		$classes['class']['form']        = array_unique(array_merge(array('form-validate'), $formclass));
+		$classes['class']['form'] = array('form-validate');
+
+		switch ($orientation)
+		{
+			case 'inline':
+				$inline = true;
+				$classes['class']['form'][] = 'form-inline';
+				break;
+
+			case 'horizontal':
+				$classes['class']['form'][] = 'form-horizontal';
+
+			case 'stacked':
+			default:
+				break;
+		}
+
 		$classes['class']['default'][]   = 'input';
 		$classes['class']['gridgroup'][] = 'control-group';
 
@@ -60,6 +75,12 @@ class JTFFrameworkJoomla
 			$classes['class']['gridlabel'][] = 'control-label';
 			$classes['class']['gridfield'][] = 'controls';
 		}
+
+		$classes['class']['fieldset'] = array(
+			'field'   => array('uk-fieldset'),
+			'label' => array('uk-legend'),
+			'desc'  => array('uk-fieldset-desc'),
+		);
 
 		$classes['class']['note'] = array(
 			'buttons' => array(

@@ -6,7 +6,7 @@
  * @author       Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
-**/
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -44,14 +44,33 @@ class JTFFrameworkUikit
 
 	private $classes;
 
-	public function __construct($formclass = array())
+	public function __construct($orientation = array())
 	{
-		$classes = array();
-		$inline  = in_array('uk-form-inline', $formclass);
+		$inline         = false;
+		$classes        = array();
+		$classes['css'] = '';
+
+		$classes['class']['form'] = array('uk-form', 'form-validate');
+
+		switch ($orientation)
+		{
+			case 'inline':
+				$inline = true;
+				break;
+
+			case 'stacked':
+				$classes['class']['form'][] = 'uk-form-stacked';
+				break;
+
+			case 'horizontal':
+				$classes['class']['form'][] = 'uk-form-horizontal';
+
+			default:
+				break;
+		}
 
 		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
 
-		$classes['class']['form']        = array_unique(array_merge(array('uk-form', 'form-validate'), $formclass));
 		$classes['class']['default'][]   = 'uk-input';
 		$classes['class']['gridgroup'][] = 'uk-form-row';
 
@@ -60,6 +79,12 @@ class JTFFrameworkUikit
 			$classes['class']['gridlabel'][] = 'uk-form-label';
 			$classes['class']['gridfield'][] = 'uk-form-controls';
 		}
+
+		$classes['class']['fieldset'] = array(
+			'field'   => array('uk-fieldset'),
+			'label' => array('uk-legend'),
+			'desc'  => array('uk-fieldset-desc'),
+		);
 
 		$classes['class']['note'] = array(
 			'buttons' => array(

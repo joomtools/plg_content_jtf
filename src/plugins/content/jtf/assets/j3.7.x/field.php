@@ -1,12 +1,10 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * Joomla! Content Management System
  *
- * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
-**/
+ * @copyright  Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
 defined('JPATH_PLATFORM') or die;
 

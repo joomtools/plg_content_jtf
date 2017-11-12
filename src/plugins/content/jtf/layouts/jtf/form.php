@@ -6,100 +6,74 @@
  * @author       Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
-**/
+ */
 
 defined('_JEXEC') or die;
 
 extract($displayData);
 
+/**
+ * Layout variables
+ * -----------------
+ * @var   string   $id            Form attribute id and name.
+ * @var   \JForm   $form          JForm object instance.
+ * @var   string   $enctype       Set form attribute enctype, if file field is set.
+ * @var   string   $formClass     Classes for the form.
+ * @var   string   $frwkCss       Css styles needed for selected css-framework.
+ */
+
 JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidator');
+JHtml::_('behavior.formvalidation');
+JHtml::_('script', 'plugins/content/jtf/assets/js/scrollToError.js', array('version' => 'auto'));
 
 $invalidColor = '#ff0000';
-
-JFactory::getDocument()->addScriptDeclaration(
-	<<<JS
-	jQuery(document).ready(function($){
-		$("body").on('DOMSubtreeModified', "#system-message-container", function() {
-			var error = $(this).find('alert-error');
-			if (undefined !== error) {
-				$('html, body').animate({
-						scrollTop: $(this).offset().top-100
-					}, 500, 'linear');
-			}
-		});
-	});
-JS
-);
+$invalidBackgroundColor = '#f2dede';
 
 JFactory::getDocument()->addStyleDeclaration(
-	<<<CSS
-	.invalid { 
-		border-color:{$invalidColor}!important;
-		color:{$invalidColor}!important;
+	".invalid:not(label) { 
+		border-color: " . $invalidColor . " !important;
+		background-color: " . $invalidBackgroundColor . " !important;
 	}
-	label.invalid { color:{$invalidColor}!important; }
-	.inline { display:inline-block!important; }
-	{$frwkCss}
-CSS
+	.invalid { color: " . $invalidColor . " !important; }
+	.inline { display: inline-block !important; }"
+	. $frwkCss
 );
+
 ?>
 <div class="contact-form">
-	<p><strong><?php echo JText::_('JTF_REQUIRED_FIELDS_LABEL'); ?></strong></p>
-	<form name="<?php echo $id . $index; ?>_form"
-		  id="<?php echo $id . $index; ?>_form"
+	<form name="<?php echo $id; ?>"
+		  id="<?php echo $id; ?>"
 		  action="<?php echo JRoute::_("index.php"); ?>"
 		  method="post"
-		  class="<?php echo $formclass; ?>"
+		  class="<?php echo $formClass; ?>"
 		<?php echo $enctype ?>>
 
-		<?php
-		$fieldsets         = $form->getXML();
+		<p><strong><?php echo JText::_('JTF_REQUIRED_FIELDS_LABEL'); ?></strong></p>
 
-		foreach ($fieldsets->fieldset as $fieldset) :
-			$fieldsetLabel = (string) $fieldset['label'];
-			$fieldsetDesc  = (string) $fieldset['description'];
-			$fieldsetClass = (string) $fieldset['class']
-				? ' class="' . (string) $fieldset['class'] . '"'
-				: '';
-
-			$gridFieldset          = array();
-			$gridFieldset['label'] = array();
-			$gridFieldset['field'] = array();
-
-			if (!empty((string) $fieldset['gridlabel']))
-			{
-				$gridFieldset['label'] = explode(' ', (string) $fieldset['gridlabel']);
-			}
-
-			if (!empty((string) $fieldset['gridfield']))
-			{
-				$gridFieldset['field'] = explode(' ', (string) $fieldset['gridfield']);
-			}
-			?>
+		<?php foreach ($form->getFieldsets() as $fieldset) :
+			$fieldsetClass = !empty($fieldset->class) ? ' class="' . $fieldset->class . '"' : '';
+			$fieldsetLabelClass = !empty($fieldset->labelClass) ? ' class="' . $fieldset->labelClass . '"' : '';
+			$fieldsetDescClass = !empty($fieldset->descClass) ? ' class="' . $fieldset->descClass . '"' : ''; ?>
 
 			<fieldset<?php echo $fieldsetClass; ?>>
 
-				<?php if (!empty($fieldsetLabel) && strlen($legend = trim(JText::_($fieldsetLabel)))) : ?>
-					<legend><?php echo $legend; ?></legend>
+				<?php if (!empty($fieldset->label) && strlen($legend = trim(JText::_($fieldset->label)))) : ?>
+					<legend<?php echo $fieldsetLabelClass; ?>><?php echo $legend; ?></legend>
 				<?php endif; ?>
 
-				<?php if (!empty($fieldsetDesc) && strlen($desc = trim(JText::_($fieldsetDesc)))) : ?>
-					<p><?php echo $desc; ?></p>
+				<?php if (!empty($fieldset->description) && strlen($desc = trim(JText::_($fieldset->description)))) : ?>
+					<p<?php echo $fieldsetDescClass; ?>><?php echo $desc; ?></p>
 				<?php endif; ?>
 
-				<?php
-				foreach ($fieldset->field as $field)
+				<?php foreach ($form->getFieldset($fieldset->name) as $field)
 				{
-					$fieldname = (string) $field['name'];
-
-					echo $form->renderField($fieldname);
+					echo $field->renderField();
 				}
 				?>
 			</fieldset>
 		<?php endforeach;
 
-		// Set hidden control fields to evaluate Form
+		// Set control fields to evaluate Form
 		echo $controlFields;
 		echo JHtml::_('form.token');
 		?>

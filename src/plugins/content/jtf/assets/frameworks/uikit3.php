@@ -1,12 +1,12 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package          Joomla.Plugin
+ * @subpackage       Content.Jtf
  *
- * @author       Guido De Gobbis <support@joomtools.de>
+ * @author           Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
-**/
+ * @license          GNU General Public License version 3 or later
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -37,29 +37,52 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 3.0
  **/
-
 class JTFFrameworkUikit3
 {
 	public static $name = 'UIKit v3';
 
 	private $classes;
 
-	public function __construct($formclass = array())
+	public function __construct($orientation = null)
 	{
-		$classes = array();
-		$inline = in_array('uk-form-inline', $formclass);
-
+		$inline         = false;
+		$classes        = array();
 		$classes['css'] = '';
 
-		$classes['class']['form']        = array_unique(array_merge(array('uk-form', 'form-validate'), $formclass));
+		$classes['class']['form'] = array('uk-form', 'form-validate');
+
+		switch ($orientation)
+		{
+			case 'inline':
+				$inline = true;
+				break;
+
+			case 'stacked':
+				$classes['class']['form'][] = 'uk-form-stacked';
+				break;
+
+			case 'horizontal':
+				$classes['class']['form'][] = 'uk-form-horizontal';
+
+			default:
+				break;
+		}
+
+		$classes['class']['legend'][]    = 'uk-legend';
 		$classes['class']['default'][]   = 'uk-input';
-		$classes['class']['gridgroup'][] = 'uk-form-row';
+		$classes['class']['gridgroup'][] = 'uk-form-row uk-margin';
 
 		if (!$inline)
 		{
 			$classes['class']['gridlabel'][] = 'uk-form-label';
 			$classes['class']['gridfield'][] = 'uk-form-controls';
 		}
+
+		$classes['class']['fieldset'] = array(
+			'field'   => array('uk-fieldset'),
+			'label' => array('uk-legend'),
+			'desc'  => array('uk-fieldset-desc'),
+		);
 
 		$classes['class']['calendar'] = array(
 			'buttons' => array(
@@ -97,7 +120,7 @@ class JTFFrameworkUikit3
 		if ($inline)
 		{
 			$classes['class']['checkboxes']['field'][] = 'uk-display-inline';
-			$classes['class']['radio']['field'][] = 'uk-display-inline';
+			$classes['class']['radio']['field'][]      = 'uk-display-inline';
 		}
 
 		$this->classes = $classes;

@@ -6,103 +6,77 @@
  * @author       Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
-**/
+ */
 
 defined('_JEXEC') or die;
 
 extract($displayData);
-$renderOptions              = array();
+
+/**
+ * Layout variables
+ * -----------------
+ * @var   string   $id            Form attribute id and name.
+ * @var   \JForm   $form          JForm object instance.
+ * @var   string   $enctype       Set form attribute enctype, if file field is set.
+ * @var   string   $formClass     Classes for the form.
+ * @var   string   $frwkCss       Css styles needed for selected css-framework.
+ */
 
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidation');
+JHtml::_('script', 'plugins/content/jtf/assets/js/scrollToError.js', array('version' => 'auto'));
+
+$invalidColor = '#ff0000';
+$invalidBackgroundColor = '#f2dede';
+
+JFactory::getDocument()->addStyleDeclaration(
+	".invalid:not(label) { 
+		border-color: " . $invalidColor . " !important;
+		background-color: " . $invalidBackgroundColor . " !important;
+	}
+	.invalid { color: " . $invalidColor . " !important; }
+	.inline { display: inline-block !important; }"
+	. $frwkCss
+);
+
 ?>
-<style>
-    .invalid { border-color: #ff0000 !important; color: #ff0000 !important; }
-    label.invalid { color: #ff0000 !important; }
-</style>
-{emailcloak=off}
 <div class="contact-form">
-	<p><strong><?php echo JText::_('JTF_REQUIRED_FIELDS_LABEL'); ?></strong></p>
-	<form name="<?php echo $id . $index; ?>_form"
-	      id="<?php echo $id . $index; ?>_form"
-	      action="<?php echo JRoute::_("index.php"); ?>"
-	      method="post"
-	      class="form-validate"
-	      enctype="multipart/form-data">
-		<?php
+	<form name="<?php echo $id; ?>"
+		  id="<?php echo $id; ?>"
+		  action="<?php echo JRoute::_("index.php"); ?>"
+		  method="post"
+		  class="<?php echo $formClass; ?>"
+		<?php echo $enctype ?>>
 
-		$fieldsets         = $form->getXML();
-		$countFieldsets    = 1;
-		$sumFieldsets      = count($fieldsets->fieldset);
-		$submitSet         = false;
+		<p><strong><?php echo JText::_('JTF_REQUIRED_FIELDS_LABEL'); ?></strong></p>
 
-		foreach ($fieldsets->fieldset as $fieldset) :
+		<?php foreach ($form->getFieldsets() as $fieldset) :
+			$fieldsetClass = !empty($fieldset->class) ? ' class="' . $fieldset->class . '"' : '';
+			$fieldsetLabelClass = !empty($fieldset->labelClass) ? ' class="' . $fieldset->labelClass . '"' : '';
+			$fieldsetDescClass = !empty($fieldset->descClass) ? ' class="' . $fieldset->descClass . '"' : ''; ?>
 
-			$fieldsetName  = (string) $fieldset['name'];
-			$fieldsetLabel = (string) $fieldset['label'];
-			$fieldsetDesc  = (string) $fieldset['description'];
-			$sumFields     = count($fieldset->field);
-			$fieldsetClass = (string) $fieldset['class']
-				? 'uk-fieldset ' . (string) $fieldset['class']
-				: 'uk-fieldset';
+			<fieldset<?php echo $fieldsetClass; ?>>
 
-			if ($fieldsetName == 'submit' && $sumFields == 0)
-			{
-				$sumFields = 1;
-			}
-
-			if ($sumFields) :
-				if ($countFieldsets % 2) : ?>
-					<!--<div class="row">-->
+				<?php if (!empty($fieldset->label) && strlen($legend = trim(JText::_($fieldset->label)))) : ?>
+					<legend<?php echo $fieldsetLabelClass; ?>><?php echo $legend; ?></legend>
 				<?php endif; ?>
 
-				<fieldset class="<?php echo $fieldsetClass; ?>" data-uk-grid-margin>
-					<?php if (isset($fieldsetLabel) && strlen($legend = trim(JText::_($fieldsetLabel)))) : ?>
-						<legend class="uk-legend"><?php echo $legend; ?></legend>
-					<?php endif; ?>
-					<?php if (isset($fieldsetDesc) && strlen($desc = trim(JText::_($fieldsetDesc)))) : ?>
-						<p><?php echo $desc; ?></p>
-					<?php endif; ?>
-					<?php foreach ($fieldset->field as $field)
-					{
+				<?php if (!empty($fieldset->description) && strlen($desc = trim(JText::_($fieldset->description)))) : ?>
+					<p<?php echo $fieldsetDescClass; ?>><?php echo $desc; ?></p>
+				<?php endif; ?>
 
-						$fieldName = (string) $field['name'];
+				<?php foreach ($form->getFieldset($fieldset->name) as $field)
+				{
+					echo $field->renderField();
+				}
+				?>
+			</fieldset>
+		<?php endforeach;
 
-						echo $form->renderField($fieldName);
-					}
-
-					if ($fieldsetName == 'submit') :
-						$submitSet = true; ?>
-						<div class="uk-form-group">
-							<button class="btn btn-default validate"
-							        type="submit"><?php echo JText::_('JSUBMIT'); ?></button>
-						</div>
-					<?php endif; ?>
-
-				</fieldset>
-			<?php endif;
-
-			$countFieldsets++;
-			if ($countFieldsets % 2 || $countFieldsets > $sumFieldsets) : ?>
-				<!--</div>-->
-			<?php endif;
-
-		endforeach;
-
-		if ($submitSet === false) : ?>
-			<div class="form-group">
-				<button class="uk-button uk-button-default"
-				        type="submit"><?php echo JText::_('JSUBMIT'); ?></button>
-			</div>
-		<?php endif; ?>
-
-		<?php echo $honeypot; ?>
-		<input type="hidden" name="option" value="<?php echo JFactory::getApplication()->input->get('option'); ?>"/>
-		<input type="hidden" name="task" value="<?php echo $id . $index; ?>_sendmail"/>
-		<input type="hidden" name="view" value="<?php echo JFactory::getApplication()->input->get('view'); ?>"/>
-		<input type="hidden" name="itemid" value="<?php echo JFactory::getApplication()->input->get('idemid'); ?>"/>
-		<input type="hidden" name="id" value="<?php echo JFactory::getApplication()->input->get('id'); ?>"/>
-		<?php echo JHtml::_('form.token'); ?>
+		// Set control fields to evaluate Form
+		echo $controlFields;
+		echo JHtml::_('form.token');
+		?>
 
 	</form>
 </div>

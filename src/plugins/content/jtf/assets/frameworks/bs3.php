@@ -6,7 +6,7 @@
  * @author       Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
-**/
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -44,22 +44,35 @@ class JTFFrameworkBs3
 
 	private $classes;
 
-	public function __construct($formclass = array())
+	public function __construct($orientation = array())
 	{
-		$classes = array();
-		$inline = in_array('form-inline', $formclass);
+		$inline         = false;
+		$classes        = array();
+		$classes['css'] = '';
+
+		$classes['class']['form'] = array('form-validate');
+
+		switch ($orientation)
+		{
+			case 'inline':
+				$inline = true;
+				$classes['class']['form'][] = 'form-inline';
+				break;
+
+			case 'horizontal':
+				$classes['class']['form'][] = 'form-horizontal';
+
+			case 'stacked':
+			default:
+				break;
+		}
 
 		$classes['css'] = '';
 
-		$classes['class']['form']        = array_unique(array_merge(array('form-validate'), $formclass));
 		$classes['class']['default'][]   = 'input';
 		$classes['class']['gridgroup'][] = 'form-group';
-
-		if (!$inline)
-		{
-			$classes['class']['gridlabel'][] = 'control-label';
-			$classes['class']['gridfield'][] = 'control-field';
-		}
+		$classes['class']['gridlabel'][] = 'control-label';
+		$classes['class']['gridfield'][] = 'form-control';
 
 		$classes['class']['calendar'] = array(
 			'buttons' => array(
@@ -100,8 +113,8 @@ class JTFFrameworkBs3
 
 		if ($inline)
 		{
-			$classes['class']['checkboxes']['field'][] = 'inline';
-			$classes['class']['radio']['field'][] = 'inline';
+			$classes['class']['checkboxes']['field'][] = 'checkbox-inline';
+			$classes['class']['radio']['field'][] = 'radio-inline';
 		}
 
 		$this->classes = $classes;

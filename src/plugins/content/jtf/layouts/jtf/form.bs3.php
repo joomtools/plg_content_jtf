@@ -6,7 +6,7 @@
  * @author       Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
-**/
+ */
 
 defined('_JEXEC') or die;
 
@@ -15,9 +15,21 @@ $formClass = !empty($form->getAttribute('class')) ? ' ' . (string) $form->getAtt
 
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidation');
-$invalisColor = '#ff0000';
-$invalidStylesheet =".invalid{border-color:{$invalisColor}!important;color:{$invalisColor}!important;}label.invalid{color:{$invalisColor}!important;}";
-JFactory::getDocument()->addStyleDeclaration($invalidStylesheet);
+JHtml::_('script', 'plugins/content/jtf/assets/js/scrollToError.js', array('version' => 'auto'));
+
+$invalidColor = '#ff0000';
+$invalidBackgroundColor = '#f2dede';
+
+JFactory::getDocument()->addStyleDeclaration(
+	".invalid:not(label) { 
+		border-color: " . $invalidColor . " !important;
+		background-color: " . $invalidBackgroundColor . " !important;
+	}
+	.invalid { color: " . $invalidColor . " !important; }
+	.inline { display: inline-block !important; }"
+	. $frwkCss
+);
+
 ?>
 <div class="contact-form">
 	<p><strong><?php echo JText::_('JTF_REQUIRED_FIELDS_LABEL'); ?></strong></p>

@@ -6,7 +6,7 @@
  * @author       Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
-**/
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -84,7 +84,7 @@ class PlgContentJtf extends JPlugin
 	 * @var     array
 	 * @since   1.0
 	 */
-	protected $form = array();
+	//protected $form = array();
 
 	/**
 	 * Array with User params
@@ -174,7 +174,7 @@ class PlgContentJtf extends JPlugin
 
 		$this->debug = (boolean) $this->params->get('debug', 0);
 		$cIndex      = 0;
-		$template    = $this->app->getTemplate();
+//		$template    = $this->app->getTemplate();
 		$lang        = JFactory::getLanguage();
 		$langTag     = $lang->getTag();
 
@@ -261,35 +261,36 @@ class PlgContentJtf extends JPlugin
 
 				$lang->load('jtf_theme', $formLang);
 
-				$form = new JForm($formTheme, array('control' => $formTheme));
+//				$form = JForm::getInstance($formTheme, $formXmlPath, array('control' => $formTheme));
 
 				// Load Formfields
-				$form->loadFile($formXmlPath);
+				//$form->loadFile($formXmlPath);
 
 				// Set Formfields
-				$this->form[$formTheme] = $form;
+//				$this->form[$formTheme] = $form;
 
 				// Define framework as layout suffix
-				$layoutSuffix = array('');
+//				$layoutSuffix = array('');
 
 				if (!empty($this->uParams['framework']))
 				{
-					$layoutSuffix = array($this->uParams['framework']);
+					$this->uParams['framework'] = array($this->uParams['framework']);
 				}
 
 				// Set Framework as Layout->Suffix
-				$this->form[$formTheme]->framework = $layoutSuffix;
+//				$this->form[$formTheme]->framework = $layoutSuffix;
 
 				// Set Debug for Layouts override
-				$this->form[$formTheme]->rendererDebug = $this->debug;
+//				$this->form[$formTheme]->rendererDebug = $this->debug;
 
 				// Set Layouts override
-				$this->form[$formTheme]->layoutPaths = array(
+/*				$this->form[$formTheme]->layoutPaths = array(
 					JPATH_THEMES . '/' . $template . '/html/plg_content_jtf/' . $this->uParams['theme'],
 					JPATH_THEMES . '/' . $template . '/html/layouts/plugin/content/jtf',
 					JPATH_THEMES . '/' . $template . '/html/layouts',
 					JPATH_PLUGINS . '/content/jtf/layouts/jtf',
 					JPATH_PLUGINS . '/content/jtf/layouts');
+*/
 
 				$this->setSubmit();
 				$this->setFrameworkFieldClass();
@@ -317,7 +318,7 @@ class PlgContentJtf extends JPlugin
 							break;
 					}
 
-					$this->form[$formTheme]->bind($submitValues);
+					$this->getForm()->bind($submitValues);
 
 					if ($submitValues['jtf_important_notices'] == '')
 					{
@@ -439,7 +440,7 @@ class PlgContentJtf extends JPlugin
 	protected function getFieldsFile()
 	{
 		$template  = $this->app->getTemplate();
-		$framework = !empty($this->uParams['framework']) ? '.' . $this->uParams['framework'] : '';
+		$framework = !empty($this->uParams['framework'][0]) ? '.' . $this->uParams['framework'][0] : '';
 		$file      = 'fields' . $framework . '.xml';
 
 		$formPath = array(
@@ -525,9 +526,37 @@ class PlgContentJtf extends JPlugin
 		$this->setSubmitButton($button);
 	}
 
-	protected function getForm()
+	protected function getForm($subform = null)
 	{
-		return $this->form[$this->uParams['theme'] . (int) $this->uParams['index']];
+		$template    = $this->app->getTemplate();
+
+		if ($subform != null)
+		{
+			$formName = 'subform' . ($subform->group ? $subform->group . '.' : '.') . $subform->fieldname;
+			$formXmlPath = $subform->formsource;
+			$formControl = array('control' => $subform->name);
+			$formControl = array('control' => $formName);
+		}
+		else
+		{
+			$formName = $this->uParams['theme'] . (int) $this->uParams['index'];
+			$formXmlPath = $this->getFieldsFile();
+			$formControl = array('control' => $formName);
+		}
+
+		$form = JForm::getInstance($formName, $formXmlPath, $formControl);
+
+		$form->framework     = $this->uParams['framework'];
+		$form->rendererDebug = $this->debug;
+		$form->layoutPaths   = array(
+			JPATH_THEMES . '/' . $template . '/html/plg_content_jtf/' . $this->uParams['theme'],
+			JPATH_THEMES . '/' . $template . '/html/layouts/plugin/content/jtf',
+			JPATH_THEMES . '/' . $template . '/html/layouts',
+			JPATH_PLUGINS . '/content/jtf/layouts/jtf',
+			JPATH_PLUGINS . '/content/jtf/layouts',
+		);
+
+		return $form;
 	}
 
 	protected function issetField($fieldtype, $fieldsetname = null)
@@ -549,9 +578,8 @@ class PlgContentJtf extends JPlugin
 	}
 
 
-	protected function getFrameworkClass()
+	protected function getFrameworkClass($form)
 	{
-		$form      = $this->getForm();
 		$formclass = explode(' ', $form->getAttribute('class', ''));
 		$framework = 'joomla';
 
@@ -566,15 +594,19 @@ class PlgContentJtf extends JPlugin
 		return $frwkClasses;
 	}
 
-	protected function setFrameworkFieldClass()
+	protected function setFrameworkFieldClass($subform = null)
 	{
-		$form        = $this->getForm();
-		$frwkClasses = $this->getFrameworkClass();
+		$form = $this->getForm($subform);
+
+		$frwkClasses = $this->getFrameworkClass($form);
 		$classes     = $frwkClasses->getClasses();
+		$formClass = $form->getAttribute('class', array());
+		$formClass = array_flip(explode(' ', $formClass));
 
 		if (!empty($classes['form']))
 		{
-			$form->setAttribute('class', implode(' ', $classes['form']));
+			$formClass = array_merge(array_flip($classes['form']), $formClass);
+			$form->setAttribute('class', implode(' ', array_keys($formClass)));
 		}
 
 		if (!empty($form->getAttribute('gridlabel')))
@@ -587,18 +619,116 @@ class PlgContentJtf extends JPlugin
 			$classes['gridfield'][] = $form->getAttribute('gridfield');
 		}
 
-		$fields = $form->getFieldset();
+		$fieldsets = $form->getXml();
 
-		foreach ($fields as $field)
+		if ($subform !== null && empty($fieldsets->fieldset))
 		{
-			$this->setFieldClass($field->getAttribute('name'), $classes);
+			foreach ($fieldsets as $field)
+			{
+				$this->setFieldClass((string) $field['name'], $classes, $form);
+			}
+		}
+		else
+		{
+			foreach ($fieldsets->fieldset as $fieldset)
+			{
+				$fieldsetClasses['field'] = !empty($classes['fieldset']['field'])
+					? array_flip($classes['fieldset']['field'])
+					: '';
+
+				$fieldsetClasses['label'] = !empty($classes['fieldset']['field'])
+					? array_flip($classes['fieldset']['field'])
+					: '';
+
+				$fieldsetClasses['desc'] = !empty($classes['fieldset']['field'])
+					? array_flip($classes['fieldset']['field'])
+					: '';
+
+				if ($subform !== null)
+				{
+					$this->getForm()->setFieldAttribute($subform->fieldname, 'groupByFieldset', true);
+				}
+
+				if (!empty($fieldset['class']))
+				{
+					$fieldsetClasses['field'] = array_merge(
+						$fieldsetClasses['field'],
+						array_flip(explode(' ', (string) $fieldset['class']))
+					);
+				}
+
+				if (!empty($fieldset['label']))
+				{
+					if (!empty($fieldset['labelClass']))
+					{
+						$fieldsetClasses['label'] = array_merge(
+							$fieldsetClasses['label'],
+							array_flip(explode(' ', (string) $fieldset['labelClass']))
+						);
+					}
+				}
+
+				if (!empty($fieldset['description']))
+				{
+					if (!empty($fieldset['descClass']))
+					{
+						$fieldsetClasses['desc'] = array_merge(
+							$fieldsetClasses['desc'],
+							array_flip(explode(' ', (string) $fieldset['descClass']))
+						);
+					}
+				}
+
+				foreach ($fieldsetClasses as $classKey => $classValue)
+				{
+					if (!empty($classValue))
+					{
+						switch ($classKey)
+						{
+							case 'field':
+								$attribute = 'class';
+								break;
+
+							case 'label':
+								$attribute = 'labelClass';
+								break;
+
+							case 'desc':
+								$attribute = 'descClass';
+								break;
+
+							default:
+								$attribute = null;
+								break;
+						}
+
+						if (!empty($attribute))
+						{
+							$fieldset[$attribute] = implode(' ', array_keys($classValue));
+						}
+					}
+				}
+
+				$fields = $form->getFieldset((string) $fieldset['name']);
+
+				foreach ($fields as $field)
+				{
+					if ((string) $field->getAttribute('type') == 'subform')
+					{
+						$this->setFrameworkFieldClass($field);
+					}
+					else
+					{
+						$this->setFieldClass($field->getAttribute('name'), $classes, $form);
+					}
+				}
+			}
 		}
 	}
 
-	protected function setFieldClass($fieldname, $frwkClasses)
+	protected function setFieldClass($fieldName, $frwkClasses, $form)
 	{
-		$form  = $this->getform();
-		$field = $form->getField($fieldname);
+		$field = $form->getField($fieldName);
 		$type  = strtolower($field->getAttribute('type'));
 		$classes = array(
 			'frwkDefaultClass' => array(),
@@ -624,16 +754,16 @@ class PlgContentJtf extends JPlugin
 			$classes['frwkFieldClass'] = array_flip($frwkClasses[$type]['field']);
 		}
 
-		if (!empty($form->getFieldAttribute($fieldname, 'class')))
+		if (!empty($form->getFieldAttribute($fieldName, 'class')))
 		{
 			$classes['fieldClass'] = array_flip(
-				explode(' ', $form->getFieldAttribute($fieldname, 'class'))
+				explode(' ', $form->getFieldAttribute($fieldName, 'class'))
 			);
 		}
 
 		if (in_array($type, array('checkboxes', 'radio', 'textarea', 'captcha')))
 		{
-			$form->setFieldAttribute($fieldname, 'icon', null);
+			$form->setFieldAttribute($fieldName, 'icon', null);
 
 		}
 
@@ -650,9 +780,9 @@ class PlgContentJtf extends JPlugin
 
 			if ($type == 'note')
 			{
-				$form->setFieldAttribute($fieldname, 'icon', null);
-				$form->setFieldAttribute($fieldname, 'buttonicon', null);
-				$form->setFieldAttribute($fieldname, 'buttonclass', null);
+				$form->setFieldAttribute($fieldName, 'icon', null);
+				$form->setFieldAttribute($fieldName, 'buttonicon', null);
+				$form->setFieldAttribute($fieldName, 'buttonclass', null);
 			}
 
 			if (!empty($frwkClasses[$type]['uploadicon']))
@@ -670,26 +800,26 @@ class PlgContentJtf extends JPlugin
 				$buttonicon = $frwkClasses[$type]['buttons']['icon'];
 			}
 
-			if (!empty($form->getFieldAttribute($fieldname, 'icon')))
+			if (!empty($form->getFieldAttribute($fieldName, 'icon')))
 			{
 				if ($type == 'file')
 				{
-					$uploadicon = $form->getFieldAttribute($fieldname, 'icon');
+					$uploadicon = $form->getFieldAttribute($fieldName, 'icon');
 				}
 				else
 				{
-					$buttonicon = $form->getFieldAttribute($fieldname, 'icon');
+					$buttonicon = $form->getFieldAttribute($fieldName, 'icon');
 				}
 			}
 
-			if (!empty($form->getFieldAttribute($fieldname, 'uploadicon')))
+			if (!empty($form->getFieldAttribute($fieldName, 'uploadicon')))
 			{
-				$uploadicon = $form->getFieldAttribute($fieldname, 'uploadicon');
+				$uploadicon = $form->getFieldAttribute($fieldName, 'uploadicon');
 			}
 
-			if (!empty($form->getFieldAttribute($fieldname, 'buttonicon')))
+			if (!empty($form->getFieldAttribute($fieldName, 'buttonicon')))
 			{
-				$buttonicon = $form->getFieldAttribute($fieldname, 'buttonicon');
+				$buttonicon = $form->getFieldAttribute($fieldName, 'buttonicon');
 			}
 
 			if (($type == 'submit' || $type == 'file') && !empty($classes['fieldClass']))
@@ -698,29 +828,29 @@ class PlgContentJtf extends JPlugin
 				$classes['fieldClass'] = array();
 			}
 
-			if (!empty($form->getFieldAttribute($fieldname, 'buttonclass')))
+			if (!empty($form->getFieldAttribute($fieldName, 'buttonclass')))
 			{
-				$buttonclass = $form->getFieldAttribute($fieldname, 'buttonclass');
+				$buttonclass = $form->getFieldAttribute($fieldName, 'buttonclass');
 			}
 
 			if (!empty($uploadicon))
 			{
-				$form->setFieldAttribute($fieldname, 'uploadicon', $uploadicon);
+				$form->setFieldAttribute($fieldName, 'uploadicon', $uploadicon);
 			}
 
 			if (!empty($buttonicon))
 			{
-				$form->setFieldAttribute($fieldname, 'buttonicon', $buttonicon);
+				$form->setFieldAttribute($fieldName, 'buttonicon', $buttonicon);
 			}
 
 			if (!empty($buttonclass))
 			{
-				$form->setFieldAttribute($fieldname, 'buttonclass', $buttonclass);
+				$form->setFieldAttribute($fieldName, 'buttonclass', $buttonclass);
 			}
 
 			if (!empty($uploadicon) || !empty($buttonicon) || !empty($buttonclass))
 			{
-				$form->setFieldAttribute($fieldname, 'icon', null);
+				$form->setFieldAttribute($fieldName, 'icon', null);
 			}
 
 		}
@@ -728,7 +858,7 @@ class PlgContentJtf extends JPlugin
 		$class = array_merge($classes['frwkDefaultClass'], $classes['frwkFieldClass'], $classes['fieldClass']);
 		$fieldClass = array_keys($class);
 
-		$form->setFieldAttribute($fieldname, 'class', implode(' ', $fieldClass));
+		$form->setFieldAttribute($fieldName, 'class', implode(' ', $fieldClass));
 
 		$grid['group']['frwk'] = !empty($frwkClasses['gridgroup']) ? array_flip($frwkClasses['gridgroup']) : array();
 		$grid['label']['frwk'] = !empty($frwkClasses['gridlabel']) ? array_flip($frwkClasses['gridlabel']) : array();
@@ -737,24 +867,24 @@ class PlgContentJtf extends JPlugin
 		$grid['label']['field'] = array();
 		$grid['field']['field'] = array();
 
-		if (!empty($form->getFieldAttribute($fieldname, 'gridgroup')))
+		if (!empty($form->getFieldAttribute($fieldName, 'gridgroup')))
 		{
 			$grid['group']['field'] = array_flip(
-				explode(' ', $form->getFieldAttribute($fieldname, 'gridgroup'))
+				explode(' ', $form->getFieldAttribute($fieldName, 'gridgroup'))
 			);
 		}
 
-		if (!empty($form->getFieldAttribute($fieldname, 'gridlabel')))
+		if (!empty($form->getFieldAttribute($fieldName, 'gridlabel')))
 		{
 			$grid['label']['field'] = array_flip(
-				explode(' ', $form->getFieldAttribute($fieldname, 'gridlabel'))
+				explode(' ', $form->getFieldAttribute($fieldName, 'gridlabel'))
 			);
 		}
 
-		if (!empty($form->getFieldAttribute($fieldname, 'gridfield')))
+		if (!empty($form->getFieldAttribute($fieldName, 'gridfield')))
 		{
 			$grid['field']['field'] = array_flip(
-				explode(' ', $form->getFieldAttribute($fieldname, 'gridfield'))
+				explode(' ', $form->getFieldAttribute($fieldName, 'gridfield'))
 			);
 		}
 
@@ -762,9 +892,9 @@ class PlgContentJtf extends JPlugin
 		$gridlabel = array_keys(array_merge($grid['label']['frwk'], $grid['label']['field']));
 		$gridfield = array_keys(array_merge($grid['field']['frwk'], $grid['field']['field']));
 
-		$form->setFieldAttribute($fieldname, 'gridgroup', implode(' ', $gridgroup));
-		$form->setFieldAttribute($fieldname, 'gridlabel', implode(' ', $gridlabel));
-		$form->setFieldAttribute($fieldname, 'gridfield', implode(' ', $gridfield));
+		$form->setFieldAttribute($fieldName, 'gridgroup', implode(' ', $gridgroup));
+		$form->setFieldAttribute($fieldName, 'gridlabel', implode(' ', $gridlabel));
+		$form->setFieldAttribute($fieldName, 'gridfield', implode(' ', $gridfield));
 
 		return;
 	}
@@ -1148,9 +1278,9 @@ class PlgContentJtf extends JPlugin
 		$index         = $this->uParams['index'];
 		$id            = $this->uParams['theme'];
 		$form          = $this->getForm();
-		$formclass     = $form->getAttribute('class', '');
-		$frwkClasses   = $this->getFrameworkClass();
-		$frwkCss        = $frwkClasses->getCss();
+		$formClass     = $form->getAttribute('class', '');
+		$frwk          = $this->getFrameworkClass($form);
+		$frwkCss       = $frwk->getCss();
 		$enctype       = '';
 		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
@@ -1163,13 +1293,11 @@ class PlgContentJtf extends JPlugin
 			$enctype = ' enctype="multipart/form-data"';
 		}
 
-
 		$displayData = array(
-			'id'            => $id,
-			'index'         => (int) $index,
+			'id'            => $id . (int) $index . '_form',
 			'fileClear'     => $this->params->get('file_clear'),
 			'form'          => $form,
-			'formclass'     => $formclass,
+			'formClass'     => $formClass,
 			'enctype'       => $enctype,
 			'frwkCss'       => $frwkCss,
 			'controlFields' => $controlFields,
@@ -1185,9 +1313,9 @@ class PlgContentJtf extends JPlugin
 		}
 
 		// Set Framwork as Layout->Suffix
-		if (!empty($this->uParams['framework']) && $this->uParams['framework'] != 'joomla')
+		if (!empty($this->uParams['framework'][0]) && $this->uParams['framework'][0] != 'joomla')
 		{
-			$renderer->setSuffixes(array($this->uParams['framework']));
+			$renderer->setSuffixes($this->uParams['framework']);
 		}
 
 		$renderer->addIncludePaths($form->layoutPaths);

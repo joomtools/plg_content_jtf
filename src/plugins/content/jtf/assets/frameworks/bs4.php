@@ -1,12 +1,12 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package          Joomla.Plugin
+ * @subpackage       Content.Jtf
  *
- * @author       Guido De Gobbis <support@joomtools.de>
+ * @author           Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
-**/
+ * @license          GNU General Public License version 3 or later
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -37,29 +37,42 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 3.0
  **/
-
 class JTFFrameworkBs4
 {
 	public static $name = 'Bootsrap v4';
 
 	private $classes;
 
-	public function __construct($formclass = array())
+	public function __construct($orientation = array())
 	{
-		$classes = array();
-		$inline = in_array('form-inline', $formclass);
+		$inline         = false;
+		$classes        = array();
+		$classes['css'] = '';
+
+		$classes['class']['form'] = array('form-validate');
+
+		switch ($orientation)
+		{
+			case 'inline':
+				$inline                     = true;
+				$classes['class']['form'][] = 'form-inline';
+				break;
+
+			case 'horizontal':
+				$classes['class']['form'][]      = 'form-horizontal';
+				$classes['class']['gridgroup'][] = 'row';
+				$classes['class']['gridlabel'][] = 'col-form-label';
+
+			case 'stacked':
+			default:
+				break;
+		}
 
 		$classes['css'] = '';
 
-		$classes['class']['form']        = array_unique(array_merge(array('form-validate'), $formclass));
 		$classes['class']['default'][]   = 'input';
-		$classes['class']['gridgroup'][] = 'control-group';
-
-		if (!$inline)
-		{
-			$classes['class']['gridlabel'][] = 'control-label';
-			$classes['class']['gridfield'][] = '';
-		}
+		$classes['class']['gridgroup'][] = 'form-group';
+		$classes['class']['gridfield'][] = 'form-control';
 
 		$classes['class']['calendar'] = array(
 			'buttons' => array(
@@ -69,22 +82,31 @@ class JTFFrameworkBs4
 		);
 
 		$classes['class']['checkbox'] = array(
-			'field' => array('checkbox'),
+			'field'   => array('form-check'),
+			'options' => array(
+				'class'      => array('form-check-input'),
+				'labelclass' => array('form-check-label'),
+			),
 		);
 
 		$classes['class']['checkboxes'] = array(
+			'field'   => array('form-check'),
 			'options' => array(
-				'labelclass' => array('checkbox'),
+				'class'      => array('form-check-input'),
+				'labelclass' => array('form-check-label'),
 			),
 		);
 
 		$classes['class']['radio'] = array(
+			'field'   => array('form-check'),
 			'options' => array(
-				'labelclass' => array('radio'),
+				'class'      => array('form-check-input'),
+				'labelclass' => array('form-check-label'),
 			),
 		);
 
 		$classes['class']['file'] = array(
+			'field'      => array('form-control-file'),
 			'uploadicon' => 'icon-upload',
 			'buttons'    => array(
 				'class' => 'btn btn-success',
@@ -100,8 +122,8 @@ class JTFFrameworkBs4
 
 		if ($inline)
 		{
-			$classes['class']['checkboxes']['field'][] = 'inline';
-			$classes['class']['radio']['field'][] = 'inline';
+			$classes['class']['checkboxes']['field'][] = 'form-check-inline';
+			$classes['class']['radio']['field'][]      = 'form-check-inline';
 		}
 
 		$this->classes = $classes;
