@@ -52,13 +52,13 @@ extract($displayData);
 JHtml::_('jquery.framework');
 JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
 JHtml::_('script', 'plugins/content/jtf/assets/js/file.js', array('version' => 'auto'));
+JHtml::_('stylesheet', 'plugins/content/jtf/assets/css/file.css', array('version' => 'auto'));
 
 $maxSize = JHtml::_('number.bytes', $uploadmaxsize);
 $errorMessage = JText::sprintf('JTF_UPLOAD_ERROR_MESSAGE', $maxSize);
 
 // Drag-drop installation
-JFactory::getDocument()->addScriptDeclaration(
-<<<JS
+JFactory::getDocument()->addScriptDeclaration("
 	jQuery(document).ready(function($) {
 		$('uploader-wrapper-$id').jtfUploadFile({
 			id            : '$id',
@@ -66,58 +66,22 @@ JFactory::getDocument()->addScriptDeclaration(
 			errorMessage  : '$errorMessage'
 		});
 	});
-JS
-);
+");
 
-JFactory::getDocument()->addStyleDeclaration(
-<<<CSS
-	.dragarea {
-		background-color: #fafbfc;
-		border: 1px dashed #999;
-		box-sizing: border-box;
-		padding: 5% 0;
-		transition: all 0.2s ease 0s;
-		width: 100%;
-		text-align: center;
-	}
+JFactory::getDocument()->addStyleDeclaration("
 
-	.dragarea p.lead {
-		color: #999;
-	}
+");
 
-	.dragarea .upload-icon {
-		font-size: 48px;
-		width: auto;
-		height: auto;
-		margin: 0;
-		line-height: 175%;
-		color: #999;
-		transition: all .2s;
-	}
-
-	dragarea.hover {
-		border-color: #666;
-		background-color: #eee;
-	}
-
-	dragarea.hover .upload-icon,
-	dragarea p.lead {
-		color: #666;
-	}
-	.upload-list ul li{
-		list-style: none;
-	}
-CSS
-);
 ?>
 <div id="uploader-wrapper-<?php echo $id; ?>">
-	<div class="dragarea" style="display:none;">
+	<div class="dragarea">
 		<div class="dragarea-content">
 			<p>
 				<span class="upload-icon <?php echo $uploadicon;?>" aria-hidden="true"></span>
 			</p>
 			<p class="lead">
 				<?php echo JText::_('JTF_DRAG_FILE_HERE'); ?>
+				<noscript class="invalid"><br /><?php echo JText::_('JTF_DRAG_FILE_HERE_NOSCRIPT'); ?></noscript>
 			</p>
 			<p>
 				<button type="button" class="<?php echo $buttonclass; ?> select-file-button">
@@ -129,23 +93,21 @@ CSS
 				<?php echo JText::sprintf('JGLOBAL_MAXIMUM_UPLOAD_SIZE_LIMIT', $maxSize); ?>
 			</p>
 		</div>
-		<div class="upload-list"></div>
-	</div>
-	<div class="legacy-uploader">
-		<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $uploadmaxsize; ?>">
-		<input type="file"
-			   name="<?php echo $name; ?>"
-			   id="<?php echo $id; ?>"
-			   class="validate-file<?php echo !empty($class) ? ' ' . $class : ''; ?>"
-			   maxlength="<?php echo $uploadmaxsize; ?>"
-			<?php echo !empty($size) ? ' size="' . $size . '"' : ''; ?>
-			<?php echo !empty($accept) ? ' accept="' . $accept . '"' : ''; ?>
-			<?php echo !empty($multiple) ? ' multiple' : ''; ?>
-			<?php echo $disabled ? ' disabled' : ''; ?>
-			<?php echo $autofocus ? ' autofocus' : ''; ?>
-			<?php echo !empty($onchange) ? ' onchange="' . $onchange . '"' : ''; ?>
-			<?php echo $required ? ' required aria-required="true"' : ''; ?> /><br>
-		<?php echo JText::sprintf('JGLOBAL_MAXIMUM_UPLOAD_SIZE_LIMIT', $maxSize); ?>
+		<div class="legacy-uploader">
+			<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $uploadmaxsize; ?>">
+			<input type="file"
+				   name="<?php echo $name; ?>"
+				   id="<?php echo $id; ?>"
+				   class="validate-file<?php echo !empty($class) ? ' ' . $class : ''; ?>"
+				   maxlength="<?php echo $uploadmaxsize; ?>"
+				<?php echo !empty($size) ? ' size="' . $size . '"' : ''; ?>
+				<?php echo !empty($accept) ? ' accept="' . $accept . '"' : ''; ?>
+				<?php echo !empty($multiple) ? ' multiple' : ''; ?>
+				<?php echo $disabled ? ' disabled' : ''; ?>
+				<?php echo $autofocus ? ' autofocus' : ''; ?>
+				<?php echo !empty($onchange) ? ' onchange="' . $onchange . '"' : ''; ?>
+				<?php echo $required ? ' required aria-required="true"' : ''; ?> />
+		</div>
 		<div class="upload-list"></div>
 	</div>
 </div>
