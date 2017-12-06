@@ -1118,8 +1118,13 @@ class PlgContentJtf extends JPlugin
 		$value       = array();
 		$sumSize     = 0;
 		$index       = (int) $this->uParams['index'];
-		$jinput      = $this->app->input;
-		$submitFiles = $jinput->files->get($this->uParams['theme'] . $index);
+		$jinput      = new \Joomla\Input\Files;
+		$submitFiles = $jinput->get($this->uParams['theme'] . $index);
+
+		if (Joomla\Utilities\ArrayHelper::isAssociative($submitFiles[$fieldName]))
+		{
+			$submitFiles = array($submitFiles[$fieldName]);
+		}
 
 		$issetFiles = false;
 
@@ -1127,11 +1132,6 @@ class PlgContentJtf extends JPlugin
 		{
 			$issetFiles = true;
 			$files      = $submitFiles[$fieldName];
-		}
-		elseif (!empty($submitFiles[$fieldName]['name']))
-		{
-			$issetFiles = true;
-			$files      = array($submitFiles[$fieldName]);
 		}
 
 		if ($issetFiles)
