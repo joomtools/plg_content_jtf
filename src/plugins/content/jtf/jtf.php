@@ -10,6 +10,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 //use Joomla\CMS\Application\CMSApplication;
 //use Joomla\Registry\Registry;
 //use Joomla\CMS\Layout\FileLayout;
@@ -95,14 +97,6 @@ class PlgContentJtf extends JPlugin
 	protected $uParams = array();
 
 	/**
-	 * Mail
-	 *
-	 * @var     array
-	 * @since   1.0
-	 */
-	protected $mail = array();
-
-	/**
 	 * Debug
 	 *
 	 * @var     boolean
@@ -175,7 +169,7 @@ class PlgContentJtf extends JPlugin
 		$this->debug = (boolean) $this->params->get('debug', 0);
 		$cIndex      = 0;
 //		$template    = $this->app->getTemplate();
-		$lang        = JFactory::getLanguage();
+		$lang        = Factory::getLanguage();
 		$langTag     = $lang->getTag();
 
 		// Get all matches or return
@@ -302,22 +296,6 @@ class PlgContentJtf extends JPlugin
 				{
 					$submitValues = $this->getTranslatedSubmittedFormValues();
 
-					switch (true)
-					{
-						case isset($submitValues['subject']):
-							$this->mail['subject'] = 'subject';
-							break;
-
-						case !isset($submitValues['subject'])
-							&& isset($this->uParams['subject']):
-							$submitValues['subject'] = $this->mail['subject'] = $this->uParams['subject'];
-							break;
-
-						default:
-							$submitValues['subject'] = $this->mail['subject'] = '';
-							break;
-					}
-
 					$this->getForm()->bind($submitValues);
 
 					if ($submitValues['jtf_important_notices'] == '')
@@ -328,7 +306,6 @@ class PlgContentJtf extends JPlugin
 					{
 						$valid = false;
 					}
-
 				}
 
 				$html .= $this->getTmpl('form');
@@ -350,9 +327,7 @@ class PlgContentJtf extends JPlugin
 							$this->app->redirect(JRoute::_('index.php', false));
 						}
 					}
-
 				}
-
 			}
 
 			$pos = strpos($article->text, $replacement);
@@ -382,8 +357,23 @@ class PlgContentJtf extends JPlugin
 		// Set Joomla main version
 		$this->uParams['jversion'] = $joomlaMainVersion;
 
-		// Set default recipient
-		$this->uParams['mailto'] = JFactory::getConfig()->get('mailfrom');
+		// Clear recipient
+		$this->uParams['mailto'] = null;
+
+		// Clear cc
+		$this->uParams['cc'] = null;
+
+		// Clear bcc
+		$this->uParams['bcc'] = null;
+
+		// Clear visitor_name
+		$this->uParams['visitor_name'] = null;
+
+		// Clear visitor_email
+		$this->uParams['visitor_email'] = null;
+
+		// Clear subject
+		$this->uParams['subject'] = null;
 
 		// Set default theme
 		$this->uParams['theme'] = 'default';
@@ -397,8 +387,7 @@ class PlgContentJtf extends JPlugin
 	 *
 	 * @param   array $vars Params pairs from Plugin call
 	 *
-	 * @return   array
-	 * @since    1.0
+	 * @since    3.8
 	 */
 	protected function setUserParams($vars)
 	{
@@ -411,24 +400,10 @@ class PlgContentJtf extends JPlugin
 				list($key, $value) = explode('=', trim($var));
 				$uParams[trim($key)] = trim($value);
 			}
-
-		}
-
-		if (!empty($uParams['mailto']))
-		{
-			$uParams['mailto'] = str_replace('#', '@', $uParams['mailto']);
-		}
-
-		if (!empty($uParams['sender']))
-		{
-			$this->mail['sender'] = explode(' ', $uParams['sender']);
-			unset($uParams['sender']);
 		}
 
 		// Merge user params width default params
 		$this->uParams = array_merge($this->uParams, $uParams);
-
-		return $uParams;
 	}
 
 	/**
@@ -600,7 +575,7 @@ class PlgContentJtf extends JPlugin
 
 		$frwkClasses = $this->getFrameworkClass($form);
 		$classes     = $frwkClasses->getClasses();
-		$formClass = $form->getAttribute('class', array());
+		$formClass = $form->getAttribute('class', '');
 		$formClass = array_flip(explode(' ', $formClass));
 
 		if (!empty($classes['form']))
@@ -1055,11 +1030,6 @@ class PlgContentJtf extends JPlugin
 			if ($type == 'email')
 			{
 				$form->setFieldAttribute($fieldName, 'tld', 'tld');
-
-				if ($required || !empty($value))
-				{
-					$this->mail['sender_email'] = 'email';
-				}
 			}
 
 			if ($validateField)
@@ -1326,59 +1296,50 @@ class PlgContentJtf extends JPlugin
 
 	protected function sendMail()
 	{
-		$jConfig = JFactory::getConfig();
-		$data    = $this->getForm()->getData()->toArray();
+		$jConfig = Factory::getConfig();
+		$mailer = Factory::getMailer();
 
-		if ($this->mail)
+		$subject = $this->getValue('subject');
+		$subject = !empty($subject) ? $subject : JText::sprintf('JTF_EMAIL_SUBJECT', $jConfig->get('sitename'));
+
+		$emailCredentials = $this->getEmailCredentials();
+
+		$recipient     = $emailCredentials['mailto'];
+		$cc            = $emailCredentials['cc'];
+		$bcc           = $emailCredentials['bcc'];
+		$replayToName  = $emailCredentials['visitor_name'];
+		$replayToEmail = $emailCredentials['visitor_email'];
+
+		if (empty($replayToEmail))
 		{
-			foreach ($this->mail as $key => $field)
+			if (!empty(Factory::getConfig()->get('replyto')))
 			{
-				if (is_array($field))
-				{
-					foreach ($field as $value)
-					{
-						$_field[] = isset($data[$value]) ? $data[$value] : $value;
-					}
-
-					$field = implode(' ', $_field);
-
-					unset($_field);
-				}
-				else
-				{
-					$field = isset($data[$field]) ? $data[$field] : $field;
-				}
-
-				$mail[$key] = $field;
+				$replayToEmail = Factory::getConfig()->get('replyto');
 			}
+			else
+			{
+				$replayToEmail = Factory::getConfig()->get('mailfrom');
+			}
+
+			$replayToName = $jConfig->get('fromname');
 		}
 
-		$replayToEmail = !empty($mail['sender_email'])
-			? $mail['sender_email']
-			: '';
-
-		$replayToName = !empty($mail['sender'])
-			? $mail['sender']
-			: '';
-
-		$recipient = $this->uParams['mailto'];
-
-		$subject = (!empty($mail['subject']))
-			? $mail['subject']
-			: JText::sprintf('JTF_EMAIL_SUBJECT', $jConfig->get('sitename'));
-
-		$mailer = JFactory::getMailer();
 		$hBody  = $this->getTmpl('message.html');
 		$pBody  = $this->getTmpl('message.plain');
 
-		$mailer->setSender(array($jConfig->get('mailfrom'), $jConfig->get('fromname')));
+		$mailer->addReplyTo($replayToEmail, $replayToName);
+		$mailer->addRecipient($recipient);
 
-		if (!empty($replayToEmail))
+		if (!empty($cc))
 		{
-			$mailer->addReplyTo($replayToEmail, $replayToName);
+			$mailer->addCc($cc);
 		}
 
-		$mailer->addRecipient($recipient);
+		if (!empty($bcc))
+		{
+			$mailer->addBcc($bcc);
+		}
+
 		$mailer->setSubject($subject);
 		$mailer->IsHTML(true);
 		$mailer->setBody($hBody);
@@ -1403,7 +1364,7 @@ class PlgContentJtf extends JPlugin
 		$hField = new SimpleXMLElement('<field name="jtf_important_notices" type="text" gridgroup="jtfhp" notmail="1"></field>');
 
 		$form->setField($hField, null, true, 'submit');
-		JFactory::getDocument()->addStyleDeclaration('.hidden{display:none;visibility:hidden;}.jtfhp{position:absolute;top:-999em;left:-999em;height:0;width:0;}');
+		Factory::getDocument()->addStyleDeclaration('.hidden{display:none;visibility:hidden;}.jtfhp{position:absolute;top:-999em;left:-999em;height:0;width:0;}');
 
 		// Set captcha to submit fieldset
 		if (!empty($this->uParams['captcha']))
@@ -1479,5 +1440,97 @@ class PlgContentJtf extends JPlugin
 			$cField = new SimpleXMLElement('<field name="submit" type="submit" label="JTF_SUBMIT_BUTTON" notmail="1"></field>');
 			$form->setField($cField, null, true, 'submit');
 		}
+	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return mixed
+	 *
+	 * @since 3.8
+	 */
+	private function getValue($name)
+	{
+		$data = $this->getForm()->getData()->toArray();
+		$value = null;
+
+		if (!empty($this->uParams[$name]))
+		{
+			$value = $this->uParams[$name];
+
+			if (!empty($data[$value]))
+			{
+				$value = $data[$value];
+			}
+		}
+		else if (!empty($data[$name]))
+		{
+			$value = $data[$name];
+		}
+
+		return $value;
+	}
+
+	private function getEmailCredentials()
+	{
+		$recipients = array();
+
+		foreach (array('mailto', 'cc', 'bcc', 'visitor_name', 'visitor_email') as $name)
+		{
+			$recipients[$name] = null;
+
+			if (!empty($this->uParams[$name]))
+			{
+				$items = explode(';', $this->uParams[$name]);
+				$i     = 0;
+
+				if ($name == 'visitor_email')
+				{
+					$items = array($items[0]);
+				}
+
+				foreach ($items as $item)
+				{
+					$item = str_replace('#', '@', trim($item));
+
+					if (strpos($item, '@') !== false)
+					{
+						$recipient[$item] = $i++;
+					}
+					else
+					{
+						$value = $this->getValue($item);
+						$value = str_replace('#', '@', trim($value));
+
+						$recipient[$value] = $i++;
+					}
+				}
+
+				$recipients[$name] = array_flip($recipient);
+				unset($recipient);
+
+				if (in_array($name, array('visitor_name', 'visitor_email')))
+				{
+					$recipients[$name]  = trim(implode(' ', $recipients[$name]));
+				}
+
+			}
+			else
+			{
+				if ($name == 'mailto')
+				{
+					if (!empty(Factory::getConfig()->get('replyto')))
+					{
+						$recipients['mailto'][] = Factory::getConfig()->get('replyto');
+					}
+					else
+					{
+						$recipients['mailto'][] = Factory::getConfig()->get('mailfrom');
+					}
+				}
+			}
+		}
+
+		return $recipients;
 	}
 }
