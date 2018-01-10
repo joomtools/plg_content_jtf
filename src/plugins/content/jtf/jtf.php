@@ -968,7 +968,7 @@ class PlgContentJtf extends JPlugin
 			$_showon_value[1] = JText::_($_showon_value[1]);
 			$showon_value     = $form->getValue($_showon_value[0]);
 
-			if (!in_array($_showon_value[1], $showon_value))
+			if (!in_array($showon_value, $_showon_value))
 			{
 				$showField = false;
 				$valid     = true;
