@@ -239,7 +239,7 @@ class PlgContentJtf extends JPlugin
 			// Set form counter as index
 			$this->uParams['index'] = (int) $cIndex;
 
-			$formTheme = $this->uParams['theme'] . $cIndex;
+			$formTheme = $this->uParams['theme'] . (int) $cIndex;
 
 			$formXmlPath = $this->getFieldsFile();
 
@@ -265,11 +265,6 @@ class PlgContentJtf extends JPlugin
 
 				// Define framework as layout suffix
 //				$layoutSuffix = array('');
-
-				if (!empty($this->uParams['framework']))
-				{
-					$this->uParams['framework'] = array($this->uParams['framework']);
-				}
 
 				// Set Framework as Layout->Suffix
 //				$this->form[$formTheme]->framework = $layoutSuffix;
@@ -379,7 +374,7 @@ class PlgContentJtf extends JPlugin
 		$this->uParams['theme'] = 'default';
 
 		// Set default framework value
-		$this->uParams['framework'] = $this->params->get('framework', 0);
+		$this->uParams['framework'] = array($this->params->get('framework'));
 	}
 
 	/**
@@ -398,7 +393,17 @@ class PlgContentJtf extends JPlugin
 			foreach ($vars as $var)
 			{
 				list($key, $value) = explode('=', trim($var));
-				$uParams[trim($key)] = trim($value);
+
+				$key = strtolower($key);
+
+				if ($key == 'framework')
+				{
+					$uParams[trim($key)] = array(trim($value));
+				}
+				else
+				{
+					$uParams[trim($key)] = trim($value);
+				}
 			}
 		}
 
