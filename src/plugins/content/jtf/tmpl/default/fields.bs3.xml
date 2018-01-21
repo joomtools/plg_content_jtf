@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="stacked">
-	<fieldset name="test">
+<form orientation="horizontal"
+      gridlabel="col-sm-3"
+      gridfield="col-sm-9"
+>
+	<fieldset name="block1">
 		<field name="name"
 		       type="text"
-		       gridgroup="test"
 		       icon="glyphicon glyphicon-user"
-		       size="30"
+		       maxlength="60"
 		       description="JTF_NAME_DESC"
 		       label="JTF_NAME_LABEL"
 		       filter="string"
@@ -14,7 +16,7 @@
 		<field name="email"
 		       type="email"
 		       icon="glyphicon glyphicon-envelope"
-		       size="30"
+		       maxlength="60"
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
 		       filter="string"
@@ -23,8 +25,8 @@
 		/>
 		<field name="subject"
 		       type="text"
-		       class="col-sm-12"
-		       size="60"
+		       icon="glyphicon glyphicon-pencil"
+		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
 		       filter="string"
@@ -32,21 +34,11 @@
 		/>
 		<field name="message"
 		       type="textarea"
-		       cols="50"
+		       cols="60"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
 		       label="JTF_MESSAGE_LABEL"
 		       filter="safehtml"
-		       required="true"
-		/>
-	</fieldset>
-	<fieldset>
-		<field name="vorname"
-		       type="text"
-		       icon="glyphicon glyphicon-user"
-		       size="30"
-		       description="JTF_VNAME_DESC"
-		       label="JTF_VNAME_LABEL"
 		       required="true"
 		/>
 	</fieldset>

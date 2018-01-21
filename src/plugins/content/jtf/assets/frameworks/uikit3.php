@@ -43,13 +43,14 @@ class JTFFrameworkUikit3
 
 	private $classes;
 
-	public function __construct($orientation = null)
+	public function __construct($formclass = array(), $orientation = null)
 	{
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '';
 
-		$classes['class']['form'] = array('uk-form', 'form-validate');
+		$classes['class']['form'] = $formclass;
+		array_unshift($classes['class']['form'], 'uk-form', 'form-validate');
 
 		switch ($orientation)
 		{
@@ -68,6 +69,7 @@ class JTFFrameworkUikit3
 				break;
 		}
 
+		$classes['class']['form']        = array_unique($classes['class']['form']);
 		$classes['class']['legend'][]    = 'uk-legend';
 		$classes['class']['default'][]   = 'uk-input';
 		$classes['class']['gridgroup'][] = 'uk-form-row uk-margin';
@@ -79,7 +81,10 @@ class JTFFrameworkUikit3
 		}
 
 		$classes['class']['fieldset'] = array(
-			'field'   => array('uk-fieldset'),
+			'field' => array(
+				'uk-fieldset',
+				'uk-margin-bottom'
+			),
 			'label' => array('uk-legend'),
 			'desc'  => array('uk-fieldset-desc'),
 		);

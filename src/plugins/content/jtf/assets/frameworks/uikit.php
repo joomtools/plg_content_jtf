@@ -1,11 +1,11 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package          Joomla.Plugin
+ * @subpackage       Content.Jtf
  *
- * @author       Guido De Gobbis <support@joomtools.de>
+ * @author           Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
+ * @license          GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -37,20 +37,20 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 3.0
  **/
-
 class JTFFrameworkUikit
 {
 	public static $name = 'UIKit v2';
 
 	private $classes;
 
-	public function __construct($orientation = array())
+	public function __construct($formclass = array(), $orientation = null)
 	{
 		$inline         = false;
 		$classes        = array();
-		$classes['css'] = '';
+		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
 
-		$classes['class']['form'] = array('uk-form', 'form-validate');
+		$classes['class']['form'] = $formclass;
+		array_unshift($classes['class']['form'], 'uk-form', 'form-validate');
 
 		switch ($orientation)
 		{
@@ -69,8 +69,7 @@ class JTFFrameworkUikit
 				break;
 		}
 
-		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
-
+		$classes['class']['form']        = array_unique($classes['class']['form']);
 		$classes['class']['default'][]   = 'uk-input';
 		$classes['class']['gridgroup'][] = 'uk-form-row';
 
@@ -81,7 +80,10 @@ class JTFFrameworkUikit
 		}
 
 		$classes['class']['fieldset'] = array(
-			'field'   => array('uk-fieldset'),
+			'field' => array(
+				'uk-fieldset',
+				'uk-margin-bottom'
+			),
 			'label' => array('uk-legend'),
 			'desc'  => array('uk-fieldset-desc'),
 		);
@@ -138,7 +140,7 @@ class JTFFrameworkUikit
 		if ($inline)
 		{
 			$classes['class']['checkboxes']['field'][] = 'uk-display-inline';
-			$classes['class']['radio']['field'][] = 'uk-display-inline';
+			$classes['class']['radio']['field'][]      = 'uk-display-inline';
 		}
 
 		$this->classes = $classes;

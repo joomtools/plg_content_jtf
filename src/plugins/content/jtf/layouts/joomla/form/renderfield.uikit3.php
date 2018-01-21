@@ -69,8 +69,8 @@ if (!empty($options['rel']))
 		<?php endif; ?>
 
 			<?php if (!empty($options['icon'])) : ?>
-			<div class="uk-form-icon">
-				<span class="<?php echo $options['icon']; ?>"></span>
+			<div class="uk-inline">
+				<span class="uk-form-icon" uk-icon="icon: <?php echo $options['icon']; ?>"></span>
 			<?php endif; ?>
 
 				<?php echo $input; ?>

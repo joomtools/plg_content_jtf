@@ -330,7 +330,7 @@ class PlgContentJtf extends JPlugin
 
 			$article->text = substr_replace($article->text, $html, $pos, $end);
 			$cIndex++;
-			$this->resetUserParams();
+//			$this->resetUserParams();
 		}
 	}
 
@@ -560,7 +560,19 @@ class PlgContentJtf extends JPlugin
 
 	protected function getFrameworkClass($form)
 	{
-		$formclass = explode(' ', $form->getAttribute('class', ''));
+		$formclass   = array();
+		$orientation = null;
+
+		if (!empty($form->getAttribute('class', '')))
+		{
+			$formclass = explode(' ', $form->getAttribute('class', ''));
+		}
+
+		if (!empty($form->getAttribute('orientation', '')))
+		{
+			$orientation = $form->getAttribute('orientation', '');
+		}
+
 		$framework = 'joomla';
 
 		if (!empty($form->framework[0]))
@@ -569,7 +581,7 @@ class PlgContentJtf extends JPlugin
 		}
 
 		$frwkClassName = 'JTFFramework' . ucfirst($framework);
-		$frwkClasses   = new $frwkClassName($formclass);
+		$frwkClasses   = new $frwkClassName($formclass, $orientation);
 
 		return $frwkClasses;
 	}
@@ -580,13 +592,10 @@ class PlgContentJtf extends JPlugin
 
 		$frwkClasses = $this->getFrameworkClass($form);
 		$classes     = $frwkClasses->getClasses();
-		$formClass = $form->getAttribute('class', '');
-		$formClass = array_flip(explode(' ', $formClass));
 
 		if (!empty($classes['form']))
 		{
-			$formClass = array_merge(array_flip($classes['form']), $formClass);
-			$form->setAttribute('class', implode(' ', array_keys($formClass)));
+			$form->setAttribute('class', implode(' ', $classes['form']));
 		}
 
 		if (!empty($form->getAttribute('gridlabel')))
@@ -616,12 +625,12 @@ class PlgContentJtf extends JPlugin
 					? array_flip($classes['fieldset']['field'])
 					: '';
 
-				$fieldsetClasses['label'] = !empty($classes['fieldset']['field'])
-					? array_flip($classes['fieldset']['field'])
+				$fieldsetClasses['label'] = !empty($classes['fieldset']['label'])
+					? array_flip($classes['fieldset']['label'])
 					: '';
 
-				$fieldsetClasses['desc'] = !empty($classes['fieldset']['field'])
-					? array_flip($classes['fieldset']['field'])
+				$fieldsetClasses['desc'] = !empty($classes['fieldset']['desc'])
+					? array_flip($classes['fieldset']['desc'])
 					: '';
 
 				if ($subform !== null)
@@ -721,7 +730,7 @@ class PlgContentJtf extends JPlugin
 			$this->setEnctype = true;
 		}
 
-		if (in_array($type, array('text', 'plz', 'tel')))
+		if (in_array($type, array('text', 'email', 'textarea', 'plz', 'tel')))
 		{
 			if (!empty($frwkClasses['default']))
 			{

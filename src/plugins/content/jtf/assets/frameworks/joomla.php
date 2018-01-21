@@ -1,11 +1,11 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package          Joomla.Plugin
+ * @subpackage       Content.Jtf
  *
- * @author       Guido De Gobbis <support@joomtools.de>
+ * @author           Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
+ * @license          GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -37,36 +37,39 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 3.0
  **/
-
 class JTFFrameworkJoomla
 {
 	public static $name = 'Joomla Core (Bootstrap v2)';
 
 	private $classes;
 
-	public function __construct($orientation = array())
+	public function __construct($formclass = array(), $orientation = null)
 	{
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '';
 
-		$classes['class']['form'] = array('form-validate');
+		$classes['class']['form'] = $formclass;
+		array_unshift($classes['class']['form'], 'form-validate');
 
 		switch ($orientation)
 		{
 			case 'inline':
-				$inline = true;
+				$inline                     = true;
 				$classes['class']['form'][] = 'form-inline';
 				break;
 
 			case 'horizontal':
 				$classes['class']['form'][] = 'form-horizontal';
+//				$classes['class']['gridlabel'][] = 'span3';
+//				$classes['class']['gridfield'][] = 'span9';
 
 			case 'stacked':
 			default:
 				break;
 		}
 
+		$classes['class']['form']        = array_unique($classes['class']['form']);
 		$classes['class']['default'][]   = 'input';
 		$classes['class']['gridgroup'][] = 'control-group';
 
@@ -75,12 +78,6 @@ class JTFFrameworkJoomla
 			$classes['class']['gridlabel'][] = 'control-label';
 			$classes['class']['gridfield'][] = 'controls';
 		}
-
-		$classes['class']['fieldset'] = array(
-			'field'   => array('uk-fieldset'),
-			'label' => array('uk-legend'),
-			'desc'  => array('uk-fieldset-desc'),
-		);
 
 		$classes['class']['note'] = array(
 			'buttons' => array(
@@ -129,7 +126,7 @@ class JTFFrameworkJoomla
 		if ($inline)
 		{
 			$classes['class']['checkboxes']['field'][] = 'inline';
-			$classes['class']['radio']['field'][] = 'inline';
+			$classes['class']['radio']['field'][]      = 'inline';
 		}
 
 		$this->classes = $classes;

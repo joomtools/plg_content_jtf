@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form class="form-horizontal"
+<form orientation="horizontal"
       gridlabel="col-sm-3"
       gridfield="col-sm-9"
 >
-	<fieldset>
+	<fieldset name="default">
 		<field name="anrede"
 		       type="list"
 		       icon="glyphicon glyphicon-th-list"

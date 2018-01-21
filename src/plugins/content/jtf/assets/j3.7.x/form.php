@@ -2363,7 +2363,7 @@ class JForm
 			if (!empty($value))
 			{
 				// Ensure that the attribute exists
-				if (empty($attributes))
+				if (empty($attributes[$name]))
 				{
 					$this->xml->addAttribute($name, trim($value));
 				}

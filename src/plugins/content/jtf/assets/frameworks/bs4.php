@@ -43,13 +43,14 @@ class JTFFrameworkBs4
 
 	private $classes;
 
-	public function __construct($orientation = array())
+	public function __construct($formclass = array(), $orientation = null)
 	{
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '';
 
-		$classes['class']['form'] = array('form-validate');
+		$classes['class']['form'] = $formclass;
+		array_unshift($classes['class']['form'], 'form-validate');
 
 		switch ($orientation)
 		{
@@ -68,8 +69,7 @@ class JTFFrameworkBs4
 				break;
 		}
 
-		$classes['css'] = '';
-
+		$classes['class']['form']        = array_unique($classes['class']['form']);
 		$classes['class']['default'][]   = 'input';
 		$classes['class']['gridgroup'][] = 'form-group';
 		$classes['class']['gridfield'][] = 'form-control';

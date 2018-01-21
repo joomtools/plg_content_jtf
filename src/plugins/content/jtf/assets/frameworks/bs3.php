@@ -1,11 +1,11 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package          Joomla.Plugin
+ * @subpackage       Content.Jtf
  *
- * @author       Guido De Gobbis <support@joomtools.de>
+ * @author           Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
+ * @license          GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -37,25 +37,25 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 3.0
  **/
-
 class JTFFrameworkBs3
 {
 	public static $name = 'Bootsrap v3';
 
 	private $classes;
 
-	public function __construct($orientation = array())
+	public function __construct($formclass = array(), $orientation = null)
 	{
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '';
 
-		$classes['class']['form'] = array('form-validate');
+		$classes['class']['form'] = $formclass;
+		array_unshift($classes['class']['form'], 'form-validate');
 
 		switch ($orientation)
 		{
 			case 'inline':
-				$inline = true;
+				$inline                     = true;
 				$classes['class']['form'][] = 'form-inline';
 				break;
 
@@ -67,12 +67,10 @@ class JTFFrameworkBs3
 				break;
 		}
 
-		$classes['css'] = '';
-
-		$classes['class']['default'][]   = 'input';
+		$classes['class']['form']        = array_unique($classes['class']['form']);
+		$classes['class']['default'][]   = 'form-control';
 		$classes['class']['gridgroup'][] = 'form-group';
 		$classes['class']['gridlabel'][] = 'control-label';
-		$classes['class']['gridfield'][] = 'form-control';
 
 		$classes['class']['calendar'] = array(
 			'buttons' => array(
@@ -114,7 +112,7 @@ class JTFFrameworkBs3
 		if ($inline)
 		{
 			$classes['class']['checkboxes']['field'][] = 'checkbox-inline';
-			$classes['class']['radio']['field'][] = 'radio-inline';
+			$classes['class']['radio']['field'][]      = 'radio-inline';
 		}
 
 		$this->classes = $classes;
