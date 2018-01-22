@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-<form class="form-horizontal"
-  gridlabel="span3"
-  gridfield="span9"
+<form orientation="horizontal"
+      gridlabel="span3"
+      gridfield="span9"
 >
--->
-<form class="formtest">
-
-	<fieldset class="form-horizontal"
-	          gridlabel="span3"
-	          gridfield="span9"
+	<fieldset name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
 	          label="JTF_FIELDSET_DEFAULT_LABEL"
 	>
-
 		<field name="list"
 		       type="list"
 		       icon="icon-list"
-		       gridlabel="span3 test"
-		       gridfield="span8"
 		       description="JTF_LIST_DESC"
 		       label="JTF_LIST_LABEL"
 		       default=""
@@ -129,7 +120,7 @@
 
 		<field name="subject"
 		       type="text"
-		       icon="icon-info"
+		       icon="icon-pencil"
 		       maxlength="30"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
@@ -143,13 +134,12 @@
 		       label="JTF_MESSAGE_LABEL"
 		       required="true"
 		/>
-
 	</fieldset>
 
-	<fieldset description="JTF_FIELDSET_SPECIAL_DESC"
+	<fieldset name="block2"
+	          description="JTF_FIELDSET_SPECIAL_DESC"
 	          label="JTF_FIELDSET_SPECIAL_LABEL"
 	>
-
 		<field name="note"
 		       type="note"
 		       class="alert alert-info"
@@ -230,6 +220,5 @@
 		       multiple="multiple"
 		       uploadmaxsize="1"
 		/>
-
 	</fieldset>
 </form>

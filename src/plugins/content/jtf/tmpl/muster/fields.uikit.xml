@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<form class="uk-form-horizontal">
-<!--
-<form>
--->
-	<fieldset gridlabel="span3"
-	          gridfield="span9"
+<form orientation="horizontal">
+	<fieldset name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
 	          label="JTF_FIELDSET_DEFAULT_LABEL"
 	>
-
-L		<field name="list"
+		L
+		<field name="list"
 		       type="list"
 		       icon="uk-icon-list"
+		       class="uk-width-1-1"
 		       description="JTF_LIST_DESC"
 		       label="JTF_LIST_LABEL"
 		       default=""
 		       validate="options"
 		       required="true"
-	>
+		>
 			<option value="">JTF_OPTION_NONE</option>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -85,7 +82,8 @@ L		<field name="list"
 		<field name="showon_text"
 		       type="text"
 		       icon="uk-icon-pencil"
-		       maxlength="30"
+		       class="uk-width-1-1"
+		       maxlength="60"
 		       description="JTF_SHW_TXT_DESC"
 		       label="JTF_SHW_TXT_LABEL"
 		       required="true"
@@ -94,8 +92,9 @@ L		<field name="list"
 
 		<field name="text"
 		       type="text"
+		       class="uk-width-1-1"
 		       icon="uk-icon-pencil"
-		       maxlength="30"
+		       maxlength="60"
 		       description="JTF_TXT_DESC"
 		       label="JTF_TXT_LABEL"
 		       required="true"
@@ -104,7 +103,8 @@ L		<field name="list"
 		<field name="email"
 		       type="email"
 		       icon="uk-icon-envelope"
-		       maxlength="30"
+		       class="uk-width-1-1"
+		       maxlength="60"
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
 		       validate="email"
@@ -114,7 +114,8 @@ L		<field name="list"
 		<field name="tel"
 		       type="tel"
 		       icon="uk-icon-phone"
-		       maxlength="30"
+		       class="uk-width-1-1"
+		       maxlength="60"
 		       description="JTF_TEL_DESC"
 		       label="JTF_TEL_LABEL"
 		       validate="tel"
@@ -123,7 +124,8 @@ L		<field name="list"
 
 	</fieldset>
 
-	<fieldset description="JTF_FIELDSET_SPECIAL_DESC"
+	<fieldset name="block2"
+	          description="JTF_FIELDSET_SPECIAL_DESC"
 	          label="JTF_FIELDSET_SPECIAL_LABEL"
 	>
 
@@ -139,7 +141,8 @@ L		<field name="list"
 		<field name="plz"
 		       type="plz"
 		       icon="uk-icon-map-marker"
-		       maxlength="30"
+		       size="5"
+		       maxlength="5"
 		       description="JTF_PLZ_DESC"
 		       label="JTF_PLZ_LABEL"
 		       validate="plz"
@@ -148,15 +151,17 @@ L		<field name="list"
 
 		<field name="subject"
 		       type="text"
-		       icon="uk-icon-info"
-		       maxlength="30"
+		       icon="uk-icon-pencil"
+		       class="uk-width-1-1"
+		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
 		/>
 
 		<field name="textarea"
 		       type="textarea"
-		       cols="25"
+		       class="uk-width-1-1"
+		       cols="60"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
 		       label="JTF_MESSAGE_LABEL"
@@ -209,6 +214,7 @@ L		<field name="list"
 
 		<field name="category_com_content"
 		       type="category"
+		       class="uk-width-1-1"
 		       extension="com_content"
 		       description="JTF_CATEGORY_DESC"
 		       label="JTF_CATEGORY_LABEL"

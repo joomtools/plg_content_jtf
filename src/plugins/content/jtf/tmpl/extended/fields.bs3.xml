@@ -3,7 +3,7 @@
       gridlabel="col-sm-3"
       gridfield="col-sm-9"
 >
-	<fieldset name="default">
+	<fieldset name="block1">
 		<field name="anrede"
 		       type="list"
 		       icon="glyphicon glyphicon-th-list"
@@ -20,7 +20,7 @@
 		<field name="vorname"
 		       type="text"
 		       icon="glyphicon glyphicon-user"
-		       size="30"
+		       maxlength="60"
 		       description="JTF_VNAME_DESC"
 		       label="JTF_VNAME_LABEL"
 		       required="true"
@@ -28,7 +28,7 @@
 		<field name="nachname"
 		       type="text"
 		       icon="glyphicon glyphicon-user"
-		       size="30"
+		       maxlength="60"
 		       description="JTF_NAME_DESC"
 		       label="JTF_NAME_LABEL"
 		       required="true"
@@ -36,7 +36,7 @@
 		<field name="email"
 		       type="email"
 		       icon="glyphicon glyphicon-envelope"
-		       size="30"
+		       maxlength="60"
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
 		       validate="email"
@@ -44,25 +44,42 @@
 		/>
 		<field name="tel"
 		       type="tel"
-		       size="30"
+		       icon="glyphicon glyphicon-earphone"
+		       maxlength="60"
 		       description="JTF_TEL_DESC"
 		       label="JTF_TEL_LABEL"
 		       validate="tel"
 		/>
 		<field name="subject"
 		       type="text"
-		       size="30"
+		       icon="glyphicon glyphicon-pencil"
+		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
 		       required="true"
 		/>
 		<field name="message"
 		       type="textarea"
-		       cols="25"
+		       cols="60"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
 		       label="JTF_MESSAGE_LABEL"
 		       required="true"
 		/>
+	</fieldset>
+	<fieldset name="consent_form"
+	          label="JTF_CONSENT_FORM"
+	>
+		<field name="privacy_policy"
+		       type="checkboxes"
+		       description=""
+		       label="JTF_PRIVACY_POLICY_LABEL"
+		       default=""
+		       validate="options"
+		       filter="string"
+		       required="true"
+		>
+			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
+		</field>
 	</fieldset>
 </form>

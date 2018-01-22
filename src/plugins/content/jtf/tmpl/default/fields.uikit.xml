@@ -4,6 +4,7 @@
 		<field name="name"
 		       type="text"
 		       icon="uk-icon-user"
+		       class="uk-width-1-1"
 		       maxlength="60"
 		       description="JTF_NAME_DESC"
 		       label="JTF_NAME_LABEL"
@@ -13,6 +14,7 @@
 		<field name="email"
 		       type="email"
 		       icon="uk-icon-envelope-o"
+		       class="uk-width-1-1"
 		       maxlength="60"
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
@@ -23,6 +25,7 @@
 		<field name="subject"
 		       type="text"
 		       icon="uk-icon-pencil"
+		       class="uk-width-1-1"
 		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
@@ -31,6 +34,7 @@
 		/>
 		<field name="message"
 		       type="textarea"
+		       class="uk-width-1-1"
 		       cols="60"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
@@ -38,5 +42,20 @@
 		       filter="safehtml"
 		       required="true"
 		/>
+	</fieldset>
+	<fieldset name="consent_form"
+	          label="JTF_CONSENT_FORM"
+	>
+		<field name="privacy_policy"
+		       type="checkboxes"
+		       description=""
+		       label="JTF_PRIVACY_POLICY_LABEL"
+		       default=""
+		       validate="options"
+		       filter="string"
+		       required="true"
+		>
+			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
+		</field>
 	</fieldset>
 </form>

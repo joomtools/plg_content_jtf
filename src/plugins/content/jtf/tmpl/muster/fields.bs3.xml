@@ -1,87 +1,224 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form class="form-horizontal"
+<form orientation="horizontal"
       gridlabel="col-sm-3"
       gridfield="col-sm-9"
 >
-	<fieldset>
-		<field name="anrede"
+	<fieldset name="block1"
+	          description="JTF_FIELDSET_DEFAULT_DESC"
+	          label="JTF_FIELDSET_DEFAULT_LABEL"
+	>
+		<field name="list"
 		       type="list"
-		       icon="glyphicon glyphicon-list"
-		       description="JTF_ANREDE_DESC"
-		       label="JTF_ANREDE_LABEL"
+		       icon="glyphicon glyphicon-th-list"
+		       description="JTF_LIST_DESC"
+		       label="JTF_LIST_LABEL"
 		       default=""
 		       validate="options"
 		       required="true"
-		       optionclass=""
-		       optionlabel="inline"
 		>
-			<option labelclass="test" value="">JTF_ANREDE_OPTION_NONE</option>
-			<option value="JTF_ANREDE_OPTION_HERR">JTF_ANREDE_OPTION_HERR</option>
-			<option value="JTF_ANREDE_OPTION_FRAU">JTF_ANREDE_OPTION_FRAU</option>
+			<option value="">JTF_OPTION_NONE</option>
+			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
-		<field name="active_vn"
-		       type="radio"
-		       icon="glyphicon glyphicon-list"
-		       description="JTF_VNAME_DESC"
-		       label="JTF_VNAME_LABEL"
-		       default="0"
+
+		<field name="checkboxes"
+		       type="checkboxes"
+		       description="JTF_CHK_DESC"
+		       label="JTF_CHK_LABEL"
 		       validate="options"
-		       optionlabel="radio-inline"
+		>
+			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
+			<option value="JTF_OPTION3">JTF_OPTION3</option>
+		</field>
+
+		<field name="checkbox_inline"
+		       type="checkboxes"
+		       description="JTF_CHK_INLINE_DESC"
+		       label="JTF_CHK_INLINE_LABEL"
+		       validate="options"
+		       optionlabelclass="inline"
+		>
+			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
+			<option value="JTF_OPTION3">JTF_OPTION3</option>
+		</field>
+
+		<field name="radiobox"
+		       type="radio"
+		       description="JTF_RADIO_DESC"
+		       label="JTF_RADIO_LABEL"
+		       default="JTF_OPTION1"
+		       validate="options"
+		>
+			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
+		</field>
+
+		<field name="radiobox_inline"
+		       type="radio"
+		       description="JTF_RADIO_INLINE_DESC"
+		       label="JTF_RADIO_INLINE_LABEL"
+		       default="JTF_OPTION2"
+		       validate="options"
+		       optionlabelclass="inline"
+		>
+			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
+		</field>
+
+		<field name="showon_switch"
+		       type="radio"
+		       description="JTF_SHW_SWITCH_DESC"
+		       label="JTF_SHW_SWITCH_LABEL"
+		       default="JNO"
+		       validate="options"
 		       notmail="1"
 		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
+			<option value="JYES">JON</option>
+			<option value="JNO">JOFF</option>
 		</field>
-		<field name="vorname"
+
+		<field name="showon_text"
 		       type="text"
-		       icon="glyphicon glyphicon-user"
-		       maxlength="30"
-		       description="JTF_VNAME_DESC"
-		       label="JTF_VNAME_LABEL"
+		       icon="glyphicon glyphicon-pencil"
+		       maxlength="60"
+		       description="JTF_SHW_TXT_DESC"
+		       label="JTF_SHW_TXT_LABEL"
 		       required="true"
-		       showon="active_vn:1"
+		       showon="showon_switch:JYES"
 		/>
-		<field name="nachname"
+
+		<field name="text"
 		       type="text"
-		       icon="glyphicon glyphicon-user"
-		       maxlength="30"
-		       description="JTF_NAME_DESC"
-		       label="JTF_NAME_LABEL"
+		       icon="glyphicon glyphicon-pencil"
+		       maxlength="60"
+		       description="JTF_TXT_DESC"
+		       label="JTF_TXT_LABEL"
 		       required="true"
 		/>
+
 		<field name="email"
 		       type="email"
 		       icon="glyphicon glyphicon-envelope"
-		       maxlength="30"
+		       maxlength="60"
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
 		       validate="email"
 		       required="true"
 		/>
+
 		<field name="tel"
 		       type="tel"
-		       icon="glyphicon glyphicon-headphones"
-		       maxlength="30"
+		       icon="glyphicon glyphicon-earphone"
+		       maxlength="60"
 		       description="JTF_TEL_DESC"
 		       label="JTF_TEL_LABEL"
 		       validate="tel"
-		/>
-		<field name="subject"
-		       type="text"
-		       icon="glyphicon glyphicon-info-sign"
-		       maxlength="30"
-		       description="JTF_SUBJECT_DESC"
-		       label="JTF_SUBJECT_LABEL"
 		       required="true"
 		/>
-		<field name="message"
-		       type="textarea"
+
+		<field name="subject"
+		       type="text"
 		       icon="glyphicon glyphicon-pencil"
-		       cols="25"
+		       maxlength="60"
+		       description="JTF_SUBJECT_DESC"
+		       label="JTF_SUBJECT_LABEL"
+		/>
+
+		<field name="textarea"
+		       type="textarea"
+		       cols="60"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
 		       label="JTF_MESSAGE_LABEL"
 		       required="true"
+		/>
+	</fieldset>
+
+	<fieldset name="block2"
+	          description="JTF_FIELDSET_SPECIAL_DESC"
+	          label="JTF_FIELDSET_SPECIAL_LABEL"
+	>
+		<field name="note"
+		       type="note"
+		       class="alert alert-info"
+		       description="JTF_NOTE_DESC"
+		       label="JTF_NOTE_LABEL"
+		       close="true"
+		       heading="h4"
+		/>
+
+		<field name="plz"
+		       type="plz"
+		       icon="glyphicon glyphicon-map-marker"
+		       maxlength="60"
+		       description="JTF_PLZ_DESC"
+		       label="JTF_PLZ_LABEL"
+		       validate="plz"
+		       required="true"
+		/>
+
+		<field name="calendar"
+		       type="calendar"
+		       default="NOW"
+		       description="JTF_CAL_DESC"
+		       label="JTF_CAL_LABEL"
+		       format="%d.%m.%Y %H:%I:%S"
+		       showtime="false"
+		/>
+
+		<field name="color_simple"
+		       type="color"
+		       control="simple"
+		       colors="none, #049cdb, #46a546, #9d261d, #eeeeee, #ffc40d, #f89406, #c3325f, #7a43b6, #ffffff, #999999, #555555, #000000"
+		       split="4"
+		       description="JTF_COLOR_SIMPLE_DESC"
+		       label="JTF_COLOR_SIMPLE_LABEL"
+		/>
+
+		<field name="color"
+		       type="color"
+		       default="#eee"
+		       description="JTF_COLOR_DESC"
+		       label="JTF_COLOR_LABEL"
+		/>
+
+		<field name="tinymce"
+		       type="editor"
+		       description="JTF_EDITOR_TINYMCE_DESC"
+		       label="JTF_EDITOR_TINYMCE_LABEL"
+		       width="300"
+		       editor="tinymce"
+		       filter="safehtml"
+		/>
+
+		<field name="combobox"
+		       type="combo"
+		       description="JTF_COMBO_DESC"
+		       label="JTF_COMBO_LABEL"
+		       size="7"
+		>
+			<option value="1">Option 1</option>
+			<option value="2">Option 2</option>
+		</field>
+
+		<field name="category_com_content"
+		       type="category"
+		       extension="com_content"
+		       description="JTF_CATEGORY_DESC"
+		       label="JTF_CATEGORY_LABEL"
+		/>
+
+		<field name="file"
+		       type="file"
+		       description="JTF_FILE_DESC"
+		       label="JTF_FILE_LABEL"
+		       required="true"
+		       validate="file"
+		       accept=".zip,.pdf,image/*"
+		       multiple="multiple"
+		       uploadmaxsize="1"
 		/>
 	</fieldset>
 </form>

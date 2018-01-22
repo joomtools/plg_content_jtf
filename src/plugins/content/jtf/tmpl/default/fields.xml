@@ -39,4 +39,19 @@
 		       required="true"
 		/>
 	</fieldset>
+	<fieldset name="consent_form"
+	          label="JTF_CONSENT_FORM"
+	>
+		<field name="privacy_policy"
+		       type="checkboxes"
+		       description=""
+		       label="JTF_PRIVACY_POLICY_LABEL"
+		       default=""
+		       validate="options"
+		       filter="string"
+		       required="true"
+		>
+			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
+		</field>
+	</fieldset>
 </form>
