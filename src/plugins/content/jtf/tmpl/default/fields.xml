@@ -8,7 +8,7 @@
 		       description="JTF_NAME_DESC"
 		       label="JTF_NAME_LABEL"
 		       filter="string"
-		       required="1"
+		       required="true"
 		/>
 		<field name="email"
 		       type="email"
@@ -31,7 +31,7 @@
 		/>
 		<field name="message"
 		       type="textarea"
-		       cols="60"
+		       cols="30"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
 		       label="JTF_MESSAGE_LABEL"

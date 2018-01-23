@@ -55,21 +55,10 @@ if (!empty($close))
 	$html[] = '<button type="button" class="' . $buttonclass . '" data-dismiss="' . $close . '">' . $buttonicon . '</button>';
 }
 
-$html[] = !empty($title) ? '<' . $heading . '>' . JText::_($title) . '</' . $heading . '>' : '';
-$html[] = !empty($description) ? JText::_($description) : '';
-
-switch ($frwk)
-{
-	case 'uikit':
-	case 'uikit3':
-		$containerAttribute = ' data-uk-alert';
-		break;
-
-	default:
-		$containerAttribute = '';
-}
+$html[] = !empty($label) ? '<' . $heading . '>' . $label . '</' . $heading . '>' : '';
+$html[] = !empty($description) ? $description : '';
 
 ?>
-<div<?php echo $class . $containerAttribute; ?>>
+<div<?php echo $class; ?>>
 	<?php echo implode('', $html); ?>
 </div>

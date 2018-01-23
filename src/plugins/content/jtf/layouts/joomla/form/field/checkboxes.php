@@ -73,7 +73,7 @@ $class = !empty($class) ? ' class="' . trim($class) . '"' : '';
 			// In case there is no stored value, use the option's default state.
             $checked          = (!$hasValue && $option->checked) ? 'checked' : $checked;
             $optionClass      = !empty($option->class) ? 'class="' . $option->class . '"' : '';
-            $optionLabelClass = !empty($option->labelclass) ? 'class="' . $option->labelclass . '"' : '';
+            $optionLabelClass = !empty($option->labelclass) ? ' class="' . $option->labelclass . '"' : '';
             $disabled         = !empty($option->disable) || $disabled ? 'disabled' : '';
 
 		// Initialize some JavaScript option attributes.

@@ -97,6 +97,7 @@ class JTFFrameworkUikit3
 		);
 
 		$classes['class']['checkboxes'] = array(
+			'field' => array('checkboxes'),
 			'options' => array(
 				'class' => array('uk-checkbox'),
 			),

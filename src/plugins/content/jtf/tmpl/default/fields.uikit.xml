@@ -35,7 +35,7 @@
 		<field name="message"
 		       type="textarea"
 		       class="uk-width-1-1"
-		       cols="60"
+		       cols="30"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
 		       label="JTF_MESSAGE_LABEL"

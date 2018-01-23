@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form orientation="horizontal"
-      gridlabel="span3"
-      gridfield="span9"
+      gridlabel="span4"
+      gridfield="span7"
 >
 	<fieldset name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"

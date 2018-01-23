@@ -84,6 +84,6 @@ if (!empty($options['rel']))
 
 	<?php endif; ?>
 
-<?php if (!empty($container)) : ?>
+	<?php if (!empty($container)) : ?>
 </div>
 <?php endif; ?>

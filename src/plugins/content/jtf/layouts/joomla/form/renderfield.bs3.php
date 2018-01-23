@@ -1,11 +1,11 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package          Joomla.Plugin
+ * @subpackage       Content.Jtf
  *
- * @author       Guido De Gobbis <support@joomtools.de>
+ * @author           Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
+ * @license          GNU General Public License version 3 or later
  */
 
 defined('JPATH_BASE') or die;
@@ -27,7 +27,7 @@ if (!empty($options['showonEnabled']))
 	JHtml::_('script', 'plugins/content/jtf/assets/js/showon.js', array('version' => 'auto'));
 }
 
-$container   = array();
+$container = array();
 
 if (!empty($options['gridgroup']))
 {
@@ -42,43 +42,48 @@ if (!empty($options['rel']))
 
 <?php if (!empty($container)) : ?>
 <div<?php echo implode(' ', $container); ?>>
-<?php endif; ?>
+	<?php endif; ?>
 
-    <?php if (empty($options['hiddenLabel'])) : ?>
+	<?php if (empty($input)) : ?>
+		<?php echo $label; ?>
+	<?php else : ?>
+		<?php if (empty($options['hiddenLabel'])) : ?>
 
-        <?php if (!empty($options['gridlabel'])) : ?>
-        <div class="<?php echo $options['gridlabel']; ?>">
-        <?php endif; ?>
+			<?php if (!empty($options['gridlabel'])) : ?>
+				<div class="<?php echo $options['gridlabel']; ?>">
+			<?php endif; ?>
 
-            <?php echo $label; ?>
+			<?php echo $label; ?>
 
-        <?php if (!empty($options['gridlabel'])) : ?>
-        </div>
-        <?php endif; ?>
+			<?php if (!empty($options['gridlabel'])) : ?>
+				</div>
+			<?php endif; ?>
 
-    <?php endif; ?>
+		<?php endif; ?>
 
-    <?php if (!empty($options['gridfield'])) : ?>
-    <div class="<?php echo $options['gridfield']; ?>">
-    <?php endif; ?>
+		<?php if (!empty($options['gridfield'])) : ?>
+			<div class="<?php echo $options['gridfield']; ?>">
+		<?php endif; ?>
 
-        <?php if (!empty($options['icon'])) : ?>
-        <div class="input-group">
-            <span class="input-group-addon">
-                <span class="<?php echo $options['icon']; ?>"></span>
-            </span>
-        <?php endif; ?>
+		<?php if (!empty($options['icon'])) : ?>
+		<div class="input-group">
+		<span class="input-group-addon">
+							<span class="<?php echo $options['icon']; ?>"></span>
+					</span>
+	<?php endif; ?>
 
-            <?php echo $input; ?>
+		<?php echo $input; ?>
 
-        <?php if (!empty($options['icon'])) : ?>
-        </div>
-        <?php endif; ?>
+		<?php if (!empty($options['icon'])) : ?>
+		</div>
+	<?php endif; ?>
 
-    <?php if (!empty($options['gridfield'])) : ?>
-    </div>
-    <?php endif; ?>
+		<?php if (!empty($options['gridfield'])) : ?>
+			</div>
+		<?php endif; ?>
 
-<?php if (!empty($container)) : ?>
+	<?php endif; ?>
+
+	<?php if (!empty($container)) : ?>
 </div>
 <?php endif; ?>

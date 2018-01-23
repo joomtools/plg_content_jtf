@@ -69,7 +69,7 @@ $class = !empty($class) ? ' class="' . trim($class) . '"' : '';
 				// Initialize some option attributes.
                 $checked          = ((string) $option->value === $value) ? 'checked="checked"' : '';
                 $optionClass      = !empty($option->class) ? 'class="' . $option->class . '"' : '';
-                $optionLabelClass = !empty($option->labelclass) ? 'class="' . $option->labelclass . '"' : '';
+                $optionLabelClass = !empty($option->labelclass) ? ' class="' . $option->labelclass . '"' : '';
                 $disabled         = !empty($option->disable) || ($disabled && !$checked) ? 'disabled' : '';
 
 			// Initialize some JavaScript option attributes.

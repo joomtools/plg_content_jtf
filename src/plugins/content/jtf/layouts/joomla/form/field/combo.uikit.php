@@ -34,8 +34,7 @@ $attr .= !empty($onchange) ? ' onchange="' . $onchange . '"' : '';
 		   id="<?php echo $id; ?>"
 		   value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
 		<?php echo $attr; ?>
-		   autocomplete="off"
-		   class="uk-button" />
+		   autocomplete="off"/>
 	<div class="uk-button-group uk-display-inline-block">
 		<button type="button" class="uk-button">
 			<span class="uk-icon-caret-down"></span>

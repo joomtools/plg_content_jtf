@@ -5,7 +5,6 @@
 	          description="JTF_FIELDSET_DEFAULT_DESC"
 	          label="JTF_FIELDSET_DEFAULT_LABEL"
 	>
-		L
 		<field name="list"
 		       type="list"
 		       icon="uk-icon-list"
@@ -121,14 +120,12 @@
 		       validate="tel"
 		       required="true"
 		/>
-
 	</fieldset>
 
 	<fieldset name="block2"
 	          description="JTF_FIELDSET_SPECIAL_DESC"
 	          label="JTF_FIELDSET_SPECIAL_LABEL"
 	>
-
 		<field name="note"
 		       type="note"
 		       class="uk-alert uk-alert-warning"
@@ -230,6 +227,5 @@
 		       multiple="multiple"
 		       uploadmaxsize="1"
 		/>
-
 	</fieldset>
 </form>

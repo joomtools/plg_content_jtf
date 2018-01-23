@@ -98,6 +98,7 @@ class JTFFrameworkJoomla
 		);
 
 		$classes['class']['checkboxes'] = array(
+			'field' => array('checkboxes'),
 			'options' => array(
 				'labelclass' => array('checkbox'),
 			),

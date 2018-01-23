@@ -1,11 +1,11 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package          Joomla.Plugin
+ * @subpackage       Content.Jtf
  *
- * @author       Guido De Gobbis <support@joomtools.de>
+ * @author           Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
+ * @license          GNU General Public License version 3 or later
  */
 
 defined('JPATH_BASE') or die;
@@ -15,9 +15,9 @@ extract($displayData);
 /**
  * Layout variables
  * ---------------------
- * 	$options         : (array)  Optional parameters
- * 	$label           : (string) The html code for the label (not required if $options['hiddenLabel'] is true)
- * 	$input           : (string) The input field html code
+ *    $options         : (array)  Optional parameters
+ *    $label           : (string) The html code for the label (not required if $options['hiddenLabel'] is true)
+ *    $input           : (string) The input field html code
  */
 
 if (!empty($options['showonEnabled']))
@@ -27,7 +27,7 @@ if (!empty($options['showonEnabled']))
 	JHtml::_('script', 'plugins/content/jtf/assets/js/showon.js', array('version' => 'auto'));
 }
 
-$container   = array();
+$container = array();
 
 if (!empty($options['gridgroup']))
 {
@@ -42,7 +42,7 @@ if (!empty($options['rel']))
 
 <?php if (!empty($container)) : ?>
 <div<?php echo implode(' ', $container); ?>>
-<?php endif; ?>
+	<?php endif; ?>
 
 	<?php if (empty($input)) : ?>
 
@@ -65,26 +65,26 @@ if (!empty($options['rel']))
 		<?php endif; ?>
 
 		<?php if (!empty($options['gridfield'])) : ?>
-		<div class="<?php echo $options['gridfield']; ?>">
+			<div class="<?php echo $options['gridfield']; ?>">
 		<?php endif; ?>
 
-			<?php if (!empty($options['icon'])) : ?>
-			<div class="uk-inline">
-				<span class="uk-form-icon" uk-icon="icon: <?php echo $options['icon']; ?>"></span>
-			<?php endif; ?>
+		<?php if (!empty($options['icon'])) : ?>
+		<div class="uk-inline">
+		<span class="uk-form-icon" uk-icon="icon: <?php echo $options['icon']; ?>"></span>
+	<?php endif; ?>
 
-				<?php echo $input; ?>
+		<?php echo $input; ?>
 
-			<?php if (!empty($options['icon'])) : ?>
-			</div>
-			<?php endif; ?>
+		<?php if (!empty($options['icon'])) : ?>
+		</div>
+	<?php endif; ?>
 
 		<?php if (!empty($options['gridfield'])) : ?>
-		</div>
+			</div>
 		<?php endif; ?>
 
 	<?php endif; ?>
 
-<?php if (!empty($container)) : ?>
+	<?php if (!empty($container)) : ?>
 </div>
 <?php endif; ?>

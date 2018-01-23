@@ -47,7 +47,7 @@ extract($displayData);
 JHtml::_('jquery.framework');
 JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
 ?>
-<button class="validate<?php echo !empty($buttonclass) ? ' ' . $buttonclass : ''; ?>"
+<button id="<?php echo $id; ?>" class="validate<?php echo !empty($buttonclass) ? ' ' . $buttonclass : ''; ?>"
 		type="submit">
 	<?php if (!empty($buttonicon)) : ?>
 		<span class="<?php echo $buttonicon; ?>">&nbsp;</span>

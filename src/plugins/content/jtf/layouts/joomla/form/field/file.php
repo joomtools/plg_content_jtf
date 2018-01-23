@@ -99,7 +99,6 @@ JFactory::getDocument()->addStyleDeclaration("
 				   name="<?php echo $name; ?>"
 				   id="<?php echo $id; ?>"
 				   class="validate-file<?php echo !empty($class) ? ' ' . $class : ''; ?>"
-				   maxlength="<?php echo $uploadmaxsize; ?>"
 				<?php echo !empty($size) ? ' size="' . $size . '"' : ''; ?>
 				<?php echo !empty($accept) ? ' accept="' . $accept . '"' : ''; ?>
 				<?php echo !empty($multiple) ? ' multiple' : ''; ?>

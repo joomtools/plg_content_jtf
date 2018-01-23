@@ -44,12 +44,7 @@ class JFormFieldNote extends JFormField
 	 */
 	protected function getLabel()
 	{
-		if (empty($this->layout))
-		{
-			throw new UnexpectedValueException(sprintf('%s has no layout assigned.', $this->name));
-		}
-
-		return $this->getRenderer($this->layout)->render($this->getLayoutData());
+		return '';
 	}
 
 	/**
@@ -61,7 +56,12 @@ class JFormFieldNote extends JFormField
 	 */
 	protected function getInput()
 	{
-		return '';
+		if (empty($this->layout))
+		{
+			throw new UnexpectedValueException(sprintf('%s has no layout assigned.', $this->name));
+		}
+
+		return $this->getRenderer($this->layout)->render($this->getLayoutData());
 	}
 
 	/**
@@ -80,15 +80,12 @@ class JFormFieldNote extends JFormField
 			return '';
 		}
 
-		$title = $data['label'] ? $data['label'] : ($this->element['title'] ? (string) $this->element['title'] : '');
 		$heading = $this->element['heading'] ? (string) $this->element['heading'] : 'h4';
 		$close = (string) $this->element['close'];
 
 		$extraData = array(
-			'title'   => $title,
 			'heading' => $heading,
 			'close'   => $close,
-			'frwk'   => $this->form->framework[0],
 		);
 
 		return array_merge($data, $extraData);
