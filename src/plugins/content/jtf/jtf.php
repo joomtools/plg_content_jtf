@@ -157,8 +157,10 @@ class PlgContentJtf extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
+		$com_config = $this->app->get('option');
 		// Don't run in administration Panel or when the content is being indexed
 		if ($this->app->isClient('administrator')
+			|| $com_config == 'com_config'
 			|| $context == 'com_finder.indexer'
 			|| strpos($article->text, '{jtf') === false
 		)
@@ -307,6 +309,7 @@ class PlgContentJtf extends JPlugin
 
 				if ($task == $formTheme . "_sendmail")
 				{
+					// TODO: Zeitverzögerung über Parameter
 					if (!empty($submitValues['jtf_important_notices']))
 					{
 						$this->app->redirect(JRoute::_('index.php', false));
