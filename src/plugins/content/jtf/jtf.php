@@ -81,14 +81,6 @@ class PlgContentJtf extends JPlugin
 	protected $submitedFiles = array();
 
 	/**
-	 * Array with JForm Objects
-	 *
-	 * @var     array
-	 * @since   1.0
-	 */
-	//protected $form = array();
-
-	/**
 	 * Array with User params
 	 *
 	 * @var     array
@@ -157,11 +149,12 @@ class PlgContentJtf extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		$com_config = $this->app->get('option');
+		$editModules = $this->app->input->getString('controller');
+
 		// Don't run in administration Panel or when the content is being indexed
 		if ($this->app->isClient('administrator')
-			|| $com_config == 'com_config'
 			|| $context == 'com_finder.indexer'
+			|| $editModules == 'config.display.modules'
 			|| strpos($article->text, '{jtf') === false
 		)
 		{
@@ -170,7 +163,6 @@ class PlgContentJtf extends JPlugin
 
 		$this->debug = (boolean) $this->params->get('debug', 0);
 		$cIndex      = 0;
-//		$template    = $this->app->getTemplate();
 		$lang        = Factory::getLanguage();
 		$langTag     = $lang->getTag();
 
@@ -243,6 +235,9 @@ class PlgContentJtf extends JPlugin
 
 			$formTheme = $this->uParams['theme'] . (int) $cIndex;
 
+			// Get form submit task
+			$formSubmitted = ($this->app->input->get('task', false, 'post') == $formTheme . "_sendmail") ? true : false;
+
 			$formXmlPath = $this->getFieldsFile();
 
 			if (!empty($formXmlPath))
@@ -256,63 +251,28 @@ class PlgContentJtf extends JPlugin
 				);
 
 				$lang->load('jtf_theme', $formLang);
-
-//				$form = JForm::getInstance($formTheme, $formXmlPath, array('control' => $formTheme));
-
-				// Load Formfields
-				//$form->loadFile($formXmlPath);
-
-				// Set Formfields
-//				$this->form[$formTheme] = $form;
-
-				// Define framework as layout suffix
-//				$layoutSuffix = array('');
-
-				// Set Framework as Layout->Suffix
-//				$this->form[$formTheme]->framework = $layoutSuffix;
-
-				// Set Debug for Layouts override
-//				$this->form[$formTheme]->rendererDebug = $this->debug;
-
-				// Set Layouts override
-/*				$this->form[$formTheme]->layoutPaths = array(
-					JPATH_THEMES . '/' . $template . '/html/plg_content_jtf/' . $this->uParams['theme'],
-					JPATH_THEMES . '/' . $template . '/html/layouts/plugin/content/jtf',
-					JPATH_THEMES . '/' . $template . '/html/layouts',
-					JPATH_PLUGINS . '/content/jtf/layouts/jtf',
-					JPATH_PLUGINS . '/content/jtf/layouts');
-*/
-
 				$this->setSubmit();
 				$this->setFrameworkFieldClass();
 
-				// Get form submit task
-				$task = $this->app->input->get('task', false, 'post');
-
-				if ($task == $formTheme . "_sendmail")
+				if ($formSubmitted)
 				{
 					$submitValues = $this->getTranslatedSubmittedFormValues();
 
 					$this->getForm()->bind($submitValues);
 
-					if ($submitValues['jtf_important_notices'] == '')
+					$startTime = $this->app->input->getFloat('start');
+					$fillOutTime = microtime(1) - $startTime;
+
+					$notSpamBot = $fillOutTime < $this->uParams['filloutTime'] ? true : false;
+
+					if ($submitValues['jtf_important_notices'] == '' && $notSpamBot)
 					{
 						$valid = $this->validate();
 					}
 					else
 					{
-						$valid = false;
-					}
-				}
-
-				$html .= $this->getTmpl('form');
-
-				if ($task == $formTheme . "_sendmail")
-				{
-					// TODO: Zeitverzögerung über Parameter
-					if (!empty($submitValues['jtf_important_notices']))
-					{
 						$this->app->redirect(JRoute::_('index.php', false));
+						//$valid = false;
 					}
 
 					if ($valid)
@@ -327,6 +287,8 @@ class PlgContentJtf extends JPlugin
 					}
 				}
 			}
+
+			$html .= $this->getTmpl('form');
 
 			$pos = strpos($article->text, $replacement);
 			$end = strlen($replacement);
@@ -348,6 +310,12 @@ class PlgContentJtf extends JPlugin
 		$this->uParams       = array();
 		$version             = new JVersion;
 		$joomlaMainVersion = substr($version->RELEASE, 0, strpos($version->RELEASE, '.'));
+
+		// Set form start time
+		$this->uParams['startTime'] = microtime(1);
+
+		// Set minimum fillout time
+		$this->uParams['filloutTime'] = $this->params->get('filloutTime', 16);
 
 		// Set default captcha value
 		$this->uParams['captcha'] = $this->params->get('captcha');
@@ -375,6 +343,13 @@ class PlgContentJtf extends JPlugin
 
 		// Set default theme
 		$this->uParams['theme'] = 'default';
+
+		// Set time to clear uploads
+		$this->uParams['file_clear'] = (int) $this->params->get('file_clear', 30);
+
+		// Set path in images to save uploaded files
+		$this->uParams['file_path'] = (int) $this->params->get('file_path', 'uploads');
+
 
 		// Set default framework value
 		$this->uParams['framework'] = array($this->params->get('framework'));
@@ -1182,15 +1157,12 @@ class PlgContentJtf extends JPlugin
 	{
 		jimport('joomla.filesystem.folder');
 
-		if (!$fileClear = (int) $this->params->get('file_clear'))
+		if (!$fileClear = (int) $this->uParams['file_clear'])
 		{
 			return;
 		}
 
-		$filePath   = !$this->params->get('file_path', 'uploads')
-			? 'images/uploads'
-			: 'images/' . $this->params->get('file_path');
-		$uploadBase = JPATH_BASE . '/' . $filePath;
+		$uploadBase = JPATH_BASE . '/images/' . $this->uParams['file_path'];
 
 		if (!is_dir($uploadBase))
 		{
@@ -1221,20 +1193,18 @@ class PlgContentJtf extends JPlugin
 		$form          = $this->getForm();
 		$submitedFiles = $this->submitedFiles;
 		$nowPath       = date('Ymd');
-
-		$filePath = 'images/' . $this->params->get('file_path', 'uploads');
-
-		$uploadBase = JPATH_BASE . '/' . $filePath . '/' . $nowPath;
-		$uploadURL  = rtrim(JUri::base(), '/') . '/' . $filePath . '/' . $nowPath;
+		$filePath      = 'images/' . $this->uParams['file_path'] . '/' . $nowPath;
+		$uploadBase    = JPATH_BASE . '/' . $filePath;
+		$uploadURL     = rtrim(JUri::base(), '/') . '/' . $filePath;
 
 		if (!is_dir($uploadBase))
 		{
 			JFolder::create($uploadBase);
 		}
 
-		if (!file_exists(JPATH_BASE . '/' . $filePath . '/.htaccess'))
+		if (!file_exists($uploadBase . '/.htaccess'))
 		{
-			JFile::write(JPATH_BASE . '/' . $filePath . '/.htaccess', JText::_('JTF_SET_ATTACHMENT_HTACCESS'));
+			JFile::write($uploadBase. '/.htaccess', JText::_('JTF_SET_ATTACHMENT_HTACCESS'));
 		}
 
 		foreach ($submitedFiles as $fieldName => $files)
@@ -1273,6 +1243,7 @@ class PlgContentJtf extends JPlugin
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
 			. '<input type="hidden" name="view" value="' . $this->app->input->get('view') . '" />'
 			. '<input type="hidden" name="itemid" value="' . $this->app->input->get('idemid') . '" />'
+			. '<input type="hidden" name="start" value="' . $this->uParams['startTime'] . '" />'
 			. '<input type="hidden" name="id" value="' . $this->app->input->get('id') . '" />';
 
 		if ($this->setEnctype)

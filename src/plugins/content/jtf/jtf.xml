@@ -27,16 +27,28 @@
 				       class="chzn-color-state"
 				       default="custom"
 				       label="JTF_XML_CAPTCHA_LABEL"
-				       description="JTF_XML_CAPTCHA_DESC">
+				       description="JTF_XML_CAPTCHA_DESC"
+				>
 					<option value="0">JOPTION_DO_NOT_USE</option>
 					<option value="joomla">JTF_XML_CAPTCHA_VALUE_JOOMLA</option>
 				</field>
+
+				<field name="filloutTime"
+				       type="integer"
+				       default="16"
+				       first="10"
+				       last="40"
+				       step="2"
+				       label="JTF_XML_FILLOUT_LABEL"
+				       description="JTF_XML_FILLOUT_DESC"
+				/>
 
 				<field name="file_path"
 				       type="text"
 				       default="uploads"
 				       label="JTF_XML_FILE_PATH_LABEL"
-				       description="JTF_XML_FILE_PATH_DESC"/>
+				       description="JTF_XML_FILE_PATH_DESC"
+				/>
 
 				<field name="file_clear"
 				       type="integer"
@@ -45,26 +57,23 @@
 				       last="365"
 				       step="5"
 				       label="JTF_XML_FILE_CLEAR_LABEL"
-				       description="JTF_XML_FILE_CLEAR_DESC"/>
-
-				<field name="error_class"
-				       type="text"
-				       default=""
-				       label="JTF_XML_ERROR_CLASS_LABEL"
-				       description="JTF_XML_ERROR_CLASS_DESC"/>
+				       description="JTF_XML_FILE_CLEAR_DESC"
+				/>
 
 				<field name="framework"
 				       type="frwk"
 				       default="0"
 				       label="JTF_XML_FRAMEWORK_LABEL"
-				       description="JTF_XML_FRAMEWORK_DESC"/>
+				       description="JTF_XML_FRAMEWORK_DESC"
+				/>
 
 				<field name="debug"
 				       type="radio"
 				       class="btn-group btn-group-yesno"
 				       default="0"
 				       label="JTF_XML_DEBUG_LABEL"
-				       description="JTF_XML_DEBUG_DESC">
+				       description="JTF_XML_DEBUG_DESC"
+				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
