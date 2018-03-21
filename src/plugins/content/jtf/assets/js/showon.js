@@ -77,12 +77,14 @@ jQuery(function ($) {
 		$elm.find('input').setNovalidate();
 		$elm.find('select').setNovalidate();
 		$elm.find('textarea').setNovalidate();
+		$elm.find('fieldset').setNovalidate();
 
 		if ($.inArray(setterVal.toString(), dataShowonValues) != -1) {
 			if ((isCheckbox && $setter.prop('checked')) || (isSelect && $setter.prop('selected')) || isRadio) {
 				$elm.find('input').removeNovalidate();
 				$elm.find('select').removeNovalidate();
 				$elm.find('textarea').removeNovalidate();
+				$elm.find('fieldset').removeNovalidate();
 				$elm.show();
 			}
 		}
@@ -106,6 +108,7 @@ jQuery(function ($) {
 			$elm.find('input').toggleNovalidate(toggler);
 			$elm.find('select').toggleNovalidate(toggler);
 			$elm.find('textarea').toggleNovalidate(toggler);
+			$elm.find('fieldset').toggleNovalidate(toggler);
 
 			if (toggler == 1) {
 				$elm.show(400);
