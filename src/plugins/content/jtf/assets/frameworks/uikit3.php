@@ -91,8 +91,8 @@ class JTFFrameworkUikit3
 
 		$classes['class']['calendar'] = array(
 			'buttons' => array(
-				'class' => 'uk-button uk-button-small',
-				'icon'  => 'uk-icon-calendar',
+				'class' => 'uk-button-default',
+				'icon'  => 'calendar',
 			),
 		);
 

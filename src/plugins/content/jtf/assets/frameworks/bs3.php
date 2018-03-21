@@ -73,9 +73,10 @@ class JTFFrameworkBs3
 		$classes['class']['gridlabel'][] = 'control-label';
 
 		$classes['class']['calendar'] = array(
+			'field' => array('form-control'),
 			'buttons' => array(
-				'class' => 'btn',
-				'icon'  => 'icon-calendar',
+				'class' => 'btn btn-secondary',
+				'icon'  => 'glyphicon glyphicon-calendar',
 			),
 		);
 

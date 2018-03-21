@@ -57,6 +57,9 @@ class JTFFrameworkJoomla
 			case 'inline':
 				$inline                     = true;
 				$classes['class']['form'][] = 'form-inline';
+				$classes['class']['gridgroup'][] = 'inline';
+				$classes['class']['gridlabel'][] = 'inline';
+				$classes['class']['gridfield'][] = 'inline';
 				break;
 
 			case 'horizontal':
@@ -88,7 +91,7 @@ class JTFFrameworkJoomla
 
 		$classes['class']['calendar'] = array(
 			'buttons' => array(
-				'class' => 'btn',
+				'class' => 'btn btn-secondary',
 				'icon'  => 'icon-calendar',
 			),
 		);

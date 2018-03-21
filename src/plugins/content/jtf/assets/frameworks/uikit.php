@@ -97,7 +97,7 @@ class JTFFrameworkUikit
 
 		$classes['class']['calendar'] = array(
 			'buttons' => array(
-				'class' => 'uk-button uk-button-small',
+				'class' => 'uk-button',
 				'icon'  => 'uk-icon-calendar',
 			),
 		);
