@@ -1213,6 +1213,11 @@ class JForm
 			$value = null;
 			$name = (string) $field['name'];
 
+			if (!$input->exists($name))
+			{
+				continue;
+			}
+
 			// Get the group names as strings for ancestor fields elements.
 			$attrs = $field->xpath('ancestor::fields[@name]/@name');
 			$groups = array_map('strval', $attrs ? $attrs : array());

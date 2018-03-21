@@ -447,7 +447,7 @@ abstract class FormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string  $name  The property name for which to get the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -521,7 +521,7 @@ abstract class FormField
 	/**
 	 * Method to set certain otherwise inaccessible properties of the form field object.
 	 *
-	 * @param   string  $name   The property name for which to the the value.
+	 * @param   string  $name   The property name for which to set the value.
 	 * @param   mixed   $value  The value of the property.
 	 *
 	 * @return  void
@@ -971,14 +971,9 @@ abstract class FormField
 			$attributes = $this->element->attributes();
 
 			// Ensure that the attribute exists
-			if (property_exists($attributes, $name))
+			if ($attributes->$name !== null)
 			{
-				$value = $attributes->$name;
-
-				if ($value !== null)
-				{
-					return (string) $value;
-				}
+				return (string) $attributes->$name;
 			}
 		}
 
@@ -1115,6 +1110,7 @@ abstract class FormField
 			'optionlabelclass' => $this->optionlabelclass,
 			'optionclass'      => $this->optionclass,
 			'pattern'          => $this->pattern,
+			'validationtext' => $this->validationtext,
 			'readonly'         => $this->readonly,
 			'repeat'           => $this->repeat,
 			'required'         => (bool) $this->required,
@@ -1134,7 +1130,10 @@ abstract class FormField
 	 */
 	protected function getLayoutPaths()
 	{
-		return $this->form->layoutPaths;
+		list($formName) = explode('_', $this->id);
+		$form = \JForm::getInstance($formName);
+
+		return $form->layoutPaths;
 	}
 
 	/**
@@ -1149,11 +1148,14 @@ abstract class FormField
 	protected function getRenderer($layoutId = 'default')
 	{
 		$renderer = new FileLayout($layoutId);
+		list($formName) = explode('_', $this->id);
+		$form = \JForm::getInstance($formName);
+		$framework = $form->framework;
 
 		// Set Framwork as Layout->Suffix
-		if (!empty($this->form->framework) && $this->form->framework[0] != 'joomla')
+		if (!empty($framework) && $framework[0] != 'joomla')
 		{
-			$renderer->setSuffixes($this->form->framework);
+			$renderer->setSuffixes($framework);
 		}
 
 		$renderer->setDebug($this->isDebugEnabled());

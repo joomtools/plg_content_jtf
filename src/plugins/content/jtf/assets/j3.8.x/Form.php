@@ -1217,6 +1217,11 @@ class Form
 			$value = null;
 			$name = (string) $field['name'];
 
+			if (!$input->exists($name))
+			{
+				continue;
+			}
+
 			// Get the group names as strings for ancestor fields elements.
 			$attrs = $field->xpath('ancestor::fields[@name]/@name');
 			$groups = array_map('strval', $attrs ? $attrs : array());
@@ -2215,7 +2220,7 @@ class Form
 
 			if (empty($data))
 			{
-				throw new \InvalidArgumentException(sprintf('Form::getInstance(%s, *%s*)', $name, gettype($data)));
+				throw new \InvalidArgumentException(sprintf('%1$s(%2$s, *%3$s*)', __METHOD__, $name, gettype($data)));
 			}
 
 			// Instantiate the form.
@@ -2226,14 +2231,14 @@ class Form
 			{
 				if ($forms[$name]->load($data, $replace, $xpath) == false)
 				{
-					throw new \RuntimeException('JForm::getInstance could not load form');
+					throw new \RuntimeException(sprintf('%s() could not load form', __METHOD__));
 				}
 			}
 			else
 			{
 				if ($forms[$name]->loadFile($data, $replace, $xpath) == false)
 				{
-					throw new \RuntimeException('JForm::getInstance could not load file');
+					throw new \RuntimeException(sprintf('%s() could not load file', __METHOD__));
 				}
 			}
 		}
@@ -2385,7 +2390,7 @@ class Form
 	}
 
 	/**
-	 * Aet the value of an attribute of the form itself
+	 * Set the value of an attribute of the form itself
 	 *
 	 * @param   string  $name   Name of the attribute to get
 	 * @param   string  $value  Value to set for the attribute
