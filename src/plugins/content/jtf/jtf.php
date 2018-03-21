@@ -263,7 +263,7 @@ class PlgContentJtf extends JPlugin
 					$startTime = $this->app->input->getFloat('start');
 					$fillOutTime = microtime(1) - $startTime;
 
-					$notSpamBot = $fillOutTime < $this->uParams['filloutTime'] ? true : false;
+					$notSpamBot = $fillOutTime > $this->uParams['filloutTime'] ? true : false;
 
 					if ($submitValues['jtf_important_notices'] == '' && $notSpamBot)
 					{
@@ -486,23 +486,30 @@ class PlgContentJtf extends JPlugin
 
 	protected function getForm($subform = null)
 	{
-		$template    = $this->app->getTemplate();
+		$template = $this->app->getTemplate();
+		$control  = $this->uParams['theme'] . (int) $this->uParams['index'];
+
+		if (!empty($this->form))
+		{
+			return $this->form;
+		}
 
 		if ($subform != null)
 		{
 			$formName = 'subform' . ($subform->group ? $subform->group . '.' : '.') . $subform->fieldname;
 			$formXmlPath = $subform->formsource;
-			$formControl = array('control' => $subform->name);
-			$formControl = array('control' => $formName);
+			$subformControl = $subform->name;
+			$formControl = array('control' => $subformControl);
+			//$form = $this->getForm();
+			$form = JForm::getInstance($formName, $formXmlPath, $formControl);
 		}
 		else
 		{
-			$formName = $this->uParams['theme'] . (int) $this->uParams['index'];
+			$formName = $control;
 			$formXmlPath = $this->getFieldsFile();
-			$formControl = array('control' => $formName);
+			$formControl = array('control' => $control);
+			$form = JForm::getInstance($formName, $formXmlPath, $formControl);
 		}
-
-		$form = JForm::getInstance($formName, $formXmlPath, $formControl);
 
 		$form->framework     = $this->uParams['framework'];
 		$form->rendererDebug = $this->debug;
@@ -513,6 +520,15 @@ class PlgContentJtf extends JPlugin
 			JPATH_PLUGINS . '/content/jtf/layouts/jtf',
 			JPATH_PLUGINS . '/content/jtf/layouts',
 		);
+
+		$frwkClasses     = $this->getFrameworkClass($form);
+		$form->frwrkClasses = $frwkClasses;
+		$this->form = $form;
+
+		if ($this->issetField('file'))
+		{
+			$form->setEnctype = true;
+		}
 
 		return $form;
 	}
@@ -568,12 +584,18 @@ class PlgContentJtf extends JPlugin
 	{
 		$form = $this->getForm($subform);
 
-		$frwkClasses = $this->getFrameworkClass($form);
-		$classes     = $frwkClasses->getClasses();
+		$frwkClasses     = $this->getFrameworkClass($form);
+		$classes         = $frwkClasses->getClasses();
+		$formHiddenLabel = filter_var($form->getAttribute('hiddenFieldLabel'), FILTER_VALIDATE_BOOLEAN);
 
-		if (!empty($classes['form']))
+		if (!empty($classes['form']) && $subform === null)
 		{
 			$form->setAttribute('class', implode(' ', $classes['form']));
+		}
+
+		if (!empty($form->getAttribute('gridgroup')))
+		{
+			$classes['gridgroup'][] = $form->getAttribute('gridgroup');
 		}
 
 		if (!empty($form->getAttribute('gridlabel')))
@@ -599,6 +621,10 @@ class PlgContentJtf extends JPlugin
 		{
 			foreach ($fieldsets->fieldset as $fieldset)
 			{
+				$fieldsetHiddenLabel = !empty((string) $fieldset['hiddenFieldLabel'])
+					? filter_var((string) $fieldset['hiddenFieldLabel'], FILTER_VALIDATE_BOOLEAN)
+					: null;
+
 				$fieldsetClasses['field'] = !empty($classes['fieldset']['field'])
 					? array_flip($classes['fieldset']['field'])
 					: '';
@@ -682,10 +708,34 @@ class PlgContentJtf extends JPlugin
 				{
 					if ((string) $field->getAttribute('type') == 'subform')
 					{
-						$this->setFrameworkFieldClass($field);
+						//$this->setFrameworkFieldClass($field);
 					}
 					else
 					{
+						$fieldHiddenLabel = ($fieldsetHiddenLabel !== null)
+							? $fieldsetHiddenLabel
+							: $formHiddenLabel;
+
+						if ($fieldHiddenLabel || (string) $field->getAttribute('type') == 'note')
+						{
+							$form->setFieldAttribute($field->getAttribute('name'), 'hiddenLabel', true);
+						}
+
+						if (!empty($fieldset['gridgroup']))
+						{
+							$classes['gridgroup'][] = (string) $fieldset['gridgroup'];
+						}
+
+						if (!empty($fieldset['gridlabel']))
+						{
+							$classes['gridlabel'][] = (string) $fieldset['gridlabel'];
+						}
+
+						if (!empty($fieldset['gridfield']))
+						{
+							$classes['gridfield'][] = (string) $fieldset['gridfield'];
+						}
+
 						$this->setFieldClass($field->getAttribute('name'), $classes, $form);
 					}
 				}
@@ -703,12 +753,17 @@ class PlgContentJtf extends JPlugin
 			'fieldClass'       => array(),
 		);
 
+		if ($type == 'note')
+		{
+			$frwkClasses['gridfield'] = array();
+		}
+
 		if (in_array($type, array('file')))
 		{
 			$this->setEnctype = true;
 		}
 
-		if (in_array($type, array('text', 'email', 'textarea', 'plz', 'tel')))
+		if (in_array($type, array('text', 'email', 'textarea', 'plz', 'tel', 'list', 'combo', 'category')))
 		{
 			if (!empty($frwkClasses['default']))
 			{
@@ -1236,7 +1291,7 @@ class PlgContentJtf extends JPlugin
 		$id            = $this->uParams['theme'];
 		$form          = $this->getForm();
 		$formClass     = $form->getAttribute('class', '');
-		$frwk          = $this->getFrameworkClass($form);
+		$frwk          = $form->frwrkClasses;
 		$frwkCss       = $frwk->getCss();
 		$enctype       = '';
 		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
@@ -1246,7 +1301,7 @@ class PlgContentJtf extends JPlugin
 			. '<input type="hidden" name="start" value="' . $this->uParams['startTime'] . '" />'
 			. '<input type="hidden" name="id" value="' . $this->app->input->get('id') . '" />';
 
-		if ($this->setEnctype)
+		if (!empty($form->setEnctype))
 		{
 			$enctype = ' enctype="multipart/form-data"';
 		}

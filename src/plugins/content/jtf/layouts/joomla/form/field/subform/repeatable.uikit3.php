@@ -1,11 +1,11 @@
 <?php
 /**
- * @package          Joomla.Plugin
- * @subpackage       Content.Jtf
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
  *
- * @author           Guido De Gobbis <support@joomtools.de>
+ * @author       Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license          GNU General Public License version 3 or later
+ * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
@@ -31,39 +31,33 @@ extract($displayData);
 if ($multiple)
 {
 	JHtml::_('jquery.ui', array('core', 'sortable'));
-	JHtml::_('script', 'plugins/content/jtf/assets/js/system/subform-repeatable.js', array('version' => 'auto'));
+	JHtml::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
 }
 
-$sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets';
+$sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 
-?>
-
-<div class="row-fluid">
-	<div class="subform-repeatable-wrapper subform-layout">
+<div class=" uk-grid">
+	<div class="subform-repeatable-wrapper subform-layout uk-width-1-1">
 		<div class="subform-repeatable uk-grid"
-			 data-bt-add="button.group-add" data-bt-remove="button.group-remove" data-bt-move="button.group-move"
+			 data-bt-add="a.group-add" data-bt-remove="a.group-remove" data-bt-move="a.group-move"
 			 data-repeatable-element="div.subform-repeatable-group" data-minimum="<?php echo $min; ?>"
 			 data-maximum="<?php echo $max; ?>">
 			<div class="uk-margin-bottom uk-width-1-1">
 				<div class="uk-button-group">
-					<button class="group-add uk-button uk-button-small uk-button-default"><span uk-icon="plus"></span>
-					</button>
+					<a class="group-add uk-button uk-button-small uk-button-success"><span class="uk-icon-plus"></span>
+					</a>
 				</div>
 			</div>
-
-			<?php if ($min >= '1') :
-				for ($i = 1; $i == $min; $i++) :
-					echo $this->sublayout($sublayout,
-						array(
-							'form'          => $tmpl,
-							'basegroup'     => $fieldname,
-							'group'         => $fieldname . $i,
-							'buttons'       => $buttons,
-						)
-					);
-				endfor;
-			endif; ?>
-
+			<?php
+			foreach ($forms as $k => $form) :
+				echo $this->sublayout($sublayout,
+					array(
+						'form' => $form,
+						'basegroup' => $fieldname,
+						'group' => $fieldname . $k,
+						'buttons' => $buttons)
+				);
+			endforeach; ?>
 			<?php if ($multiple) : ?>
 				<script type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
 					<?php echo $this->sublayout($sublayout,
@@ -79,11 +73,7 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets';
 	</div>
 </div>
 <script>
-	(function ($) {
-		$(document).on('subform-row-add', function (event, row) {
-			document.formvalidator = new JFormValidator();
-		}).on('subform-row-remove', function (event, row) {
-			document.formvalidator = new JFormValidator();
-		});
-	})(jQuery);
+	jQuery(document).on('subform-row-add', function (event, row) {
+		document.formvalidator = new JFormValidator();
+	})
 </script>

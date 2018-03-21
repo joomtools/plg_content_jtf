@@ -159,13 +159,43 @@
 		       required="true"
 		/>
 
+		<field name="subform_showon"
+		       type="radio"
+		       description="JTF_SUBFORM_SHOWON_DESC"
+		       label="JTF_SUBFORM_SHOWON_LABEL"
+		       default="JNO"
+		       validate="options"
+		       filter="string"
+		>
+			<option value="JYES">JYES</option>
+			<option value="JNO">JNO</option>
+		</field>
+
+		<field name="subform"
+		       type="subform"
+		       formsource="plugins/content/jtf/tmpl/muster/subforms/subform.xml"
+		       multiple="true"
+		       description="JTF_SUBFORM_DESC"
+		       label="JTF_SUBFORM_LABEL"
+		       required="true"
+		       showon="subform_showon:JYES"
+		       layout="joomla.form.field.subform.repeatable"
+		       buttons="add,remove"
+		       min="1"
+		/>
+
 		<field name="calendar"
 		       type="calendar"
 		       default="NOW"
 		       description="JTF_CAL_DESC"
 		       label="JTF_CAL_LABEL"
-		       format="%d.%m.%Y %H:%I:%S"
+		       size="8"
+		       format="%d.%m.%Y"
+		       filter="user_utc"
+		       required="true"
 		       showtime="false"
+		       todaybutton="false"
+		       translateformat="true"
 		/>
 
 		<field name="color_simple"

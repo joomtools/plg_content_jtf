@@ -31,17 +31,13 @@ extract($displayData);
 if ($multiple)
 {
 	JHtml::_('jquery.ui', array('core', 'sortable'));
-	JHtml::_('script', 'plugins/content/jtf/assets/js/system/subform-repeatable.js', array('version' => 'auto'));
+	JHtml::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
 }
 
-$sublayout   = empty($groupByFieldset) ? 'section' : 'section-byfieldsets';
-$layoutPaths = $this->getIncludePaths();
-$framework   = $this->getSuffixes();
+$sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 
-?>
-
-<div class="row-fluid">
-	<div class="subform-repeatable-wrapper subform-layout">
+<div class=" uk-grid">
+	<div class="subform-repeatable-wrapper subform-layout uk-width-1-1">
 		<div class="subform-repeatable uk-grid"
 			 data-bt-add="a.group-add" data-bt-remove="a.group-remove" data-bt-move="a.group-move"
 			 data-repeatable-element="div.subform-repeatable-group" data-minimum="<?php echo $min; ?>"
@@ -54,12 +50,6 @@ $framework   = $this->getSuffixes();
 			</div>
 			<?php
 			foreach ($forms as $k => $form) :
-				// Set Layouts override
-				$form->layoutPaths = $layoutPaths;
-
-				// Set Framework
-				$form->framework = $framework;
-
 				echo $this->sublayout($sublayout,
 					array(
 						'form' => $form,
@@ -67,25 +57,16 @@ $framework   = $this->getSuffixes();
 						'group' => $fieldname . $k,
 						'buttons' => $buttons)
 				);
-			endforeach;
-			?>
+			endforeach; ?>
 			<?php if ($multiple) : ?>
 				<script type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
-					<?php
-					// Set Layouts override
-					$tmpl->layoutPaths = $layoutPaths;
-
-					// Set Framework
-					$tmpl->framework = $framework;
-
-					echo $this->sublayout($sublayout,
+					<?php echo $this->sublayout($sublayout,
 						array(
 							'form'      => $tmpl,
 							'basegroup' => $fieldname,
 							'group'     => $fieldname . 'X',
 							'buttons'   => $buttons)
-					);
-					?>
+					); ?>
 				</script>
 			<?php endif; ?>
 		</div>

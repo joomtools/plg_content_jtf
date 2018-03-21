@@ -62,20 +62,23 @@ foreach ($fieldsets->fieldset as $fieldset)
 
 				if (is_array($value))
 				{
-					foreach ($value as $_key => $_value)
+					if ($type != 'subform')
 					{
-						if ($type == 'file')
+						foreach ($value as $_key => $_value)
 						{
-							$values[] = '<a href="' . $_value . '" download>' . $_key . '</a> *';
+							if ($type == 'file')
+							{
+								$values[] = '<a href="' . $_value . '" download>' . $_key . '</a> *';
+							}
+							else
+							{
+								$values[] = strip_tags(trim(JText::_($_value)));
+							}
 						}
-						else
-						{
-							$values[] = strip_tags(trim(JText::_($_value)));
-						}
-					}
 
-					$value = implode(", ", $values);
-					unset($values);
+						$value = implode(", ", $values);
+						unset($values);
+					}
 				}
 				else
 				{
@@ -84,12 +87,90 @@ foreach ($fieldsets->fieldset as $fieldset)
                 <tr>
                     <th style="width:30%; text-align: left;">
 						<?php echo strip_tags($label); ?>
-                    </th>
-                    <td><?php echo $value ? nl2br($value) : '--'; ?></td>
-                </tr>
+					</th>
+					<td><?php echo $value ? nl2br(strip_tags($value)) : '--';
+
+						if ($type == 'subform')
+						{
+
+							$formname   = $form->getFormControl();
+							$fieldname  = (string) $field['name'];
+							$formsource = (string) $field['formsource'];
+							$setTable = false;
+							$counter =count($value) -1;
+
+							if (!empty($value))
+							{
+								$setTable = true; ?>
+								<table cellpadding="2" border="1">
+								<tbody>
+								<?php
+							}
+
+
+							foreach ($value as $valuesKey => $subValues)
+							{
+								$control    = $formname . '[' . $valuesKey . ']';
+								$subForm = $form::getInstance(
+									'subform.' . $valuesKey,
+									$formsource,
+									array('control' => $control)
+								);
+
+								foreach ($subForm->getGroup('') as $subFormField)
+								{
+									$subFormLabel = $subFormField->getAttribute('label');
+									$subFormValue = $subFormField->value;
+
+									if (empty($subFormValue))
+									{
+										// Comment out 'continue', if you want to submit only filled fields
+										continue;
+									}
+
+									if (is_array($subFormValue))
+									{
+										$subFormValue = trim($subFormValue[0]);
+									} ?>
+									<tr>
+										<th style="width:30%; text-align: left;">
+											<?php echo strip_tags(JText::_($subFormLabel)); ?>
+										</th>
+										<td><?php echo $subFormValue
+												? nl2br(strip_tags(JText::_($subFormValue)))
+												: '--'; ?>
+										</td>
+									</tr>
+									<?php
+								}
+
+								if ($valuesKey < $counter)
+								{
+									?>
+									<tr>
+										<td colspan="2"><?php echo $subFormValue
+												? nl2br(strip_tags(JText::_($subFormValue)))
+												: '--'; ?>
+										</td>
+									</tr>
+									<?php
+								}
+
+							}
+
+							if ($setTable)
+							{
+								?>
+								</tbody>
+								</table>
+								<?php
+							}
+						}
+						?></td>
+				</tr>
 				<?php echo $fileTimeOut; ?>
 			<?php endforeach; ?>
-            </tbody>
-        </table>
+			</tbody>
+		</table>
 	<?php endif;
 }

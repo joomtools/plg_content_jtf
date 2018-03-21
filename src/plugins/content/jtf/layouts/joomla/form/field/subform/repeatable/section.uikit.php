@@ -19,15 +19,15 @@ defined('_JEXEC') or die;
  * @var array   $buttons    Array of the buttons that will be rendered
  */
 extract($displayData);
-
+$subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : '';
 ?>
-
-<div class="subform-repeatable-group uk-margin-large-bottom uk-width-1-1 uk-width-medium-1-4"
+<div class="subform-repeatable-group uk-margin-large-bottom<?php echo $subformClass;?>"
 	 data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
-
-<?php foreach ($form->getGroup('') as $field) : ?>
-	<?php echo $field->renderField(); ?>
-<?php endforeach; ?>
+	<div classs="uk-grid">
+	<?php foreach ($form->getGroup('') as $field) : ?>
+		<?php echo $field->renderField(); ?>
+	<?php endforeach; ?>
+	</div>
 	<?php if (!empty($buttons)) : ?>
 		<div class="uk-margin-top uk-width-1-1 uk-text-right">
 			<div class="uk-button-group">

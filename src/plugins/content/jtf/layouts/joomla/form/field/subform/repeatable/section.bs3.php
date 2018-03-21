@@ -22,17 +22,23 @@ extract($displayData);
 $subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : '';
 ?>
 
-<div class="subform-repeatable-group<?php echo $subformClass;?>" data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
+<div class="form-group subform-repeatable-group<?php echo $subformClass;?>" data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
 
 <?php foreach ($form->getGroup('') as $field) : ?>
 	<?php echo $field->renderField(); ?>
 <?php endforeach; ?>
 	<?php if (!empty($buttons)) : ?>
-		<div class="btn-toolbar text-right">
-			<div class="btn-group">
-				<?php if (!empty($buttons['add'])) : ?><a class="group-add btn btn-mini button btn-success"><span class="icon-plus"></span> </a><?php endif; ?>
-				<?php if (!empty($buttons['remove'])) : ?><a class="group-remove btn btn-mini button btn-danger"><span class="icon-minus"></span> </a><?php endif; ?>
-				<?php if (!empty($buttons['move'])) : ?><a class="group-move btn btn-mini button btn-primary"><span class="icon-move"></span> </a><?php endif; ?>
+		<div class="btn-toolbar pull-right" role="toolbar">
+			<div class="btn-group btn-group-sm">
+				<?php if (!empty($buttons['add'])) : ?>
+					<a class="group-add btn btn-success"><span class="glyphicon glyphicon-plus-sign"></span></a>
+				<?php endif; ?>
+				<?php if (!empty($buttons['remove'])) : ?>
+					<a class="group-remove btn btn-danger"><span class="glyphicon glyphicon-minus-sign"></span></a>
+				<?php endif; ?>
+				<?php if (!empty($buttons['move'])) : ?>
+					<a class="group-move btn btn-primary"><span class="icon-move"></span></a>
+				<?php endif; ?>
 			</div>
 		</div>
 	<?php endif; ?>
