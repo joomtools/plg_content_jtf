@@ -109,7 +109,7 @@ JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 ?>
 <div class="field-calendar">
 	<?php if (!$readonly && !$disabled) : ?>
-	<div class="uk-form-icon">
+	<div class="uk-inline">
 		<?php endif; ?>
 		<input type="text"
 			   id="<?php echo $id; ?>"
@@ -121,7 +121,8 @@ JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 			   autocomplete="off"
 		/>
 		<button type="button"
-				class="<?php echo ($readonly || $disabled) ? "hidden " . $button : $button; ?>"
+				uk-icon="icon: <?php echo $icon; ?>"
+				class="uk-form-icon-flip uk-form-icon <?php echo ($readonly || $disabled) ? "hidden " . $button : $button; ?>"
 				id="<?php echo $id; ?>_btn"
 				data-inputfield="<?php echo $id; ?>"
 				data-dayformat="<?php echo $format; ?>"
@@ -136,7 +137,7 @@ JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 				data-only-months-nav="<?php echo $singleheader; ?>"
 			<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
 			<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
-		><span class="<?php echo $icon; ?>"></span></button>
+		></button>
 		<?php if (!$readonly && !$disabled) : ?>
 	</div>
 <?php endif; ?>

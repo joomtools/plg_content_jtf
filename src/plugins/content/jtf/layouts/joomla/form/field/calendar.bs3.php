@@ -62,8 +62,8 @@ $document = JFactory::getDocument();
  */
 
 $inputvalue = '';
-$icon       = !empty($buttonicon) ? $buttonicon : 'uk-icon-calendar';
-$button     = !empty($buttonclass) ? $buttonclass : 'uk-button';
+$icon       = !empty($buttonicon) ? $buttonicon : 'glyphicon glyphicon-calendar';
+$button     = !empty($buttonclass) ? $buttonclass : 'btn btn-secondary';
 
 
 // Build the attributes array.
@@ -109,7 +109,7 @@ JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 ?>
 <div class="field-calendar">
 	<?php if (!$readonly && !$disabled) : ?>
-	<div class="uk-form-icon">
+	<div class="input-group">
 		<?php endif; ?>
 		<input type="text"
 			   id="<?php echo $id; ?>"
@@ -120,23 +120,27 @@ JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 			   data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
 			   autocomplete="off"
 		/>
-		<button type="button"
-				class="<?php echo ($readonly || $disabled) ? "hidden " . $button : $button; ?>"
-				id="<?php echo $id; ?>_btn"
-				data-inputfield="<?php echo $id; ?>"
-				data-dayformat="<?php echo $format; ?>"
-				data-button="<?php echo $id; ?>_btn"
-				data-firstday="<?php echo JFactory::getLanguage()->getFirstDay(); ?>"
-				data-weekend="<?php echo JFactory::getLanguage()->getWeekEnd(); ?>"
-				data-today-btn="<?php echo $todaybutton; ?>"
-				data-week-numbers="<?php echo $weeknumbers; ?>"
-				data-show-time="<?php echo $showtime; ?>"
-				data-show-others="<?php echo $filltable; ?>"
-				data-time-24="<?php echo $timeformat; ?>"
-				data-only-months-nav="<?php echo $singleheader; ?>"
-			<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
-			<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
-		><span class="<?php echo $icon; ?>"></span></button>
+		<div class="input-group-btn">
+			<button type="button"
+					class="<?php echo ($readonly || $disabled) ? "hidden " . $button : $button; ?>"
+					id="<?php echo $id; ?>_btn"
+					data-inputfield="<?php echo $id; ?>"
+					data-dayformat="<?php echo $format; ?>"
+					data-button="<?php echo $id; ?>_btn"
+					data-firstday="<?php echo JFactory::getLanguage()->getFirstDay(); ?>"
+					data-weekend="<?php echo JFactory::getLanguage()->getWeekEnd(); ?>"
+					data-today-btn="<?php echo $todaybutton; ?>"
+					data-week-numbers="<?php echo $weeknumbers; ?>"
+					data-show-time="<?php echo $showtime; ?>"
+					data-show-others="<?php echo $filltable; ?>"
+					data-time-24="<?php echo $timeformat; ?>"
+					data-only-months-nav="<?php echo $singleheader; ?>"
+				<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
+				<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
+			>
+				<span class="<?php echo $icon; ?>"></span>
+			</button>
+		</div>
 		<?php if (!$readonly && !$disabled) : ?>
 	</div>
 <?php endif; ?>
