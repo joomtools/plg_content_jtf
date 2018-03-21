@@ -1,11 +1,10 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package     Joomla.Site
+ * @subpackage  Layout
  *
- * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
+ * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('JPATH_BASE') or die;
@@ -46,37 +45,25 @@ extract($displayData);
  * @var   array    $control         Is this field checked?
  */
 
-if ($validate !== 'color' && in_array($format, array('rgb', 'rgba'), true))
-{
-	$alpha = ($format === 'rgba');
-	$placeholder = $alpha ? 'rgba(0, 0, 0, 0.5)' : 'rgb(0, 0, 0)';
-}
-else
-{
-	$placeholder = '#rrggbb';
-}
+$class    = ' class="' . trim('simplecolors chzn-done ' . $class) . '"';
+$disabled = $disabled ? ' disabled' : '';
+$readonly = $readonly ? ' readonly' : '';
 
-$inputclass   = ($keywords && ! in_array($format, array('rgb', 'rgba'), true)) ? ' keywords' : ' ' . $format;
-$class        = ' class="' . trim('minicolors ' . $class) . ($validate === 'color' ? '' : $inputclass) . '"';
-$control      = $control ? ' data-control="' . $control . '"' : '';
-$format       = $format ? ' data-format="' . $format . '"' : '';
-$keywords     = $keywords ? ' data-keywords="' . $keywords . '"' : '';
-$validate     = $validate ? ' data-validate="' . $validate . '"' : '';
-$disabled     = $disabled ? ' disabled' : '';
-$readonly     = $readonly ? ' readonly' : '';
-$hint         = strlen($hint) ? ' placeholder="' . htmlspecialchars($hint, ENT_COMPAT, 'UTF-8') . '"' : ' placeholder="' . $placeholder . '"';
-$autocomplete = ! $autocomplete ? ' autocomplete="off"' : '';
-
-// Force LTR input value in RTL, due to display issues with rgba/hex colors
-$direction    = $lang->isRtl() ? ' dir="ltr" style="text-align:right"' : '';
-
-// Including fallback code for HTML5 non supported browsers.
+// Include jQuery
 JHtml::_('jquery.framework');
 JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
-JHtml::_('script', 'jui/jquery.minicolors.min.js', array('version' => 'auto', 'relative' => true));
-JHtml::_('stylesheet', 'jui/jquery.minicolors.css', array('version' => 'auto', 'relative' => true));
-JHtml::_('script', 'system/color-field-adv-init.min.js', array('version' => 'auto', 'relative' => true));
-JFactory::getDocument()->addStyleDeclaration('.minicolors-theme-bootstrap .minicolors-swatch{position:relative!important;}');
+JHtml::_('script', 'jui/jquery.simplecolors.min.js', array('version' => 'auto', 'relative' => true));
+JHtml::_('stylesheet', 'jui/jquery.simplecolors.css', array('version' => 'auto', 'relative' => true));
+JHtml::_('script', 'system/color-field-init.min.js', array('version' => 'auto', 'relative' => true));
+JFactory::getDocument()->addStyleDeclaration('.simplecolors-panel{z-index:99;}');
 ?>
-<input type="text" name="<?php echo $name; ?>" id="<?php echo $id; ?>" value="<?php echo htmlspecialchars($color, ENT_COMPAT, 'UTF-8'); ?>" <?php
-echo $hint . $class . $position . $control . $readonly . $disabled . $onchange . $autocomplete . $autofocus . $format . $keywords . $direction . $validate; ?>/>
+<select data-chosen="true" name="<?php echo $name; ?>" id="<?php echo $id; ?>"<?php
+echo $disabled; ?><?php echo $readonly; ?><?php echo $required; ?><?php echo $class; ?><?php echo $position; ?><?php
+echo $onchange; ?><?php echo $autofocus; ?> style="visibility:hidden;width:22px;height:1px">
+	<?php foreach ($colors as $i => $c) : ?>
+		<option<?php echo ($c == $color ? ' selected="selected"' : ''); ?>><?php echo $c; ?></option>
+		<?php if (($i + 1) % $split == 0) : ?>
+			<option>-</option>
+		<?php endif; ?>
+	<?php endforeach; ?>
+</select>

@@ -1,11 +1,10 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package     Joomla.Site
+ * @subpackage  Layout
  *
- * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
+ * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('JPATH_BASE') or die;
@@ -76,7 +75,20 @@ JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relati
 JHtml::_('script', 'jui/jquery.minicolors.min.js', array('version' => 'auto', 'relative' => true));
 JHtml::_('stylesheet', 'jui/jquery.minicolors.css', array('version' => 'auto', 'relative' => true));
 JHtml::_('script', 'system/color-field-adv-init.min.js', array('version' => 'auto', 'relative' => true));
-JFactory::getDocument()->addStyleDeclaration('.minicolors-theme-bootstrap .minicolors-swatch{position:relative!important;}');
+JFactory::getDocument()->addStyleDeclaration('.minicolors-theme-bootstrap .hex{width:auto;height:auto;}');
+
 ?>
 <input type="text" name="<?php echo $name; ?>" id="<?php echo $id; ?>" value="<?php echo htmlspecialchars($color, ENT_COMPAT, 'UTF-8'); ?>" <?php
 echo $hint . $class . $position . $control . $readonly . $disabled . $onchange . $autocomplete . $autofocus . $format . $keywords . $direction . $validate; ?>/>
+
+
+
+
+
+
+
+
+
+
+
+
