@@ -125,7 +125,7 @@ foreach ($fieldsets->fieldset as $fieldset)
 									if (empty($subFormValue))
 									{
 										// Comment out 'continue', if you want to submit only filled fields
-										continue;
+										//continue;
 									}
 
 									if (is_array($subFormValue))

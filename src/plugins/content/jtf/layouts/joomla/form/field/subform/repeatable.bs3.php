@@ -47,8 +47,10 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 					<a class="group-add btn btn-success"><span class="glyphicon glyphicon-plus-sign"></span></a>
 				</div>
 			</div>
+			<div class="row">
 			<?php
 			foreach ($forms as $k => $form) :
+				$form = JTFFrameworkHelper::setFrameworkClasses($form);
 				echo $this->sublayout($sublayout,
 					array(
 						'form' => $form,
@@ -58,9 +60,10 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 				);
 			endforeach;
 			?>
+			</div>
 			<?php if ($multiple) : ?>
 				<script type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
-					<?php
+					<?php $tmpl = JTFFrameworkHelper::setFrameworkClasses($tmpl);
 					echo $this->sublayout($sublayout,
 						array(
 							'form' => $tmpl,

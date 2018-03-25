@@ -64,6 +64,7 @@ class JTFFrameworkJoomla
 
 			case 'horizontal':
 				$classes['class']['form'][] = 'form-horizontal';
+				$classes['class']['gridgroup'][] = 'row';
 //				$classes['class']['gridlabel'][] = 'span3';
 //				$classes['class']['gridfield'][] = 'span9';
 

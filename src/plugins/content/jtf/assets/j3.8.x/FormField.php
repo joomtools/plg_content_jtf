@@ -90,6 +90,14 @@ abstract class FormField
 	protected $formControl;
 
 	/**
+	 * The hidden state for the form field label.
+	 *
+	 * @var    boolean
+	 * @since  11.1
+	 */
+	protected $hiddenLabel = false;
+
+	/**
 	 * The hidden state for the form field.
 	 *
 	 * @var    boolean
@@ -461,6 +469,7 @@ abstract class FormField
 			case 'hint':
 			case 'formControl':
 			case 'hidden':
+			case 'hiddenLabel':
 			case 'id':
 			case 'multiple':
 			case 'name':
@@ -477,6 +486,7 @@ abstract class FormField
 			case 'optionclass':
 			case 'optionlabelclass':
 			case 'fieldname':
+			case 'formControl':
 			case 'group':
 			case 'disabled':
 			case 'readonly':
@@ -583,6 +593,7 @@ abstract class FormField
 			case 'readonly':
 			case 'autofocus':
 			case 'hidden':
+			case 'hiddenLabel':
 				$value = (string) $value;
 				$this->$name = ($value === 'true' || $value === $name || $value === '1');
 				break;

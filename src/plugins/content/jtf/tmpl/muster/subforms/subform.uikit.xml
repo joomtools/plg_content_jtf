@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form class="uk-width-1-2">
+<form orientation="inline" class="uk-width-1-3">
 
 	<field name="subform_text"
 	       type="text"
-	       class="uk-width-1-1"
 	       description="JTF_TXT_DESC"
 	       label="JTF_TXT_LABEL"
 	       maxlength="60"
@@ -25,7 +24,6 @@
 
 	<field name="subform_checkbox_inline"
 	       type="checkboxes"
-	       class="uk-width-1-1"
 	       description="JTF_CHK_INLINE_DESC"
 	       label="JTF_CHK_INLINE_LABEL"
 	       validate="options"

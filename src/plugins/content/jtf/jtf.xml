@@ -18,6 +18,8 @@
 		##LANGUAGE_FILES##
 	</languages>
 
+	<scriptfile>script.php</scriptfile>
+
 	<config>
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/plugins/content/jtf/assets/fields">

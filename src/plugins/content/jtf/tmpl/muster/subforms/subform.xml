@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form class="span4">
+<form class="span4"
+      gridlabel="span4"
+      gridfield="span8"
+>
 
 	<field name="subform_text"
 	       type="text"
+	       class="span12"
 	       description="JTF_TXT_DESC"
 	       label="JTF_TXT_LABEL"
 	       maxlength="60"
@@ -11,6 +15,7 @@
 
 	<field name="subform_cal"
 	       type="calendar"
+	       class="span12"
 	       description="JTF_CAL_DESC"
 	       label="JTF_CAL_LABEL"
 	       size="8"
@@ -24,6 +29,7 @@
 
 	<field name="subform_checkbox_inline"
 	       type="checkboxes"
+	       class="span12"
 	       description="JTF_CHK_INLINE_DESC"
 	       label="JTF_CHK_INLINE_LABEL"
 	       validate="options"

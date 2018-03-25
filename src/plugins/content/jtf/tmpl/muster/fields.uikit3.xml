@@ -179,7 +179,7 @@
 
 		<field name="subform"
 		       type="subform"
-		       formsource="plugins/content/jtf/tmpl/muster/subforms/subform.uikit.xml"
+		       formsource="plugins/content/jtf/tmpl/muster/subforms/subform.uikit3.xml"
 		       multiple="true"
 		       description="JTF_SUBFORM_DESC"
 		       label="JTF_SUBFORM_LABEL"

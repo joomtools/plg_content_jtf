@@ -36,7 +36,6 @@ if ($multiple)
 
 $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 
-<div class=" uk-grid">
 	<div class="subform-repeatable-wrapper subform-layout uk-width-1-1">
 		<div class="subform-repeatable uk-grid"
 			 data-bt-add="a.group-add" data-bt-remove="a.group-remove" data-bt-move="a.group-move"
@@ -48,19 +47,26 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 					</a>
 				</div>
 			</div>
-			<?php
-			foreach ($forms as $k => $form) :
-				echo $this->sublayout($sublayout,
-					array(
-						'form' => $form,
-						'basegroup' => $fieldname,
-						'group' => $fieldname . $k,
-						'buttons' => $buttons)
-				);
-			endforeach; ?>
+			<div class="uk-width-1-1">
+				<div class="uk-grid">
+				<?php
+				foreach ($forms as $k => $form) :
+					$form = JTFFrameworkHelper::setFrameworkClasses($form);
+					echo $this->sublayout($sublayout,
+						array(
+							'form' => $form,
+							'basegroup' => $fieldname,
+							'group' => $fieldname . $k,
+							'buttons' => $buttons)
+					);
+				endforeach; ?>
+				</div>
+			</div>
 			<?php if ($multiple) : ?>
 				<script type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
-					<?php echo $this->sublayout($sublayout,
+					<?php
+					$tmpl = JTFFrameworkHelper::setFrameworkClasses($tmpl);
+					echo $this->sublayout($sublayout,
 						array(
 							'form'      => $tmpl,
 							'basegroup' => $fieldname,
@@ -71,7 +77,6 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 			<?php endif; ?>
 		</div>
 	</div>
-</div>
 <script>
 	jQuery(document).on('subform-row-add', function (event, row) {
 		document.formvalidator = new JFormValidator();
