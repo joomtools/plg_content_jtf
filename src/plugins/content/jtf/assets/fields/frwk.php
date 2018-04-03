@@ -47,6 +47,12 @@ class JFormFieldFrwk extends JFormFieldList
 		foreach ($frwk as $file)
 		{
 			$fileName = JFile::stripExt($file);
+
+			if ($fileName == 'helper')
+			{
+				continue;
+			}
+
 			$framework = 'JTFFramework' . ucfirst($fileName);
 			$fileRealName = $framework::$name;
 
