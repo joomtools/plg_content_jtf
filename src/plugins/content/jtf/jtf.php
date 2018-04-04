@@ -136,29 +136,6 @@ class PlgContentJtf extends JPlugin
 	 */
 	protected $autoloadLanguage = true;
 
-	public function __construct($subject, array $config = array())
-	{
-		// Don't run in administration Panel
-		if (Factory::getApplication()->isClient('administrator'))
-		{
-			return;
-		}
-
-		if (version_compare(JVERSION, '3.8', 'lt'))
-		{
-			JLoader::register('JTLayoutFile', dirname(__FILE__) . '/assets/j3.7.x/file.php');
-			JLoader::register('JForm', dirname(__FILE__) . '/assets/j3.7.x/form.php');
-			JLoader::register('JFormField', dirname(__FILE__) . '/assets/j3.7.x/field.php');
-		}
-		else
-		{
-			JLoader::register('JForm', dirname(__FILE__) . '/assets/j3.8.x/Form.php');
-			JLoader::register('JFormField', dirname(__FILE__) . '/assets/j3.8.x/FormField.php');
-		}
-
-		parent::__construct($subject, $config);
-	}
-
 	/**
 	 * Plugin to generates Forms within content
 	 *
@@ -224,6 +201,18 @@ class PlgContentJtf extends JPlugin
 
 		// Add form rules
 		JFormHelper::addRulePath(dirname(__FILE__) . '/assets/rules');
+
+		if (version_compare(JVERSION, '3.8', 'lt'))
+		{
+			JLoader::register('JTLayoutFile', dirname(__FILE__) . '/assets/j3.7.x/file.php');
+			JLoader::register('JForm', dirname(__FILE__) . '/assets/j3.7.x/form.php');
+			JLoader::register('JFormField', dirname(__FILE__) . '/assets/j3.7.x/field.php');
+		}
+		else
+		{
+			JLoader::register('JForm', dirname(__FILE__) . '/assets/j3.8.x/Form.php');
+			JLoader::register('JFormField', dirname(__FILE__) . '/assets/j3.8.x/FormField.php');
+		}
 
 		foreach ($pluginReplacements as $rKey => $replacement)
 		{
