@@ -90,6 +90,9 @@ class JTFFrameworkUikit3
 		);
 
 		$classes['class']['calendar'] = array(
+			'field' => array(
+				'uk-input',
+			),
 			'buttons' => array(
 				'class' => 'uk-button-default',
 				'icon'  => 'calendar',

@@ -62,7 +62,7 @@ $document = JFactory::getDocument();
  */
 
 $inputvalue = '';
-$icon       = !empty($buttonicon) ? $buttonicon : 'uk-icon-calendar';
+$icon       = !empty($buttonicon) ? $buttonicon : 'calendar';
 $button     = !empty($buttonclass) ? $buttonclass : 'uk-button';
 
 
