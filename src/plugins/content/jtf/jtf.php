@@ -16,6 +16,23 @@ use Joomla\CMS\Factory;
 //use Joomla\Registry\Registry;
 //use Joomla\CMS\Layout\FileLayout;
 
+//JLoader::registerNamespace('Joomla\CMS\Form', JPATH_PLUGINS . '/content/jtf/src', false, false, 'psr4');
+
+//use JTF\Form;
+
+$editModules = Factory::getApplication()->input->getString('controller');
+
+// Don't run in administration Panel or when the content is being indexed
+if (Factory::getApplication()->isClient('site')
+	&& $editModules != 'config.display.modules')
+{
+	JLoader::register('JForm', JPATH_PLUGINS . '/content/jtf/src/Form.php', true);
+	JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/src/FormField.php');
+
+	JLoader::register('Joomla\CMS\Form\JForm', JPATH_PLUGINS . '/content/jtf/src/Form.php', true);
+	JLoader::register('Joomla\CMS\Form\JFormField', JPATH_PLUGINS . '/content/jtf/src/FormField.php');
+}
+
 /**
  * @package      Joomla.Plugin
  * @subpackage   Content.Jtf
@@ -202,6 +219,7 @@ class PlgContentJtf extends JPlugin
 		// Add form rules
 		JFormHelper::addRulePath(dirname(__FILE__) . '/assets/rules');
 
+/*
 		if (version_compare(JVERSION, '3.8', 'lt'))
 		{
 			JLoader::register('JTLayoutFile', dirname(__FILE__) . '/assets/j3.7.x/file.php');
@@ -213,6 +231,7 @@ class PlgContentJtf extends JPlugin
 			JLoader::register('JForm', dirname(__FILE__) . '/assets/j3.8.x/Form.php');
 			JLoader::register('JFormField', dirname(__FILE__) . '/assets/j3.8.x/FormField.php');
 		}
+*/
 
 		foreach ($pluginReplacements as $rKey => $replacement)
 		{
