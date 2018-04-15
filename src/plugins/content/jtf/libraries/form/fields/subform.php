@@ -175,7 +175,7 @@ class JFormFieldSubform extends JFormField
 	}
 
 	/**
-	 * Method to attach a JTForm object to the field.
+	 * Method to attach a JTFForm object to the field.
 	 *
 	 * @param   SimpleXMLElement  $element  The SimpleXMLElement object representing the <field /> tag for the form field object.
 	 * @param   mixed             $value    The form field value to validate.
@@ -238,7 +238,7 @@ class JFormFieldSubform extends JFormField
 			// Prepare the form template
 			$formname = 'subform' . ($this->group ? $this->group . '.' : '.') . $this->fieldname;
 			$tmplcontrol = !$this->multiple ? $control : $control . '[' . $this->fieldname . 'X]';
-			$tmpl = JForm::getInstance($formname, $this->formsource, array('control' => $tmplcontrol));
+			$tmpl = JTFForm::getInstance($formname, $this->formsource, array('control' => $tmplcontrol));
 			$tmpl->layoutPaths = $layoutPaths;
 			$tmpl->framework = $framework;
 			$tmpl->renderDebug = $rendererDebug;
@@ -252,7 +252,7 @@ class JFormFieldSubform extends JFormField
 				for ($i = 0; $i < $c; $i++)
 				{
 					$itemcontrol = $control . '[' . $this->fieldname . $i . ']';
-					$itemform    = JForm::getInstance($formname . $i, $this->formsource, array('control' => $itemcontrol));
+					$itemform    = JTFForm::getInstance($formname . $i, $this->formsource, array('control' => $itemcontrol));
 					$itemform->layoutPaths = $layoutPaths;
 					$itemform->framework = $framework;
 					$itemform->renderDebug = $rendererDebug;

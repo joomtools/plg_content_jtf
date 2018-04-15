@@ -1142,7 +1142,7 @@ abstract class FormField
 	protected function getLayoutPaths()
 	{
 		list($formName) = explode('_', $this->id);
-		$form = \JForm::getInstance($formName);
+		$form = \JTFForm::getInstance($formName);
 
 		return $form->layoutPaths;
 	}
@@ -1160,7 +1160,7 @@ abstract class FormField
 	{
 		$renderer = new FileLayout($layoutId);
 		list($formName) = explode('_', $this->id);
-		$form = \JForm::getInstance($formName);
+		$form = \JTFForm::getInstance($formName);
 		$framework = $form->framework;
 
 		// Set Framwork as Layout->Suffix

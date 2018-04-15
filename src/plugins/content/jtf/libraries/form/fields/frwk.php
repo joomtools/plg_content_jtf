@@ -10,7 +10,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JLoader::discover('JTFFramework', dirname(dirname(__FILE__)) . '/frameworks');
+JLoader::discover('JTFFramework', JPATH_PLUGINS . '/content/jtf/libraries/frameworks', true);
 
 JFormHelper::loadFieldClass('list');
 
@@ -39,7 +39,7 @@ class JFormFieldFrwk extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$frwkPath = dirname(dirname(__FILE__)) . '/frameworks';
+		$frwkPath = JPATH_PLUGINS . '/content/jtf/libraries/frameworks';
 		$frwk = JFolder::files($frwkPath);
 
 		$options = array();

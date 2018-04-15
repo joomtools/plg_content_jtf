@@ -81,7 +81,7 @@ class JTFFrameworkHelper
 			$classes['gridfield'][] = $form->getAttribute('gridfield');
 		}
 
-		self::$formHiddenLabel = filter_var($form->getAttribute('hiddenFieldLabel'), FILTER_VALIDATE_BOOLEAN);
+		self::$formHiddenLabel = filter_var($form->getAttribute('hiddenLabel'), FILTER_VALIDATE_BOOLEAN);
 	}
 
 	protected static function setFieldsetClasses()
@@ -94,8 +94,8 @@ class JTFFrameworkHelper
 		{
 			foreach ($fieldsets->fieldset as $fieldset)
 			{
-				$fieldsetHiddenLabel = !empty((string) $fieldset['hiddenFieldLabel'])
-					? filter_var((string) $fieldset['hiddenFieldLabel'], FILTER_VALIDATE_BOOLEAN)
+				$fieldsetHiddenLabel = !empty((string) $fieldset['hiddenLabel'])
+					? filter_var((string) $fieldset['hiddenLabel'], FILTER_VALIDATE_BOOLEAN)
 					: null;
 
 				$fieldsetClasses['field'] = !empty($classes['fieldset']['field'])
@@ -225,7 +225,7 @@ class JTFFrameworkHelper
 		}
 	}
 
-	public static function setFieldClass($field)
+	protected static function setFieldClass($field)
 	{
 		$form        =& self::$form;
 		$frwkClasses = self::$classes;

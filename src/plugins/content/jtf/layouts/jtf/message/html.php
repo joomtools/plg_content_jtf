@@ -1,11 +1,11 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package          Joomla.Plugin
+ * @subpackage       Content.Jtf
  *
- * @author       Guido De Gobbis <support@joomtools.de>
+ * @author           Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
+ * @license          GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
@@ -25,15 +25,15 @@ foreach ($fieldsets->fieldset as $fieldset)
 
 	if (count($fieldset->field)) : ?>
 		<?php if (!empty($fieldsetLabel) && strlen($legend = trim(JText::_($fieldsetLabel)))) : ?>
-            <h1><?php echo $legend; ?></h1>
+			<h1><?php echo $legend; ?></h1>
 		<?php endif; ?>
 
-        <table cellpadding="2" border="1">
-            <tbody>
+		<table cellpadding="2" border="1">
+			<tbody>
 			<?php foreach ($fieldset->field as $field) :
-				$label       = trim(JText::_((string) $field['label']));
-				$value       = $form->getValue((string) $field['name']);
-				$type        = (string) $field['type'];
+				$label = trim(JText::_((string) $field['label']));
+				$value = $form->getValue((string) $field['name']);
+				$type = (string) $field['type'];
 				$fileTimeOut = '';
 
 				if (!empty($field['notmail']))
@@ -80,24 +80,26 @@ foreach ($fieldsets->fieldset as $fieldset)
 						unset($values);
 					}
 				}
-				else
-				{
-					$value = trim(JText::_($value));
-				} ?>
-                <tr>
-                    <th style="width:30%; text-align: left;">
+				?>
+				<tr>
+					<th style="width:30%; text-align: left;">
 						<?php echo strip_tags($label); ?>
 					</th>
-					<td><?php echo $value ? nl2br(strip_tags($value)) : '--';
+					<td>
+					<?php if (!is_array($value))
+					{
+						echo strip_tags($value);
+					}
+					else
+					{
 
 						if ($type == 'subform')
 						{
-
 							$formname   = $form->getFormControl();
 							$fieldname  = (string) $field['name'];
 							$formsource = (string) $field['formsource'];
-							$setTable = false;
-							$counter =count($value) -1;
+							$setTable   = false;
+							$counter    = count($value) - 1;
 
 							if (!empty($value))
 							{
@@ -107,10 +109,9 @@ foreach ($fieldsets->fieldset as $fieldset)
 								<?php
 							}
 
-
 							foreach ($value as $valuesKey => $subValues)
 							{
-								$control    = $formname . '[' . $valuesKey . ']';
+								$control = $formname . '[' . $valuesKey . ']';
 								$subForm = $form::getInstance(
 									'subform.' . $valuesKey,
 									$formsource,
@@ -119,8 +120,17 @@ foreach ($fieldsets->fieldset as $fieldset)
 
 								foreach ($subForm->getGroup('') as $subFormField)
 								{
+									$subFormType  = $subFormField->getAttribute('type');
 									$subFormLabel = $subFormField->getAttribute('label');
-									$subFormValue = $subFormField->value;
+									$subFormName  = $subFormField->getAttribute('name');
+									$subFormValue = $form->getValue($fieldname . '.' . $valuesKey . '.' . $subFormName);
+
+									if ($subFormType == 'file' && $fileTimeOut == '' && $fileClear > 0)
+									{
+										$fileTimeOut .= '<tr><td colspan="2">';
+										$fileTimeOut .= JText::sprintf('JTF_FILE_TIMEOUT', $fileClear);
+										$fileTimeOut .= '</td></tr>';
+									}
 
 									if (empty($subFormValue))
 									{
@@ -130,7 +140,20 @@ foreach ($fieldsets->fieldset as $fieldset)
 
 									if (is_array($subFormValue))
 									{
-										$subFormValue = trim($subFormValue[0]);
+										foreach ($subFormValue as $_key => $_value)
+										{
+											if ($subFormType == 'file')
+											{
+												$subFormValues[] = '<a href="' . $_value . '" download>' . $_key . '</a> *';
+											}
+											else
+											{
+												$subFormValues[] = strip_tags(trim(JText::_($_value)));
+											}
+										}
+
+										$subFormValue = implode(", ", $subFormValues);
+										unset($subFormValues);
 									} ?>
 									<tr>
 										<th style="width:30%; text-align: left;">
@@ -148,10 +171,7 @@ foreach ($fieldsets->fieldset as $fieldset)
 								{
 									?>
 									<tr>
-										<td colspan="2"><?php echo $subFormValue
-												? nl2br(strip_tags(JText::_($subFormValue)))
-												: '--'; ?>
-										</td>
+										<td colspan="2">&nbsp;</td>
 									</tr>
 									<?php
 								}
@@ -166,7 +186,8 @@ foreach ($fieldsets->fieldset as $fieldset)
 								<?php
 							}
 						}
-						?></td>
+					} ?>
+					</td>
 				</tr>
 				<?php echo $fileTimeOut; ?>
 			<?php endforeach; ?>

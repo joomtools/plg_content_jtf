@@ -22,7 +22,7 @@
 
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="/plugins/content/jtf/assets/fields">
+			<fieldset name="basic" addfieldpath="/plugins/content/jtf/libraries/form/fields">
 
 				<field name="captcha"
 				       type="list"

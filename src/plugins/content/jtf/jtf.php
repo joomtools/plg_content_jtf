@@ -11,35 +11,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-
-//use Joomla\CMS\Application\CMSApplication;
-//use Joomla\Registry\Registry;
-//use Joomla\CMS\Layout\FileLayout;
-
-//JLoader::registerNamespace('Joomla\CMS\Form', JPATH_PLUGINS . '/content/jtf/src', false, false, 'psr4');
-
-//use JTF\Form;
-
-$editModules = Factory::getApplication()->input->getString('controller');
-
-// Don't run in administration Panel or when the content is being indexed
-if (Factory::getApplication()->isClient('site')
-	&& $editModules != 'config.display.modules')
-{
-	JLoader::register('JForm', JPATH_PLUGINS . '/content/jtf/src/Form.php', true);
-	JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/src/FormField.php');
-
-	JLoader::register('Joomla\CMS\Form\JForm', JPATH_PLUGINS . '/content/jtf/src/Form.php', true);
-	JLoader::register('Joomla\CMS\Form\JFormField', JPATH_PLUGINS . '/content/jtf/src/FormField.php');
-}
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 /**
  * @package      Joomla.Plugin
  * @subpackage   Content.Jtf
  *
- * @since       3.7
+ * @since    3.8
  */
-class PlgContentJtf extends JPlugin
+class PlgContentJtf extends CMSPlugin
 {
 	/**
 	 * The regular expression to identify Plugin call.
@@ -48,6 +29,36 @@ class PlgContentJtf extends JPlugin
 	 * @since   1.0
 	 */
 	const PLUGIN_REGEX = "@(<(\w+)[^>]*>|){jtf(\s.*)?}(</\\2>|)@";
+
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var     boolean
+	 * @since   3.1
+	 */
+	protected $autoloadLanguage = true;
+
+	/**
+	 * Global application object
+	 *
+	 * @var     JApplication
+	 * @since   11.1
+	 */
+	protected $app = null;
+
+	/**
+	 * Set counter
+	 *
+	 * @var     int
+	 * @since   1.0
+	 */
+	private static $count = 0;
+
+	/**
+	 * @var     stdClass
+	 * @since   1.0
+	 */
+	private $doNotLoad;
 
 	/**
 	 * Set captcha name
@@ -71,7 +82,7 @@ class PlgContentJtf extends JPlugin
 	 * @var     Joomla\CMS\Form
 	 * @since   1.0
 	 */
-	protected $form = null;
+	private $form = null;
 
 	/**
 	 * JFormField validation
@@ -79,7 +90,7 @@ class PlgContentJtf extends JPlugin
 	 * @var     boolean
 	 * @since   1.0
 	 */
-	protected $validField = true;
+	private $validField = true;
 
 	/**
 	 * Array with JFormField Names of submitted Files
@@ -87,7 +98,7 @@ class PlgContentJtf extends JPlugin
 	 * @var     array
 	 * @since   1.0
 	 */
-	protected $fileFields = array();
+	private $fileFields = array();
 
 	/**
 	 * Array with submitted Files
@@ -95,7 +106,7 @@ class PlgContentJtf extends JPlugin
 	 * @var     array
 	 * @since   1.0
 	 */
-	protected $submitedFiles = array();
+	private $submitedFiles = array();
 
 	/**
 	 * Array with User params
@@ -103,7 +114,7 @@ class PlgContentJtf extends JPlugin
 	 * @var     array
 	 * @since   1.0
 	 */
-	protected $uParams = array();
+	private $uParams = array();
 
 	/**
 	 * Debug
@@ -111,47 +122,44 @@ class PlgContentJtf extends JPlugin
 	 * @var     boolean
 	 * @since   1.0
 	 */
-	protected $debug = false;
+	private $debug = false;
 
 	/**
-	 * Global application object
+	 * Constructor
 	 *
-	 * @var    JApplication
-	 * @since  11.1
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An optional associative array of configuration settings.
+	 *                             Recognized key values include 'name', 'group', 'params', 'language'
+	 *                             (this list is not meant to be comprehensive).
+	 *
+	 * @since   1.5
 	 */
-	protected $app = null;
+	public function __construct($subject, array $config = array())
+	{
+		parent::__construct($subject, $config);
 
-	/**
-	 * A Registry object holding the parameters for the plugin
-	 *
-	 * @var    Registry
-	 * @since  1.5
-	 */
-	public $params = null;
+		$option = Factory::getApplication()->input->getCmd('option');
+		$layout = Factory::getApplication()->input->getCmd('layout');
 
-	/**
-	 * The name of the plugin
-	 *
-	 * @var    string
-	 * @since  1.5
-	 */
-	protected $_name = null;
+		$this->doNotLoad = new stdClass();
+		$this->doNotLoad->active = false;
+		$this->doNotLoad->extension = $option;
 
-	/**
-	 * The plugin type
-	 *
-	 * @var    string
-	 * @since  1.5
-	 */
-	protected $_type = null;
+		if (Factory::getApplication()->isClient('administrator')
+			|| in_array($option, array('com_config', 'com_contact', 'com_finder',))
+			|| $layout == 'edit'
+		)
+		{
+			$this->doNotLoad->active = true;
+		}
 
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var     boolean
-	 * @since   3.1
-	 */
-	protected $autoloadLanguage = true;
+		if (!$this->doNotLoad->active)
+		{
+			JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true);
+			JLoader::register('FormField', JPATH_PLUGINS . '/content/jtf/libraries/Form/FormField.php', true);
+			JLoader::register('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/Form/FormField.php', true);
+		}
+	}
 
 	/**
 	 * Plugin to generates Forms within content
@@ -166,20 +174,17 @@ class PlgContentJtf extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		$editModules = $this->app->input->getString('controller');
-
 		// Don't run in administration Panel or when the content is being indexed
-		if ($this->app->isClient('administrator')
+		if (strpos($article->text, '{jtf') === false
 			|| $context == 'com_finder.indexer'
-			|| $editModules == 'config.display.modules'
-			|| strpos($article->text, '{jtf') === false
-		)
+			|| $this->doNotLoad->extension == 'com_config'
+			|| $this->app->input->getCmd('layout') == 'edit')
 		{
 			return;
 		}
 
 		$this->debug = (boolean) $this->params->get('debug', 0);
-		$cIndex      = 0;
+		$cIndex      =& self::$count;
 		$lang        = Factory::getLanguage();
 		$langTag     = $lang->getTag();
 
@@ -211,27 +216,21 @@ class PlgContentJtf extends JPlugin
 		$pluginReplacements = $matches[0];
 		$userParams         = $matches[3];
 
-		JLoader::discover('JTFFramework', dirname(__FILE__) . '/assets/frameworks');
+		// Do not load if not permitted extansion ist load too.
+		if (!empty($pluginReplacements) && $this->doNotLoad->active)
+		{
+			$this->app->enqueueMessage(Text::sprintf('JTF_CAN_NOT_LOAD', $this->doNotLoad->extension), 'notice');
+			return;
+		}
+
+		JLoader::register('JTFForm', JPATH_PLUGINS . '/content/jtf/libraries/form/form.php', true);
+		JLoader::discover('JTFFramework', JPATH_PLUGINS . '/content/jtf/libraries/frameworks', true);
 
 		// Add form fields
-		JFormHelper::addFieldPath(dirname(__FILE__) . '/assets/fields');
+		JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/form/fields');
 
 		// Add form rules
-		JFormHelper::addRulePath(dirname(__FILE__) . '/assets/rules');
-
-/*
-		if (version_compare(JVERSION, '3.8', 'lt'))
-		{
-			JLoader::register('JTLayoutFile', dirname(__FILE__) . '/assets/j3.7.x/file.php');
-			JLoader::register('JForm', dirname(__FILE__) . '/assets/j3.7.x/form.php');
-			JLoader::register('JFormField', dirname(__FILE__) . '/assets/j3.7.x/field.php');
-		}
-		else
-		{
-			JLoader::register('JForm', dirname(__FILE__) . '/assets/j3.8.x/Form.php');
-			JLoader::register('JFormField', dirname(__FILE__) . '/assets/j3.8.x/FormField.php');
-		}
-*/
+		JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/form/rules');
 
 		foreach ($pluginReplacements as $rKey => $replacement)
 		{
@@ -281,7 +280,7 @@ class PlgContentJtf extends JPlugin
 					$startTime = $this->app->input->getFloat('start');
 					$fillOutTime = microtime(1) - $startTime;
 
-					$notSpamBot = $fillOutTime > $this->uParams['filloutTime'] ? true : false;
+					$notSpamBot = $fillOutTime > $this->uParams['fillouttime'] ? true : false;
 
 					if ($submitValues['jtf_important_notices'] == '' && $notSpamBot)
 					{
@@ -290,7 +289,6 @@ class PlgContentJtf extends JPlugin
 					else
 					{
 						$this->app->redirect(JRoute::_('index.php', false));
-						//$valid = false;
 					}
 
 					if ($valid)
@@ -299,7 +297,7 @@ class PlgContentJtf extends JPlugin
 
 						if ($sendmail)
 						{
-							$this->app->enqueueMessage(JText::_('JTF_EMAIL_THANKS'), 'message');
+							$this->app->enqueueMessage(Text::_('JTF_EMAIL_THANKS'), 'message');
 							$this->app->redirect(JRoute::_('index.php', false));
 						}
 					}
@@ -313,7 +311,6 @@ class PlgContentJtf extends JPlugin
 
 			$article->text = substr_replace($article->text, $html, $pos, $end);
 			$cIndex++;
-//			$this->resetUserParams();
 		}
 	}
 
@@ -323,23 +320,18 @@ class PlgContentJtf extends JPlugin
 	 * @return   void
 	 * @since    1.0
 	 */
-	protected function resetUserParams()
+	private function resetUserParams()
 	{
-		$this->uParams       = array();
-		$version             = new JVersion;
-		$joomlaMainVersion = substr($version->RELEASE, 0, strpos($version->RELEASE, '.'));
+		$this->uParams = array();
+		$this->form    = null;
 
-		// Set form start time
 		$this->uParams['startTime'] = microtime(1);
 
 		// Set minimum fillout time
-		$this->uParams['filloutTime'] = $this->params->get('filloutTime', 16);
+		$this->uParams['fillouttime'] = $this->params->get('filloutTime', 16);
 
 		// Set default captcha value
 		$this->uParams['captcha'] = $this->params->get('captcha');
-
-		// Set Joomla main version
-		$this->uParams['jversion'] = $joomlaMainVersion;
 
 		// Clear recipient
 		$this->uParams['mailto'] = null;
@@ -380,7 +372,7 @@ class PlgContentJtf extends JPlugin
 	 *
 	 * @since    3.8
 	 */
-	protected function setUserParams($vars)
+	private function setUserParams($vars)
 	{
 		$uParams = array();
 
@@ -413,7 +405,7 @@ class PlgContentJtf extends JPlugin
 	 * @return   string|boolean
 	 * @since    1.0
 	 */
-	protected function getFieldsFile()
+	private function getFieldsFile()
 	{
 		$template  = $this->app->getTemplate();
 		$framework = !empty($this->uParams['framework'][0]) ? '.' . $this->uParams['framework'][0] : '';
@@ -438,14 +430,14 @@ class PlgContentJtf extends JPlugin
 		}
 
 		$this->app->enqueueMessage(
-			JText::sprintf('JTF_THEME_ERROR', $this->uParams['theme']),
+			Text::sprintf('JTF_THEME_ERROR', $this->uParams['theme']),
 			'error'
 		);
 
 		return false;
 	}
 
-	protected function getLanguagePath($filename)
+	private function getLanguagePath($filename)
 	{
 		$template = $this->app->getTemplate();
 
@@ -472,7 +464,7 @@ class PlgContentJtf extends JPlugin
 		return false;
 	}
 
-	protected function setSubmit()
+	private function setSubmit()
 	{
 		$form           = $this->getForm();
 		$captcha        = array();
@@ -502,7 +494,7 @@ class PlgContentJtf extends JPlugin
 		$this->setSubmitButton($button);
 	}
 
-	protected function getForm()
+	private function getForm()
 	{
 		if (!empty($this->form))
 		{
@@ -514,7 +506,7 @@ class PlgContentJtf extends JPlugin
 		$formName            = $control;
 		$formXmlPath         = $this->getFieldsFile();
 		$formControl         = array('control' => $control);
-		$form                = JForm::getInstance($formName, $formXmlPath, $formControl);
+		$form                = JTFForm::getInstance($formName, $formXmlPath, $formControl);
 		$form->framework     = $this->uParams['framework'];
 		$form->rendererDebug = $this->debug;
 		$form->layoutPaths   = array(
@@ -530,7 +522,7 @@ class PlgContentJtf extends JPlugin
 		return $form;
 	}
 
-	protected function issetField($fieldtype, $fieldsetname = null)
+	private function issetField($fieldtype, $fieldsetname = null)
 	{
 		$form   = $this->getForm();
 		$fields = $form->getFieldset($fieldsetname);
@@ -556,7 +548,7 @@ class PlgContentJtf extends JPlugin
 	 * @return   array
 	 * @since    1.0
 	 */
-	protected function getTranslatedSubmittedFormValues($submittedValues = array())
+	private function getTranslatedSubmittedFormValues($submittedValues = array())
 	{
 		$formTheme = $this->uParams['theme'] . $this->uParams['index'];
 
@@ -574,7 +566,7 @@ class PlgContentJtf extends JPlugin
 			}
 			else
 			{
-				$subValue = JText::_($_subValue);
+				$subValue = Text::_($_subValue);
 			}
 
 			$submittedValues[$subKey] = $subValue;
@@ -583,7 +575,7 @@ class PlgContentJtf extends JPlugin
 		return $submittedValues;
 	}
 
-	protected function validate()
+	private function validate()
 	{
 		$form     = $this->getForm();
 		$token    = JSession::checkToken();
@@ -621,7 +613,7 @@ class PlgContentJtf extends JPlugin
 		return $valid;
 	}
 
-	protected function validateField($field)
+	private function validateField($field)
 	{
 		$form          = $this->getForm();
 		$value         = $field->value;
@@ -639,7 +631,7 @@ class PlgContentJtf extends JPlugin
 		if ($showon)
 		{
 			$_showon_value    = explode(':', $showon);
-			$_showon_value[1] = JText::_($_showon_value[1]);
+			$_showon_value[1] = Text::_($_showon_value[1]);
 			$showon_value     = $form->getValue($_showon_value[0]);
 
 			if (!in_array($showon_value, $_showon_value))
@@ -689,11 +681,11 @@ class PlgContentJtf extends JPlugin
 					{
 						if (is_array($value))
 						{
-							$val = in_array(JText::_($_val), $value) ? JText::_($_val) : $_val;
+							$val = in_array(Text::_($_val), $value) ? Text::_($_val) : $_val;
 						}
 						else
 						{
-							$val = $value == JText::_($_val) ? $value : $_val;
+							$val = $value == Text::_($_val) ? $value : $_val;
 						}
 
 						$oField->option[$i]->attributes()->value = $val;
@@ -757,7 +749,7 @@ class PlgContentJtf extends JPlugin
 	 * @return   array
 	 * @since    1.0
 	 */
-	protected function getSubmittedFiles($fieldName)
+	private function getSubmittedFiles($fieldName)
 	{
 		$value       = array();
 		$sumSize     = 0;
@@ -795,11 +787,11 @@ class PlgContentJtf extends JPlugin
 		return $value;
 	}
 
-	protected function invalidField($fieldName)
+	private function invalidField($fieldName)
 	{
 		$form       = $this->getForm();
 		$type       = $form->getFieldAttribute($fieldName, 'type');
-		$label      = JText::_($form->getFieldAttribute($fieldName, 'label'));
+		$label      = Text::_($form->getFieldAttribute($fieldName, 'label'));
 		$errorClass = 'invalid';
 
 		$class = $form->getFieldAttribute($fieldName, 'class');
@@ -822,20 +814,20 @@ class PlgContentJtf extends JPlugin
 		elseif ($type == 'file')
 		{
 			$this->app->enqueueMessage(
-					JText::sprintf('JTF_FILE_FIELD_ERROR', $label), 'error'
+					Text::sprintf('JTF_FILE_FIELD_ERROR', $label), 'error'
 				);
 		}
 		else
 		{
 			$this->app->enqueueMessage(
-					JText::sprintf('JTF_FIELD_ERROR', $label), 'error'
+					Text::sprintf('JTF_FIELD_ERROR', $label), 'error'
 				);
 		}
 
 		$this->validField = false;
 	}
 
-	protected function clearOldFiles()
+	private function clearOldFiles()
 	{
 		jimport('joomla.filesystem.folder');
 
@@ -867,7 +859,7 @@ class PlgContentJtf extends JPlugin
 		}
 	}
 
-	protected function saveFiles()
+	private function saveFiles()
 	{
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
@@ -886,7 +878,7 @@ class PlgContentJtf extends JPlugin
 
 		if (!file_exists($uploadBase . '/.htaccess'))
 		{
-			JFile::write($uploadBase. '/.htaccess', JText::_('JTF_SET_ATTACHMENT_HTACCESS'));
+			JFile::write($uploadBase. '/.htaccess', Text::_('JTF_SET_ATTACHMENT_HTACCESS'));
 		}
 
 		foreach ($submitedFiles as $fieldName => $files)
@@ -912,7 +904,7 @@ class PlgContentJtf extends JPlugin
 		}
 	}
 
-	protected function getTmpl($filename)
+	private function getTmpl($filename)
 	{
 //		$this->setFrameworkFieldClass();
 
@@ -947,14 +939,7 @@ class PlgContentJtf extends JPlugin
 			'controlFields' => $controlFields,
 		);
 
-		if (version_compare(JVERSION, '3.8', 'lt'))
-		{
-			$renderer = new JTLayoutFile($filename);
-		}
-		else
-		{
-			$renderer = new JLayoutFile($filename);
-		}
+		$renderer = new JLayoutFile($filename);
 
 		// Set Framwork as Layout->Suffix
 		if (!empty($this->uParams['framework'][0]) && $this->uParams['framework'][0] != 'joomla')
@@ -966,184 +951,6 @@ class PlgContentJtf extends JPlugin
 		$renderer->setDebug($this->debug);
 
 		return $renderer->render($displayData);
-	}
-
-	protected function sendMail()
-	{
-		$jConfig = Factory::getConfig();
-		$mailer = Factory::getMailer();
-
-		$subject = $this->getValue('subject');
-		$subject = !empty($subject) ? $subject : JText::sprintf('JTF_EMAIL_SUBJECT', $jConfig->get('sitename'));
-
-		$emailCredentials = $this->getEmailCredentials();
-
-		$recipient     = $emailCredentials['mailto'];
-		$cc            = $emailCredentials['cc'];
-		$bcc           = $emailCredentials['bcc'];
-		$replayToName  = $emailCredentials['visitor_name'];
-		$replayToEmail = $emailCredentials['visitor_email'];
-
-		if (empty($replayToEmail))
-		{
-			if (!empty(Factory::getConfig()->get('replyto')))
-			{
-				$replayToEmail = Factory::getConfig()->get('replyto');
-			}
-			else
-			{
-				$replayToEmail = Factory::getConfig()->get('mailfrom');
-			}
-
-			$replayToName = $jConfig->get('fromname');
-		}
-
-		$hBody  = $this->getTmpl('message.html');
-		$pBody  = $this->getTmpl('message.plain');
-
-		$mailer->addReplyTo($replayToEmail, $replayToName);
-		$mailer->addRecipient($recipient);
-
-		if (!empty($cc))
-		{
-			$mailer->addCc($cc);
-		}
-
-		if (!empty($bcc))
-		{
-			$mailer->addBcc($bcc);
-		}
-
-		$mailer->setSubject($subject);
-		$mailer->IsHTML(true);
-		$mailer->setBody($hBody);
-		$mailer->AltBody = $pBody;
-
-		$send = $mailer->Send();
-
-		return $send;
-	}
-
-	/**
-	 * Set captcha to submit fieldset or remove it, if is set off global
-	 *
-	 * @param   mixed  $captcha  Fieldname of captcha
-	 *
-	 * @return   void
-	 * @since    3.0
-	 */
-	protected function setCaptcha($captcha)
-	{
-		$form   = $this->getForm();
-		$hField = new SimpleXMLElement('<field name="jtf_important_notices" type="text" gridgroup="jtfhp" notmail="1"></field>');
-
-		$form->setField($hField, null, true, 'submit');
-		Factory::getDocument()->addStyleDeclaration('.hidden{display:none;visibility:hidden;}.jtfhp{position:absolute;top:-999em;left:-999em;height:0;width:0;}');
-
-		// Set captcha to submit fieldset
-		if (!empty($this->uParams['captcha']))
-		{
-			if (!empty($captcha))
-			{
-				if (empty($captcha['submit']))
-				{
-					$cField = $form->getFieldXml($captcha);
-
-					$form->removeField($captcha);
-					$form->setField($cField, null, true, 'submit');
-				}
-				else
-				{
-					$captcha = $captcha['submit'];
-				}
-			}
-			else
-			{
-				$captcha = 'captcha';
-				$cField  = new SimpleXMLElement('<field name="captcha" type="captcha" validate="captcha" description="JTF_CAPTCHA_DESC" label="JTF_CAPTCHA_LABEL"></field>');
-
-				$form->setField($cField, null, true, 'submit');
-			}
-
-			$form->setFieldAttribute($captcha, 'notmail', true);
-		}
-
-		// Remove Captcha if disabled by plugin
-		if (empty($this->uParams['captcha']) && !empty($captcha))
-		{
-			$captcha = false;
-
-			$form->removeField($captcha);
-		}
-
-		$this->issetCaptcha = $captcha;
-	}
-
-	/**
-	 * Set submit button to submit fieldset
-	 *
-	 * @param   mixed  $submit  Fieldname of submit button
-	 *
-	 * @return   void
-	 * @since    3.0
-	 */
-	protected function setSubmitButton($submit)
-	{
-		$form = $this->getForm();
-
-		// Set submit button to submit fieldset
-		if (!empty($submit))
-		{
-			if (empty($submit['submit']))
-			{
-				$cField = $form->getFieldXml($submit);
-				$form->removeField($submit);
-				$form->setField($cField, null, true, 'submit');
-			}
-			else
-			{
-				$cField = $form->getFieldXml($submit['submit']);
-				$form->removeField($submit['submit']);
-				$form->setField($cField, null, true, 'submit');
-				$submit = $submit['submit'];
-			}
-
-			$form->setFieldAttribute($submit, 'notmail', true);
-		}
-		else
-		{
-			$cField = new SimpleXMLElement('<field name="submit" type="submit" label="JTF_SUBMIT_BUTTON" notmail="1"></field>');
-			$form->setField($cField, null, true, 'submit');
-		}
-	}
-
-	/**
-	 * @param $name
-	 *
-	 * @return mixed
-	 *
-	 * @since 3.8
-	 */
-	private function getValue($name)
-	{
-		$data = $this->getForm()->getData()->toArray();
-		$value = null;
-
-		if (!empty($this->uParams[$name]))
-		{
-			$value = $this->uParams[$name];
-
-			if (!empty($data[$value]))
-			{
-				$value = $data[$value];
-			}
-		}
-		else if (!empty($data[$name]))
-		{
-			$value = $data[$name];
-		}
-
-		return $value;
 	}
 
 	private function getEmailCredentials()
@@ -1207,5 +1014,183 @@ class PlgContentJtf extends JPlugin
 		}
 
 		return $recipients;
+	}
+
+	private function sendMail()
+	{
+		$jConfig = Factory::getConfig();
+		$mailer = Factory::getMailer();
+
+		$subject = $this->getValue('subject');
+		$subject = !empty($subject) ? $subject : Text::sprintf('JTF_EMAIL_SUBJECT', $jConfig->get('sitename'));
+
+		$emailCredentials = $this->getEmailCredentials();
+
+		$recipient     = $emailCredentials['mailto'];
+		$cc            = $emailCredentials['cc'];
+		$bcc           = $emailCredentials['bcc'];
+		$replayToName  = $emailCredentials['visitor_name'];
+		$replayToEmail = $emailCredentials['visitor_email'];
+
+		if (empty($replayToEmail))
+		{
+			if (!empty($jConfig->get('replyto')))
+			{
+				$replayToEmail = $jConfig->get('replyto');
+			}
+			else
+			{
+				$replayToEmail = $jConfig->get('mailfrom');
+			}
+
+			$replayToName = $jConfig->get('fromname');
+		}
+
+		$hBody  = $this->getTmpl('message.html');
+		$pBody  = $this->getTmpl('message.plain');
+
+		$mailer->addReplyTo($replayToEmail, $replayToName);
+		$mailer->addRecipient($recipient);
+
+		if (!empty($cc))
+		{
+			$mailer->addCc($cc);
+		}
+
+		if (!empty($bcc))
+		{
+			$mailer->addBcc($bcc);
+		}
+
+		$mailer->setSubject($subject);
+		$mailer->IsHTML(true);
+		$mailer->setBody($hBody);
+		$mailer->AltBody = $pBody;
+
+		$send = $mailer->Send();
+
+		return $send;
+	}
+
+	/**
+	 * Set captcha to submit fieldset or remove it, if is set off global
+	 *
+	 * @param   mixed  $captcha  Fieldname of captcha
+	 *
+	 * @return   void
+	 * @since    3.0
+	 */
+	private function setCaptcha($captcha)
+	{
+		$form   = $this->getForm();
+		$hField = new SimpleXMLElement('<field name="jtf_important_notices" type="text" gridgroup="jtfhp" notmail="1"></field>');
+
+		$form->setField($hField, null, true, 'submit');
+		Factory::getDocument()->addStyleDeclaration('.hidden{display:none;visibility:hidden;}.jtfhp{position:absolute;top:-999em;left:-999em;height:0;width:0;}');
+
+		// Set captcha to submit fieldset
+		if (!empty($this->uParams['captcha']))
+		{
+			if (!empty($captcha))
+			{
+				if (empty($captcha['submit']))
+				{
+					$cField = $form->getFieldXml($captcha);
+
+					$form->removeField($captcha);
+					$form->setField($cField, null, true, 'submit');
+				}
+				else
+				{
+					$captcha = $captcha['submit'];
+				}
+			}
+			else
+			{
+				$captcha = 'captcha';
+				$cField  = new SimpleXMLElement('<field name="captcha" type="captcha" validate="captcha" description="JTF_CAPTCHA_DESC" label="JTF_CAPTCHA_LABEL"></field>');
+
+				$form->setField($cField, null, true, 'submit');
+			}
+
+			$form->setFieldAttribute($captcha, 'notmail', true);
+		}
+
+		// Remove Captcha if disabled by plugin
+		if (empty($this->uParams['captcha']) && !empty($captcha))
+		{
+			$captcha = false;
+
+			$form->removeField($captcha);
+		}
+
+		$this->issetCaptcha = $captcha;
+	}
+
+	/**
+	 * Set submit button to submit fieldset
+	 *
+	 * @param   mixed  $submit  Fieldname of submit button
+	 *
+	 * @return   void
+	 * @since    3.0
+	 */
+	private function setSubmitButton($submit)
+	{
+		$form = $this->getForm();
+
+		// Set submit button to submit fieldset
+		if (!empty($submit))
+		{
+			if (empty($submit['submit']))
+			{
+				$cField = $form->getFieldXml($submit);
+				$form->removeField($submit);
+				$form->setField($cField, null, true, 'submit');
+			}
+			else
+			{
+				$cField = $form->getFieldXml($submit['submit']);
+				$form->removeField($submit['submit']);
+				$form->setField($cField, null, true, 'submit');
+				$submit = $submit['submit'];
+			}
+
+			$form->setFieldAttribute($submit, 'notmail', true);
+		}
+		else
+		{
+			$cField = new SimpleXMLElement('<field name="submit" type="submit" label="JTF_SUBMIT_BUTTON" notmail="1"></field>');
+			$form->setField($cField, null, true, 'submit');
+		}
+	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return mixed
+	 *
+	 * @since 3.8
+	 */
+	private function getValue($name)
+	{
+		$data = $this->getForm()->getData()->toArray();
+		$value = null;
+
+		if (!empty($this->uParams[$name]))
+		{
+			$value = $this->uParams[$name];
+
+			if (!empty($data[$value]))
+			{
+				$value = $data[$value];
+			}
+		}
+		else if (!empty($data[$name]))
+		{
+			$value = $data[$name];
+		}
+
+		return $value;
 	}
 }
