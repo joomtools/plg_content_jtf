@@ -146,7 +146,7 @@ class PlgContentJtf extends CMSPlugin
 		$this->doNotLoad->extension = $option;
 
 		if (Factory::getApplication()->isClient('administrator')
-			|| in_array($option, array('com_config', 'com_contact', 'com_finder',))
+			|| in_array($option, array('com_config', 'com_users', 'com_contact', 'com_finder',))
 			|| $layout == 'edit'
 		)
 		{
