@@ -28,7 +28,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @var     string
 	 * @since   1.0
 	 */
-	const PLUGIN_REGEX = "@(<(\w+)[^>]*>|){jtf(\s.*)?}(</\\2>|)@";
+	const PLUGIN_REGEX = "@(<(\w+)[^>]*>)?{jtf(\s.*)?}(</\\2>)?@";
 
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
