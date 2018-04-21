@@ -45,7 +45,8 @@ extract($displayData);
 
 // Including fallback code for HTML5 non supported browsers.
 JHtml::_('jquery.framework');
-JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
+JHtml::_('script', 'plugins/content/jtf/assets/js/system/html5fallback.js', array('version' => 'auto'));
+
 ?>
 <button id="<?php echo $id; ?>" class="validate<?php echo !empty($buttonclass) ? ' ' . $buttonclass : ''; ?>"
 		type="submit">

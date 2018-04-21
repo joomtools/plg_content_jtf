@@ -10,17 +10,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Plugin\CMSPlugin;
-
 /**
  * @package      Joomla.Plugin
  * @subpackage   Content.Jtf
  *
  * @since    3.8
  */
-class PlgContentJtf extends CMSPlugin
+class PlgContentJtf extends JPlugin
 {
 	/**
 	 * The regular expression to identify Plugin call.
@@ -77,9 +73,9 @@ class PlgContentJtf extends CMSPlugin
 	private $validCaptcha = true;
 
 	/**
-	 * Set Joomla\CMS\Form object
+	 * Set JTFForm object
 	 *
-	 * @var     Joomla\CMS\Form
+	 * @var     JTFForm
 	 * @since   1.0
 	 */
 	private $form = null;
@@ -138,14 +134,14 @@ class PlgContentJtf extends CMSPlugin
 	{
 		parent::__construct($subject, $config);
 
-		$option = Factory::getApplication()->input->getCmd('option');
-		$layout = Factory::getApplication()->input->getCmd('layout');
+		$option = JFactory::getApplication()->input->getCmd('option', '');
+		$layout = JFactory::getApplication()->input->getCmd('layout', '');
 
-		$this->doNotLoad = new stdClass();
+		$this->doNotLoad = new stdClass;
 		$this->doNotLoad->active = false;
 		$this->doNotLoad->extension = $option;
 
-		if (Factory::getApplication()->isClient('administrator')
+		if (JFactory::getApplication()->isAdmin()
 			|| in_array($option, array('com_config', 'com_users', 'com_contact', 'com_finder',))
 			|| $layout == 'edit'
 		)
@@ -155,9 +151,12 @@ class PlgContentJtf extends CMSPlugin
 
 		if (!$this->doNotLoad->active)
 		{
-			JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true);
-			JLoader::register('FormField', JPATH_PLUGINS . '/content/jtf/libraries/Form/FormField.php', true);
-			JLoader::register('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/Form/FormField.php', true);
+			JLoader::register('JHtml', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/html/html.php', true);
+			JLoader::register('JHtmlJquery', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/html/jquery.php', true);
+			JLoader::register('JHtmlBootstrap', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/html/bootstrap.php', true);
+			JLoader::register('JHtmlBehavior', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/html/behavior.php', true);
+			JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/form/jformfield.php', true);
+			JLoader::register('JForm', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/form/form.php', true);
 		}
 	}
 
@@ -174,18 +173,20 @@ class PlgContentJtf extends CMSPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
+		$this->app = JFactory::getApplication();
+
 		// Don't run in administration Panel or when the content is being indexed
 		if (strpos($article->text, '{jtf') === false
 			|| $context == 'com_finder.indexer'
 			|| $this->doNotLoad->extension == 'com_config'
-			|| $this->app->input->getCmd('layout') == 'edit')
+			|| $this->app->input->getCmd('layout', '') == 'edit')
 		{
 			return;
 		}
 
 		$this->debug = (boolean) $this->params->get('debug', 0);
 		$cIndex      =& self::$count;
-		$lang        = Factory::getLanguage();
+		$lang        = JFactory::getLanguage();
 		$langTag     = $lang->getTag();
 
 		// Get all matches or return
@@ -219,18 +220,37 @@ class PlgContentJtf extends CMSPlugin
 		// Do not load if not permitted extansion ist load too.
 		if (!empty($pluginReplacements) && $this->doNotLoad->active)
 		{
-			$this->app->enqueueMessage(Text::sprintf('JTF_CAN_NOT_LOAD', $this->doNotLoad->extension), 'notice');
+			$this->app->enqueueMessage(JText::sprintf('JTF_CAN_NOT_LOAD', $this->doNotLoad->extension), 'notice');
 			return;
 		}
 
-		JLoader::register('JTFForm', JPATH_PLUGINS . '/content/jtf/libraries/form/form.php', true);
-		JLoader::discover('JTFFramework', JPATH_PLUGINS . '/content/jtf/libraries/frameworks', true);
-
 		// Add form fields
-		JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/form/fields');
+		JFormHelper::addFieldPath(JPATH_LIBRARIES . '/joomla/form/fields');
+		JFormHelper::addRulePath(JPATH_LIBRARIES . '/joomla/form/rule');
+		JFormHelper::addRulePath(JPATH_LIBRARIES . '/joomla/form/rules');
+		JFormHelper::addFormPath(JPATH_LIBRARIES . '/joomla/form/forms');
+		JFormHelper::addFieldPath(JPATH_LIBRARIES . '/cms/form/field');
+		JFormHelper::addRulePath(JPATH_LIBRARIES . '/cms/form/rule');
+		JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/form/fields');
 
 		// Add form rules
-		JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/form/rules');
+		JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/form/rules');
+
+		JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/form/jformfield.php', true);
+		JLoader::register('JForm', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/form/form.php', true);
+		JLoader::register('JTFForm', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/form/jtfform.php', true);
+		JLoader::register('JFormHelper', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/form/jformhelper.php', true);
+		JLoader::register('JLayoutInterface', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/layout/jlayoutinterface.php', true);
+		JLoader::register('JBaseLayout', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/layout/jbaselayout.php', true);
+		JLoader::register('JLayoutHelper', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/layout/jlayouthelper.php', true);
+		JLoader::register('JLayoutFile', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/layout/jfilelayout.php', true);
+		JLoader::register('JStringNormalise', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/string/normalise.php', true);
+		JLoader::register('JStringPunycode', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/string/punicodehelper.php', true);
+		JLoader::register('JUriHelper', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/uri/urihelper.php', true);
+		JLoader::register('JHtmlDocument', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/document/htmldocument.php', true);
+
+		JLoader::discover('JTFFramework', JPATH_PLUGINS . '/content/jtf/libraries/frameworks', true);
+//		JLoader::discover('JFormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla25eol/form/fields', true);
 
 		foreach ($pluginReplacements as $rKey => $replacement)
 		{
@@ -297,7 +317,7 @@ class PlgContentJtf extends CMSPlugin
 
 						if ($sendmail)
 						{
-							$this->app->enqueueMessage(Text::_('JTF_EMAIL_THANKS'), 'message');
+							$this->app->enqueueMessage(JText::_('JTF_EMAIL_THANKS'), 'message');
 							$this->app->redirect(JRoute::_('index.php', false));
 						}
 					}
@@ -430,7 +450,7 @@ class PlgContentJtf extends CMSPlugin
 		}
 
 		$this->app->enqueueMessage(
-			Text::sprintf('JTF_THEME_ERROR', $this->uParams['theme']),
+			JText::sprintf('JTF_THEME_ERROR', $this->uParams['theme']),
 			'error'
 		);
 
@@ -566,7 +586,7 @@ class PlgContentJtf extends CMSPlugin
 			}
 			else
 			{
-				$subValue = Text::_($_subValue);
+				$subValue = JText::_($_subValue);
 			}
 
 			$submittedValues[$subKey] = $subValue;
@@ -631,7 +651,7 @@ class PlgContentJtf extends CMSPlugin
 		if ($showon)
 		{
 			$_showon_value    = explode(':', $showon);
-			$_showon_value[1] = Text::_($_showon_value[1]);
+			$_showon_value[1] = JText::_($_showon_value[1]);
 			$showon_value     = $form->getValue($_showon_value[0]);
 
 			if (!in_array($showon_value, $_showon_value))
@@ -681,11 +701,11 @@ class PlgContentJtf extends CMSPlugin
 					{
 						if (is_array($value))
 						{
-							$val = in_array(Text::_($_val), $value) ? Text::_($_val) : $_val;
+							$val = in_array(JText::_($_val), $value) ? JText::_($_val) : $_val;
 						}
 						else
 						{
-							$val = $value == Text::_($_val) ? $value : $_val;
+							$val = $value == JText::_($_val) ? $value : $_val;
 						}
 
 						$oField->option[$i]->attributes()->value = $val;
@@ -754,10 +774,10 @@ class PlgContentJtf extends CMSPlugin
 		$value       = array();
 		$sumSize     = 0;
 		$index       = (int) $this->uParams['index'];
-		$jinput      = new \Joomla\Input\Files;
+		$jinput      = new JInputFiles;
 		$submitFiles = $jinput->get($this->uParams['theme'] . $index);
 
-		if (Joomla\Utilities\ArrayHelper::isAssociative($submitFiles[$fieldName]))
+		if (JArrayHelper::isAssociative($submitFiles[$fieldName]))
 		{
 			$submitFiles = array($submitFiles[$fieldName]);
 		}
@@ -791,7 +811,7 @@ class PlgContentJtf extends CMSPlugin
 	{
 		$form       = $this->getForm();
 		$type       = $form->getFieldAttribute($fieldName, 'type');
-		$label      = Text::_($form->getFieldAttribute($fieldName, 'label'));
+		$label      = JText::_($form->getFieldAttribute($fieldName, 'label'));
 		$errorClass = 'invalid';
 
 		$class = $form->getFieldAttribute($fieldName, 'class');
@@ -814,13 +834,13 @@ class PlgContentJtf extends CMSPlugin
 		elseif ($type == 'file')
 		{
 			$this->app->enqueueMessage(
-					Text::sprintf('JTF_FILE_FIELD_ERROR', $label), 'error'
+					JText::sprintf('JTF_FILE_FIELD_ERROR', $label), 'error'
 				);
 		}
 		else
 		{
 			$this->app->enqueueMessage(
-					Text::sprintf('JTF_FIELD_ERROR', $label), 'error'
+					JText::sprintf('JTF_FIELD_ERROR', $label), 'error'
 				);
 		}
 
@@ -878,7 +898,7 @@ class PlgContentJtf extends CMSPlugin
 
 		if (!file_exists($uploadBase . '/.htaccess'))
 		{
-			JFile::write($uploadBase. '/.htaccess', Text::_('JTF_SET_ATTACHMENT_HTACCESS'));
+			JFile::write($uploadBase. '/.htaccess', JText::_('JTF_SET_ATTACHMENT_HTACCESS'));
 		}
 
 		foreach ($submitedFiles as $fieldName => $files)
@@ -1001,13 +1021,13 @@ class PlgContentJtf extends CMSPlugin
 			{
 				if ($name == 'mailto')
 				{
-					if (!empty(Factory::getConfig()->get('replyto')))
+					if (!empty(JFactory::getConfig()->get('replyto')))
 					{
-						$recipients['mailto'][] = Factory::getConfig()->get('replyto');
+						$recipients['mailto'][] = JFactory::getConfig()->get('replyto');
 					}
 					else
 					{
-						$recipients['mailto'][] = Factory::getConfig()->get('mailfrom');
+						$recipients['mailto'][] = JFactory::getConfig()->get('mailfrom');
 					}
 				}
 			}
@@ -1018,11 +1038,11 @@ class PlgContentJtf extends CMSPlugin
 
 	private function sendMail()
 	{
-		$jConfig = Factory::getConfig();
-		$mailer = Factory::getMailer();
+		$jConfig = JFactory::getConfig();
+		$mailer = JFactory::getMailer();
 
 		$subject = $this->getValue('subject');
-		$subject = !empty($subject) ? $subject : Text::sprintf('JTF_EMAIL_SUBJECT', $jConfig->get('sitename'));
+		$subject = !empty($subject) ? $subject : JText::sprintf('JTF_EMAIL_SUBJECT', $jConfig->get('sitename'));
 
 		$emailCredentials = $this->getEmailCredentials();
 
@@ -1086,10 +1106,10 @@ class PlgContentJtf extends CMSPlugin
 		$hField = new SimpleXMLElement('<field name="jtf_important_notices" type="text" gridgroup="jtfhp" notmail="1"></field>');
 
 		$form->setField($hField, null, true, 'submit');
-		Factory::getDocument()->addStyleDeclaration('.hidden{display:none;visibility:hidden;}.jtfhp{position:absolute;top:-999em;left:-999em;height:0;width:0;}');
+		JFactory::getDocument()->addStyleDeclaration('.hidden{display:none;visibility:hidden;}.jtfhp{position:absolute;top:-999em;left:-999em;height:0;width:0;}');
 
 		// Set captcha to submit fieldset
-		if (!empty($this->uParams['captcha']))
+/*		if (!empty($this->uParams['captcha']))
 		{
 			if (!empty($captcha))
 			{
@@ -1123,7 +1143,7 @@ class PlgContentJtf extends CMSPlugin
 
 			$form->removeField($captcha);
 		}
-
+*/
 		$this->issetCaptcha = $captcha;
 	}
 

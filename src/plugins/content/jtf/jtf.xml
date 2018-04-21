@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.7" type="plugin" group="content" method="upgrade">
+<extension version="2.5" type="plugin" group="content" method="upgrade">
 	<name>JTF_XML_NAME</name>
-	<creationDate>##DATE##</creationDate>
+	<creationDate>2018-04-23</creationDate>
 	<author>Guido De Gobbis</author>
 	<authorEmail>support@joomtools.de</authorEmail>
 	<authorUrl>www.joomtools.de</authorUrl>
-	<copyright>Copyright (C) ##YEAR## JoomTools.de. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2018 JoomTools.de. All rights reserved.</copyright>
 	<license>GPL v3</license>
-	<version>##VERSION##</version>
+	<version>2.5.28-EOL</version>
 	<description>JTF_XML_DESC</description>
 
 	<files>
-		##FILES##
+		<folder>assets</folder>
+<folder>layouts</folder>
+<folder>tmpl</folder>
+<folder>libraries</folder>
+<file>script.php</file>
+<file plugin="jtf">jtf.php</file>
+<file>jtf.xml</file>
 	</files>
 
 	<languages folder="language">
-		##LANGUAGE_FILES##
+		<language tag="de-DE">de-DE/de-DE.plg_content_jtf.ini</language>
+<language tag="de-DE">de-DE/de-DE.plg_content_jtf.sys.ini</language>
+<language tag="en-GB">en-GB/en-GB.plg_content_jtf.ini</language>
+<language tag="en-GB">en-GB/en-GB.plg_content_jtf.sys.ini</language>
 	</languages>
 
 	<scriptfile>script.php</scriptfile>
 
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="/plugins/content/jtf/libraries/form/fields">
+			<fieldset name="basic">
 
 				<field name="captcha"
 				       type="list"
@@ -37,7 +46,7 @@
 
 				<field name="filloutTime"
 				       type="integer"
-				       default="16"
+				       default="10"
 				       first="10"
 				       last="40"
 				       step="2"
@@ -62,29 +71,15 @@
 				       description="JTF_XML_FILE_CLEAR_DESC"
 				/>
 
-				<field name="framework"
+				<field addfieldpath="/plugins/content/jtf/libraries/joomla25eol/form/fields"
+				       name="framework"
 				       type="frwk"
 				       default="0"
 				       label="JTF_XML_FRAMEWORK_LABEL"
 				       description="JTF_XML_FRAMEWORK_DESC"
 				/>
 
-				<field name="debug"
-				       type="radio"
-				       class="btn-group btn-group-yesno"
-				       default="0"
-				       label="JTF_XML_DEBUG_LABEL"
-				       description="JTF_XML_DEBUG_DESC"
-				>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
 			</fieldset>
 		</fields>
 	</config>
-	
-	<updateservers>
-		<server type="extension" priority="1" name="JTF_XML_NAME">https://raw.githubusercontent.com/JoomTools/updateserver/master/plg_content_jtf.xml</server>
-	</updateservers>
 </extension>

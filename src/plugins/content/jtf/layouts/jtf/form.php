@@ -22,8 +22,15 @@ extract($displayData);
  * @var   string   $frwkCss       Css styles needed for selected css-framework.
  */
 
+JHtml::_('jquery.framework');
+
+if ($form->framework[0] == 'joomla')
+{
+	//JHtml::_('bootstrap.framework');
+}
+
 JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidator');
+JHtml::_('behavior.formvalidation');
 JHtml::_('script', 'plugins/content/jtf/assets/js/scrollToError.js', array('version' => 'auto'));
 
 $invalidColor = '#ff0000';
@@ -40,6 +47,7 @@ JFactory::getDocument()->addStyleDeclaration(
 );
 
 ?>
+{emailcloak=off}
 <div class="contact-form">
 	<form name="<?php echo $id; ?>"
 		  id="<?php echo $id; ?>"

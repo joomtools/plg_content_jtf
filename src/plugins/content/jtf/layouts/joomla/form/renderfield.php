@@ -23,7 +23,7 @@ extract($displayData);
 if (!empty($options['showonEnabled']))
 {
 	JHtml::_('jquery.framework');
-	JHtml::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+	JHtml::_('script', 'plugins/content/jtf/assets/js/jui/cms.js', array('version' => 'auto'));
 	JHtml::_('script', 'plugins/content/jtf/assets/js/showon.js', array('version' => 'auto'));
 }
 
@@ -59,7 +59,7 @@ if (!empty($options['gridfield']))
 }
 ?>
 
-<div<?php echo implode(' ', $container); ?>>
+<div<?php echo implode(' ', $container); ?> style="margin-top: 10px;">
 
 	<?php if (empty($input)) : ?>
 		<?php echo $label; ?>

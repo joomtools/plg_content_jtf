@@ -48,7 +48,7 @@ extract($displayData);
 
 // Including fallback code for HTML5 non supported browsers.
 JHtml::_('jquery.framework');
-JHtml::_('script', 'system/html5fallback.js', false, true);
+JHtml::_('script', 'plugins/content/jtf/assets/js/system/html5fallback.js', array('version' => 'auto'));
 
 $autocomplete = !$autocomplete ? ' autocomplete="off"' : ' autocomplete="' . $autocomplete . '"';
 $autocomplete = $autocomplete == ' autocomplete="on"' ? '' : $autocomplete;
