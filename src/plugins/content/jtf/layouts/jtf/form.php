@@ -65,11 +65,13 @@ JFactory::getDocument()->addStyleDeclaration(
 					<p<?php echo $fieldsetDescClass; ?>><?php echo $desc; ?></p>
 				<?php endif; ?>
 
+				<div class="uk-grid" data-uk-grid-margin>
 				<?php foreach ($form->getFieldset($fieldset->name) as $field)
 				{
 					echo $field->renderField();
 				}
 				?>
+				</div>
 			</fieldset>
 		<?php endforeach;
 
