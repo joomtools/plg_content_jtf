@@ -85,6 +85,6 @@
 	</config>
 	
 	<updateservers>
-		<server type="extension" priority="1" name="JTF_XML_NAME">https://raw.githubusercontent.com/JoomTools/updateserver/master/plg_content_jtf.xml</server>
+		<server type="extension" priority="1" name="JTF_XML_NAME">https://raw.githubusercontent.com/JoomTools/plg_content_jtf/master/update.xml</server>
 	</updateservers>
 </extension>
