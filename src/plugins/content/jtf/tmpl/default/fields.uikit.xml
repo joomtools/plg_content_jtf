@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="horizontal">
+<form orientation="horizontal"
+      gridgroup="uk-width-1-1"
+>
 	<fieldset name="block1">
 		<field name="name"
 		       type="text"
@@ -54,6 +56,7 @@
 		       validate="options"
 		       filter="string"
 		       required="true"
+		       hiddenLabel="true"
 		>
 			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
 		</field>
