@@ -50,6 +50,7 @@
 		       validate="options"
 		       filter="string"
 		       required="true"
+		       hiddenLabel="true"
 		>
 			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
 		</field>
