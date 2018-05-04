@@ -15,11 +15,11 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
- * @var   string   $id            Form attribute id and name.
- * @var   \JForm   $form          JForm object instance.
- * @var   string   $enctype       Set form attribute enctype, if file field is set.
- * @var   string   $formClass     Classes for the form.
- * @var   string   $frwkCss       Css styles needed for selected css-framework.
+ * @var   string  $id         Form attribute id and name.
+ * @var   \JForm  $form       JForm object instance.
+ * @var   string  $enctype    Set form attribute enctype, if file field is set.
+ * @var   string  $formClass  Classes for the form.
+ * @var   string  $frwkCss    Css styles needed for selected css-framework.
  */
 
 JHtml::_('behavior.keepalive');
@@ -46,32 +46,45 @@ JFactory::getDocument()->addStyleDeclaration(
 		  action="<?php echo JRoute::_("index.php"); ?>"
 		  method="post"
 		  class="<?php echo $formClass; ?>"
-		<?php echo $enctype ?>>
+		<?php echo $enctype ?>
+	>
 
 		<p><strong><?php echo JText::_('JTF_REQUIRED_FIELDS_LABEL'); ?></strong></p>
 
 		<?php foreach ($form->getFieldsets() as $fieldset) :
-			$fieldsetClass = !empty($fieldset->class) ? ' class="' . $fieldset->class . '"' : '';
-			$fieldsetLabelClass = !empty($fieldset->labelClass) ? ' class="' . $fieldset->labelClass . '"' : '';
-			$fieldsetDescClass = !empty($fieldset->descClass) ? ' class="' . $fieldset->descClass . '"' : ''; ?>
+			$fieldsetClass = !empty($fieldset->class)
+				? ' class="' . $fieldset->class . '"' : '';
+			$fieldsetLabelClass = !empty($fieldset->labelClass)
+				? ' class="' . $fieldset->labelClass . '"' : '';
+			$fieldsetDescClass = !empty($fieldset->descClass)
+				? ' class="' . $fieldset->descClass . '"' : ''; ?>
 
 			<fieldset<?php echo $fieldsetClass; ?>>
 
-				<?php if (!empty($fieldset->label) && strlen($legend = trim(JText::_($fieldset->label)))) : ?>
+				<?php if (!empty($fieldset->label)
+					&& strlen($legend = trim(JText::_($fieldset->label)))
+				) : ?>
 					<legend<?php echo $fieldsetLabelClass; ?>><?php echo $legend; ?></legend>
 				<?php endif; ?>
 
-				<?php if (!empty($fieldset->description) && strlen($desc = trim(JText::_($fieldset->description)))) : ?>
+				<?php if (!empty($fieldset->description)
+					&& strlen($desc = trim(JText::_($fieldset->description)))
+				) : ?>
 					<p<?php echo $fieldsetDescClass; ?>><?php echo $desc; ?></p>
 				<?php endif; ?>
 
-				<div class="uk-grid" data-uk-grid-margin>
-				<?php foreach ($form->getFieldset($fieldset->name) as $field)
-				{
-					echo $field->renderField();
-				}
-				?>
-				</div>
+				<?php if (in_array($form->framework[0], array('uikit', 'uikit3'))) : ?>
+					<div class="uk-grid" data-uk-grid-margin>
+				<?php endif; ?>
+					<?php foreach ($form->getFieldset($fieldset->name) as $field)
+					{
+						echo $field->renderField();
+					}
+					?>
+				<?php if (in_array($form->framework[0], array('uikit', 'uikit3'))) : ?>
+					</div>
+				<?php endif; ?>
+
 			</fieldset>
 		<?php endforeach;
 
