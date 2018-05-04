@@ -15,9 +15,8 @@ extract($displayData);
 /**
  * Layout variables
  * ---------------------
- *    $options         : (array)  Optional parameters
- *    $label           : (string) The html code for the label (not required if $options['hiddenLabel'] is true)
- *    $input           : (string) The input field html code
+ * @var   string  $icon   Icon class.
+ * @var   string  $input  The input field html code.
  */
 
 ?>

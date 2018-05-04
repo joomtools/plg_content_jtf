@@ -61,8 +61,6 @@ class JFormFieldSubmit extends JFormField
 			'position'    => false,
 		);
 
-		$labelData['classes'][] = 'hidden';
-
 		return $this->getRenderer($this->renderLabelLayout)->render($labelData);
 	}
 
