@@ -77,7 +77,7 @@ JHtml::_('script', 'jui/jquery.minicolors.min.js', array('version' => 'auto', 'r
 JHtml::_('stylesheet', 'jui/jquery.minicolors.css', array('version' => 'auto', 'relative' => true));
 JHtml::_('script', 'system/color-field-adv-init.min.js', array('version' => 'auto', 'relative' => true));
 JFactory::getDocument()->addStyleDeclaration(
-	'.minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 30px !important;}'
+	'.minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}'
 );
 ?>
 <input type="text" name="<?php echo $name; ?>" id="<?php echo $id; ?>" value="<?php echo htmlspecialchars($color, ENT_COMPAT, 'UTF-8'); ?>" <?php

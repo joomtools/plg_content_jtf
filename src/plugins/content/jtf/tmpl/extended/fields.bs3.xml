@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form orientation="horizontal"
       gridlabel="col-sm-3"
-      gridfield="col-sm-8"
+      gridfield="col-sm-9"
 >
 	<fieldset name="block1">
 		<field name="anrede"
@@ -78,6 +78,7 @@
 		       validate="options"
 		       filter="string"
 		       required="true"
+		       hiddenLabel="true"
 		>
 			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
 		</field>

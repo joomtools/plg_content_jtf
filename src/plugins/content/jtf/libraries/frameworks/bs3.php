@@ -97,6 +97,10 @@ class JTFFrameworkBs3
 			),
 		);
 
+		$classes['class']['textarea'] = array(
+			'field' => array('form-control'),
+		);
+
 		$classes['class']['file'] = array(
 			'uploadicon' => 'icon-upload',
 			'buttons'    => array(

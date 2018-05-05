@@ -106,6 +106,9 @@ JHtml::_('script', $localesPath, false, true, false, false, true);
 JHtml::_('script', $helperPath, false, true, false, false, true);
 JHtml::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
 JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
+JFactory::getDocument()->addStyleDeclaration(
+	'.field-calendar #' . $id . '{margin-right: 40px;}'
+);
 ?>
 <div class="field-calendar">
 	<?php if (!$readonly && !$disabled) : ?>

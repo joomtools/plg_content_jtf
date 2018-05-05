@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<form orientation="horizontal">
+<form orientation="horizontal"
+      gridgroup="uk-width-1-1"
+>
 	<fieldset name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
 	          label="JTF_FIELDSET_DEFAULT_LABEL"
 	>
 		<field name="list"
 		       type="list"
-		       icon="uk-icon-list"
+		       icon="list"
 		       class="uk-width-1-1"
 		       description="JTF_LIST_DESC"
 		       label="JTF_LIST_LABEL"
@@ -80,7 +82,7 @@
 
 		<field name="showon_text"
 		       type="text"
-		       icon="uk-icon-pencil"
+		       icon="pencil"
 		       class="uk-width-1-1"
 		       maxlength="60"
 		       description="JTF_SHW_TXT_DESC"
@@ -92,7 +94,7 @@
 		<field name="text"
 		       type="text"
 		       class="uk-width-1-1"
-		       icon="uk-icon-pencil"
+		       icon="pencil"
 		       maxlength="60"
 		       description="JTF_TXT_DESC"
 		       label="JTF_TXT_LABEL"
@@ -101,7 +103,7 @@
 
 		<field name="email"
 		       type="email"
-		       icon="uk-icon-envelope"
+		       icon="mail"
 		       class="uk-width-1-1"
 		       maxlength="60"
 		       description="JTF_EMAIL_DESC"
@@ -112,7 +114,7 @@
 
 		<field name="tel"
 		       type="tel"
-		       icon="uk-icon-phone"
+		       icon="phone"
 		       class="uk-width-1-1"
 		       maxlength="60"
 		       description="JTF_TEL_DESC"
@@ -137,7 +139,7 @@
 
 		<field name="plz"
 		       type="plz"
-		       icon="uk-icon-map-marker"
+		       icon="location"
 		       size="5"
 		       maxlength="5"
 		       description="JTF_PLZ_DESC"
@@ -148,7 +150,7 @@
 
 		<field name="subject"
 		       type="text"
-		       icon="uk-icon-pencil"
+		       icon="pencil"
 		       class="uk-width-1-1"
 		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
@@ -242,6 +244,7 @@
 		<field name="category_com_content"
 		       type="category"
 		       class="uk-width-1-1"
+		       icon="list"
 		       extension="com_content"
 		       description="JTF_CATEGORY_DESC"
 		       label="JTF_CATEGORY_LABEL"

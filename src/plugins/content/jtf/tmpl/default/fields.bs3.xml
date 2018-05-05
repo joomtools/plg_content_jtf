@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form orientation="horizontal"
-      gridlabel="col-sm-2"
+      gridlabel="col-sm-3"
       gridfield="col-sm-9"
 >
 	<fieldset name="block1">
@@ -34,6 +34,7 @@
 		/>
 		<field name="message"
 		       type="textarea"
+		       icon="glyphicon glyphicon-pencil"
 		       cols="30"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"

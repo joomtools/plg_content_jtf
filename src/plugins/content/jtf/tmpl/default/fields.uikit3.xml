@@ -13,7 +13,6 @@
 		       label="JTF_NAME_LABEL"
 		       filter="string"
 		       required="true"
-		       hint="JTF_NAME_LABEL"
 		/>
 		<field name="email"
 		       type="email"
@@ -26,7 +25,6 @@
 		       filter="string"
 		       validate="email"
 		       required="true"
-		       hint="JTF_EMAIL_LABEL"
 		/>
 		<field name="subject"
 		       type="text"
@@ -38,7 +36,6 @@
 		       label="JTF_SUBJECT_LABEL"
 		       filter="string"
 		       required="true"
-		       hint="JTF_SUBJECT_LABEL"
 		/>
 		<field name="message"
 		       type="textarea"
@@ -50,7 +47,6 @@
 		       label="JTF_MESSAGE_LABEL"
 		       filter="safehtml"
 		       required="true"
-		       hint="JTF_MESSAGE_LABEL"
 		/>
 	</fieldset>
 	<fieldset name="consent_form"
@@ -58,6 +54,8 @@
 	>
 		<field name="privacy_policy"
 		       type="checkboxes"
+		       class="uk-width-1-1"
+		       gridgroup="uk-width-1-1"
 		       description=""
 		       label="JTF_PRIVACY_POLICY_LABEL"
 		       default=""

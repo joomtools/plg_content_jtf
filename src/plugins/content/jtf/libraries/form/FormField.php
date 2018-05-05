@@ -12,6 +12,7 @@ namespace Joomla\CMS\Form;
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\String\Normalise;
 use Joomla\String\StringHelper;
@@ -486,7 +487,6 @@ abstract class FormField
 			case 'optionclass':
 			case 'optionlabelclass':
 			case 'fieldname':
-			case 'formControl':
 			case 'group':
 			case 'disabled':
 			case 'readonly':
@@ -1049,6 +1049,23 @@ abstract class FormField
 		if (empty($options['hiddenLabel']) && $this->getAttribute('hiddenLabel'))
 		{
 			$options['hiddenLabel'] = true;
+		}
+
+		if (!empty($options['hiddenLabel'])
+			&& !empty($this->getAttribute('label'))
+			&& !in_array(strtolower($this->type), array('submit', 'editor', 'checkbox', 'checkboxes', 'radio'))
+		)
+		{
+			$star = '';
+
+			if ($this->getAttribute('required'))
+			{
+				$star = ' *';
+			}
+
+			$hint = Text::_($this->getAttribute('label')) . $star;
+
+			$this->hint = $hint;
 		}
 
 		if ($this->showon)

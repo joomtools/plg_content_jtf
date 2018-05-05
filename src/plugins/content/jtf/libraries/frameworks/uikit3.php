@@ -120,6 +120,10 @@ class JTFFrameworkUikit3
 			'field' => array('uk-select'),
 		);
 
+		$classes['class']['category'] = array(
+			'field' => array('uk-select'),
+		);
+
 		$classes['class']['submit'] = array(
 			'buttons' => array(
 				'class' => 'uk-button uk-button-default',

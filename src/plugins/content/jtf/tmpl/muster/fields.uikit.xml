@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<form orientation="horizontal">
+<form orientation="horizontal"
+      gridgroup="uk-width-1-1"
+>
 	<fieldset name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
 	          label="JTF_FIELDSET_DEFAULT_LABEL"

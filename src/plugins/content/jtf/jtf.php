@@ -10,9 +10,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+JLoader::discover('JTFFramework', JPATH_PLUGINS . '/content/jtf/libraries/frameworks', true);
+JLoader::register('JTFForm', JPATH_PLUGINS . '/content/jtf/libraries/form/form.php', true);
+
+// Add form fields
+JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/form/fields');
+
+// Add form rules
+JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/form/rules');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Profiler\Profiler;
 
 /**
  * @package      Joomla.Plugin
@@ -73,9 +83,9 @@ class PlgContentJtf extends CMSPlugin
 	private $validCaptcha = true;
 
 	/**
-	 * Set Joomla\CMS\Form object
+	 * Set JTFForm object
 	 *
-	 * @var     Joomla\CMS\Form
+	 * @var     JTFForm
 	 * @since   1.0
 	 */
 	private $form = null;
@@ -128,30 +138,41 @@ class PlgContentJtf extends CMSPlugin
 	 *                             Recognized key values include 'name', 'group', 'params', 'language'
 	 *                             (this list is not meant to be comprehensive).
 	 *
-	 * @since   1.5
+	 * @return   void
+	 * @since    1.5
 	 */
 	public function __construct($subject, array $config = array())
 	{
 		parent::__construct($subject, $config);
 
-		$option = Factory::getApplication()->input->getCmd('option');
-		$layout = Factory::getApplication()->input->getCmd('layout');
+		if ($this->app->isClient('administrator'))
+		{
+			return null;
+		}
+
+		$this->debug = (boolean) $this->params->get('debug', 0);
+		$option      = $this->app->input->getCmd('option');
+		$layout      = $this->app->input->getCmd('layout');
+
+		$component_exclusions = explode(
+			'|n|',
+			str_replace(
+				array("\r\n", "\r", "\n"),
+				'|n|',
+				str_replace(' ',
+					'',
+					$this->params->get('component_exclusions')
+				)
+			)
+		);
+
+		$component_exclusions = array_unique(array_filter($component_exclusions, 'strlen'));
 
 		$this->doNotLoad            = new stdClass();
 		$this->doNotLoad->active    = false;
 		$this->doNotLoad->extension = $option;
 
-		if (Factory::getApplication()->isClient('administrator')
-			|| in_array($option, array(
-					'com_config',
-					'com_users',
-					'com_contact',
-					'com_finder',
-					'com_flexicontent',
-				)
-			)
-			|| $layout == 'edit'
-		)
+		if (in_array($option, $component_exclusions) || $layout == 'edit')
 		{
 			$this->doNotLoad->active = true;
 		}
@@ -159,8 +180,9 @@ class PlgContentJtf extends CMSPlugin
 		if (!$this->doNotLoad->active)
 		{
 			JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true);
-			JLoader::register('FormField', JPATH_PLUGINS . '/content/jtf/libraries/Form/FormField.php', true);
-			JLoader::register('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/Form/FormField.php', true);
+			JLoader::register('FormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true);
+			JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true);
+			JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true, false, 'psr4');
 		}
 	}
 
@@ -186,10 +208,16 @@ class PlgContentJtf extends CMSPlugin
 			return;
 		}
 
-		$this->debug = (boolean) $this->params->get('debug', 0);
+		// Do not load if not permitted extansion ist load too.
+		if ($this->doNotLoad->active)
+		{
+			$this->app->enqueueMessage(Text::sprintf('JTF_CAN_NOT_LOAD', $this->doNotLoad->extension), 'notice');
+
+			return;
+		}
+
 		$cIndex      =& self::$count;
-		$lang        = Factory::getLanguage();
-		$langTag     = $lang->getTag();
+		$langTag     = $this->app->get('language');
 
 		// Get all matches or return
 		if (!preg_match_all(self::PLUGIN_REGEX, $article->text, $matches))
@@ -219,22 +247,7 @@ class PlgContentJtf extends CMSPlugin
 		$pluginReplacements = $matches[0];
 		$userParams         = $matches[3];
 
-		// Do not load if not permitted extansion ist load too.
-		if (!empty($pluginReplacements) && $this->doNotLoad->active)
-		{
-			$this->app->enqueueMessage(Text::sprintf('JTF_CAN_NOT_LOAD', $this->doNotLoad->extension), 'notice');
-
-			return;
-		}
-
-		JLoader::register('JTFForm', JPATH_PLUGINS . '/content/jtf/libraries/form/form.php', true);
-		JLoader::discover('JTFFramework', JPATH_PLUGINS . '/content/jtf/libraries/frameworks', true);
-
-		// Add form fields
-		JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/form/fields');
-
-		// Add form rules
-		JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/form/rules');
+		$this->loadLanguage('jtf_global', JPATH_PLUGINS . '/content/jtf/assets');
 
 		foreach ($pluginReplacements as $rKey => $replacement)
 		{
@@ -242,7 +255,6 @@ class PlgContentJtf extends CMSPlugin
 			$html = '';
 
 			$this->resetUserParams();
-			$this->loadLanguage('jtf_global', JPATH_PLUGINS . '/content/jtf/assets');
 
 			if (!empty($userParams[$rKey]))
 			{
@@ -272,7 +284,11 @@ class PlgContentJtf extends CMSPlugin
 					)
 				);
 
-				$lang->load('jtf_theme', $formLang);
+				if (!empty($formLang))
+				{
+					Factory::getLanguage()->load('jtf_theme', $formLang);
+				}
+
 				$this->setSubmit();
 
 				if ($formSubmitted)
@@ -316,6 +332,9 @@ class PlgContentJtf extends CMSPlugin
 			$article->text = substr_replace($article->text, $html, $pos, $end);
 			$cIndex++;
 		}
+
+		// Set profiler start time and memory usage and mark afterLoad in the profiler.
+		JDEBUG ? Profiler::getInstance('Application')->mark('plgContentJtf') : null;
 	}
 
 	/**
@@ -1151,17 +1170,13 @@ class PlgContentJtf extends CMSPlugin
 
 	private function getTmpl($filename)
 	{
-//		$this->setFrameworkFieldClass();
-
-		$index = $this->uParams['index'];
-		$id    = $this->uParams['theme'];
-		$form  = $this->getForm();
-
-		$form = JTFFrameworkHelper::setFrameworkClasses($form);
-
-		$formClass     = $form->getAttribute('class', '');
-		$frwkCss       = $form->frwrkClasses->getCss();
 		$enctype       = '';
+		$id            = $this->uParams['theme'];
+		$index         = $this->uParams['index'];
+		$form          = $this->getForm();
+		$form          = JTFFrameworkHelper::setFrameworkClasses($form);
+		$formClass     = $form->getAttribute('class', '');
+		$frwkCss       = $form->frwkClasses->getCss();
 		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
 			. '<input type="hidden" name="view" value="' . $this->app->input->get('view') . '" />'

@@ -30,7 +30,6 @@ JLoader::import('joomla.filesystem.path');
  */
 class JTFForm extends Form
 {
-
 	/**
 	 * Array of layoutPaths.
 	 *
@@ -38,6 +37,7 @@ class JTFForm extends Form
 	 * @since  11.1
 	 */
 	public $layoutPaths = array();
+
 
 	/**
 	 * Method to instantiate the form object.

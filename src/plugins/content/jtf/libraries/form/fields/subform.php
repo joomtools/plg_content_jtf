@@ -228,7 +228,7 @@ class JFormFieldSubform extends JFormField
 		$layoutPaths   = $this->form->layoutPaths;
 		$framework     = $this->form->framework;
 		$rendererDebug = $this->form->rendererDebug;
-		$frwrkClasses  = $this->form->frwrkClasses;
+		$frwkClasses   = $this->form->frwkClasses;
 		$tmpl          = null;
 		$forms         = array();
 		$control       = $this->name;
@@ -242,7 +242,7 @@ class JFormFieldSubform extends JFormField
 			$tmpl->layoutPaths = $layoutPaths;
 			$tmpl->framework = $framework;
 			$tmpl->renderDebug = $rendererDebug;
-			$tmpl->frwrkClasses = $frwrkClasses;
+			$tmpl->frwkClasses = $frwkClasses;
 
 			// Prepare the forms for exiting values
 			if ($this->multiple)
@@ -256,7 +256,7 @@ class JFormFieldSubform extends JFormField
 					$itemform->layoutPaths = $layoutPaths;
 					$itemform->framework = $framework;
 					$itemform->renderDebug = $rendererDebug;
-					$itemform->frwrkClasses = $frwrkClasses;
+					$itemform->frwkClasses = $frwkClasses;
 
 					if (!empty($value[$i]))
 					{

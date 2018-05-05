@@ -58,7 +58,6 @@ if (!empty($options['gridfield']))
 	$gridfield = ' class="' . $options['gridfield'] . '"';
 }
 ?>
-
 <div<?php echo implode(' ', $container); ?>>
 
 	<?php if (empty($input)) : ?>

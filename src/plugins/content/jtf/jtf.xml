@@ -24,6 +24,14 @@
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/plugins/content/jtf/libraries/form/fields">
 
+				<field name="component_exclusions"
+				       type="textarea"
+				       rows="10"
+				       default="com_config&#10;com_users&#10;com_contact&#10;com_finder&#10;com_flexicontent"
+				       label="JTF_XML_EXCLUDE_OPTION_LABEL"
+				       description="JTF_XML_EXCLUDE_OPTION_DESC"
+				/>
+
 				<field name="captcha"
 				       type="list"
 				       class="chzn-color-state"
@@ -64,7 +72,7 @@
 
 				<field name="framework"
 				       type="frwk"
-				       default="0"
+				       default="joomla"
 				       label="JTF_XML_FRAMEWORK_LABEL"
 				       description="JTF_XML_FRAMEWORK_DESC"
 				/>

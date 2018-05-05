@@ -53,7 +53,7 @@ class JTFFrameworkHelper
 		$frwkClasses   = new $frwkClassName($formclass, $orientation);
 		self::$classes = $frwkClasses->getClasses();
 
-		self::$form->frwrkClasses = $frwkClasses;
+		$form->frwkClasses = $frwkClasses;
 	}
 
 	protected static function setFormClasses()
@@ -66,12 +66,12 @@ class JTFFrameworkHelper
 			$form->setAttribute('class', implode(' ', $classes['form']));
 		}
 
-		if (!empty($form->getAttribute('gridgroup')))
+		if (!empty($form->getAttribute('gridgroup', '')))
 		{
 			$classes['gridgroup'][] = $form->getAttribute('gridgroup');
 		}
 
-		if (!empty($form->getAttribute('gridlabel')))
+		if (!empty($form->getAttribute('gridlabel', '')))
 		{
 			$classes['gridlabel'][] = $form->getAttribute('gridlabel');
 		}
@@ -100,15 +100,15 @@ class JTFFrameworkHelper
 
 				$fieldsetClasses['field'] = !empty($classes['fieldset']['field'])
 					? array_flip($classes['fieldset']['field'])
-					: '';
+					: array();
 
 				$fieldsetClasses['label'] = !empty($classes['fieldset']['label'])
 					? array_flip($classes['fieldset']['label'])
-					: '';
+					: array();
 
 				$fieldsetClasses['desc'] = !empty($classes['fieldset']['desc'])
 					? array_flip($classes['fieldset']['desc'])
-					: '';
+					: array();
 
 				if (!empty($fieldset['class']))
 				{
@@ -247,7 +247,7 @@ class JTFFrameworkHelper
 			$form->setEnctype = true;
 		}
 
-		if (in_array($type, array('text', 'email', 'textarea', 'plz', 'tel', 'list', 'combo', 'category')))
+		if (in_array($type, array('text', 'email', 'plz', 'tel', 'list', 'combo', 'category')))
 		{
 			if (!empty($frwkClasses['default']))
 			{
@@ -267,10 +267,9 @@ class JTFFrameworkHelper
 			);
 		}
 
-		if (in_array($type, array('checkboxes', 'radio', 'textarea', 'captcha')))
+		if (in_array($type, array('checkboxes', 'checkbox', 'radio', 'captcha', 'textarea')))
 		{
 			$form->setFieldAttribute($fieldname, 'icon', null);
-
 		}
 
 		if (in_array($type, array('checkboxes', 'radio')))

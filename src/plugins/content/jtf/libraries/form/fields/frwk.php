@@ -10,8 +10,6 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JLoader::discover('JTFFramework', JPATH_PLUGINS . '/content/jtf/libraries/frameworks', true);
-
 JFormHelper::loadFieldClass('list');
 
 /**
