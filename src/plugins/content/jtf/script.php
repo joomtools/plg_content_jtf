@@ -1,10 +1,11 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_admin
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
  *
- * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author      Guido De Gobbis <support@joomtools.de>
+ * @copyright   2017 JoomTools.de - All rights reserved.
+ * @license     GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
@@ -17,6 +18,18 @@ defined('_JEXEC') or die;
 class PlgContentJtfInstallerScript
 {
 	/**
+	 * Extension script constructor.
+	 *
+	 * @since   3.0.0
+	 */
+	public function __construct()
+	{
+		// Define the minumum versions to be supported.
+		$this->minimumJoomla = '3.8';
+		$this->minimumPhp    = '7.0';
+	}
+
+	/**
 	 * Function to act prior to installation process begins
 	 *
 	 * @param   string     $action    Which action is happening (install|uninstall|discover_install|update)
@@ -24,7 +37,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @return  boolean  True on success
 	 *
-	 * @since   3.7.0
+	 * @since   3.0.0
 	 */
 	public function preflight($action, $installer)
 	{
