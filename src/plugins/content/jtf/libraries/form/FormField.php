@@ -1158,10 +1158,7 @@ abstract class FormField
 	 */
 	protected function getLayoutPaths()
 	{
-		list($formName) = explode('_', $this->id);
-		$form = \JTFForm::getInstance($formName);
-
-		return $form->layoutPaths;
+		return !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
 	}
 
 	/**
@@ -1175,10 +1172,8 @@ abstract class FormField
 	 */
 	protected function getRenderer($layoutId = 'default')
 	{
-		$renderer = new FileLayout($layoutId);
-		list($formName) = explode('_', $this->id);
-		$form = \JTFForm::getInstance($formName);
-		$framework = $form->framework;
+		$renderer  = new FileLayout($layoutId);
+		$framework = !empty($this->form->framework) ? $this->form->framework : array();
 
 		// Set Framwork as Layout->Suffix
 		if (!empty($framework) && $framework[0] != 'joomla')
