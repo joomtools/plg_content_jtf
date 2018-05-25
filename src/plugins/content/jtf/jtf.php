@@ -381,7 +381,7 @@ class PlgContentJtf extends CMSPlugin
 		$this->uParams['file_clear'] = (int) $this->params->get('file_clear', 30);
 
 		// Set path in images to save uploaded files
-		$this->uParams['file_path'] = (int) $this->params->get('file_path', 'uploads');
+		$this->uParams['file_path'] = $this->params->get('file_path', 'uploads');
 
 
 		// Set default framework value
@@ -952,6 +952,13 @@ class PlgContentJtf extends CMSPlugin
 			return;
 		}
 
+		$bugUploadBase = JPATH_BASE . '/images/0';
+
+		if (is_dir($bugUploadBase))
+		{
+			$this->bugfixUploadFolder();
+		}
+
 		$uploadBase = JPATH_BASE . '/images/' . $this->uParams['file_path'];
 
 		if (!is_dir($uploadBase))
@@ -972,6 +979,38 @@ class PlgContentJtf extends CMSPlugin
 			{
 				JFolder::delete($uploadBase . '/' . $folder);
 			}
+		}
+	}
+
+	private function bugfixUploadFolder()
+	{
+		$srcBase = JPATH_BASE . '/images/0';
+		$destBase = JPATH_BASE . '/images/' . $this->uParams['file_path'];
+		$folders    = JFolder::folders($srcBase);
+
+		foreach ($folders as $key => $folder)
+		{
+			$src   = $srcBase . '/' . $folder;
+			$dest  = $destBase . '/' . $folder;
+
+			if (is_dir($dest))
+			{
+				$copied = JFolder::copy($src, $dest, '', true);
+			}
+			else
+			{
+				$moved = JFolder::move($src, $dest);
+			}
+
+			if ($copied === true || $moved === true)
+			{
+				unset($folders[$key]);
+			}
+		}
+
+		if (empty($folders))
+		{
+			JFolder::delete($srcBase);
 		}
 	}
 
