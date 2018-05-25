@@ -88,7 +88,7 @@ foreach ($fieldsets->fieldset as $fieldset)
 					<td>
 					<?php if (!is_array($value))
 					{
-						echo strip_tags($value);
+						echo $value;
 					}
 					else
 					{
@@ -160,7 +160,7 @@ foreach ($fieldsets->fieldset as $fieldset)
 											<?php echo strip_tags(JText::_($subFormLabel)); ?>
 										</th>
 										<td><?php echo $subFormValue
-												? nl2br(strip_tags(JText::_($subFormValue)))
+												? nl2br(JText::_($subFormValue))
 												: '--'; ?>
 										</td>
 									</tr>
