@@ -28,7 +28,7 @@ use Joomla\CMS\Profiler\Profiler;
  * @package      Joomla.Plugin
  * @subpackage   Content.Jtf
  *
- * @since   3.8
+ * @since   3.0.0
  */
 class PlgContentJtf extends CMSPlugin
 {
@@ -36,33 +36,33 @@ class PlgContentJtf extends CMSPlugin
 	 * The regular expression to identify Plugin call.
 	 *
 	 * @var     string
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
 	const PLUGIN_REGEX = "@(<(\w+)[^>]*>)?{jtf(\s.*)?}(</\\2>)?@";
 	/**
 	 * Set counter
 	 *
 	 * @var     int
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
-	private static $count = 0;
+	private static $count;
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
 	 * @var     boolean
-	 * @since   3.1
+	 * @since   3.0.0
 	 */
 	protected $autoloadLanguage = true;
 	/**
 	 * Global application object
 	 *
 	 * @var     JApplication
-	 * @since   11.1
+	 * @since   3.0.0
 	 */
 	protected $app = null;
 	/**
 	 * @var     stdClass
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
 	private $doNotLoad;
 
@@ -70,7 +70,7 @@ class PlgContentJtf extends CMSPlugin
 	 * Set captcha name
 	 *
 	 * @var     string
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
 	private $issetCaptcha;
 
@@ -78,7 +78,7 @@ class PlgContentJtf extends CMSPlugin
 	 * Set result of captcha validation
 	 *
 	 * @var     boolean
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
 	private $validCaptcha = true;
 
@@ -86,7 +86,7 @@ class PlgContentJtf extends CMSPlugin
 	 * Set JTFForm object
 	 *
 	 * @var     JTFForm
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
 	private $form = null;
 
@@ -94,7 +94,7 @@ class PlgContentJtf extends CMSPlugin
 	 * JFormField validation
 	 *
 	 * @var     boolean
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
 	private $validField = true;
 
@@ -102,7 +102,7 @@ class PlgContentJtf extends CMSPlugin
 	 * Array with JFormField Names of submitted Files
 	 *
 	 * @var     array
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
 	private $fileFields = array();
 
@@ -110,7 +110,7 @@ class PlgContentJtf extends CMSPlugin
 	 * Array with submitted Files
 	 *
 	 * @var     array
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
 	private $submitedFiles = array();
 
@@ -118,7 +118,7 @@ class PlgContentJtf extends CMSPlugin
 	 * Array with User params
 	 *
 	 * @var     array
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
 	private $uParams = array();
 
@@ -126,7 +126,7 @@ class PlgContentJtf extends CMSPlugin
 	 * Debug
 	 *
 	 * @var     boolean
-	 * @since   1.0
+	 * @since   3.0.0
 	 */
 	private $debug = false;
 
@@ -139,7 +139,7 @@ class PlgContentJtf extends CMSPlugin
 	 *                             (this list is not meant to be comprehensive).
 	 *
 	 * @return   void
-	 * @since    1.5
+	 * @since    3.0.0
 	 */
 	public function __construct($subject, array $config = array())
 	{
@@ -184,6 +184,7 @@ class PlgContentJtf extends CMSPlugin
 			JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true);
 			JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true, false, 'psr4');
 		}
+		self::$count = 0;
 	}
 
 	/**
@@ -195,7 +196,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @param   integer  $page     The 'page' number
 	 *
 	 * @return   void
-	 * @since    1.6
+	 * @since    3.0.0
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
@@ -216,17 +217,18 @@ class PlgContentJtf extends CMSPlugin
 			return;
 		}
 
-		$cIndex      =& self::$count;
-		$langTag     = $this->app->get('language');
-
 		// Get all matches or return
 		if (!preg_match_all(self::PLUGIN_REGEX, $article->text, $matches))
 		{
 			return;
 		}
 
-		$code = array_keys($matches[1], '<code>');
-		$pre  = array_keys($matches[1], '<pre>');
+		// Get language tag
+		$langTag = $this->app->get('language');
+
+		// Exclude <code/> and <pre/> matches
+		$code    = array_keys($matches[1], '<code>');
+		$pre     = array_keys($matches[1], '<pre>');
 
 		if (!empty($code) || !empty($pre))
 		{
@@ -239,14 +241,14 @@ class PlgContentJtf extends CMSPlugin
 							unset($array[$tag]);
 						}
 					}
-				},
-				array_merge($code, $pre)
+				}, array_merge($code, $pre)
 			);
 		}
 
 		$pluginReplacements = $matches[0];
 		$userParams         = $matches[3];
 
+		// Load global form language
 		$this->loadLanguage('jtf_global', JPATH_PLUGINS . '/content/jtf/assets');
 
 		foreach ($pluginReplacements as $rKey => $replacement)
@@ -265,83 +267,80 @@ class PlgContentJtf extends CMSPlugin
 			}
 
 			// Set form counter as index
-			$this->uParams['index'] = (int) $cIndex;
+			$this->uParams['index'] = (int) self::$count;
 
-			$formTheme = $this->uParams['theme'] . (int) $cIndex;
+			$formTheme = $this->uParams['theme'] . (int) self::$count;
 
 			// Get form submit task
 			$formSubmitted = ($this->app->input->get('task', false, 'post') == $formTheme . "_sendmail") ? true : false;
 
-			$formXmlPath = $this->getFieldsFile();
+			$formXmlPath = $this->getThemePath('fields.xml', true);
 
-			if (!empty($formXmlPath))
+			if (empty($formXmlPath))
 			{
-				$formLang = dirname(
-					dirname(
-						dirname(
-							$this->getLanguagePath('language/' . $langTag . '/' . $langTag . '.jtf_theme.ini')
-						)
-					)
-				);
+				return;
+			}
 
-				if (!empty($formLang))
+			$formLang = $this->getThemePath('language/' . $langTag . '/' . $langTag . '.jtf_theme.ini');
+
+			if (!empty($formLang))
+			{
+				Factory::getLanguage()->load('jtf_theme', $formLang);
+			}
+
+			$this->setSubmit();
+
+			if ($formSubmitted)
+			{
+				$submitValues = $this->getTranslatedSubmittedFormValues();
+
+				$this->getForm()->bind($submitValues);
+
+				$startTime   = $this->app->input->getFloat('start');
+				$fillOutTime = microtime(1) - $startTime;
+
+				$notSpamBot = $fillOutTime > $this->uParams['fillouttime'] ? true : false;
+
+				if ($submitValues['jtf_important_notices'] == '' && $notSpamBot)
 				{
-					Factory::getLanguage()->load('jtf_theme', $formLang);
+					$valid = $this->validate();
+				}
+				else
+				{
+					$this->app->redirect(JRoute::_('index.php', false));
 				}
 
-				$this->setSubmit();
-
-				if ($formSubmitted)
+				if ($valid)
 				{
-					$submitValues = $this->getTranslatedSubmittedFormValues();
+					$sendmail = $this->sendMail();
 
-					$this->getForm()->bind($submitValues);
-
-					$startTime   = $this->app->input->getFloat('start');
-					$fillOutTime = microtime(1) - $startTime;
-
-					$notSpamBot = $fillOutTime > $this->uParams['fillouttime'] ? true : false;
-
-					if ($submitValues['jtf_important_notices'] == '' && $notSpamBot)
+					if ($sendmail)
 					{
-						$valid = $this->validate();
-					}
-					else
-					{
+						$this->app->enqueueMessage(Text::_('JTF_EMAIL_THANKS'), 'message');
 						$this->app->redirect(JRoute::_('index.php', false));
-					}
-
-					if ($valid)
-					{
-						$sendmail = $this->sendMail();
-
-						if ($sendmail)
-						{
-							$this->app->enqueueMessage(Text::_('JTF_EMAIL_THANKS'), 'message');
-							$this->app->redirect(JRoute::_('index.php', false));
-						}
 					}
 				}
 			}
-
-			$html .= $this->getTmpl('form');
-
-			$pos = strpos($article->text, $replacement);
-			$end = strlen($replacement);
-
-			$article->text = substr_replace($article->text, $html, $pos, $end);
-			$cIndex++;
 		}
+
+		$html .= $this->getTmpl('form');
+
+		$pos = strpos($article->text, $replacement);
+		$end = strlen($replacement);
+
+		$article->text = substr_replace($article->text, $html, $pos, $end);
+		self::$count++;
+
 
 		// Set profiler start time and memory usage and mark afterLoad in the profiler.
 		JDEBUG ? Profiler::getInstance('Application')->mark('plgContentJtf') : null;
 	}
 
 	/**
-	 * Reset user Params to default
+	 * Reset user params to default values set in plugin
 	 *
 	 * @return   void
-	 * @since    1.0
+	 * @since    3.0.0
 	 */
 	private function resetUserParams()
 	{
@@ -350,19 +349,19 @@ class PlgContentJtf extends CMSPlugin
 
 		$this->uParams['startTime'] = microtime(1);
 
-		// Set minimum fillout time
+		// Set default minimum fillout time
 		$this->uParams['fillouttime'] = $this->params->get('filloutTime', 16);
 
 		// Set default captcha value
 		$this->uParams['captcha'] = $this->params->get('captcha');
 
-		// Clear recipient
+		// Clear mail recipient
 		$this->uParams['mailto'] = null;
 
-		// Clear cc
+		// Clear mail cc
 		$this->uParams['cc'] = null;
 
-		// Clear bcc
+		// Clear mail bcc
 		$this->uParams['bcc'] = null;
 
 		// Clear visitor_name
@@ -374,28 +373,28 @@ class PlgContentJtf extends CMSPlugin
 		// Clear subject
 		$this->uParams['subject'] = null;
 
-		// Set default theme
+		// Set theme to default
 		$this->uParams['theme'] = 'default';
 
-		// Set time to clear uploads
+		// Set default time to clear uploads
 		$this->uParams['file_clear'] = (int) $this->params->get('file_clear', 30);
 
-		// Set path in images to save uploaded files
-		$this->uParams['file_path'] = $this->params->get('file_path', 'uploads');
-
+		// Set default path in images to save uploaded files
+		$this->uParams['file_path'] = trim($this->params->get('file_path', 'uploads'), '\/');
 
 		// Set default framework value
-		$this->uParams['framework'] = array($this->params->get('framework'));
+		$this->uParams['framework'] = (array) $this->params->get('framework');
 	}
 
 	/**
-	 * Set user Params
+	 * Set user Params and override default values
 	 *
-	 * @param   array  $vars  Params pairs from Plugin call
+	 * @param   array  $vars  Params pairs from plugin call
 	 *
-	 * @since   3.8
+	 * @return   void
+	 * @since    3.0.0
 	 */
-	private function setUserParams($vars)
+	private function setUserParams(array $vars)
 	{
 		$uParams = array();
 
@@ -405,16 +404,16 @@ class PlgContentJtf extends CMSPlugin
 			{
 				list($key, $value) = explode('=', trim($var));
 
-				$key = strtolower($key);
+				$key = trim(strtolower($key));
+				$value = trim($value, '\/');
 
 				if ($key == 'framework')
 				{
-					$uParams[trim($key)] = array(trim($value));
+					$value = explode(',', $value);
+					$value = \Joomla\Utilities\ArrayHelper::arrayUnique($value);
 				}
-				else
-				{
-					$uParams[trim($key)] = trim($value);
-				}
+
+				$uParams[$key] = $value;
 			}
 		}
 
@@ -423,65 +422,113 @@ class PlgContentJtf extends CMSPlugin
 	}
 
 	/**
-	 * Checks if all needed files for Forms are found
+	 * Get absolute theme filepath
 	 *
-	 * @return   string|boolean
-	 * @since    1.0
+	 * @param   string  $filePath   Filepath relativ from inside of the theme
+	 * @param   bool    $framework  Search file with framework suffix
+	 *
+	 * @return   bool|string
+	 * @since    3.0.0
 	 */
-	private function getFieldsFile()
+	private function getThemePath($filePath, $framework = false)
 	{
-		$template  = $this->app->getTemplate();
-		$framework = !empty($this->uParams['framework'][0]) ? '.' . $this->uParams['framework'][0] : '';
-		$file      = 'fields' . $framework . '.xml';
+		$error = array();
+		$files = array($filePath);
+		$ext   = JFile::getExt($filePath);
 
-		$formPath = array(
-			JPATH_THEMES . '/' . $template . '/html/plg_content_jtf/' . $this->uParams['theme'],
-			JPATH_PLUGINS . '/content/jtf/tmpl/' . $this->uParams['theme'],
-		);
-
-		foreach ($formPath as $path)
+		if ($framework)
 		{
-			if (file_exists($path . '/' . $file))
+			$file  = JFile::stripExt($filePath);
+			$files = array();
+
+			foreach ($this->uParams['framework'] as $frwk)
 			{
-				return $path . '/' . $file;
+				$_frwk = '';
+
+				if ($frwk != 'joomla')
+				{
+					$_frwk = '.' . $frwk;
+				}
+
+				$files[] = $file . $_frwk . '.' . $ext;
 			}
 
-			if (file_exists($path . '/fields.xml'))
-			{
-				return $path . '/fields.xml';
-			}
+			$files[] = $filePath;
+			$files = \Joomla\Utilities\ArrayHelper::arrayUnique($files);
 		}
 
-		$this->app->enqueueMessage(
-			Text::sprintf('JTF_THEME_ERROR', $this->uParams['theme']),
-			'error'
-		);
-
-		return false;
-	}
-
-	private function getLanguagePath($filename)
-	{
 		$template = $this->app->getTemplate();
 
 		// Build template override path for theme
 		$tAbsPath = JPATH_THEMES . '/' . $template
 			. '/html/plg_content_jtf/'
 			. $this->uParams['theme'];
+		$tAbsPathFlat = str_replace('/', '.', trim($tAbsPath, '\/'));
 
 		// Build plugin path for theme
 		$bAbsPath = JPATH_PLUGINS . '/content/jtf/tmpl/'
 			. $this->uParams['theme'];
+		$bAbsPathFlat = str_replace('/', '.', trim($bAbsPath, '\/'));
 
-		// Set the right theme path
-		if (file_exists($tAbsPath . '/' . $filename))
+		$error['path'][$tAbsPathFlat] = true;
+		$error['path'][$bAbsPathFlat] = true;
+
+		foreach ($files as $filename)
 		{
-			return $tAbsPath . '/' . $filename;
+			// Set the right theme path
+			if (is_dir($tAbsPath ))
+			{
+				if (isset($error['path']))
+				{
+					unset($error['path']);
+				}
+
+				if (file_exists($tAbsPath . '/' . $filename))
+				{
+					if ($ext == 'ini')
+					{
+						return $tAbsPath;
+					}
+
+					return $tAbsPath . '/' . $filename;
+				}
+				$error['file'][$filename] = true;
+			}
+
+			if (is_dir($bAbsPath))
+			{
+				if (isset($error['path']))
+				{
+					unset($error['path']);
+				}
+
+				if (file_exists($bAbsPath . '/' . $filename))
+				{
+					if ($ext == 'ini')
+					{
+						return $bAbsPath;
+					}
+
+					return $bAbsPath . '/' . $filename;
+				}
+				$error['file'][$filename] = true;
+			}
 		}
 
-		if (file_exists($bAbsPath . '/' . $filename))
+		if (!empty($error['path']) && $ext != 'ini')
 		{
-			return $bAbsPath . '/' . $filename;
+			$this->app->enqueueMessage(
+				Text::sprintf('JTF_THEME_ERROR', $this->uParams['theme']),
+				'error'
+			);
+		}
+
+		if (!empty($error['file']) && $ext != 'ini')
+		{
+			$this->app->enqueueMessage(
+				Text::sprintf('JTF_FORM_XML_FILE_ERROR', implode(', ', $files),$this->uParams['theme']),
+				'error'
+			);
 		}
 
 		return false;
@@ -527,7 +574,7 @@ class PlgContentJtf extends CMSPlugin
 		$template            = $this->app->getTemplate();
 		$control             = $this->uParams['theme'] . (int) $this->uParams['index'];
 		$formName            = $control;
-		$formXmlPath         = $this->getFieldsFile();
+		$formXmlPath         = $this->getThemePath('fields.xml', true);
 		$formControl         = array('control' => $control);
 		$form                = JTFForm::getInstance($formName, $formXmlPath, $formControl);
 		$form->framework     = $this->uParams['framework'];
@@ -569,7 +616,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @param   mixed  $captcha  Fieldname of captcha
 	 *
 	 * @return   void
-	 * @since    3.0
+	 * @since    3.0.0
 	 */
 	private function setCaptcha($captcha)
 	{
@@ -624,7 +671,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @param   mixed  $submit  Fieldname of submit button
 	 *
 	 * @return   void
-	 * @since    3.0
+	 * @since    3.0.0
 	 */
 	private function setSubmitButton($submit)
 	{
@@ -662,7 +709,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @param   array  $submittedValues  Array of submitted values
 	 *
 	 * @return   array
-	 * @since    1.0
+	 * @since    3.0.0
 	 */
 	private function getTranslatedSubmittedFormValues($submittedValues = array())
 	{
@@ -863,7 +910,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @param   string  $fieldName  JFormField Name
 	 *
 	 * @return   array
-	 * @since    1.0
+	 * @since    3.0.0
 	 */
 	private function getSubmittedFiles($fieldName)
 	{
@@ -1119,8 +1166,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @param   $name
 	 *
 	 * @return   mixed
-	 *
-	 * @since   3.8
+	 * @since    3.0.0
 	 */
 	private function getValue($name)
 	{
