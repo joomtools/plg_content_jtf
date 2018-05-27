@@ -1166,7 +1166,7 @@ abstract class FormField
 	 *
 	 * @param   string  $layoutId  Id to load
 	 *
-	 * @return  FileLayout
+	 * @return   FileLayout
 	 *
 	 * @since   3.5
 	 */
@@ -1203,5 +1203,14 @@ abstract class FormField
 	protected function isDebugEnabled()
 	{
 		return ($this->getAttribute('debug', 'false') === 'true' || !empty($this->form->rendererDebug));
+	}
+
+	/**
+	 * @return   \Joomla\CMS\Form\Form
+	 * @since    JTF 3.0.0
+	 */
+	public function getForm()
+	{
+		return $this->form;
 	}
 }
