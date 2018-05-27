@@ -236,7 +236,7 @@ class JFormFieldSubform extends JFormField
 		try
 		{
 			// Prepare the form template
-			$formname = 'subform' . ($this->group ? $this->group . '.' : '.') . $this->fieldname;
+			$formname = $this->form->getName() . '.subform' . ($this->group ? $this->group . '.' : '.') . $this->fieldname;
 			$tmplcontrol = !$this->multiple ? $control : $control . '[' . $this->fieldname . 'X]';
 			$tmpl = JTFForm::getInstance($formname, $this->formsource, array('control' => $tmplcontrol));
 			$tmpl->layoutPaths = $layoutPaths;
