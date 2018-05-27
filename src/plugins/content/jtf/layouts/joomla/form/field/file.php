@@ -10,6 +10,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 extract($displayData);
 
 
@@ -49,49 +52,38 @@ extract($displayData);
  */
 
 // Including fallback code for HTML5 non supported browsers.
-JHtml::_('jquery.framework');
-JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
-JHtml::_('script', 'plugins/content/jtf/assets/js/file.js', array('version' => 'auto'));
-JHtml::_('stylesheet', 'plugins/content/jtf/assets/css/file.css', array('version' => 'auto'));
+HTMLHelper::_('jquery.framework');
+HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
+HTMLHelper::_('script', 'plugins/content/jtf/assets/js/lite.min.js', array('version' => 'auto'));
+HTMLHelper::_('script', 'plugins/content/jtf/assets/js/file.min.js', array('version' => 'auto'));
+HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/file.min.css', array('version' => 'auto'));
 
-$maxSize = JHtml::_('number.bytes', $uploadmaxsize);
-$errorMessage = JText::sprintf('JTF_UPLOAD_ERROR_MESSAGE', $maxSize);
-
-// Drag-drop installation
-JFactory::getDocument()->addScriptDeclaration("
-	jQuery(document).ready(function($) {
-		$('uploader-wrapper-$id').jtfUploadFile({
-			id            : '$id',
-			uploadMaxSize : '$uploadmaxsize', 
-			errorMessage  : '$errorMessage'
-		});
-	});
-");
-
-JFactory::getDocument()->addStyleDeclaration("
-
-");
+$maxSize = HTMLHelper::_('number.bytes', $uploadmaxsize);
+Text::sprintf('JTF_UPLOAD_ERROR_MESSAGE_SIZE', $maxSize, array('jsSafe' => true,'interpretBackSlashes' => true,'script' => true));
+Text::script('JTF_UPLOAD_ERROR_FILE_NOT_ALLOWED', true, true);
+Text::script('JTF_UPLOAD_ALLOWED_FILES_EXT', true, true);
 
 ?>
-<div id="uploader-wrapper-<?php echo $id; ?>">
+<div class="uploader-wrapper">
 	<div class="dragarea">
 		<div class="dragarea-content">
 			<p>
 				<span class="upload-icon <?php echo $uploadicon;?>" aria-hidden="true"></span>
 			</p>
 			<p class="lead">
-				<?php echo JText::_('JTF_DRAG_FILE_HERE'); ?>
-				<noscript class="invalid"><br /><?php echo JText::_('JTF_DRAG_FILE_HERE_NOSCRIPT'); ?></noscript>
+				<?php echo Text::_('JTF_DRAG_FILE_HERE'); ?>
+				<noscript class="invalid"><br /><?php echo Text::_('JTF_DRAG_FILE_HERE_NOSCRIPT'); ?></noscript>
 			</p>
 			<p>
 				<button type="button" class="<?php echo $buttonclass; ?> select-file-button">
 					<span class="<?php echo $buttonicon; ?>" aria-hidden="true"></span>
-					<?php echo JText::_('JTF_SELECT_FILE'); ?>
+					<?php echo Text::_('JTF_SELECT_FILE'); ?>
 				</button>
 			</p>
-			<p>
-				<?php echo JText::sprintf('JGLOBAL_MAXIMUM_UPLOAD_SIZE_LIMIT', $maxSize); ?>
+			<p class="maxUploadSize">
+				<?php echo Text::sprintf('JGLOBAL_MAXIMUM_UPLOAD_SIZE_LIMIT', $maxSize); ?>
 			</p>
+			<p class="allowedExt"></p>
 		</div>
 		<div class="legacy-uploader">
 			<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $uploadmaxsize; ?>">

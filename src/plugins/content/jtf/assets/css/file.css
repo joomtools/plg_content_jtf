@@ -12,10 +12,6 @@
 	z-index: -1;
 }
 
-.dragarea p.lead {
-	color: #999;
-}
-
 .dragarea .upload-icon {
 	font-size: 48px;
 	width: auto;

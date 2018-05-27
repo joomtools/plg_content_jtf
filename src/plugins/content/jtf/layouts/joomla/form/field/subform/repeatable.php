@@ -79,7 +79,16 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 	</div>
 </div>
 <script>
-	jQuery(document).on('subform-row-add', function (event, row) {
-		document.formvalidator = new JFormValidator();
-	})
+	(function ($) {
+		$(document).on('subform-row-add', function (event, row) {
+			document.formvalidator = new JFormValidator();
+
+			if ($(row).find('.uploader-wrapper') !== undefined) {
+				$(row).find('.uploader-wrapper').jtfUploadFile({
+					id: $(row).find('.legacy-uploader input[type="file"]').attr('id'),
+					uploadMaxSize: $(row).find('.legacy-uploader input[type="hidden"]').attr('value')
+				});
+			}
+		})
+	})(jQuery);
 </script>
