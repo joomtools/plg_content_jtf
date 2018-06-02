@@ -83,11 +83,13 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 			document.formvalidator = new JFormValidator();
 
 			if ($(row).find('.uploader-wrapper') !== undefined) {
-				$(row).find('.uploader-wrapper').jtfUploadFile({
-					id: $(row).find('.legacy-uploader input[type="file"]').attr('id'),
-					uploadMaxSize: $(row).find('.legacy-uploader input[type="hidden"]').attr('value')
+				$(row).find('.uploader-wrapper').each(function() {
+					$(this).jtfUploadFile({
+						id: $(this).find('.legacy-uploader input[type="file"]').attr('id'),
+						uploadMaxSize: $(this).find('.legacy-uploader input[type="hidden"]').attr('value')
+					});
 				});
 			}
-		})
+		});
 	})(jQuery);
 </script>

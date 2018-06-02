@@ -324,12 +324,13 @@ class JFormFieldSubform extends JFormField
 	 */
 	protected function getName($fieldName)
 	{
-		$name = '';
+		$formName = explode('.', $this->form->getName());
+		$name = $formName[0];
 
 		// If there is a form control set for the attached form add it first.
 		if ($this->formControl)
 		{
-			$name .= $this->formControl;
+			$name .= '_' . $this->formControl;
 		}
 
 		// If the field is in a group add the group control to the field name.

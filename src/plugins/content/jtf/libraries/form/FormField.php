@@ -753,6 +753,12 @@ abstract class FormField
 			$id .= $this->formControl;
 		}
 
+		if (empty($name))
+		{
+			$formName = explode('.', $this->form->getName());
+			$id .= $formName[0];
+		}
+
 		// If the field is in a group add the group control to the field id.
 		if ($this->group)
 		{
@@ -877,13 +883,18 @@ abstract class FormField
 	protected function getName($fieldName)
 	{
 		// To support repeated element, extensions can set this in plugin->onRenderSettings
-
 		$name = '';
 
 		// If there is a form control set for the attached form add it first.
 		if ($this->formControl)
 		{
 			$name .= $this->formControl;
+		}
+
+		if (empty($name))
+		{
+			$formName = explode('.', $this->form->getName());
+			$name .= $formName[0];
 		}
 
 		// If the field is in a group add the group control to the field name.
@@ -1068,10 +1079,17 @@ abstract class FormField
 			$this->hint = $hint;
 		}
 
+		$formControl = $this->formControl;
+
+		if (empty($formControl))
+		{
+			$formControl = $this->form->getName();
+		}
+
 		if ($this->showon)
 		{
 			$options['rel']           = ' data-showon=\'' .
-				json_encode(FormHelper::parseShowOnConditions($this->showon, $this->formControl, $this->group)) . '\'';
+				json_encode(FormHelper::parseShowOnConditions($this->showon, $formControl, $this->group)) . '\'';
 			$options['showonEnabled'] = true;
 		}
 

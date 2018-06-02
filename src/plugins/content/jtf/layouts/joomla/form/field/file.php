@@ -86,7 +86,7 @@ Text::script('JTF_UPLOAD_ALLOWED_FILES_EXT', true, true);
 			<p class="allowedExt"></p>
 		</div>
 		<div class="legacy-uploader">
-			<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $uploadmaxsize; ?>">
+			<input type="hidden" name="<?php echo $uploadmaxsize_name; ?>" value="<?php echo $uploadmaxsize; ?>">
 			<input type="file"
 				   name="<?php echo $name; ?>"
 				   id="<?php echo $id; ?>"
