@@ -256,30 +256,14 @@ class PlgContentJtf extends CMSPlugin
 			// Clear html replace
 			$html = '';
 
-			$this->resetUserParams();
+			$this->init($userParams[$rKey]);
 
-			if (!empty($userParams[$rKey]))
-			{
-				$vars = explode('|', $userParams[$rKey]);
-
-				// Set user params
-				$this->setUserParams($vars);
-			}
-
-			// Set form counter as index
-			$this->uParams['index'] = (int) self::$count;
-
-			$formTheme = $this->uParams['theme'] . (int) self::$count;
-
-			// Get form submit task
-			$formSubmitted = ($this->app->input->get('task', false, 'post') == $formTheme . "_sendmail") ? true : false;
-
-			$formXmlPath = $this->getThemePath('fields.xml', true);
-
-			if (empty($formXmlPath))
+			if (empty($this->uParams['formXmlPath']))
 			{
 				return;
 			}
+
+			$formTheme = $this->uParams['theme'] . (int) self::$count;
 
 			$formLang = $this->getThemePath('language/' . $langTag . '/' . $langTag . '.jtf_theme.ini');
 
@@ -288,7 +272,8 @@ class PlgContentJtf extends CMSPlugin
 				Factory::getLanguage()->load('jtf_theme', $formLang);
 			}
 
-			$this->setSubmit();
+			// Get form submit task
+			$formSubmitted = ($this->app->input->get('task', false, 'post') == $formTheme . "_sendmail") ? true : false;
 
 			if ($formSubmitted)
 			{
@@ -323,6 +308,8 @@ class PlgContentJtf extends CMSPlugin
 			}
 		}
 
+		$this->setSubmit();
+
 		$html .= $this->getTmpl('form');
 
 		$pos = strpos($article->text, $replacement);
@@ -334,6 +321,22 @@ class PlgContentJtf extends CMSPlugin
 
 		// Set profiler start time and memory usage and mark afterLoad in the profiler.
 		JDEBUG ? Profiler::getInstance('Application')->mark('plgContentJtf') : null;
+	}
+
+	private function init($userParams)
+	{
+		$this->resetUserParams();
+
+		if (!empty($userParams))
+		{
+			$vars = explode('|', $userParams);
+
+			// Set user params
+			$this->setUserParams($vars);
+		}
+
+		$this->uParams['formXmlPath'] = $this->getThemePath('fields.xml', true);
+
 	}
 
 	/**
@@ -572,11 +575,9 @@ class PlgContentJtf extends CMSPlugin
 		}
 
 		$template            = $this->app->getTemplate();
-		$control             = $this->uParams['theme'] . (int) $this->uParams['index'];
-		$formName            = $control;
-		$formXmlPath         = $this->getThemePath('fields.xml', true);
-		$formControl         = array('control' => $control);
-		$form                = JTFForm::getInstance($formName, $formXmlPath, $formControl);
+		$formName            = $this->uParams['theme'] . (int) self::$count;
+		$formXmlPath         = $this->uParams['formXmlPath'];
+		$form                = JTFForm::getInstance($formName, $formXmlPath);
 		$form->framework     = $this->uParams['framework'];
 		$form->rendererDebug = $this->debug;
 		$form->layoutPaths   = array(
@@ -621,7 +622,7 @@ class PlgContentJtf extends CMSPlugin
 	private function setCaptcha($captcha)
 	{
 		$form   = $this->getForm();
-		$hField = new SimpleXMLElement('<field name="jtf_important_notices" type="text" gridgroup="jtfhp" notmail="1"></field>');
+		$hField = new SimpleXMLElement('<field name="jtf_important_notices" type="text" gridgroup="jtfhp" hiddenLabel="true" notmail="1"></field>');
 
 		$form->setField($hField, null, true, 'submit');
 		Factory::getDocument()->addStyleDeclaration('.hidden{display:none;visibility:hidden;}.jtfhp{position:absolute;top:-999em;left:-999em;height:0;width:0;}');
@@ -713,7 +714,7 @@ class PlgContentJtf extends CMSPlugin
 	 */
 	private function getTranslatedSubmittedFormValues($submittedValues = array())
 	{
-		$formTheme = $this->uParams['theme'] . $this->uParams['index'];
+		$formTheme = $this->uParams['theme'] . self::$count;
 
 		// Get Form values
 		if (empty($submittedValues))
@@ -916,7 +917,7 @@ class PlgContentJtf extends CMSPlugin
 	{
 		$value       = array();
 		$sumSize     = 0;
-		$index       = (int) $this->uParams['index'];
+		$index       = (int) self::$count;
 		$jinput      = new \Joomla\Input\Files;
 		$submitFiles = $jinput->get($this->uParams['theme'] . $index);
 
@@ -1257,7 +1258,7 @@ class PlgContentJtf extends CMSPlugin
 	{
 		$enctype       = '';
 		$id            = $this->uParams['theme'];
-		$index         = $this->uParams['index'];
+		$index         = self::$count;
 		$form          = $this->getForm();
 		$form          = JTFFrameworkHelper::setFrameworkClasses($form);
 		$formClass     = $form->getAttribute('class', '');

@@ -11,8 +11,6 @@
 defined('JPATH_PLATFORM') or die;
 
 JLoader::discover('JTFFramework', JPATH_PLUGINS . '/content/jtf/libraries/frameworks', true);
-JLoader::register('JTFForm', JPATH_PLUGINS . '/content/jtf/libraries/form/form.php', true);
-
 JFormHelper::loadFieldClass('list');
 
 /**
