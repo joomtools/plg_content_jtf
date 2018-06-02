@@ -282,9 +282,8 @@ class PlgContentJtf extends CMSPlugin
 				$this->getForm()->bind($submitValues);
 
 				$startTime   = $this->app->input->getFloat('start');
-				$fillOutTime = microtime(1) - $startTime;
-
-				$notSpamBot = $fillOutTime > $this->uParams['fillouttime'] ? true : false;
+				$fillOutTime = $this->debug || JDEBUG ? 10000 : microtime(1) - $startTime;
+				$notSpamBot  = $fillOutTime > $this->uParams['fillouttime'] ? true : false;
 
 				if ($submitValues['jtf_important_notices'] == '' && $notSpamBot)
 				{
