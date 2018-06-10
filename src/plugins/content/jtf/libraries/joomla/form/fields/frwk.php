@@ -10,7 +10,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JLoader::discover('JTFFramework', JPATH_PLUGINS . '/content/jtf/libraries/frameworks', true);
+JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
+JLoader::discover('Jtf\Frameworks\Framework',JPATH_PLUGINS . '/content/jtf/libraries/jtf/Frameworks');
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -38,7 +39,7 @@ class JFormFieldFrwk extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$frwkPath = JPATH_PLUGINS . '/content/jtf/libraries/frameworks';
+		$frwkPath = JPATH_PLUGINS . '/content/jtf/libraries/jtf/Frameworks';
 		$frwk = JFolder::files($frwkPath);
 
 		$options = array();
@@ -47,16 +48,16 @@ class JFormFieldFrwk extends JFormFieldList
 		{
 			$fileName = JFile::stripExt($file);
 
-			if ($fileName == 'helper')
+			if ($fileName == 'Helper')
 			{
 				continue;
 			}
 
-			$framework = 'JTFFramework' . ucfirst($fileName);
+			$framework = 'Jtf\\Frameworks\\Framework' . ucfirst($fileName);
 			$fileRealName = $framework::$name;
 
 			$tmp = array(
-				'value'      => $fileName,
+				'value'      => strtolower($fileName),
 				'text'       => $fileRealName,
 			);
 

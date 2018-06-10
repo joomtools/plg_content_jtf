@@ -753,12 +753,6 @@ abstract class FormField
 			$id .= $this->formControl;
 		}
 
-		if (empty($name))
-		{
-			$formName = explode('.', $this->form->getName());
-			$id .= $formName[0];
-		}
-
 		// If the field is in a group add the group control to the field id.
 		if ($this->group)
 		{
@@ -889,12 +883,6 @@ abstract class FormField
 		if ($this->formControl)
 		{
 			$name .= $this->formControl;
-		}
-
-		if (empty($name))
-		{
-			$formName = explode('.', $this->form->getName());
-			$name .= $formName[0];
 		}
 
 		// If the field is in a group add the group control to the field name.

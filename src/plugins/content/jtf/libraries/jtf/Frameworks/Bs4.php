@@ -8,10 +8,12 @@
  * @license          GNU General Public License version 3 or later
  */
 
+namespace Jtf\Frameworks;
+
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Class JTFFrameworkUikit set basic css for used framework
+ * Class FrameworkBs4 set basic css for used framework
  *
  * Pattern for basic field classes
  *
@@ -37,9 +39,9 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 3.0
  **/
-class JTFFrameworkUikit3
+class FrameworkBs4
 {
-	public static $name = 'UIKit v3';
+	public static $name = 'Bootsrap v4';
 
 	private $classes;
 
@@ -50,90 +52,80 @@ class JTFFrameworkUikit3
 		$classes['css'] = '';
 
 		$classes['class']['form'] = $formclass;
-		array_unshift($classes['class']['form'], 'uk-form', 'form-validate');
+		array_unshift($classes['class']['form'], 'form-validate');
 
 		switch ($orientation)
 		{
 			case 'inline':
-				$inline = true;
-				break;
-
-			case 'stacked':
-				$classes['class']['form'][] = 'uk-form-stacked';
+				$inline                     = true;
+				$classes['class']['form'][] = 'form-inline';
 				break;
 
 			case 'horizontal':
-				$classes['class']['form'][] = 'uk-form-horizontal';
+				$classes['class']['form'][]      = 'form-horizontal';
+				$classes['class']['gridgroup'][] = 'row';
+				$classes['class']['gridlabel'][] = 'col-form-label';
 
+			case 'stacked':
 			default:
 				break;
 		}
 
 		$classes['class']['form']        = array_unique($classes['class']['form']);
-		$classes['class']['legend'][]    = 'uk-legend';
-		$classes['class']['default'][]   = 'uk-input';
-		$classes['class']['gridgroup'][] = 'uk-form-row uk-margin';
-
-		if (!$inline)
-		{
-			$classes['class']['gridlabel'][] = 'uk-form-label';
-			$classes['class']['gridfield'][] = 'uk-form-controls';
-		}
-
-		$classes['class']['fieldset'] = array(
-			'field' => array(
-				'uk-fieldset',
-				'uk-margin-bottom'
-			),
-			'label' => array('uk-legend'),
-			'desc'  => array('uk-fieldset-desc'),
-		);
+		$classes['class']['default'][]   = 'input';
+		$classes['class']['gridgroup'][] = 'form-group';
+		$classes['class']['gridfield'][] = 'form-control';
 
 		$classes['class']['calendar'] = array(
-			'field' => array(
-				'uk-input',
-			),
 			'buttons' => array(
-				'class' => 'uk-button-default',
-				'icon'  => 'calendar',
+				'class' => 'btn',
+				'icon'  => 'icon-calendar',
+			),
+		);
+
+		$classes['class']['checkbox'] = array(
+			'field'   => array('form-check'),
+			'options' => array(
+				'class'      => array('form-check-input'),
+				'labelclass' => array('form-check-label'),
 			),
 		);
 
 		$classes['class']['checkboxes'] = array(
-			'field' => array('checkboxes'),
+			'field'   => array('form-check'),
 			'options' => array(
-				'class' => array('uk-checkbox'),
+				'class'      => array('form-check-input'),
+				'labelclass' => array('form-check-label'),
 			),
 		);
 
 		$classes['class']['radio'] = array(
+			'field'   => array('form-check'),
 			'options' => array(
-				'class' => array('uk-radio'),
+				'class'      => array('form-check-input'),
+				'labelclass' => array('form-check-label'),
 			),
 		);
 
-		$classes['class']['textarea'] = array(
-			'field' => array('uk-textarea'),
-		);
-
-		$classes['class']['list'] = array(
-			'field' => array('uk-select'),
-		);
-
-		$classes['class']['category'] = array(
-			'field' => array('uk-select'),
+		$classes['class']['file'] = array(
+			'field'      => array('form-control-file'),
+			'uploadicon' => 'icon-upload',
+			'buttons'    => array(
+				'class' => 'btn btn-success',
+				'icon'  => 'icon-copy',
+			),
 		);
 
 		$classes['class']['submit'] = array(
 			'buttons' => array(
-				'class' => 'uk-button uk-button-default',
+				'class' => 'btn',
 			),
 		);
 
 		if ($inline)
 		{
-			$classes['class']['checkboxes']['field'][] = 'uk-display-inline';
-			$classes['class']['radio']['field'][]      = 'uk-display-inline';
+			$classes['class']['checkboxes']['field'][] = 'form-check-inline';
+			$classes['class']['radio']['field'][]      = 'form-check-inline';
 		}
 
 		$this->classes = $classes;

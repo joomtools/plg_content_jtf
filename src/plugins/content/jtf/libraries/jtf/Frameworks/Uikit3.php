@@ -8,10 +8,12 @@
  * @license          GNU General Public License version 3 or later
  */
 
+namespace Jtf\Frameworks;
+
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Class JTFFrameworkUikit set basic css for used framework
+ * Class FrameworkUikit3 set basic css for used framework
  *
  * Pattern for basic field classes
  *
@@ -37,9 +39,9 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 3.0
  **/
-class JTFFrameworkUikit
+class FrameworkUikit3
 {
-	public static $name = 'UIKit v2';
+	public static $name = 'UIKit v3';
 
 	private $classes;
 
@@ -47,7 +49,7 @@ class JTFFrameworkUikit
 	{
 		$inline         = false;
 		$classes        = array();
-		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
+		$classes['css'] = '';
 
 		$classes['class']['form'] = $formclass;
 		array_unshift($classes['class']['form'], 'uk-form', 'form-validate');
@@ -70,8 +72,9 @@ class JTFFrameworkUikit
 		}
 
 		$classes['class']['form']        = array_unique($classes['class']['form']);
+		$classes['class']['legend'][]    = 'uk-legend';
 		$classes['class']['default'][]   = 'uk-input';
-		$classes['class']['gridgroup'][] = 'uk-form-row';
+		$classes['class']['gridgroup'][] = 'uk-form-row uk-margin';
 
 		if (!$inline)
 		{
@@ -88,22 +91,18 @@ class JTFFrameworkUikit
 			'desc'  => array('uk-fieldset-desc'),
 		);
 
-		$classes['class']['note'] = array(
-			'buttons' => array(
-				'class' => 'uk-alert-close uk-close',
-				'icon'  => '',
-			),
-		);
-
 		$classes['class']['calendar'] = array(
+			'field' => array(
+				'uk-input',
+			),
 			'buttons' => array(
-				'class' => 'uk-button',
-				'icon'  => 'uk-icon-calendar',
+				'class' => 'uk-button-default',
+				'icon'  => 'calendar',
 			),
 		);
 
 		$classes['class']['checkboxes'] = array(
-			'field'   => array('checkboxes'),
+			'field' => array('checkboxes'),
 			'options' => array(
 				'class' => array('uk-checkbox'),
 			),
@@ -123,11 +122,15 @@ class JTFFrameworkUikit
 			'field' => array('uk-select'),
 		);
 
+		$classes['class']['category'] = array(
+			'field' => array('uk-select'),
+		);
+
 		$classes['class']['file'] = array(
-			'uploadicon' => 'uk-icon-upload',
+			'uploadicon' => 'upload; ratio: 2',
 			'buttons'    => array(
 				'class' => 'uk-button uk-button-success',
-				'icon'  => 'uk-icon-copy',
+				'icon'  => 'copy',
 			),
 		);
 

@@ -8,10 +8,12 @@
  * @license          GNU General Public License version 3 or later
  */
 
+namespace Jtf\Frameworks;
+
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Class JTFFrameworkJoomla set basic css for used framework
+ * Class FrameworkUikit set basic css for used framework
  *
  * Pattern for basic field classes
  *
@@ -37,9 +39,9 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 3.0
  **/
-class JTFFrameworkJoomla
+class FrameworkUikit
 {
-	public static $name = 'Joomla Core (Bootstrap v2)';
+	public static $name = 'UIKit v2';
 
 	private $classes;
 
@@ -47,91 +49,100 @@ class JTFFrameworkJoomla
 	{
 		$inline         = false;
 		$classes        = array();
-		$classes['css'] = '';
+		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
 
 		$classes['class']['form'] = $formclass;
-		array_unshift($classes['class']['form'], 'form-validate');
+		array_unshift($classes['class']['form'], 'uk-form', 'form-validate');
 
 		switch ($orientation)
 		{
 			case 'inline':
-				$inline                     = true;
-				$classes['class']['form'][] = 'form-inline';
-				$classes['class']['gridgroup'][] = 'inline';
-				$classes['class']['gridlabel'][] = 'inline';
-				$classes['class']['gridfield'][] = 'inline';
+				$inline = true;
+				break;
+
+			case 'stacked':
+				$classes['class']['form'][] = 'uk-form-stacked';
 				break;
 
 			case 'horizontal':
-				$classes['class']['form'][] = 'form-horizontal';
-				$classes['class']['gridgroup'][] = 'row';
-//				$classes['class']['gridlabel'][] = 'span3';
-//				$classes['class']['gridfield'][] = 'span9';
+				$classes['class']['form'][] = 'uk-form-horizontal';
 
-			case 'stacked':
 			default:
 				break;
 		}
 
 		$classes['class']['form']        = array_unique($classes['class']['form']);
-		$classes['class']['default'][]   = 'input';
-		$classes['class']['gridgroup'][] = 'control-group';
+		$classes['class']['default'][]   = 'uk-input';
+		$classes['class']['gridgroup'][] = 'uk-form-row';
 
 		if (!$inline)
 		{
-			$classes['class']['gridlabel'][] = 'control-label';
-			$classes['class']['gridfield'][] = 'controls';
+			$classes['class']['gridlabel'][] = 'uk-form-label';
+			$classes['class']['gridfield'][] = 'uk-form-controls';
 		}
+
+		$classes['class']['fieldset'] = array(
+			'field' => array(
+				'uk-fieldset',
+				'uk-margin-bottom'
+			),
+			'label' => array('uk-legend'),
+			'desc'  => array('uk-fieldset-desc'),
+		);
 
 		$classes['class']['note'] = array(
 			'buttons' => array(
-				'class' => 'close',
-				'icon'  => '&times;',
+				'class' => 'uk-alert-close uk-close',
+				'icon'  => '',
 			),
 		);
 
 		$classes['class']['calendar'] = array(
 			'buttons' => array(
-				'class' => 'btn btn-secondary',
-				'icon'  => 'icon-calendar',
+				'class' => 'uk-button',
+				'icon'  => 'uk-icon-calendar',
 			),
 		);
 
-		$classes['class']['checkbox'] = array(
-			'field' => array('checkbox'),
-		);
-
 		$classes['class']['checkboxes'] = array(
-			'field' => array('checkboxes'),
+			'field'   => array('checkboxes'),
 			'options' => array(
-				'labelclass' => array('checkbox'),
+				'class' => array('uk-checkbox'),
 			),
 		);
 
 		$classes['class']['radio'] = array(
 			'options' => array(
-				'labelclass' => array('radio'),
+				'class' => array('uk-radio'),
 			),
 		);
 
+		$classes['class']['textarea'] = array(
+			'field' => array('uk-textarea'),
+		);
+
+		$classes['class']['list'] = array(
+			'field' => array('uk-select'),
+		);
+
 		$classes['class']['file'] = array(
-			'uploadicon' => 'icon-upload',
+			'uploadicon' => 'uk-icon-upload',
 			'buttons'    => array(
-				'class' => 'btn btn-success',
-				'icon'  => 'icon-copy',
+				'class' => 'uk-button uk-button-success',
+				'icon'  => 'uk-icon-copy',
 			),
 		);
 
 		$classes['class']['submit'] = array(
 			'buttons' => array(
-				'class' => 'btn',
+				'class' => 'uk-button uk-button-default',
 			),
 		);
 
 		if ($inline)
 		{
-			$classes['class']['checkboxes']['field'][] = 'inline';
-			$classes['class']['radio']['field'][]      = 'inline';
+			$classes['class']['checkboxes']['field'][] = 'uk-display-inline';
+			$classes['class']['radio']['field'][]      = 'uk-display-inline';
 		}
 
 		$this->classes = $classes;

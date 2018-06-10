@@ -8,10 +8,12 @@
  * @license          GNU General Public License version 3 or later
  */
 
+namespace Jtf\Frameworks;
+
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Class JTFFrameworkJoomla set basic css for used framework
+ * Class FrameworkBs3 set basic css for used framework
  *
  * Pattern for basic field classes
  *
@@ -37,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since 3.0
  **/
-class JTFFrameworkBs3
+class FrameworkBs3
 {
 	public static $name = 'Bootsrap v3';
 
@@ -102,10 +104,10 @@ class JTFFrameworkBs3
 		);
 
 		$classes['class']['file'] = array(
-			'uploadicon' => 'icon-upload',
+			'uploadicon' => 'glyphicon glyphicon-upload',
 			'buttons'    => array(
 				'class' => 'btn btn-success',
-				'icon'  => 'icon-copy',
+				'icon'  => 'glyphicon glyphicon-copy',
 			),
 		);
 

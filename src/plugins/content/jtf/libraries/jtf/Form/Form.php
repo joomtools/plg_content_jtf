@@ -8,14 +8,20 @@
  * @license      GNU General Public License version 3 or later
  */
 
-//namespace Joomla\CMS\Form;
+namespace Jtf\Form;
 
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
-use Joomla\CMS\Form\Form;
 
-JLoader::import('joomla.filesystem.path');
+// Add form fields
+\JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields');
+
+// Add form rules
+\JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules');
+\JLoader::registerNamespace('Joomla\\CMS\\Form\\Rule', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules', false, false, 'psr4');
+
+\JLoader::import('joomla.filesystem.path');
 
 /**
  * Form Class for the Joomla Platform.
@@ -28,7 +34,7 @@ JLoader::import('joomla.filesystem.path');
  * @link   http://www.w3.org/TR/html5/forms.html
  * @since  11.1
  */
-class JTFForm extends Form
+class Form extends \Joomla\CMS\Form\Form
 {
 	/**
 	 * Array of layoutPaths.
@@ -159,5 +165,29 @@ class JTFForm extends Form
 		}
 
 		$this->syncPaths();
+	}
+
+	/**
+	 * Return all errors, if any.
+	 *
+	 * @return   array  Array of error messages or RuntimeException objects.
+	 *
+	 * @since   11.1
+	 */
+	public function getErrors()
+	{
+		return $this->errors;
+	}
+
+	/**
+	 * Reset submitted Values
+	 *
+	 * @return   void
+	 *
+	 * @since   JTF 3.0.0
+	 */
+	public function resetData()
+	{
+		$this->data = new Registry;
 	}
 }

@@ -76,6 +76,11 @@ foreach ($fieldsets->fieldset as $fieldset)
 							}
 						}
 
+						if (empty($values))
+						{
+							$values = array();
+						}
+
 						$value = implode(", ", $values);
 						unset($values);
 					}
@@ -88,18 +93,20 @@ foreach ($fieldsets->fieldset as $fieldset)
 					<td>
 					<?php if (!is_array($value))
 					{
-						echo $value;
+						echo $value
+							? nl2br(JText::_($value))
+							: '--';
 					}
 					else
 					{
 
 						if ($type == 'subform')
 						{
-							$formname   = $form->getFormControl();
-							$fieldname  = (string) $field['name'];
-							$formsource = (string) $field['formsource'];
-							$setTable   = false;
-							$counter    = count($value) - 1;
+							$fieldname      = (string) $field['name'];
+							$setTable       = false;
+							$counter        = count($value) - 1;
+							$subForm       = $form->getField($fieldname)->loadSubForm();
+							$subFormFields = $subForm->getGroup('');
 
 							if (!empty($value))
 							{
@@ -111,18 +118,17 @@ foreach ($fieldsets->fieldset as $fieldset)
 
 							foreach ($value as $valuesKey => $subValues)
 							{
-								$control = $formname . '[' . $valuesKey . ']';
-								$subForm = $form::getInstance(
-									'subform.' . $valuesKey,
-									$formsource,
-									array('control' => $control)
-								);
-
-								foreach ($subForm->getGroup('') as $subFormField)
+								foreach ($subFormFields as $subFormField)
 								{
 									$subFormType  = $subFormField->getAttribute('type');
 									$subFormLabel = $subFormField->getAttribute('label');
 									$subFormName  = $subFormField->getAttribute('name');
+
+									if (!empty($subFormField->getAttribute('notmail')))
+									{
+										continue;
+									}
+
 									$subFormValue = $form->getValue($fieldname . '.' . $valuesKey . '.' . $subFormName);
 
 									if ($subFormType == 'file' && $fileTimeOut == '' && $fileClear > 0)
@@ -150,6 +156,11 @@ foreach ($fieldsets->fieldset as $fieldset)
 											{
 												$subFormValues[] = strip_tags(trim(JText::_($_value)));
 											}
+										}
+
+										if (empty($subFormValues))
+										{
+											$subFormValues = array();
 										}
 
 										$subFormValue = implode(", ", $subFormValues);

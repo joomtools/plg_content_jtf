@@ -179,22 +179,15 @@ class JFormFieldFile extends JFormField
 			$uploadmaxsize = JUtility::getMaxUploadSize();
 		}
 
-//    $uploadmaxsize_id   = $data['id'] . '__max_file_size';
-
 		$name = str_replace('][]', '', $data['name']);
 
 		$uploadmaxsize_name = $name . '][max_file_size]';
 
 		$extraData = array(
-			'accept'        => $this->accept,
-			'multiple'      => $this->multiple,
-			'uploadicon'    => $this->uploadicon,
-			'uploadmaxsize' => $uploadmaxsize,
 			'accept'             => $this->accept,
 			'multiple'           => $this->multiple,
 			'uploadicon'         => $this->uploadicon,
 			'uploadmaxsize'      => $uploadmaxsize,
-//      'uploadmaxsize_id'   => $uploadmaxsize_id,
 			'uploadmaxsize_name' => $uploadmaxsize_name,
 		);
 

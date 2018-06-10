@@ -8,9 +8,17 @@
  * @license          GNU General Public License version 3 or later
  */
 
-defined('JPATH_PLATFORM') or die;
+namespace Jtf\Frameworks;
 
-class JTFFrameworkHelper
+defined('JPATH_PLATFORM') or die;
+// Add form fields
+\JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields');
+
+// Add form rules
+\JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules');
+\JLoader::registerNamespace('Joomla\\CMS\\Form\\Rule', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules', false, false, 'psr4');
+
+class FrameworkHelper
 {
 	protected static $form = null;
 	protected static $classes = null;
@@ -49,7 +57,7 @@ class JTFFrameworkHelper
 			$framework = $form->framework[0];
 		}
 
-		$frwkClassName = 'JTFFramework' . ucfirst($framework);
+		$frwkClassName = 'Jtf\\Frameworks\\Framework' . ucfirst($framework);
 		$frwkClasses   = new $frwkClassName($formclass, $orientation);
 		self::$classes = $frwkClasses->getClasses();
 

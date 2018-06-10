@@ -11,6 +11,8 @@ defined('JPATH_PLATFORM') or die;
 
 jimport('joomla.filesystem.path');
 
+use Jtf\Form\Form;
+
 /**
  * The Field to load the form inside current form
  *
@@ -221,56 +223,15 @@ class JFormFieldSubform extends JFormField
 	 */
 	protected function getInput()
 	{
-		$value = $this->value ? (array) $this->value : array();
-
 		// Prepare data for renderer
-		$data          = parent::getLayoutData();
-		$layoutPaths   = $this->form->layoutPaths;
-		$framework     = $this->form->framework;
-		$rendererDebug = $this->form->rendererDebug;
-		$frwkClasses   = $this->form->frwkClasses;
-		$tmpl          = null;
-		$forms         = array();
-		$control       = $this->name;
+		$data    = parent::getLayoutData();
+		$tmpl    = null;
+		$control = $this->name;
 
 		try
 		{
-			// Prepare the form template
-			$formname = $this->form->getName() . '.subform' . ($this->group ? $this->group . '.' : '.') . $this->fieldname;
-			$tmplcontrol = !$this->multiple ? $control : $control . '[' . $this->fieldname . 'X]';
-			$tmpl = JTFForm::getInstance($formname, $this->formsource, array('control' => $tmplcontrol));
-			$tmpl->layoutPaths = $layoutPaths;
-			$tmpl->framework = $framework;
-			$tmpl->renderDebug = $rendererDebug;
-			$tmpl->frwkClasses = $frwkClasses;
-
-			// Prepare the forms for exiting values
-			if ($this->multiple)
-			{
-				$value = array_values($value);
-				$c = max($this->min, min(count($value), $this->max));
-				for ($i = 0; $i < $c; $i++)
-				{
-					$itemcontrol = $control . '[' . $this->fieldname . $i . ']';
-					$itemform    = JTFForm::getInstance($formname . $i, $this->formsource, array('control' => $itemcontrol));
-					$itemform->layoutPaths = $layoutPaths;
-					$itemform->framework = $framework;
-					$itemform->renderDebug = $rendererDebug;
-					$itemform->frwkClasses = $frwkClasses;
-
-					if (!empty($value[$i]))
-					{
-						$itemform->bind($value[$i]);
-					}
-
-					$forms[] = $itemform;
-				}
-			}
-			else
-			{
-				$tmpl->bind($value);
-				$forms[] = $tmpl;
-			}
+			$tmpl  = $this->loadSubForm();
+			$forms = $this->loadSubFormData($tmpl);
 		}
 		catch (Exception $e)
 		{
@@ -324,13 +285,12 @@ class JFormFieldSubform extends JFormField
 	 */
 	protected function getName($fieldName)
 	{
-		$formName = explode('.', $this->form->getName());
-		$name = $formName[0];
+		$name = '';
 
 		// If there is a form control set for the attached form add it first.
 		if ($this->formControl)
 		{
-			$name .= '_' . $this->formControl;
+			$name .= $this->formControl;
 		}
 
 		// If the field is in a group add the group control to the field name.
@@ -368,5 +328,91 @@ class JFormFieldSubform extends JFormField
 		}
 
 		return $name;
+	}
+
+		/**
+		 * Loads the form instance for the subform.
+		 *
+		 * @return   Form  The form instance.
+		 *
+		 * @throws   InvalidArgumentException if no form provided.
+		 * @throws   RuntimeException if the form could not be loaded.
+		 *
+		 * @since   JTF 3.0.0
+		 */
+		public function loadSubForm()
+	{
+		$layoutPaths   = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
+		$framework     = !empty($this->form->framework) ? $this->form->framework : array();
+		$rendererDebug = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
+		$frwkClasses   = !empty($this->form->frwkClasses) ? $this->form->frwkClasses : array();
+		$control       = $this->name;
+
+		if ($this->multiple)
+		{
+			$control .= '[' . $this->fieldname . 'X]';
+		}
+
+		// Prepare the form template
+		$formname = $this->form->getName() . '.subform.' . ($this->group ? $this->group . '.' : '') . $this->fieldname;
+		$tmpl     = Form::getInstance($formname, $this->formsource, array('control' => $control));
+		$tmpl->layoutPaths = $layoutPaths;
+		$tmpl->framework = $framework;
+		$tmpl->renderDebug = $rendererDebug;
+		$tmpl->frwkClasses = $frwkClasses;
+
+		return $tmpl;
+	}
+
+		/**
+		 * Binds given data to the subform and its elements.
+		 *
+		 * @param   Form  &$subForm  Form instance of the subform.
+		 *
+		 * @return   Form[]  Array of Form instances for the rows.
+		 *
+		 * @since   JTF 3.0.0
+		 */
+		private function loadSubFormData(Form &$subForm)
+	{
+		$value         = $this->value ? (array) $this->value : array();
+		$layoutPaths   = $this->form->layoutPaths;
+		$framework     = $this->form->framework;
+		$rendererDebug = $this->form->rendererDebug;
+		$frwkClasses   = $this->form->frwkClasses;
+
+		// Simple form, just bind the data and return one row.
+		if (!$this->multiple)
+		{
+			$subForm->bind($value);
+
+			return array($subForm);
+		}
+
+		// Multiple rows possible: Construct array and bind values to their respective forms.
+		$forms = array();
+		$value = array_values($value);
+
+		// Show as many rows as we have values, but at least min and at most max.
+		$c = max($this->min, min(count($value), $this->max));
+
+		for ($i = 0; $i < $c; $i++)
+		{
+			$control  = $this->name . '[' . $this->fieldname . $i . ']';
+			$itemForm = Form::getInstance($subForm->getName() . $i, $this->formsource, array('control' => $control));
+			$itemForm->layoutPaths = $layoutPaths;
+			$itemForm->framework   = $framework;
+			$itemForm->renderDebug = $rendererDebug;
+			$itemForm->frwkClasses = $frwkClasses;
+
+			if (!empty($value[$i]))
+			{
+				$itemForm->bind($value[$i]);
+			}
+
+			$forms[] = $itemForm;
+		}
+
+		return $forms;
 	}
 }

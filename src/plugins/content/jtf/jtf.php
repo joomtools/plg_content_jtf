@@ -10,19 +10,27 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JLoader::discover('JTFFramework', JPATH_PLUGINS . '/content/jtf/libraries/frameworks', true);
-JLoader::register('JTFForm', JPATH_PLUGINS . '/content/jtf/libraries/form/form.php', true);
+JLoader::discover('Jtf\Frameworks\Framework',JPATH_PLUGINS . '/content/jtf/libraries/jtf/Frameworks');
+JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
+JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true);
+JLoader::register('FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true);
+JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true);
+JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true, false, 'psr4');
+
 
 // Add form fields
-JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/form/fields');
+JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields');
 
 // Add form rules
-JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/form/rules');
+JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules');
+JLoader::registerNamespace('Joomla\\CMS\\Form\\Rule', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules', false, false, 'psr4');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Profiler\Profiler;
+use Joomla\Utilities\ArrayHelper;
+use Jtf\Form\Form;
 
 /**
  * @package      Joomla.Plugin
@@ -83,9 +91,9 @@ class PlgContentJtf extends CMSPlugin
 	private $validCaptcha = true;
 
 	/**
-	 * Set JTFForm object
+	 * Set Form object
 	 *
-	 * @var     JTFForm
+	 * @var     Form
 	 * @since   3.0.0
 	 */
 	private $form = null;
@@ -179,10 +187,6 @@ class PlgContentJtf extends CMSPlugin
 
 		if (!$this->doNotLoad->active)
 		{
-			JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true);
-			JLoader::register('FormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true);
-			JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true);
-			JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/form/FormField.php', true, false, 'psr4');
 		}
 		self::$count = 0;
 	}
@@ -273,29 +277,46 @@ class PlgContentJtf extends CMSPlugin
 			}
 
 			// Get form submit task
-			$formSubmitted = ($this->app->input->get('task', false, 'post') == $formTheme . "_sendmail") ? true : false;
+			$formSubmitted = ($this->app->input->getCmd('task') == $formTheme . "_sendmail") ? true : false;
 
 			if ($formSubmitted)
 			{
-				$submitValues = $this->getTranslatedSubmittedFormValues();
+				$token          = JSession::checkToken();
+				$submitedValues = $this->app->input->get($formTheme, array(), 'post', 'array');
+				$honeypot       = $submitedValues['jtf_important_notices'];
+				$startTime      = $this->app->input->getFloat('start');
+				$fillOutTime    = $this->debug || JDEBUG ? 10000 : microtime(1) - $startTime;
+				$notSpamBot     = $fillOutTime > $this->uParams['fillouttime'] ? true : false;
 
-				$this->getForm()->bind($submitValues);
-
-				$startTime   = $this->app->input->getFloat('start');
-				$fillOutTime = $this->debug || JDEBUG ? 10000 : microtime(1) - $startTime;
-				$notSpamBot  = $fillOutTime > $this->uParams['fillouttime'] ? true : false;
-
-				if ($submitValues['jtf_important_notices'] == '' && $notSpamBot)
-				{
-					$valid = $this->validate();
-				}
-				else
+				if ($honeypot != '' || !$notSpamBot || !$token)
 				{
 					$this->app->redirect(JRoute::_('index.php', false));
 				}
 
+				if (isset($_FILES))
+				{
+					$jinput          = new \Jtf\Input\Files;
+					$submitedFiles     = $jinput->get($formTheme);
+					$submitValues = array_merge_recursive($submitedValues, $submitedFiles);
+				}
+
+				$this->getForm()->bind($submitValues);
+				$this->setFieldValidates();
+
+				$valid = $this->getForm()->validate($submitValues);
+
 				if ($valid)
 				{
+					if (!empty($submitedFiles))
+					{
+						$validatedValues = $this->getForm()->getData()->toArray();
+						$validatedFiles  = $this->cleanSubmittedFiles($submitedFiles, $validatedValues);
+						$newBind         = array_merge($validatedValues, $validatedFiles);
+
+						$this->getForm()->resetData();
+						$this->getForm()->bind($newBind);
+					}
+
 					$sendmail = $this->sendMail();
 
 					if ($sendmail)
@@ -304,6 +325,8 @@ class PlgContentJtf extends CMSPlugin
 						$this->app->redirect(JRoute::_('index.php', false));
 					}
 				}
+
+				$this->setErrors($this->getForm()->getErrors());
 			}
 		}
 
@@ -317,9 +340,34 @@ class PlgContentJtf extends CMSPlugin
 		$article->text = substr_replace($article->text, $html, $pos, $end);
 		self::$count++;
 
+		$this->clearOldFiles();
 
 		// Set profiler start time and memory usage and mark afterLoad in the profiler.
 		JDEBUG ? Profiler::getInstance('Application')->mark('plgContentJtf') : null;
+	}
+
+	/**
+	 * Set all form validation errors, if any.
+	 *
+	 * @param   array  Array of error messages or RuntimeException objects.
+	 *
+	 * @return   void
+	 *
+	 * @since   11.1
+	 */
+	private function setErrors($errors)
+	{
+		foreach ($errors as $error)
+		{
+			$errorMessage = $error;
+
+			if ($error instanceof \Exception)
+			{
+				$errorMessage = $error->getMessage();
+			}
+
+			$this->app->enqueueMessage($errorMessage, 'error');
+		}
 	}
 
 	private function init($userParams)
@@ -335,7 +383,6 @@ class PlgContentJtf extends CMSPlugin
 		}
 
 		$this->uParams['formXmlPath'] = $this->getThemePath('fields.xml', true);
-
 	}
 
 	/**
@@ -412,7 +459,7 @@ class PlgContentJtf extends CMSPlugin
 				if ($key == 'framework')
 				{
 					$value = explode(',', $value);
-					$value = \Joomla\Utilities\ArrayHelper::arrayUnique($value);
+					$value = ArrayHelper::arrayUnique($value);
 				}
 
 				$uParams[$key] = $value;
@@ -456,7 +503,7 @@ class PlgContentJtf extends CMSPlugin
 			}
 
 			$files[] = $filePath;
-			$files = \Joomla\Utilities\ArrayHelper::arrayUnique($files);
+			$files = ArrayHelper::arrayUnique($files);
 		}
 
 		$template = $this->app->getTemplate();
@@ -576,7 +623,7 @@ class PlgContentJtf extends CMSPlugin
 		$template            = $this->app->getTemplate();
 		$formName            = $this->uParams['theme'] . (int) self::$count;
 		$formXmlPath         = $this->uParams['formXmlPath'];
-		$form                = JTFForm::getInstance($formName, $formXmlPath);
+		$form                = Form::getInstance($formName, $formXmlPath, array('control' => $formName));
 		$form->framework     = $this->uParams['framework'];
 		$form->rendererDebug = $this->debug;
 		$form->layoutPaths   = array(
@@ -738,47 +785,75 @@ class PlgContentJtf extends CMSPlugin
 		return $submittedValues;
 	}
 
-	private function validate()
+	private function setFieldValidates($form = null)
 	{
-		$form   = $this->getForm();
-		$token  = JSession::checkToken();
+		$setValidationFor = array(
+			'calendar',
+			'captcha',
+			'checkbox',
+			'checkboxes',
+			'color',
+			'e-mail',
+			'file',
+			'list',
+			'number',
+			'password',
+			'plz',
+			'radio',
+			'rules',
+			'tel',
+			'username',
+			);
+
+		if (empty($form))
+		{
+			$form = $this->getForm();
+		}
+
 		$fields = $form->getFieldset();
 
 		foreach ($fields as $field)
 		{
-			$this->validateField($field);
-		}
+			$fieldType = strtolower($field->type);
+			$fieldname = $field->fieldname;
 
-		$valid = ($token && $this->validField) ? true : false;
-
-		if (!empty($this->fileFields))
-		{
-			if ($valid)
+			if ($fieldType == 'subform')
 			{
-				$this->clearOldFiles();
-				$this->saveFiles();
-			}
-			else
-			{
-				foreach ($this->fileFields as $fileField)
+				if ($field->validate == '')
 				{
-					$this->invalidField($fileField);
+					$form->setFieldAttribute($fieldname,'validate','subform');
+				}
+
+				$subform= $form->getField($fieldname)->loadSubForm();
+				$this->setFieldValidates($subform);
+
+				continue;
+			}
+
+			if (in_array($fieldType, $setValidationFor))
+			{
+				$test = $field->validate;
+				$test = $field->validate == '';
+
+				if ($field->validate == '')
+				{
+					if (in_array($fieldType, array('checkbox', 'checkboxes', 'list', 'radio')))
+					{
+						$form->setFieldAttribute($fieldname,'validate','options');
+					}
+					else
+					{
+						$form->setFieldAttribute($fieldname,'validate',$fieldType);
+					}
+					$test;
 				}
 			}
 		}
-
-		if ($this->validCaptcha !== true)
-		{
-			$this->invalidField($this->issetCaptcha);
-			$valid = false;
-		}
-
-		return $valid;
 	}
 
-	private function validateField($field)
+	private function validateField($field, $form)
 	{
-		$form          = $this->getForm();
+//		$form          = $this->getForm();
 		$value         = $field->value;
 		$showon        = $field->showon;
 		$showField     = true;
@@ -788,8 +863,6 @@ class PlgContentJtf extends CMSPlugin
 		$validate      = $field->validate;
 		$required      = $field->required;
 		$fieldName     = $field->fieldname;
-		$uploadmaxsize = $field->uploadmaxsize;
-		$uploadmaxsize = number_format((float) $uploadmaxsize, 2) * 1024 * 1024;
 
 		if ($showon)
 		{
@@ -822,7 +895,10 @@ class PlgContentJtf extends CMSPlugin
 		{
 			if ($type == 'file')
 			{
-				$submittedFiles = $this->getSubmittedFiles($fieldName);
+				$uploadmaxsize  = $field->uploadmaxsize;
+				$uploadmaxsize  = number_format((float) $uploadmaxsize, 2) * 1024 * 1024;
+				$fieldPath = trim(str_replace(array('][', '[', ']'), array('.', '.', ''), $field->name), '.');
+				$submittedFiles = $this->getSubmittedFiles($fieldPath);
 				$value          = $submittedFiles['files'];
 
 				if ($submittedFiles['sumsize'] > $uploadmaxsize)
@@ -907,47 +983,54 @@ class PlgContentJtf extends CMSPlugin
 	/**
 	 * Get submitted Files
 	 *
-	 * @param   string  $fieldName  JFormField Name
+	 * @param   array  $submitedFiles   Dot separated field path to find submitted file for the field
+	 * @param   array  $submitedValues  Dot separated field path to find submitted file for the field
 	 *
 	 * @return   array
 	 * @since    3.0.0
 	 */
-	private function getSubmittedFiles($fieldName)
+	private function cleanSubmittedFiles($submitedFiles, $submitedValues)
 	{
-		$value       = array();
-		$sumSize     = 0;
-		$index       = (int) self::$count;
-		$jinput      = new \Joomla\Input\Files;
-		$submitFiles = $jinput->get($this->uParams['theme'] . $index);
+		$validatedFiles = array();
 
-		if (Joomla\Utilities\ArrayHelper::isAssociative($submitFiles[$fieldName]))
+		foreach ($submitedFiles as $key => $value)
 		{
-			$submitFiles = array($submitFiles[$fieldName]);
-		}
-
-		$issetFiles = false;
-
-		if (!empty($submitFiles[$fieldName][0]['name']))
-		{
-			$issetFiles = true;
-			$files      = $submitFiles[$fieldName];
-		}
-
-		if ($issetFiles)
-		{
-			$value['files']                  = $files;
-			$this->submitedFiles[$fieldName] = $files;
-			$this->fileFields[]              = $fieldName;
-
-			foreach ($files as $file)
+			if (isset($submitedValues[$key]))
 			{
-				$sumSize += $file['size'];
-			}
+				if (empty($value))
+				{
+					$validatedFiles[$key] = array();
+					continue;
+				}
 
-			$value['sumsize'] = $sumSize;
+				if (is_array($value))
+				{
+
+					if (isset($value['error']) && $value['error'] === 0)
+					{
+						if ($savedFile = $this->saveFiles($value))
+						{
+							$validatedFiles = $savedFile;
+							continue;
+						}
+						else
+						{
+							$this->setErrors(Text::_('Fehler beim Speichern!'));
+							continue;
+						}
+					}
+
+					$validatedFiles[$key] = $this->cleanSubmittedFiles($submitedFiles[$key], $value);
+				}
+				continue;
+			}
+			else
+			{
+				continue;
+			}
 		}
 
-		return $value;
+		return $validatedFiles;
 	}
 
 	private function invalidField($fieldName)
@@ -1061,13 +1144,20 @@ class PlgContentJtf extends CMSPlugin
 		}
 	}
 
-	private function saveFiles()
+	/**
+	 * Save submited files
+	 *
+	 * @param   $validatedFiles
+	 *
+	 * @return   array
+	 *
+	 * @since 3.0.0
+	 */
+	private function saveFiles($validatedFile)
 	{
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 
-		$form          = $this->getForm();
-		$submitedFiles = $this->submitedFiles;
 		$nowPath       = date('Ymd');
 		$filePath      = 'images/' . $this->uParams['file_path'] . '/' . $nowPath;
 		$uploadBase    = JPATH_BASE . '/' . $filePath;
@@ -1083,27 +1173,21 @@ class PlgContentJtf extends CMSPlugin
 			JFile::write($uploadBase . '/.htaccess', Text::_('JTF_SET_ATTACHMENT_HTACCESS'));
 		}
 
-		foreach ($submitedFiles as $fieldName => $files)
+		$return = array();
+
+		$save     = null;
+		$fileName = JFile::stripExt($validatedFile['name']);
+		$fileExt  = JFile::getExt($validatedFile['name']);
+		$name     = JFilterOutput::stringURLSafe($fileName) . '.' . $fileExt;
+
+		$save = JFile::copy($validatedFile['tmp_name'], $uploadBase . '/' . $name);
+
+		if ($save)
 		{
-			$value = array();
-
-			foreach ($files as $file)
-			{
-				$save     = null;
-				$fileName = JFile::stripExt($file['name']);
-				$fileExt  = JFile::getExt($file['name']);
-				$name     = JFilterOutput::stringURLSafe($fileName) . '.' . $fileExt;
-
-				$save = JFile::copy($file['tmp_name'], $uploadBase . '/' . $name);
-
-				if ($save)
-				{
-					$value[$name] = $uploadURL . '/' . $name;
-				}
-			}
-
-			$form->setValue($fieldName, null, $value);
+			$return[$name] = $uploadURL . '/' . $name;
 		}
+
+		return $return;
 	}
 
 	private function sendMail()
@@ -1259,13 +1343,13 @@ class PlgContentJtf extends CMSPlugin
 		$id            = $this->uParams['theme'];
 		$index         = self::$count;
 		$form          = $this->getForm();
-		$form          = JTFFrameworkHelper::setFrameworkClasses($form);
+		$form          = Jtf\Frameworks\FrameworkHelper::setFrameworkClasses($form);
 		$formClass     = $form->getAttribute('class', '');
 		$frwkCss       = $form->frwkClasses->getCss();
 		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
 			. '<input type="hidden" name="view" value="' . $this->app->input->get('view') . '" />'
-			. '<input type="hidden" name="itemid" value="' . $this->app->input->get('idemid') . '" />'
+			. '<input type="hidden" name="Itemid" value="' . $this->app->input->get('Idemid') . '" />'
 			. '<input type="hidden" name="start" value="' . $this->uParams['startTime'] . '" />'
 			. '<input type="hidden" name="id" value="' . $this->app->input->get('id') . '" />';
 

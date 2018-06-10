@@ -10,6 +10,8 @@
 
 defined('_JEXEC') or die;
 
+use Jtf\Frameworks\FrameworkHelper;
+
 /**
  * Make thing clear
  *
@@ -50,7 +52,7 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 			<div class="row-fluid">
 			<?php
 			foreach ($forms as $k => $form) :
-				$form = JTFFrameworkHelper::setFrameworkClasses($form);
+				$form = FrameworkHelper::setFrameworkClasses($form);
 				echo $this->sublayout($sublayout,
 					array(
 						'form' => $form,
@@ -64,7 +66,7 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 			<?php if ($multiple) : ?>
 				<script type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
 					<?php
-					$tmpl = JTFFrameworkHelper::setFrameworkClasses($tmpl);
+					$tmpl = FrameworkHelper::setFrameworkClasses($tmpl);
 					echo $this->sublayout($sublayout,
 						array(
 							'form' => $tmpl,

@@ -67,8 +67,8 @@ Text::script('JTF_UPLOAD_ALLOWED_FILES_EXT', true, true);
 <div class="uploader-wrapper">
 	<div class="dragarea">
 		<div class="dragarea-content">
-			<p>
-				<span class="upload-icon <?php echo $uploadicon;?>" aria-hidden="true"></span>
+			<p class="upload-icon">
+				<?php echo $this->sublayout('icon', array('icon' => $uploadicon)); ?>
 			</p>
 			<p class="lead">
 				<?php echo Text::_('JTF_DRAG_FILE_HERE'); ?>
@@ -76,7 +76,7 @@ Text::script('JTF_UPLOAD_ALLOWED_FILES_EXT', true, true);
 			</p>
 			<p>
 				<button type="button" class="<?php echo $buttonclass; ?> select-file-button">
-					<span class="<?php echo $buttonicon; ?>" aria-hidden="true"></span>
+					<?php echo $this->sublayout('icon', array('icon' => $buttonicon)); ?>
 					<?php echo Text::_('JTF_SELECT_FILE'); ?>
 				</button>
 			</p>
