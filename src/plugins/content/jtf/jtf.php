@@ -328,19 +328,19 @@ class PlgContentJtf extends CMSPlugin
 
 				$this->setErrors($this->getForm()->getErrors());
 			}
+
+			$this->setSubmit();
+
+			$html .= $this->getTmpl('form');
+
+			$pos = strpos($article->text, $replacement);
+			$end = strlen($replacement);
+
+			$article->text = substr_replace($article->text, $html, $pos, $end);
+			self::$count++;
+
+			$this->clearOldFiles();
 		}
-
-		$this->setSubmit();
-
-		$html .= $this->getTmpl('form');
-
-		$pos = strpos($article->text, $replacement);
-		$end = strlen($replacement);
-
-		$article->text = substr_replace($article->text, $html, $pos, $end);
-		self::$count++;
-
-		$this->clearOldFiles();
 
 		// Set profiler start time and memory usage and mark afterLoad in the profiler.
 		JDEBUG ? Profiler::getInstance('Application')->mark('plgContentJtf') : null;
