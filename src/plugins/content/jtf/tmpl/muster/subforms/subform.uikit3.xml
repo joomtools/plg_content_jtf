@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form class="uk-width-1-2">
+
+	<field name="subform_text"
+	       type="text"
+	       class="uk-width-1-1"
+	       description="JTF_TXT_DESC"
+	       label="JTF_TXT_LABEL"
+	       maxlength="60"
+	       required="true"
+	/>
+
+	<field name="subform_cal"
+	       type="calendar"
+	       description="JTF_CAL_DESC"
+	       label="JTF_CAL_LABEL"
+	       size="8"
+	       format="%d.%m.%Y"
+	       filter="user_utc"
+	       required="true"
+	       showtime="false"
+	       todaybutton="false"
+	       translateformat="true"
+	/>
+
+	<field name="subform_checkbox_inline"
+	       type="checkboxes"
+	       class="uk-width-1-1"
+	       description="JTF_CHK_INLINE_DESC"
+	       label="JTF_CHK_INLINE_LABEL"
+	       validate="options"
+	       required="true"
+	>
+		<option value="JTF_OPTION1">JTF_OPTION1</option>
+		<option value="JTF_OPTION2">JTF_OPTION2</option>
+		<option value="JTF_OPTION3">JTF_OPTION3</option>
+	</field>
+
+</form>

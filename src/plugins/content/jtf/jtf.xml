@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.8" type="plugin" group="content" method="upgrade">
+	<name>JTF_XML_NAME</name>
+	<creationDate>##DATE##</creationDate>
+	<author>Guido De Gobbis</author>
+	<authorEmail>support@joomtools.de</authorEmail>
+	<authorUrl>www.joomtools.de</authorUrl>
+	<copyright>Copyright (C) ##YEAR## JoomTools.de. All rights reserved.</copyright>
+	<license>GPL v3</license>
+	<version>##VERSION##</version>
+	<description>JTF_XML_DESC</description>
+
+	<files>
+		##FILES##
+	</files>
+
+	<languages folder="language">
+		##LANGUAGE_FILES##
+	</languages>
+
+	<scriptfile>script.php</scriptfile>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic" addfieldpath="/plugins/content/jtf/libraries/joomla/form/fields">
+
+				<field name="component_exclusions"
+				       type="textarea"
+				       rows="10"
+				       default="com_finder&#10;com_contact"
+				       label="JTF_XML_EXCLUDE_OPTION_LABEL"
+				       description="JTF_XML_EXCLUDE_OPTION_DESC"
+				/>
+
+				<field name="captcha"
+				       type="list"
+				       class="chzn-color-state"
+				       default="custom"
+				       label="JTF_XML_CAPTCHA_LABEL"
+				       description="JTF_XML_CAPTCHA_DESC"
+				>
+					<option value="0">JOPTION_DO_NOT_USE</option>
+					<option value="joomla">JTF_XML_CAPTCHA_VALUE_JOOMLA</option>
+				</field>
+
+				<field name="filloutTime"
+				       type="integer"
+				       default="16"
+				       first="10"
+				       last="40"
+				       step="2"
+				       label="JTF_XML_FILLOUT_LABEL"
+				       description="JTF_XML_FILLOUT_DESC"
+				/>
+
+				<field name="file_path"
+				       type="text"
+				       default="uploads"
+				       label="JTF_XML_FILE_PATH_LABEL"
+				       description="JTF_XML_FILE_PATH_DESC"
+				/>
+
+				<field name="file_clear"
+				       type="integer"
+				       default="30"
+				       first="0"
+				       last="365"
+				       step="5"
+				       label="JTF_XML_FILE_CLEAR_LABEL"
+				       description="JTF_XML_FILE_CLEAR_DESC"
+				/>
+
+				<field name="framework"
+				       type="frwk"
+				       default="joomla"
+				       label="JTF_XML_FRAMEWORK_LABEL"
+				       description="JTF_XML_FRAMEWORK_DESC"
+				/>
+
+				<field name="debug"
+				       type="radio"
+				       class="btn-group btn-group-yesno"
+				       default="0"
+				       label="JTF_XML_DEBUG_LABEL"
+				       description="JTF_XML_DEBUG_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+			</fieldset>
+		</fields>
+	</config>
+	
+	<updateservers>
+		<server type="extension" priority="1" name="JTF_XML_NAME">https://raw.githubusercontent.com/JoomTools/plg_content_jtf/master/update.xml</server>
+	</updateservers>
+</extension>

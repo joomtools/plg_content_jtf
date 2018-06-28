@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form orientation="stacked"
+      hiddenLabel="true"
+>
+	<fieldset name="block1">
+		<field name="anrede"
+		       type="list"
+		       class="uk-width-1-1"
+		       gridgroup="uk-width-1-3 uk-margin-top"
+		       icon="uk-icon-list"
+		       description="JTF_ANREDE_DESC"
+		       label="JTF_ANREDE_LABEL"
+		       default=""
+		       validate="options"
+		       required="true"
+		       hiddenLabel="true"
+		>
+			<option value="">JTF_ANREDE_OPTION_NONE</option>
+			<option value="JTF_ANREDE_OPTION_HERR">JTF_ANREDE_OPTION_HERR</option>
+			<option value="JTF_ANREDE_OPTION_FRAU">JTF_ANREDE_OPTION_FRAU</option>
+		</field>
+		<field name="vorname"
+		       type="text"
+		       icon="uk-icon-user"
+		       class="uk-width-1-1"
+		       gridgroup="uk-width-1-3"
+		       maxlength="60"
+		       description="JTF_VNAME_DESC"
+		       label="JTF_VNAME_LABEL"
+		       required="true"
+		/>
+		<field name="nachname"
+		       type="text"
+		       icon="uk-icon-user"
+		       class="uk-width-1-1"
+		       gridgroup="uk-width-1-3"
+		       maxlength="60"
+		       description="JTF_NAME_DESC"
+		       label="JTF_NAME_LABEL"
+		       required="true"
+		/>
+		<field name="email"
+		       type="email"
+		       icon="uk-icon-envelope-o"
+		       class="uk-width-1-1"
+		       gridgroup="uk-width-1-3"
+		       maxlength="60"
+		       description="JTF_EMAIL_DESC"
+		       label="JTF_EMAIL_LABEL"
+		       validate="email"
+		       required="true"
+		/>
+		<field name="tel"
+		       type="tel"
+		       icon="uk-icon-phone"
+		       class="uk-width-1-1"
+		       gridgroup="uk-width-1-3"
+		       maxlength="60"
+		       description="JTF_TEL_DESC"
+		       label="JTF_TEL_LABEL"
+		       validate="tel"
+		/>
+		<field name="subject"
+		       type="text"
+		       icon="uk-icon-pencil"
+		       class="uk-width-1-1"
+		       gridgroup="uk-width-1-3"
+		       maxlength="60"
+		       description="JTF_SUBJECT_DESC"
+		       label="JTF_SUBJECT_LABEL"
+		       required="true"
+		/>
+		<field name="message"
+		       type="textarea"
+		       class="uk-width-1-1"
+		       gridgroup="uk-width-1-1"
+		       cols="30"
+		       rows="10"
+		       description="JTF_MESSAGE_DESC"
+		       label="JTF_MESSAGE_LABEL"
+		       required="true"
+		/>
+	</fieldset>
+	<fieldset name="consent_form"
+	          label="JTF_CONSENT_FORM"
+	>
+		<field name="privacy_policy"
+		       type="checkboxes"
+		       gridgroup="uk-width-1-1"
+		       description=""
+		       label="JTF_PRIVACY_POLICY_LABEL"
+		       default=""
+		       validate="options"
+		       filter="string"
+		       required="true"
+		>
+			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
+		</field>
+	</fieldset>
+</form>
