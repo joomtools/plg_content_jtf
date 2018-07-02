@@ -293,17 +293,17 @@ class PlgContentJtf extends CMSPlugin
 					$this->app->redirect(JRoute::_('index.php', false));
 				}
 
-				if (isset($_FILES))
+				if (!empty($_FILES))
 				{
 					$jinput          = new \Jtf\Input\Files;
 					$submitedFiles     = $jinput->get($formTheme);
-					$submitValues = array_merge_recursive($submitedValues, $submitedFiles);
+					$submitedValues = array_merge_recursive($submitedValues, $submitedFiles);
 				}
 
-				$this->getForm()->bind($submitValues);
+				$this->getForm()->bind($submitedValues);
 				$this->setFieldValidates();
 
-				$valid = $this->getForm()->validate($submitValues);
+				$valid = $this->getForm()->validate($submitedValues);
 
 				if ($valid)
 				{
