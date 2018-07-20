@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
  **/
 class FrameworkBs4
 {
-	public static $name = 'Bootsrap v4';
+	public static $name = 'Bootstrap v4';
 
 	private $classes;
 
