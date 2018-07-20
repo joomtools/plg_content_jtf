@@ -1147,7 +1147,7 @@ class PlgContentJtf extends CMSPlugin
 	/**
 	 * Save submited files
 	 *
-	 * @param   $validatedFiles
+	 * @param   array  $validatedFile
 	 *
 	 * @return   array
 	 *
@@ -1155,13 +1155,11 @@ class PlgContentJtf extends CMSPlugin
 	 */
 	private function saveFiles($validatedFile)
 	{
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
-		$nowPath       = date('Ymd');
-		$filePath      = 'images/' . $this->uParams['file_path'] . '/' . $nowPath;
-		$uploadBase    = JPATH_BASE . '/' . $filePath;
-		$uploadURL     = rtrim(JUri::base(), '/') . '/' . $filePath;
+		$nowPath     = date('Ymd');
+		$uniqueToken = md5(microtime());
+		$filePath    = 'images/' . $this->uParams['file_path'] . '/' . $nowPath . '/' . $uniqueToken;
+		$uploadBase  = JPATH_BASE . '/' . $filePath;
+		$uploadURL   = rtrim(JUri::base(), '/') . '/' . $filePath;
 
 		if (!is_dir($uploadBase))
 		{
