@@ -1349,7 +1349,7 @@ class PlgContentJtf extends CMSPlugin
 		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
 			. '<input type="hidden" name="view" value="' . $this->app->input->get('view') . '" />'
-			. '<input type="hidden" name="Itemid" value="' . $this->app->input->get('Idemid') . '" />'
+			. '<input type="hidden" name="Itemid" value="' . $this->app->input->get('Itemid') . '" />'
 			. '<input type="hidden" name="start" value="' . $this->uParams['startTime'] . '" />'
 			. '<input type="hidden" name="id" value="' . $this->app->input->get('id') . '" />';
 
