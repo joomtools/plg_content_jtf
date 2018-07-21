@@ -345,7 +345,6 @@ class JFormFieldSubform extends JFormField
 		$layoutPaths   = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
 		$framework     = !empty($this->form->framework) ? $this->form->framework : array();
 		$rendererDebug = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
-		$frwkClasses   = !empty($this->form->frwkClasses) ? $this->form->frwkClasses : array();
 		$control       = $this->name;
 
 		if ($this->multiple)
@@ -359,7 +358,6 @@ class JFormFieldSubform extends JFormField
 		$tmpl->layoutPaths = $layoutPaths;
 		$tmpl->framework = $framework;
 		$tmpl->renderDebug = $rendererDebug;
-		$tmpl->frwkClasses = $frwkClasses;
 
 		return $tmpl;
 	}
@@ -379,7 +377,6 @@ class JFormFieldSubform extends JFormField
 		$layoutPaths   = $this->form->layoutPaths;
 		$framework     = $this->form->framework;
 		$rendererDebug = $this->form->rendererDebug;
-		$frwkClasses   = $this->form->frwkClasses;
 
 		// Simple form, just bind the data and return one row.
 		if (!$this->multiple)
@@ -403,7 +400,6 @@ class JFormFieldSubform extends JFormField
 			$itemForm->layoutPaths = $layoutPaths;
 			$itemForm->framework   = $framework;
 			$itemForm->renderDebug = $rendererDebug;
-			$itemForm->frwkClasses = $frwkClasses;
 
 			if (!empty($value[$i]))
 			{

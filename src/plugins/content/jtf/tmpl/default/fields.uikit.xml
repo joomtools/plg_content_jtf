@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="horizontal"
-      gridgroup="uk-width-1-1"
->
-	<fieldset name="block1">
+<form orientation="stacked">
+	<fieldset name="block1"
+	          gridlabel="uk-width-small-1-4"
+	          gridfield="uk-width-small-3-4"
+	          gridgroup="uk-grid uk-width-1-1"
+	>
 		<field name="name"
 		       type="text"
 		       icon="uk-icon-user"

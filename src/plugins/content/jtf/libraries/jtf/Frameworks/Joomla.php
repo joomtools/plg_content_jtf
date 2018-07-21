@@ -45,27 +45,26 @@ class FrameworkJoomla
 
 	private $classes;
 
-	public function __construct($formclass = array(), $orientation = null)
+	public function __construct($orientation = null)
 	{
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '';
 
-		$classes['class']['form'] = $formclass;
-		array_unshift($classes['class']['form'], 'form-validate');
+		$classes['class']['form'][] = 'form-validate';
 
 		switch ($orientation)
 		{
 			case 'inline':
-				$inline                     = true;
-				$classes['class']['form'][] = 'form-inline';
+				$inline                          = true;
+				$classes['class']['form'][]      = 'form-inline';
 				$classes['class']['gridgroup'][] = 'inline';
 				$classes['class']['gridlabel'][] = 'inline';
 				$classes['class']['gridfield'][] = 'inline';
 				break;
 
 			case 'horizontal':
-				$classes['class']['form'][] = 'form-horizontal';
+				$classes['class']['form'][]      = 'form-horizontal';
 				$classes['class']['gridgroup'][] = 'row';
 //				$classes['class']['gridlabel'][] = 'span3';
 //				$classes['class']['gridfield'][] = 'span9';
@@ -75,7 +74,6 @@ class FrameworkJoomla
 				break;
 		}
 
-		$classes['class']['form']        = array_unique($classes['class']['form']);
 		$classes['class']['default'][]   = 'input';
 		$classes['class']['gridgroup'][] = 'control-group';
 
@@ -86,25 +84,21 @@ class FrameworkJoomla
 		}
 
 		$classes['class']['note'] = array(
-			'buttons' => array(
-				'class' => 'close',
-				'icon'  => '&times;',
-			),
+			'buttonclass' => array('close'),
+			'buttonicon'  => array('&times;'),
 		);
 
 		$classes['class']['calendar'] = array(
-			'buttons' => array(
-				'class' => 'btn btn-secondary',
-				'icon'  => 'icon-calendar',
-			),
+			'buttonclass' => array('btn btn-secondary'),
+			'buttonicon'  => array('icon-calendar'),
 		);
 
 		$classes['class']['checkbox'] = array(
-			'field' => array('checkbox'),
+			'class' => array('checkbox'),
 		);
 
 		$classes['class']['checkboxes'] = array(
-			'field' => array('checkboxes'),
+			'clas'    => array('checkboxes'),
 			'options' => array(
 				'labelclass' => array('checkbox'),
 			),
@@ -117,23 +111,19 @@ class FrameworkJoomla
 		);
 
 		$classes['class']['file'] = array(
-			'uploadicon' => 'icon-upload',
-			'buttons'    => array(
-				'class' => 'btn btn-success',
-				'icon'  => 'icon-copy',
-			),
+			'uploadicon'  => array('icon-upload'),
+			'buttonclass' => array('btn btn-success'),
+			'buttonicon'  => array('icon-copy'),
 		);
 
 		$classes['class']['submit'] = array(
-			'buttons' => array(
-				'class' => 'btn',
-			),
+			'buttonclass' => array('btn'),
 		);
 
 		if ($inline)
 		{
-			$classes['class']['checkboxes']['field'][] = 'inline';
-			$classes['class']['radio']['field'][]      = 'inline';
+			$classes['class']['checkboxes']['class'][] = 'inline';
+			$classes['class']['radio']['class'][]      = 'inline';
 		}
 
 		$this->classes = $classes;

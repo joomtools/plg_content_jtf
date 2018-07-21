@@ -40,7 +40,7 @@ $attr .= !empty($onchange) ? ' onchange="' . $onchange . '"' : '';
 			<span class="uk-icon-caret-down"></span>
 		</button>
 		<div class="uk-dropdown uk-dropdown-bottom">
-			<ul class="uk-nav uk-nav-dropdown">
+			<ul class="uk-nav uk-nav-dropdown uk-display-inline-block">
 				<?php foreach ($options as $option) : ?>
 					<li><a href="#"><?php echo $option->text; ?></a></li>
 				<?php endforeach; ?>

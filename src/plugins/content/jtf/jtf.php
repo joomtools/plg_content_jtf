@@ -185,9 +185,6 @@ class PlgContentJtf extends CMSPlugin
 			$this->doNotLoad->active = true;
 		}
 
-		if (!$this->doNotLoad->active)
-		{
-		}
 		self::$count = 0;
 	}
 
@@ -1343,7 +1340,6 @@ class PlgContentJtf extends CMSPlugin
 		$form          = $this->getForm();
 		$form          = Jtf\Frameworks\FrameworkHelper::setFrameworkClasses($form);
 		$formClass     = $form->getAttribute('class', '');
-		$frwkCss       = $form->frwkClasses->getCss();
 		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
 			. '<input type="hidden" name="view" value="' . $this->app->input->get('view') . '" />'
@@ -1362,7 +1358,6 @@ class PlgContentJtf extends CMSPlugin
 			'form'          => $form,
 			'formClass'     => $formClass,
 			'enctype'       => $enctype,
-			'frwkCss'       => $frwkCss,
 			'controlFields' => $controlFields,
 		);
 

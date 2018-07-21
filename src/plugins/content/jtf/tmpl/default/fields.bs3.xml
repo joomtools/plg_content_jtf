@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="horizontal"
-      gridlabel="col-sm-3"
-      gridfield="col-sm-9"
->
-	<fieldset name="block1">
+<form orientation="stacked">
+	<fieldset name="block1"
+	          class="form-horizontal"
+	          gridlabel="col-sm-3"
+	          gridfield="col-sm-9"
+	>
 		<field name="name"
 		       type="text"
 		       icon="glyphicon glyphicon-user"

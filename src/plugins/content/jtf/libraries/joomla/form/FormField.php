@@ -357,7 +357,7 @@ abstract class FormField
 	protected $renderLabelLayout = 'joomla.form.renderlabel';
 
 	/**
-	 * The value of the gridgruop field.
+	 * The value of the gridgruop attribute.
 	 *
 	 * @var    string
 	 * @since  3.5
@@ -365,7 +365,7 @@ abstract class FormField
 	protected $gridgroup;
 
 	/**
-	 * The value of the gridlabel field.
+	 * The value of the gridlabel attribute.
 	 *
 	 * @var    string
 	 * @since  3.5
@@ -373,7 +373,7 @@ abstract class FormField
 	protected $gridlabel;
 
 	/**
-	 * The value of the gridfield field.
+	 * The value of the gridfield attribute.
 	 *
 	 * @var    string
 	 * @since  3.5
@@ -381,7 +381,7 @@ abstract class FormField
 	protected $gridfield;
 
 	/**
-	 * The value of the optionlabelclass field.
+	 * The value of the optionlabelclass attribute.
 	 *
 	 * @var    string
 	 * @since  3.5
@@ -389,7 +389,7 @@ abstract class FormField
 	protected $optionlabelclass;
 
 	/**
-	 * The value of the optionclass field.
+	 * The value of the optionclass attribute.
 	 *
 	 * @var    string
 	 * @since  3.5
@@ -397,7 +397,7 @@ abstract class FormField
 	protected $optionclass;
 
 	/**
-	 * The value of the icon field.
+	 * The value of the icon attribute.
 	 *
 	 * @var    string
 	 * @since  3.5
@@ -405,7 +405,7 @@ abstract class FormField
 	protected $icon;
 
 	/**
-	 * The value of the icon field.
+	 * The value of the buttonclass attribute.
 	 *
 	 * @var    string
 	 * @since  3.5
@@ -413,7 +413,7 @@ abstract class FormField
 	protected $buttonclass;
 
 	/**
-	 * The value of the icon field.
+	 * The value of the buttonicon attribute.
 	 *
 	 * @var    string
 	 * @since  3.5
