@@ -15,19 +15,25 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
- * @var   string  $id         Form attribute id and name.
- * @var   \JForm  $form       JForm object instance.
- * @var   string  $enctype    Set form attribute enctype, if file field is set.
- * @var   string  $formClass  Classes for the form.
- * @var   string  $frwkCss    Css styles needed for selected css-framework.
+ * @var   string $id        Form attribute id and name.
+ * @var   \JForm $form      JForm object instance.
+ * @var   string $enctype   Set form attribute enctype, if file field is set.
+ * @var   string $formClass Classes for the form.
+ * @var   string $frwkCss   Css styles needed for selected css-framework.
  */
 
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
 JHtml::_('script', 'plugins/content/jtf/assets/js/scrollToError.js', array('version' => 'auto'));
 
-$invalidColor = '#ff0000';
+$invalidColor           = '#ff0000';
 $invalidBackgroundColor = '#f2dede';
+$role                   = '';
+
+if ($form->framework[0] == 'bs3')
+{
+	$role = ' role="form"';
+}
 
 JFactory::getDocument()->addStyleDeclaration(
 	".invalid:not(label) { 
@@ -36,7 +42,6 @@ JFactory::getDocument()->addStyleDeclaration(
 	}
 	.invalid { color: " . $invalidColor . " !important; }
 	.inline { display: inline-block !important; }"
-	. $frwkCss
 );
 
 ?>
@@ -46,6 +51,7 @@ JFactory::getDocument()->addStyleDeclaration(
 		  action="<?php echo JRoute::_("index.php"); ?>"
 		  method="post"
 		  class="<?php echo $formClass; ?>"
+		<?php echo $role ?>
 		<?php echo $enctype ?>
 	>
 
@@ -74,16 +80,16 @@ JFactory::getDocument()->addStyleDeclaration(
 				<?php endif; ?>
 
 				<?php if (in_array($form->framework[0], array('uikit', 'uikit3'))) : ?>
-					<div class="uk-grid" data-uk-grid-margin>
-				<?php endif; ?>
+				<div class="uk-grid" data-uk-grid-margin>
+					<?php endif; ?>
 					<?php foreach ($form->getFieldset($fieldset->name) as $field)
 					{
 						echo $field->renderField();
 					}
 					?>
-				<?php if (in_array($form->framework[0], array('uikit', 'uikit3'))) : ?>
-					</div>
-				<?php endif; ?>
+					<?php if (in_array($form->framework[0], array('uikit', 'uikit3'))) : ?>
+				</div>
+			<?php endif; ?>
 
 			</fieldset>
 		<?php endforeach;

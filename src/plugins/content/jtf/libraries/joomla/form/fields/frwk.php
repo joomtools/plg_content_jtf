@@ -48,7 +48,7 @@ class JFormFieldFrwk extends JFormFieldList
 		{
 			$fileName = JFile::stripExt($file);
 
-			if ($fileName == 'Helper')
+			if (in_array($fileName, array('Helper', 'Bs4')))
 			{
 				continue;
 			}

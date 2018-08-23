@@ -45,14 +45,13 @@ class FrameworkUikit
 
 	private $classes;
 
-	public function __construct($formclass = array(), $orientation = null)
+	public function __construct($orientation = null)
 	{
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
 
-		$classes['class']['form'] = $formclass;
-		array_unshift($classes['class']['form'], 'uk-form', 'form-validate');
+		$classes['class']['form'] = array('uk-form', 'form-validate');
 
 		switch ($orientation)
 		{
@@ -71,9 +70,9 @@ class FrameworkUikit
 				break;
 		}
 
-		$classes['class']['form']        = array_unique($classes['class']['form']);
-		$classes['class']['default'][]   = 'uk-input';
-		$classes['class']['gridgroup'][] = 'uk-form-row';
+		$classes['class']['form']      = array_unique($classes['class']['form']);
+		$classes['class']['default'][] = 'uk-input';
+		$classes['class']['gridgroup'] = array('fix-flexbox uk-form-row');
 
 		if (!$inline)
 		{
@@ -82,67 +81,66 @@ class FrameworkUikit
 		}
 
 		$classes['class']['fieldset'] = array(
-			'field' => array(
-				'uk-fieldset',
-				'uk-margin-bottom'
-			),
-			'label' => array('uk-legend'),
-			'desc'  => array('uk-fieldset-desc'),
+			'class'      => array('uk-fieldset uk-margin-bottom'),
+			'labelClass' => array('uk-legend'),
+			'descClass'  => array('uk-fieldset-desc'),
 		);
 
 		$classes['class']['note'] = array(
-			'buttons' => array(
-				'class' => 'uk-alert-close uk-close',
-				'icon'  => '',
-			),
+			'buttonclass' => array('uk-alert-close uk-close'),
 		);
 
 		$classes['class']['calendar'] = array(
 			'buttons' => array(
-				'class' => 'uk-button',
-				'icon'  => 'uk-icon-calendar',
+				'buttonclass' => array('uk-button'),
+				'buttonicon'  => array('uk-icon-calendar'),
+			),
+		);
+
+		$classes['class']['checkbox'] = array(
+			'gridfield'   => array('uk-form-controls-text'),
+			'options' => array(
+				'class' => array('uk-checkbox'),
 			),
 		);
 
 		$classes['class']['checkboxes'] = array(
-			'field'   => array('checkboxes'),
+			'gridfield'   => array('uk-form-controls-text'),
+			'class'       => array('checkboxes'),
 			'options' => array(
 				'class' => array('uk-checkbox'),
 			),
 		);
 
 		$classes['class']['radio'] = array(
+			'gridfield'   => array('uk-form-controls-text'),
 			'options' => array(
 				'class' => array('uk-radio'),
 			),
 		);
 
 		$classes['class']['textarea'] = array(
-			'field' => array('uk-textarea'),
+			'class' => array('uk-textarea'),
 		);
 
 		$classes['class']['list'] = array(
-			'field' => array('uk-select'),
+			'class' => array('uk-select'),
 		);
 
 		$classes['class']['file'] = array(
-			'uploadicon' => 'uk-icon-upload',
-			'buttons'    => array(
-				'class' => 'uk-button uk-button-success',
-				'icon'  => 'uk-icon-copy',
-			),
+			'uploadicon'  => array('uk-icon-upload'),
+			'buttonclass' => array('uk-button uk-button-success'),
+			'buttonicon'  => array('uk-icon-copy'),
 		);
 
 		$classes['class']['submit'] = array(
-			'buttons' => array(
-				'class' => 'uk-button uk-button-default',
-			),
+			'buttonclass' => array('uk-button uk-button-default'),
 		);
 
 		if ($inline)
 		{
-			$classes['class']['checkboxes']['field'][] = 'uk-display-inline';
-			$classes['class']['radio']['field'][]      = 'uk-display-inline';
+			$classes['class']['checkboxes']['class'][] = 'uk-display-inline';
+			$classes['class']['radio']['class'][]      = 'uk-display-inline';
 		}
 
 		$this->classes = $classes;

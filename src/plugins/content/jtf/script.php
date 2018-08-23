@@ -41,6 +41,7 @@ class PlgContentJtfInstallerScript
 	 */
 	public function preflight($action, $installer)
 	{
+		/* Removed while sometimes folders will not be reinstalled
 		if ($action === 'update')
 		{
 			jimport('joomla.filesystem.folder');
@@ -63,5 +64,6 @@ class PlgContentJtfInstallerScript
 		}
 
 		return true;
+		*/
 	}
 }

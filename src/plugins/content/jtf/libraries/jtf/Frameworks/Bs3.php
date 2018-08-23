@@ -45,14 +45,13 @@ class FrameworkBs3
 
 	private $classes;
 
-	public function __construct($formclass = array(), $orientation = null)
+	public function __construct($orientation = null)
 	{
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '';
 
-		$classes['class']['form'] = $formclass;
-		array_unshift($classes['class']['form'], 'form-validate');
+		$classes['class']['form'][] = 'form-validate';
 
 		switch ($orientation)
 		{
@@ -69,25 +68,22 @@ class FrameworkBs3
 				break;
 		}
 
-		$classes['class']['form']        = array_unique($classes['class']['form']);
 		$classes['class']['default'][]   = 'form-control';
 		$classes['class']['gridgroup'][] = 'form-group';
 		$classes['class']['gridlabel'][] = 'control-label';
 
 		$classes['class']['calendar'] = array(
-			'field' => array('form-control'),
-			'buttons' => array(
-				'class' => 'btn btn-secondary',
-				'icon'  => 'glyphicon glyphicon-calendar',
-			),
+			'class'       => array('form-control'),
+			'buttonclass' => array('btn btn-secondary'),
+			'buttonicon'  => array('glyphicon glyphicon-calendar'),
 		);
 
 		$classes['class']['checkbox'] = array(
-			'field' => array('checkbox'),
+			'class' => array('checkbox'),
 		);
 
 		$classes['class']['checkboxes'] = array(
-			'field' => array('checkboxes'),
+			'class'            => array('checkboxes'),
 			'options' => array(
 				'labelclass' => array('checkbox'),
 			),
@@ -100,27 +96,23 @@ class FrameworkBs3
 		);
 
 		$classes['class']['textarea'] = array(
-			'field' => array('form-control'),
+			'class' => array('form-control'),
 		);
 
 		$classes['class']['file'] = array(
-			'uploadicon' => 'glyphicon glyphicon-upload',
-			'buttons'    => array(
-				'class' => 'btn btn-success',
-				'icon'  => 'glyphicon glyphicon-copy',
-			),
+			'uploadicon'  => array('glyphicon glyphicon-upload'),
+			'buttonclass' => array('btn btn-success'),
+			'buttonicon'  => array('glyphicon glyphicon-copy'),
 		);
 
 		$classes['class']['submit'] = array(
-			'buttons' => array(
-				'class' => 'btn',
-			),
+			'buttonclass' => array('btn'),
 		);
 
 		if ($inline)
 		{
-			$classes['class']['checkboxes']['field'][] = 'checkbox-inline';
-			$classes['class']['radio']['field'][]      = 'radio-inline';
+			$classes['class']['checkboxes']['class'][] = 'checkbox-inline';
+			$classes['class']['radio']['class'][]      = 'radio-inline';
 		}
 
 		$this->classes = $classes;

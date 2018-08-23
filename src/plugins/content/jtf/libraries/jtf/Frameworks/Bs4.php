@@ -41,18 +41,17 @@ defined('_JEXEC') or die('Restricted access');
  **/
 class FrameworkBs4
 {
-	public static $name = 'Bootsrap v4';
+	public static $name = 'Bootstrap v4';
 
 	private $classes;
 
-	public function __construct($formclass = array(), $orientation = null)
+	public function __construct($orientation = null)
 	{
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '';
 
-		$classes['class']['form'] = $formclass;
-		array_unshift($classes['class']['form'], 'form-validate');
+		$classes['class']['form'][] = 'form-validate';
 
 		switch ($orientation)
 		{
@@ -71,20 +70,17 @@ class FrameworkBs4
 				break;
 		}
 
-		$classes['class']['form']        = array_unique($classes['class']['form']);
 		$classes['class']['default'][]   = 'input';
 		$classes['class']['gridgroup'][] = 'form-group';
 		$classes['class']['gridfield'][] = 'form-control';
 
 		$classes['class']['calendar'] = array(
-			'buttons' => array(
-				'class' => 'btn',
-				'icon'  => 'icon-calendar',
-			),
+			'buttonclass' => array('btn'),
+			'buttonicon'  => array('icon-calendar'),
 		);
 
 		$classes['class']['checkbox'] = array(
-			'field'   => array('form-check'),
+			'class'   => array('form-check'),
 			'options' => array(
 				'class'      => array('form-check-input'),
 				'labelclass' => array('form-check-label'),
@@ -92,7 +88,7 @@ class FrameworkBs4
 		);
 
 		$classes['class']['checkboxes'] = array(
-			'field'   => array('form-check'),
+			'class'   => array('form-check'),
 			'options' => array(
 				'class'      => array('form-check-input'),
 				'labelclass' => array('form-check-label'),
@@ -100,7 +96,7 @@ class FrameworkBs4
 		);
 
 		$classes['class']['radio'] = array(
-			'field'   => array('form-check'),
+			'class'   => array('form-check'),
 			'options' => array(
 				'class'      => array('form-check-input'),
 				'labelclass' => array('form-check-label'),
@@ -108,24 +104,20 @@ class FrameworkBs4
 		);
 
 		$classes['class']['file'] = array(
-			'field'      => array('form-control-file'),
-			'uploadicon' => 'icon-upload',
-			'buttons'    => array(
-				'class' => 'btn btn-success',
-				'icon'  => 'icon-copy',
-			),
+			'class'       => array('form-control-file'),
+			'uploadicon'  => array('icon-upload'),
+			'buttonclass' => array('btn btn-success'),
+			'buttonicon'  => array('icon-copy'),
 		);
 
 		$classes['class']['submit'] = array(
-			'buttons' => array(
-				'class' => 'btn',
-			),
+			'buttonclass' => array('btn'),
 		);
 
 		if ($inline)
 		{
-			$classes['class']['checkboxes']['field'][] = 'form-check-inline';
-			$classes['class']['radio']['field'][]      = 'form-check-inline';
+			$classes['class']['checkboxes']['class'][] = 'form-check-inline';
+			$classes['class']['radio']['class'][]      = 'form-check-inline';
 		}
 
 		$this->classes = $classes;
