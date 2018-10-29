@@ -374,9 +374,9 @@ class JFormFieldSubform extends JFormField
 		private function loadSubFormData(Form &$subForm)
 	{
 		$value         = $this->value ? (array) $this->value : array();
-		$layoutPaths   = $this->form->layoutPaths;
-		$framework     = $this->form->framework;
-		$rendererDebug = $this->form->rendererDebug;
+		$layoutPaths   = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
+		$framework     = !empty($this->form->framework) ? $this->form->framework : array();
+		$rendererDebug = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
 
 		// Simple form, just bind the data and return one row.
 		if (!$this->multiple)
