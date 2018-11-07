@@ -22,7 +22,7 @@ extract($displayData);
 $subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : '';
 ?>
 
-<div class="subform-repeatable-group<?php echo $subformClass;?>" data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
+<div class="subform-repeatable-group<?php echo $subformClass;?> subform-repeatable-group-<?php echo $unique_subform_id; ?>" data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
 
 <?php foreach ($form->getGroup('') as $field) : ?>
 	<?php echo $field->renderField(); ?>
@@ -31,13 +31,13 @@ $subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute
 		<div class="btn-toolbar pull-right" role="toolbar">
 			<div class="btn-group btn-group-sm">
 				<?php if (!empty($buttons['add'])) : ?>
-					<a class="group-add btn btn-success"><span class="glyphicon glyphicon-plus-sign"></span></a>
+					<a class="group-add btn btn-success group-add-<?php echo $unique_subform_id; ?>" aria-label="<?php echo JText::_('JGLOBAL_FIELD_ADD'); ?>"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></a>
 				<?php endif; ?>
 				<?php if (!empty($buttons['remove'])) : ?>
-					<a class="group-remove btn btn-danger"><span class="glyphicon glyphicon-minus-sign"></span></a>
+					<a class="group-remove btn btn-danger group-add-<?php echo $unique_subform_id; ?>" aria-label="<?php echo JText::_('JGLOBAL_FIELD_REMOVE'); ?>"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span></a>
 				<?php endif; ?>
 				<?php if (!empty($buttons['move'])) : ?>
-					<a class="group-move btn btn-primary"><span class="icon-move"></span></a>
+					<a class="group-move btn btn-primary group-add-<?php echo $unique_subform_id; ?>" aria-label="<?php echo JText::_('JGLOBAL_FIELD_MOVE'); ?>"><span class="glyphicon glyphicon-move" aria-hidden="true"></span></a>
 				<?php endif; ?>
 			</div>
 		</div>
