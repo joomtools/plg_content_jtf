@@ -247,6 +247,14 @@ class JFormFieldSubform extends JFormField
 		$data['fieldname'] = $this->fieldname;
 		$data['groupByFieldset'] = $this->groupByFieldset;
 
+		/**
+		 * For each rendering process of a subform element, we want to have a
+		 * separate unique subform id present to could distinguish the eventhandlers
+		 * regarding adding/moving/removing rows from nested subforms from their parents.
+		 */
+		static $unique_subform_id = 0;
+		$data['unique_subform_id'] = ('sr-' . ($unique_subform_id++));
+
 		// Prepare renderer
 		$renderer = $this->getRenderer($this->layout);
 
@@ -374,9 +382,9 @@ class JFormFieldSubform extends JFormField
 		private function loadSubFormData(Form &$subForm)
 	{
 		$value         = $this->value ? (array) $this->value : array();
-		$layoutPaths   = $this->form->layoutPaths;
-		$framework     = $this->form->framework;
-		$rendererDebug = $this->form->rendererDebug;
+		$layoutPaths   = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
+		$framework     = !empty($this->form->framework) ? $this->form->framework : array();
+		$rendererDebug = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
 
 		// Simple form, just bind the data and return one row.
 		if (!$this->multiple)
