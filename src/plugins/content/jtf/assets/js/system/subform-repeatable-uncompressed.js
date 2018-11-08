@@ -68,7 +68,7 @@
 	$.subformRepeatable.prototype.prepareTemplate = function(){
 		// create from template
 		if(this.options.rowTemplateSelector){
-			var tmplElement = this.$container.find(this.options.rowTemplateSelector)[0] || {};
+			var tmplElement = this.$container.find(this.options.rowTemplateSelector).last().html() || {};
 			this.template = $.trim(tmplElement.text || tmplElement.textContent); //(text || textContent) is IE8 fix
 		}
 		// create from existing rows
@@ -142,16 +142,20 @@
 		$row.remove();
 	};
 
-	// fix names ind id`s for field that in $row
-	$.subformRepeatable.prototype.fixUniqueAttributes = function($row, count){
-		this.lastRowNum++;
-		var group = $row.attr('data-group'),// current group name
-			basename = $row.attr('data-base-name'), // group base name, without count
-			count    = count || 0,
-			countnew = Math.max(this.lastRowNum, count + 1),
-    		groupnew = basename + countnew; // new group name
+	// fix names and id`s for fields in $row
+	$.subformRepeatable.prototype.fixUniqueAttributes = function(
+		$row, // the jQuery object to do fixes in
+		_count, // existing count of rows
+		_group, // current group name, e.g. 'optionsX'
+		_basename // group base name, without count, e.g. 'options'
+	) {
+		var group = (typeof _group === 'undefined' ? $row.attr('data-group') : _group),
+			basename = (typeof _basename === 'undefined' ? $row.attr('data-base-name') : _basename),
+			count    = (typeof _count === 'undefined' ? 0 : _count),
+			countnew = Math.max(this.lastRowNum, count),
+			groupnew = basename + countnew;
 
-		this.lastRowNum = countnew;
+		this.lastRowNum = countnew + 1;
 		$row.attr('data-group', groupnew);
 
 		// Fix inputs that have a "name" attribute
@@ -204,6 +208,22 @@
 			// Guess there a label for this input
 			$row.find('label[for="' + forOldAttr + '"]').attr('for', idNew).attr('id', idNew + '-lbl');
 		}
+
+		/**
+		 * Recursively replace our basename + old group with basename + new group
+		 * inside of nested subform template elements. First we try to find such
+		 * template elements, then we iterate through them and do the same replacements
+		 * that we have made here inside of them.
+		 */
+		var nestedTemplates = $row.find(this.options.rowTemplateSelector);
+		// If we found it, iterate over the found ones (might be more than one!)
+		for (var j = 0; j < nestedTemplates.length; j++) {
+			// Get the nested templates content (as DocumentFragment) and cast it
+			// to a jQuery object
+			var nestedTemplate = $($(nestedTemplates[j]).prop('content'));
+			// Fix the attributes for this nested template.
+			this.fixUniqueAttributes(nestedTemplate, count, group, basename);
+		}
 	};
 
 	// remove scripts attached to fields
@@ -253,18 +273,35 @@
 		if(window.SqueezeBox && window.SqueezeBox.assign){
 			SqueezeBox.assign($row.find('a.modal').get(), {parse: 'rel'});
 		}
+
+		// @TODO We need to do a lot more here. See e.g. administrator/templates/isis/js/template.js
+		// and all that it does with e.g. turning radios into btn groups with disabled/active/btn-danger classes.
+		// See also related issues #16695 and #16676, which could get fixed by this method being better.
+
+		// subforms in subforms
+		$row.find('div.subform-repeatable').subformRepeatable();
 	};
 
 	// defaults
 	$.subformRepeatable.defaults = {
-		btAdd: ".group-add", //  button selector for "add" action
-		btRemove: ".group-remove",//  button selector for "remove" action
-		btMove: ".group-move",//  button selector for "move" action
-		minimum: 0, // minimum repeating
-		maximum: 10, // maximum repeating
+		// button selector for "add" action, must be unique per nested subform!
+		btAdd: ".group-add",
+		// button selector for "remove" action, must be unique per nested subform!
+		btRemove: ".group-remove",
+		// button selector for "move" action, must be unique per nested subform!
+		btMove: ".group-move",
+		// minimum repeating
+		minimum: 0,
+		// maximum repeating
+		maximum: 10,
+		// selector for the repeatable element inside the main container,
+		// must be unique per nested subform!
 		repeatableElement: ".subform-repeatable-group",
-		rowTemplateSelector: 'script.subform-repeatable-template-section', // selector for the row template <script>
-		rowsContainer: null // container for rows, same as main container by default
+		// selector for the row template element with URL-encoded template inside it,
+		// must *NOT* be unique per nested subform!
+		rowTemplateSelector: 'template.subform-repeatable-template-section',
+		// container for rows, same as main container by default
+		rowsContainer: null
 	};
 
 	$.fn.subformRepeatable = function(options){
@@ -293,6 +330,6 @@
 	// wait when all will be loaded, important for scripts fix
 	$(window).on('load', function(){
 		$('div.subform-repeatable').subformRepeatable();
-	})
+	});
 
 })(jQuery);

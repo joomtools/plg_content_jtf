@@ -21,7 +21,7 @@ defined('_JEXEC') or die;
 extract($displayData);
 $subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : '';
 ?>
-<div class="subform-repeatable-group subform-repeatable-group-<?php echo $unique_subform_id; ?> uk-margin-large-bottom uk-width-1-1 uk-width-1-2@s uk-width-1-4@m"
+<div class="subform-repeatable-group<?php echo $subformClass; ?> subform-repeatable-group-<?php echo $unique_subform_id; ?> uk-margin-large-bottom uk-width-1-1 uk-width-1-2@s uk-width-1-4@m"
 	 data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
 
 	<?php foreach ($form->getFieldsets() as $fieldset) :

@@ -22,7 +22,7 @@ extract($displayData);
 $subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : '';
 ?>
 
-<div class="subform-repeatable-group-<?php echo $subformClass;?> subform-repeatable-group-<?php echo $unique_subform_id; ?>" data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
+<div class="subform-repeatable-group<?php echo $subformClass;?> subform-repeatable-group-<?php echo $unique_subform_id; ?>" data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
 
 <?php foreach ($form->getGroup('') as $field) : ?>
 	<?php echo $field->renderField(); ?>

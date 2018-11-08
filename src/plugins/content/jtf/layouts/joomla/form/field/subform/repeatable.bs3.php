@@ -49,7 +49,7 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 			<?php if (!empty($buttons['add'])) : ?>
 				<div class="btn-toolbar" role="toolbar">
 					<div class="btn-group btn-group-sm">
-						<a class="btn btn-mini button btn-success group-add-<?php echo $unique_subform_id; ?>" aria-label="<?php echo JText::_('JGLOBAL_FIELD_ADD'); ?>">
+						<a class="group-add btn btn-mini button btn-success group-add-<?php echo $unique_subform_id; ?>" aria-label="<?php echo JText::_('JGLOBAL_FIELD_ADD'); ?>">
 							<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
 						</a>
 					</div>
@@ -73,7 +73,7 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 			?>
 			</div>
 			<?php if ($multiple) : ?>
-				<script type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
+				<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
 					<?php $tmpl = FrameworkHelper::setFrameworkClasses($tmpl);
 					echo $this->sublayout($sublayout,
 						array(
@@ -85,7 +85,7 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 						)
 					);
 					?>
-				</script>
+				</template>
 			<?php endif; ?>
 		</div>
 	</div>

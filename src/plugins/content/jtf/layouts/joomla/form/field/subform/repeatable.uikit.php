@@ -72,7 +72,7 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 				</div>
 			</div>
 			<?php if ($multiple) : ?>
-				<script type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
+				<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
 					<?php
 					$tmpl = FrameworkHelper::setFrameworkClasses($tmpl);
 					echo $this->sublayout($sublayout,
@@ -84,7 +84,7 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 							'unique_subform_id' => $unique_subform_id,
 						)
 					); ?>
-				</script>
+				</template>
 			<?php endif; ?>
 		</div>
 	</div>
