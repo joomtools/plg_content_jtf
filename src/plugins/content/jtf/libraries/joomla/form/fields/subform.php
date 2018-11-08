@@ -247,6 +247,14 @@ class JFormFieldSubform extends JFormField
 		$data['fieldname'] = $this->fieldname;
 		$data['groupByFieldset'] = $this->groupByFieldset;
 
+		/**
+		 * For each rendering process of a subform element, we want to have a
+		 * separate unique subform id present to could distinguish the eventhandlers
+		 * regarding adding/moving/removing rows from nested subforms from their parents.
+		 */
+		static $unique_subform_id = 0;
+		$data['unique_subform_id'] = ('sr-' . ($unique_subform_id++));
+
 		// Prepare renderer
 		$renderer = $this->getRenderer($this->layout);
 

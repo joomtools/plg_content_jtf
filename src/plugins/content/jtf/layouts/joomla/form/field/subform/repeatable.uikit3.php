@@ -40,15 +40,20 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 
 	<div class="subform-repeatable-wrapper subform-layout uk-width-1-1">
 		<div class="subform-repeatable uk-grid"
-			 data-bt-add="a.group-add" data-bt-remove="a.group-remove" data-bt-move="a.group-move"
-			 data-repeatable-element="div.subform-repeatable-group" data-minimum="<?php echo $min; ?>"
-			 data-maximum="<?php echo $max; ?>">
-			<div class="uk-margin-bottom uk-width-1-1">
-				<div class="uk-button-group">
-					<a class="group-add uk-button uk-button-small uk-button-success"><span class="uk-icon-plus"></span>
-					</a>
+			 data-bt-add="a.group-add-<?php echo $unique_subform_id; ?>"
+			 data-bt-remove="a.group-remove-<?php echo $unique_subform_id; ?>"
+			 data-bt-move="a.group-move-<?php echo $unique_subform_id; ?>"
+			 data-minimum="<?php echo $min; ?>" data-maximum="<?php echo $max; ?>">
+
+			<?php if (!empty($buttons['add'])) : ?>
+				<div class="uk-margin-bottom uk-width-1-1">
+					<div class="uk-button-group">
+						<a class="uk-button uk-button-small uk-button-success group-add-<?php echo $unique_subform_id; ?>" aria-label="<?php echo JText::_('JGLOBAL_FIELD_ADD'); ?>"><span class="uk-icon-plus"></span>
+						</a>
+					</div>
 				</div>
-			</div>
+			<?php endif; ?>
+
 			<div class="uk-width-1-1">
 				<div class="uk-grid">
 				<?php
@@ -58,24 +63,26 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 						array(
 							'form' => $form,
 							'basegroup' => $fieldname,
-							'group' => $fieldname . $k,
-							'buttons' => $buttons)
+							'buttons' => $buttons,
+							'unique_subform_id' => $unique_subform_id,
+						)
 					);
 				endforeach; ?>
 				</div>
 			</div>
 			<?php if ($multiple) : ?>
-				<script type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
+				<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
 					<?php
 					$tmpl = FrameworkHelper::setFrameworkClasses($tmpl);
 					echo $this->sublayout($sublayout,
 						array(
 							'form'      => $tmpl,
 							'basegroup' => $fieldname,
-							'group'     => $fieldname . 'X',
-							'buttons'   => $buttons)
+							'buttons' => $buttons,
+							'unique_subform_id' => $unique_subform_id,
+						)
 					); ?>
-				</script>
+				</template>
 			<?php endif; ?>
 		</div>
 	</div>
