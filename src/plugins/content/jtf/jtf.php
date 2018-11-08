@@ -266,8 +266,7 @@ class PlgContentJtf extends CMSPlugin
 			}
 
 			$formTheme = $this->uParams['theme'] . (int) self::$count;
-
-			$formLang = $this->getThemePath('language/' . $langTag . '/' . $langTag . '.jtf_theme.ini');
+			$formLang  = $this->getThemePath('language/' . $langTag . '/' . $langTag . '.jtf_theme.ini');
 
 			if (!empty($formLang))
 			{
@@ -319,6 +318,12 @@ class PlgContentJtf extends CMSPlugin
 
 					if ($sendmail)
 					{
+
+						if ($this->uParams['redirect_menuid'] !== null)
+						{
+							$this->uParams['message_article'] = null;
+						}
+
 						if ($this->uParams['message_article'] === null)
 						{
 							$text = Text::_('JTF_EMAIL_THANKS');
@@ -328,8 +333,16 @@ class PlgContentJtf extends CMSPlugin
 							$text = $this->getMessageArticleContent();
 						}
 
-						$this->app->enqueueMessage($text, 'message');
-						$this->app->redirect(JRoute::_('index.php', false));
+
+						if ($this->uParams['redirect_menuid'] === null)
+						{
+							$this->app->enqueueMessage($text, 'message');
+							$this->app->redirect(JRoute::_('index.php', false));
+						}
+						else
+						{
+							$this->app->redirect(JRoute::_('index.php?Itemid=' . (int)$this->uParams['redirect_menuid'], false));
+						}
 					}
 				}
 
@@ -405,8 +418,11 @@ class PlgContentJtf extends CMSPlugin
 		// Clear subject
 		$this->uParams['subject'] = null;
 
-		// Clear subject
+		// Clear message_article
 		$this->uParams['message_article'] = null;
+
+		// Clear redirect_menuid
+		$this->uParams['redirect_menuid'] = null;
 
 		// Set theme to default
 		$this->uParams['theme'] = 'default';
