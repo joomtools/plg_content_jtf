@@ -41,14 +41,21 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 <div class="row-fluid">
 	<div class="subform-repeatable-wrapper subform-layout">
 		<div class="subform-repeatable"
-			 data-bt-add="a.group-add" data-bt-remove="a.group-remove" data-bt-move="a.group-move"
-			 data-repeatable-element="div.subform-repeatable-group" data-minimum="<?php echo $min; ?>"
-			 data-maximum="<?php echo $max; ?>">
-			<div class="btn-toolbar">
-				<div class="btn-group">
-					<a class="group-add btn btn-mini button btn-success"><span class="icon-plus"></span> </a>
+			 data-bt-add="a.group-add-<?php echo $unique_subform_id; ?>"
+			 data-bt-remove="a.group-remove-<?php echo $unique_subform_id; ?>"
+			 data-bt-move="a.group-move-<?php echo $unique_subform_id; ?>"
+			 data-minimum="<?php echo $min; ?>" data-maximum="<?php echo $max; ?>">
+
+			<?php if (!empty($buttons['add'])) : ?>
+				<div class="btn-toolbar">
+					<div class="btn-group">
+						<a class="btn btn-mini button btn-success group-add-<?php echo $unique_subform_id; ?>" aria-label="<?php echo JText::_('JGLOBAL_FIELD_ADD'); ?>">
+							<span class="icon-plus" aria-hidden="true"></span>
+						</a>
+					</div>
 				</div>
-			</div>
+			<?php endif; ?>
+
 			<div class="row-fluid">
 			<?php
 			foreach ($forms as $k => $form) :
@@ -58,13 +65,15 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 						'form' => $form,
 						'basegroup' => $fieldname,
 						'group' => $fieldname . $k,
-						'buttons' => $buttons)
+						'buttons' => $buttons,
+						'unique_subform_id' => $unique_subform_id,
+					)
 				);
 			endforeach;
 			?>
 			</div>
 			<?php if ($multiple) : ?>
-				<script type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
+				<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
 					<?php
 					$tmpl = FrameworkHelper::setFrameworkClasses($tmpl);
 					echo $this->sublayout($sublayout,
@@ -72,10 +81,12 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 							'form' => $tmpl,
 							'basegroup' => $fieldname,
 							'group' => $fieldname . 'X',
-							'buttons' => $buttons)
+							'buttons' => $buttons,
+							'unique_subform_id' => $unique_subform_id,
+						)
 					);
 					?>
-				</script>
+				</template>
 			<?php endif; ?>
 		</div>
 	</div>
