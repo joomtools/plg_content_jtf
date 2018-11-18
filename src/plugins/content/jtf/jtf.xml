@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.8" type="plugin" group="content" method="upgrade">
+<extension version="3.9" type="plugin" group="content" method="upgrade">
 	<name>JTF_XML_NAME</name>
-	<creationDate>##DATE##</creationDate>
 	<author>Guido De Gobbis</author>
+	<creationDate>##DATE##</creationDate>
+	<copyright>(C) JoomTools. All rights reserved.</copyright>
+	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
 	<authorEmail>support@joomtools.de</authorEmail>
-	<authorUrl>www.joomtools.de</authorUrl>
-	<copyright>Copyright (C) ##YEAR## JoomTools.de. All rights reserved.</copyright>
-	<license>GPL v3</license>
+	<authorUrl>https://github.com/JoomTools/plg_coontent_jtf</authorUrl>
 	<version>##VERSION##</version>
 	<description>JTF_XML_DESC</description>
-
 	<files>
 		##FILES##
 	</files>
-
-	<languages folder="language">
-		##LANGUAGE_FILES##
-	</languages>
-
 	<scriptfile>script.php</scriptfile>
-
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="/plugins/content/jtf/libraries/joomla/form/fields">
+			<fieldset name="basic" addfieldpath="/plugins/content/jtf/libraries/jtf/Form/Field">
 
 				<field name="component_exclusions"
 				       type="textarea"

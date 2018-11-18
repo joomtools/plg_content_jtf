@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 /**
  * Script file of Joomla CMS
  *
- * @since  1.6.4
+ * @since   3.0.0
  */
 class PlgContentJtfInstallerScript
 {
@@ -25,8 +25,8 @@ class PlgContentJtfInstallerScript
 	public function __construct()
 	{
 		// Define the minumum versions to be supported.
-		$this->minimumJoomla = '3.8';
-		$this->minimumPhp    = '7.0';
+		$this->minimumJoomla = '3.9';
+		$this->minimumPhp    = '7.1';
 	}
 
 	/**
@@ -36,34 +36,27 @@ class PlgContentJtfInstallerScript
 	 * @param   JInstaller $installer The class calling this method
 	 *
 	 * @return  boolean  True on success
-	 *
 	 * @since   3.0.0
 	 */
 	public function preflight($action, $installer)
 	{
-		/* Removed while sometimes folders will not be reinstalled
-		if ($action === 'update')
+		$app = JFactory::getApplication();
+		JFactory::getLanguage()->load('plg_content_jtf', dirname(__FILE__));
+
+		if (version_compare(PHP_VERSION, $this->minimumPhp, 'lt'))
 		{
-			jimport('joomla.filesystem.folder');
+			$app->enqueueMessage(JText::_('PLG_CONTENT_JTF_MINPHPVERSION'), 'error');
 
-			$error      = false;
-			$pluginPath = JPATH_PLUGINS . '/content/jtf';
-			$deletes    = [];
-			$deletes[]  = $pluginPath . '/assets';
-			$deletes[]  = $pluginPath . '/layouts';
-			$deletes[]  = $pluginPath . '/libraries';
-			$deletes[]  = $pluginPath . '/tmpl';
+			return false;
+		}
 
-			foreach ($deletes as $delete)
-			{
-				if (is_dir($delete))
-				{
-					JFolder::delete($delete);
-				}
-			}
+		if (version_compare(JVERSION, $this->minimumJoomla, 'lt'))
+		{
+			$app->enqueueMessage(JText::_('PLG_CONTENT_JTF_MINJVERSION'), 'error');
+
+			return false;
 		}
 
 		return true;
-		*/
 	}
 }

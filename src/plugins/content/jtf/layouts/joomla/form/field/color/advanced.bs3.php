@@ -1,10 +1,11 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
+ * @package      Joomla.Plugin
+ * @subpackage   System.Jtf
  *
- * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
  */
 
 defined('JPATH_BASE') or die;

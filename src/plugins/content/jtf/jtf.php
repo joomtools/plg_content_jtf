@@ -10,28 +10,16 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JLoader::discover('Jtf\Frameworks\Framework', JPATH_PLUGINS . '/content/jtf/libraries/jtf/Frameworks');
 JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
-JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true);
-JLoader::register('FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true);
-JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true);
-JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true, false, 'psr4');
 
-
-// Add form fields
-JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields');
-
-// Add form rules
-JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules');
-JLoader::registerNamespace('Joomla\\CMS\\Form\\Rule', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules', false, false, 'psr4');
-
+use Jtf\Form\Form;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Form\FormHelper;
 use Joomla\Utilities\ArrayHelper;
-use Jtf\Form\Form;
 
 /**
  * @package      Joomla.Plugin
@@ -65,7 +53,7 @@ class PlgContentJtf extends CMSPlugin
 	/**
 	 * Global application object
 	 *
-	 * @var     JApplication
+	 * @var     \Joomla\CMS\Application\CMSApplication
 	 * @since   3.0.0
 	 */
 	protected $app = null;
@@ -159,6 +147,11 @@ class PlgContentJtf extends CMSPlugin
 			return null;
 		}
 
+		if (version_compare(JVERSION, '4', 'ge'))
+		{
+			Factory::getContainer()->registerServiceProvider(new Jtf\Service\Provider\Form);
+		}
+
 		$this->debug = (boolean) $this->params->get('debug', 0);
 		$option      = $this->app->input->getCmd('option');
 		$layout      = $this->app->input->getCmd('layout');
@@ -224,6 +217,11 @@ class PlgContentJtf extends CMSPlugin
 		{
 			return;
 		}
+
+		FormHelper::addFieldPath(JPATH_PLUGINS . '/system/jtf/libraries/jtf/Form/Field');
+		FormHelper::addFieldPrefix('Jtf\\Form\\Field');
+		FormHelper::addRulePath(JPATH_PLUGINS . '/system/jtf/libraries/jtf/Form/Rule');
+		FormHelper::addRulePrefix('Jtf\\Form\\Rule');
 
 		// Get language tag
 		$langTag = $this->app->get('language');
@@ -604,6 +602,7 @@ class PlgContentJtf extends CMSPlugin
 			JPATH_THEMES . '/' . $template . '/html/layouts',
 			JPATH_PLUGINS . '/content/jtf/layouts/jtf',
 			JPATH_PLUGINS . '/content/jtf/layouts',
+			JPATH_SITE . '/layouts',
 		);
 
 		$this->form = $form;
@@ -945,7 +944,7 @@ class PlgContentJtf extends CMSPlugin
 		$id            = $this->uParams['theme'];
 		$index         = self::$count;
 		$form          = $this->getForm();
-		$form          = Jtf\Frameworks\FrameworkHelper::setFrameworkClasses($form);
+		$form          = Jtf\Frameworks\Framework\FrameworkHelper::setFrameworkClasses($form);
 		$formClass     = $form->getAttribute('class', '');
 		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
