@@ -377,7 +377,7 @@ class FrameworkHelper
 			$form->setFieldAttribute($fieldname, 'icon', null);
 		}
 
-		if (in_array($type, array('checkboxes', 'checkbox', 'radio')))
+		if (in_array($type, array('checkboxes', 'radio')))
 		{
 			$optionClass = ArrayHelper::arrayUnique(
 				array_merge(

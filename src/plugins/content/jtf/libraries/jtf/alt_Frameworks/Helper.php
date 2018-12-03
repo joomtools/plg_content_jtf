@@ -382,7 +382,7 @@ class FrameworkHelper
 			$form->setFieldAttribute($fieldname, 'icon', null);
 		}
 
-		if (in_array($type, array('checkboxes', 'checkbox', 'radio')))
+		if (in_array($type, array('checkboxes', 'radio')))
 		{
 			$field->setOptionsClass($classes['frwk']['options']);
 		}
