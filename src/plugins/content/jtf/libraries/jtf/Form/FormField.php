@@ -12,6 +12,7 @@ namespace Jtf\Form;
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 
@@ -99,10 +100,31 @@ abstract class FormField extends \Joomla\CMS\Form\FormField
 	 *
 	 * @param   Form  $form  The form to attach to the form field object.
 	 *
-	 * @since   1.7.0
+	 * @since   3.0.0
 	 */
 	public function __construct($form = null)
 	{
+
+		if (property_exists($this, 'app'))
+		{
+			$reflection = new \ReflectionClass($this);
+
+			if ($reflection->getProperty('app')->isPrivate() === false && $this->app === null)
+			{
+				$this->app = Factory::getApplication();
+			}
+		}
+
+		if (property_exists($this, 'db'))
+		{
+			$reflection = new \ReflectionClass($this);
+
+			if ($reflection->getProperty('db')->isPrivate() === false && $this->db === null)
+			{
+				$this->db = Factory::getDbo();
+			}
+		}
+
 		parent::__construct($form);
 	}
 	/**

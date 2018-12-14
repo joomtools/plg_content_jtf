@@ -30,13 +30,13 @@ $class = !empty($class) ? ' class="' . $class . '"' : '';
 
 if (!empty($close))
 {
-	$html[] = '<button type="button" class="uk-alert-close uk-close"></button>';
+	$html[] = '<button type="button" class="uk-alert-close" uk-close></button>';
 }
 
 $html[] = !empty($label) ? '<' . $heading . '>' . $label . '</' . $heading . '>' : '';
 $html[] = !empty($description) ? $description : '';
 
 ?>
-<div<?php echo $class; ?> data-uk-alert>
+<div<?php echo $class; ?> uk-alert>
 	<?php echo implode('', $html); ?>
 </div>

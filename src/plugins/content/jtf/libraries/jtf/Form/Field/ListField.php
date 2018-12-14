@@ -26,23 +26,23 @@ use Joomla\CMS\Uri\Uri;
  * Form Field class for the Joomla Platform.
  * Supports a generic list of options.
  *
- * @since  1.7.0
+ * @since   3.0.0
  */
 class ListField extends FormField
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var    string
-	 * @since  1.7.0
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $type = 'List';
 
 	/**
 	 * Name of the layout being used to render the field
 	 *
-	 * @var    string
-	 * @since  __DEPLOY_VERSION__
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $layout = 'joomla.form.field.list';
 
@@ -50,9 +50,8 @@ class ListField extends FormField
 	 * Method to get the field input markup for a generic list.
 	 * Use the multiple attribute to enable multiselect.
 	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since   3.7.0
+	 * @return   string  The field input markup.
+	 * @since    3.0.0
 	 */
 	protected function getInput()
 	{
@@ -66,9 +65,8 @@ class ListField extends FormField
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return  array  The field option objects.
-	 *
-	 * @since   3.7.0
+	 * @return   array  The field option objects.
+	 * @since    3.0.0
 	 */
 	protected function getOptions()
 	{
@@ -119,12 +117,13 @@ class ListField extends FormField
 			$selected = ($selected == 'true' || $selected == 'selected' || $selected == '1');
 
 			$tmp = array(
-					'value'    => $value,
-					'text'     => Text::alt($text, $fieldname),
-					'disable'  => $disabled,
-					'class'    => (string) $option['class'],
-					'selected' => ($checked || $selected),
-					'checked'  => ($checked || $selected),
+				'value'      => $value,
+				'text'       => Text::alt($text, $fieldname),
+				'disable'    => $disabled,
+				'class'      => (string) $option['class'],
+				'labelclass' => (string) $option['labelclass'],
+				'selected'   => ($checked || $selected),
+				'checked'    => ($checked || $selected),
 			);
 
 			// Set some event handler attributes. But really, should be using unobtrusive js.
@@ -196,9 +195,8 @@ class ListField extends FormField
 	 * @param   string  $text        Text/Language variable of the option.
 	 * @param   array   $attributes  Array of attributes ('name' => 'value' format)
 	 *
-	 * @return  ListField  For chaining.
-	 *
-	 * @since   3.7.0
+	 * @return   ListField  For chaining.
+	 * @since    3.0.0
 	 */
 	public function addOption($text, $attributes = array())
 	{
@@ -220,9 +218,8 @@ class ListField extends FormField
 	 *
 	 * @param   string  $name  The property name for which to get the value.
 	 *
-	 * @return  mixed  The property value or null.
-	 *
-	 * @since   3.7.0
+	 * @return   mixed  The property value or null.
+	 * @since    3.0.0
 	 */
 	public function __get($name)
 	{

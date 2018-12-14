@@ -13,7 +13,6 @@ namespace Jtf\Form\Field;
 defined('JPATH_PLATFORM') or die;
 
 use Jtf\Form\FormField;
-use Joomla\CMS\Language\Text;
 
 /**
  * Form Field class for the Joomla Platform.
@@ -63,7 +62,7 @@ class NoteField extends FormField
 	{
 		if (empty($this->layout))
 		{
-			throw new UnexpectedValueException(sprintf('%s has no layout assigned.', $this->name));
+			throw new \UnexpectedValueException(sprintf('%s has no layout assigned.', $this->name));
 		}
 
 		return $this->getRenderer($this->layout)->render($this->getLayoutData());

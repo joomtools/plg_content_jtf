@@ -11,49 +11,59 @@
 defined('JPATH_PLATFORM') or die;
 
 JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
-JLoader::discover('Jtf\Frameworks\Framework',JPATH_PLUGINS . '/content/jtf/libraries/jtf/Frameworks');
 JFormHelper::loadFieldClass('list');
 
 /**
- * Form Field class for the Joomla Platform.
- * Supports a generic list of options.
+ * List of supported frameworks
  *
- * @since  11.1
+ * @since   3.0.0
  */
 class JFormFieldFrwk extends JFormFieldList
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var    string
-	 * @since  11.1
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $type = 'Frwk';
 
 	/**
+	 * @var     array
+	 * @since   3.0.0
+	 */
+	protected $exclude = array(
+		'FrameworkHelper'
+	);
+
+	/**
 	 * Method to get the field options.
 	 *
-	 * @return  array  The field option objects.
-	 *
-	 * @since   3.7.0
+	 * @return   array  The field option objects.
+	 * @since    3.0.0
 	 */
 	protected function getOptions()
 	{
-		$frwkPath = JPATH_PLUGINS . '/content/jtf/libraries/jtf/Frameworks';
+		$frwkPath = JPATH_PLUGINS . '/content/jtf/libraries/jtf/Framework';
 		$frwk = JFolder::files($frwkPath);
 
 		$options = array();
+
+		$options[] = (object) array(
+			'value' => 'joomla',
+			'text'  => 'Joomla',
+		);
 
 		foreach ($frwk as $file)
 		{
 			$fileName = JFile::stripExt($file);
 
-			if (in_array($fileName, array('Helper', 'Bs4')))
+			if (in_array($fileName, $this->exclude))
 			{
 				continue;
 			}
 
-			$framework = 'Jtf\\Frameworks\\Framework' . ucfirst($fileName);
+			$framework = 'Jtf\\Framework\\' . ucfirst($fileName);
 			$fileRealName = $framework::$name;
 
 			$tmp = array(

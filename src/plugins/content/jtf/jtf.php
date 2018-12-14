@@ -12,14 +12,14 @@ defined('_JEXEC') or die('Restricted access');
 
 JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
 
-use Jtf\Form\Form;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Profiler\Profiler;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Form\FormHelper;
 use Joomla\Utilities\ArrayHelper;
+use Jtf\Form\Form;
 
 /**
  * @package      Joomla.Plugin
@@ -432,7 +432,21 @@ class PlgContentJtf extends CMSPlugin
 		$this->uParams['file_path'] = trim($this->params->get('file_path', 'uploads'), '\/');
 
 		// Set default framework value
-		$this->uParams['framework'] = (array) $this->params->get('framework');
+		if ($this->params->get('framework') == 'joomla')
+		{
+			if (version_compare(JVERSION, '4', 'ge'))
+			{
+				$this->uParams['framework'] = array('bs4');
+			}
+			else
+			{
+				$this->uParams['framework'] = array('bs2');
+			}
+		}
+		else
+		{
+			$this->uParams['framework'] = (array) $this->params->get('framework');
+		}
 	}
 
 	/**
@@ -944,7 +958,7 @@ class PlgContentJtf extends CMSPlugin
 		$id            = $this->uParams['theme'];
 		$index         = self::$count;
 		$form          = $this->getForm();
-		$form          = Jtf\Frameworks\Framework\FrameworkHelper::setFrameworkClasses($form);
+		$form          = Jtf\Framework\FrameworkHelper::setFrameworkClasses($form);
 		$formClass     = $form->getAttribute('class', '');
 		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'

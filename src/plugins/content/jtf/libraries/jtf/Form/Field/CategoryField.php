@@ -26,8 +26,8 @@ class CategoryField extends ListField
 	/**
 	 * The form field type.
 	 *
-	 * @var    string
-	 * @since  1.6
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	public $type = 'Category';
 

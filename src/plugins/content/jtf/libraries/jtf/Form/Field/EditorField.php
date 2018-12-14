@@ -11,104 +11,118 @@ namespace Jtf\Form\Field;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Editor\Editor;
-use Joomla\CMS\Factory;
 
 /**
  * A textarea field for content creation
  *
- * @see    JEditor
- * @since  1.6
+ * @see     Editor
+ * @since   3.0.0
  */
 class EditorField extends TextareaField
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var    string
-	 * @since  1.6
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	public $type = 'Editor';
 
 	/**
 	 * The Editor object.
 	 *
-	 * @var    Editor
-	 * @since  1.6
+	 * @var     Editor
+	 * @since   3.0.0
 	 */
 	protected $editor;
 
 	/**
 	 * The height of the editor.
 	 *
-	 * @var    string
-	 * @since  3.2
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $height;
 
 	/**
 	 * The width of the editor.
 	 *
-	 * @var    string
-	 * @since  3.2
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $width;
 
 	/**
 	 * The assetField of the editor.
 	 *
-	 * @var    string
-	 * @since  3.2
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $assetField;
 
 	/**
 	 * The authorField of the editor.
 	 *
-	 * @var    string
-	 * @since  3.2
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $authorField;
 
 	/**
 	 * The asset of the editor.
 	 *
-	 * @var    string
-	 * @since  3.2
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $asset;
 
 	/**
 	 * The buttons of the editor.
 	 *
-	 * @var    mixed
-	 * @since  3.2
+	 * @var     mixed
+	 * @since   3.0.0
 	 */
 	protected $buttons;
 
 	/**
 	 * The hide of the editor.
 	 *
-	 * @var    array
-	 * @since  3.2
+	 * @var     array
+	 * @since   3.0.0
 	 */
 	protected $hide;
 
 	/**
 	 * The editorType of the editor.
 	 *
-	 * @var    array
-	 * @since  3.2
+	 * @var     array
+	 * @since   3.0.0
 	 */
 	protected $editorType;
+
+	/**
+	 * Global application object
+	 *
+	 * @var     \Joomla\CMS\Application\CMSApplication
+	 * @since   3.0.0
+	 */
+	protected $app = null;
+
+	/**
+	 * Global database object
+	 *
+	 * @var     \JDatabaseDriver
+	 * @since   3.0.0
+	 */
+	protected $db = null;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
 	 * @param   string  $name  The property name for which to get the value.
 	 *
-	 * @return  mixed  The property value or null.
-	 *
-	 * @since   3.2
+	 * @return   mixed  The property value or null.
+	 * @since    3.0.0
 	 */
 	public function __get($name)
 	{
@@ -134,9 +148,8 @@ class EditorField extends TextareaField
 	 * @param   string  $name   The property name for which to set the value.
 	 * @param   mixed   $value  The value of the property.
 	 *
-	 * @return  void
-	 *
-	 * @since   3.2
+	 * @return   void
+	 * @since    3.0.0
 	 */
 	public function __set($name, $value)
 	{
@@ -191,10 +204,8 @@ class EditorField extends TextareaField
 	 *                                       For example if the field has name="foo" and the group value is set to "bar" then the
 	 *                                       full field name would end up being "bar[foo]".
 	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @see     FormField::setup()
-	 * @since   3.2
+	 * @return   boolean  True on success.
+	 * @since    3.0.0
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null)
 	{
@@ -235,29 +246,39 @@ class EditorField extends TextareaField
 	/**
 	 * Method to get the field input markup for the editor area
 	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since   1.6
+	 * @return   string  The field input markup.
+	 * @since    3.0.0
 	 */
 	protected function getInput()
 	{
 		// Get an editor object.
 		$editor = $this->getEditor();
-		$readonly = $this->readonly || $this->disabled;
+		$params = array(
+			'autofocus' => $this->autofocus,
+			'readonly'  => $this->readonly || $this->disabled,
+			'syntax'    => (string) $this->element['syntax'],
+		);
 
 		return $editor->display(
-			$this->name, htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'), $this->width, $this->height, $this->columns, $this->rows,
-			$this->buttons ? (is_array($this->buttons) ? array_merge($this->buttons, $this->hide) : $this->hide) : false, $this->id, $this->asset,
-			$this->form->getValue($this->authorField), array('syntax' => (string) $this->element['syntax'], 'readonly' => $readonly)
+			$this->name,
+			htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
+			$this->width,
+			$this->height,
+			$this->columns,
+			$this->rows,
+			$this->buttons ? (is_array($this->buttons) ? array_merge($this->buttons, $this->hide) : $this->hide) : false,
+			$this->id,
+			$this->asset,
+			$this->form->getValue($this->authorField),
+			$params
 		);
 	}
 
 	/**
 	 * Method to get a Editor object based on the form field.
 	 *
-	 * @return  Editor  The Editor object.
-	 *
-	 * @since   1.6
+	 * @return   Editor  The Editor object.
+	 * @since    3.0.0
 	 */
 	protected function getEditor()
 	{
@@ -271,23 +292,20 @@ class EditorField extends TextareaField
 				// Get the list of editor types.
 				$types = $this->editorType;
 
-				// Get the database object.
-				$db = Factory::getDbo();
-
 				// Iterate over the types looking for an existing editor.
 				foreach ($types as $element)
 				{
 					// Build the query.
-					$query = $db->getQuery(true)
+					$query = $this->db->getQuery(true)
 						->select('element')
 						->from('#__extensions')
-						->where('element = ' . $db->quote($element))
-						->where('folder = ' . $db->quote('editors'))
+						->where('element = ' . $this->db->quote($element))
+						->where('folder = ' . $this->db->quote('editors'))
 						->where('enabled = 1');
 
 					// Check of the editor exists.
-					$db->setQuery($query, 0, 1);
-					$editor = $db->loadResult();
+					$this->db->setQuery($query, 0, 1);
+					$editor = $this->db->loadResult();
 
 					// If an editor was found stop looking.
 					if ($editor)
@@ -297,10 +315,10 @@ class EditorField extends TextareaField
 				}
 			}
 
-			// Create the JEditor instance based on the given editor.
+			// Create the Editor instance based on the given editor.
 			if ($editor === null)
 			{
-				$editor = Factory::getApplication()->get('editor');
+				$editor = $this->app->get('editor');
 			}
 
 			$this->editor = Editor::getInstance($editor);
@@ -312,9 +330,11 @@ class EditorField extends TextareaField
 	/**
 	 * Method to get the JEditor output for an onSave event.
 	 *
-	 * @return  string  The JEditor object output.
+	 * @return   string  The JEditor object output.
+	 * @since    3.0.0
 	 *
-	 * @since   1.6
+	 * @deprecated   4.0  Will be removed without replacement
+	 * @see      Editor::save()
 	 */
 	public function save()
 	{

@@ -20,74 +20,89 @@ use Joomla\CMS\Language\Text;
  * Provides a pop up date picker linked to a button.
  * Optionally may be filtered to use user's or server's time zone.
  *
- * @since  1.7.0
+ * @since   3.0.0
  */
 class CalendarField extends FormField
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var    string
-	 * @since  1.7.0
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $type = 'Calendar';
 
 	/**
 	 * The allowable maxlength of calendar field.
 	 *
-	 * @var    integer
-	 * @since  3.2
+	 * @var     integer
+	 * @since   3.0.0
 	 */
 	protected $maxlength;
 
 	/**
 	 * The format of date and time.
 	 *
-	 * @var    integer
-	 * @since  3.2
+	 * @var     integer
+	 * @since   3.0.0
 	 */
 	protected $format;
 
 	/**
 	 * The filter.
 	 *
-	 * @var    integer
-	 * @since  3.2
+	 * @var     integer
+	 * @since   3.0.0
 	 */
 	protected $filter;
 
 	/**
 	 * The minimum year number to subtract/add from the current year
 	 *
-	 * @var    integer
-	 * @since  3.7.0
+	 * @var     integer
+	 * @since   3.0.0
 	 */
 	protected $minyear;
 
 	/**
 	 * The maximum year number to subtract/add from the current year
 	 *
-	 * @var    integer
-	 * @since  3.7.0
+	 * @var     integer
+	 * @since   3.0.0
 	 */
 	protected $maxyear;
 
 	/**
 	 * Name of the layout being used to render the field
 	 *
-	 * @var    string
-	 * @since  3.7.0
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $layout = 'joomla.form.field.calendar';
+
+	/**
+	 * Global application object
+	 *
+	 * @var     \Joomla\CMS\Application\CMSApplication
+	 * @since   3.0.0
+	 */
+	protected $app = null;
+
+	/**
+	 * Global database object
+	 *
+	 * @var     \JDatabaseDriver
+	 * @since   3.0.0
+	 */
+	protected $db = null;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
 	 * @param   string  $name  The property name for which to get the value.
 	 *
-	 * @return  mixed  The property value or null.
-	 *
-	 * @since   3.2
+	 * @return   mixed  The property value or null.
+	 * @since    3.0.0
 	 */
 	public function __get($name)
 	{
@@ -116,9 +131,8 @@ class CalendarField extends FormField
 	 * @param   string  $name   The property name for which to set the value.
 	 * @param   mixed   $value  The value of the property.
 	 *
-	 * @return  void
-	 *
-	 * @since   3.2
+	 * @return   void
+	 * @since    3.0.0
 	 */
 	public function __set($name, $value)
 	{
@@ -148,16 +162,14 @@ class CalendarField extends FormField
 	/**
 	 * Method to attach a Form object to the field.
 	 *
-	 * @param   SimpleXMLElement  $element  The SimpleXMLElement object representing the `<field>` tag for the form field object.
+	 * @param   \SimpleXMLElement  $element  The SimpleXMLElement object representing the `<field>` tag for the form field object.
 	 * @param   mixed             $value    The form field value to validate.
 	 * @param   string            $group    The field name group control value. This acts as an array container for the field.
 	 *                                      For example if the field has name="foo" and the group value is set to "bar" then the
 	 *                                      full field name would end up being "bar[foo]".
 	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @see     FormField::setup()
-	 * @since   3.2
+	 * @return   boolean  True on success.
+	 * @since    3.0.0
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null)
 	{
@@ -189,9 +201,8 @@ class CalendarField extends FormField
 	/**
 	 * Method to get the field input markup.
 	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since   1.7.0
+	 * @return   string  The field input markup.
+	 * @since    3.0.0
 	 */
 	protected function getInput()
 	{
@@ -219,11 +230,11 @@ class CalendarField extends FormField
 		{
 			case 'SERVER_UTC':
 				// Convert a date to UTC based on the server timezone.
-				if ($this->value && $this->value != Factory::getDbo()->getNullDate())
+				if ($this->value && $this->value != $this->db->getNullDate())
 				{
 					// Get a date object based on the correct timezone.
 					$date = Factory::getDate($this->value, 'UTC');
-					$date->setTimezone(new \DateTimeZone(Factory::getApplication()->get('offset')));
+					$date->setTimezone(new \DateTimeZone($this->app->get('offset')));
 
 					// Transform the date string.
 					$this->value = $date->format('Y-m-d H:i:s', true, false);
@@ -231,7 +242,7 @@ class CalendarField extends FormField
 				break;
 			case 'USER_UTC':
 				// Convert a date to UTC based on the user timezone.
-				if ($this->value && $this->value != Factory::getDbo()->getNullDate())
+				if ($this->value && $this->value != $this->db->getNullDate())
 				{
 					// Get a date object based on the correct timezone.
 					$date = Factory::getDate($this->value, 'UTC');
@@ -244,7 +255,7 @@ class CalendarField extends FormField
 		}
 
 		// Format value when not nulldate ('0000-00-00 00:00:00'), otherwise blank it as it would result in 1970-01-01.
-		if ($this->value && $this->value != Factory::getDbo()->getNullDate() && strtotime($this->value) !== false)
+		if ($this->value && $this->value != $this->db->getNullDate() && strtotime($this->value) !== false)
 		{
 			$tz = date_default_timezone_get();
 			date_default_timezone_set('UTC');
@@ -262,15 +273,14 @@ class CalendarField extends FormField
 	/**
 	 * Method to get the data to be passed to the layout for rendering.
 	 *
-	 * @return  array
-	 *
-	 * @since  3.7.0
+	 * @return   array
+	 * @since    3.0.0
 	 */
 	protected function getLayoutData()
 	{
 		$data      = parent::getLayoutData();
-		$tag       = Factory::getLanguage()->getTag();
-		$calendar  = Factory::getLanguage()->getCalendar();
+		$tag       = $this->app->getLanguage()->getTag();
+		$calendar  = $this->app->getLanguage()->getCalendar();
 		$direction = strtolower(Factory::getDocument()->getDirection());
 
 		// Get the appropriate file for the current language date helper

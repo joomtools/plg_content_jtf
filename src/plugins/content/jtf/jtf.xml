@@ -15,7 +15,7 @@
 	<scriptfile>script.php</scriptfile>
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="/plugins/content/jtf/libraries/jtf/Form/Field">
+			<fieldset name="basic" addfieldpath="/plugins/content/jtf/libraries/joomla/form/fields">
 
 				<field name="component_exclusions"
 				       type="textarea"

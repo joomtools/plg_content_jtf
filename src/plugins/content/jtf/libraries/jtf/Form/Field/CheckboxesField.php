@@ -15,40 +15,40 @@ defined('JPATH_PLATFORM') or die;
  * Displays options as a list of checkboxes.
  * Multiselect may be forced to be true.
  *
- * @see    CheckboxesField
- * @since  1.7.0
+ * @see     CheckboxesField
+ * @since   3.0.0
  */
 class CheckboxesField extends ListField
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var    string
-	 * @since  1.7.0
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $type = 'Checkboxes';
 
 	/**
 	 * Name of the layout being used to render the field
 	 *
-	 * @var    string
-	 * @since  3.5
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $layout = 'joomla.form.field.checkboxes';
 
 	/**
 	 * Flag to tell the field to always be in multiple values mode.
 	 *
-	 * @var    boolean
-	 * @since  1.7.0
+	 * @var     boolean
+	 * @since   3.0.0
 	 */
 	protected $forceMultiple = true;
 
 	/**
 	 * The comma separated list of checked checkboxes value.
 	 *
-	 * @var    mixed
-	 * @since  3.2
+	 * @var     mixed
+	 * @since   3.0.0
 	 */
 	public $checkedOptions;
 
@@ -57,9 +57,8 @@ class CheckboxesField extends ListField
 	 *
 	 * @param   string  $name  The property name for which to get the value.
 	 *
-	 * @return  mixed  The property value or null.
-	 *
-	 * @since   3.2
+	 * @return   mixed  The property value or null.
+	 * @since    3.0.0
 	 */
 	public function __get($name)
 	{
@@ -79,9 +78,8 @@ class CheckboxesField extends ListField
 	 * @param   string  $name   The property name for which to set the value.
 	 * @param   mixed   $value  The value of the property.
 	 *
-	 * @return  void
-	 *
-	 * @since   3.2
+	 * @return   void
+	 * @since    3.0.0
 	 */
 	public function __set($name, $value)
 	{
@@ -99,9 +97,8 @@ class CheckboxesField extends ListField
 	/**
 	 * Method to get the radio button field input markup.
 	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since   1.7.0
+	 * @return   string  The field input markup.
+	 * @since    3.0.0
 	 */
 	protected function getInput()
 	{
@@ -122,10 +119,8 @@ class CheckboxesField extends ListField
 	 *                                      For example if the field has name="foo" and the group value is set to "bar" then the
 	 *                                      full field name would end up being "bar[foo]".
 	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @see     FormField::setup()
-	 * @since   3.2
+	 * @return   boolean  True on success.
+	 * @since    3.0.0
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null)
 	{
@@ -142,9 +137,8 @@ class CheckboxesField extends ListField
 	/**
 	 * Method to get the data to be passed to the layout for rendering.
 	 *
-	 * @return  array
-	 *
-	 * @since   3.5
+	 * @return   array
+	 * @since    3.0.0
 	 */
 	protected function getLayoutData()
 	{

@@ -57,7 +57,7 @@ class SubformField extends FormField
 	 * Layout to render the form
 	 * @var  string
 	 */
-	protected $layout = 'joomla.form.field.subform.default';
+	protected $layout = 'joomla.form.field.subform.repeatable_tmpl';
 
 	/**
 	 * Whether group subform fields by it`s fieldset
@@ -87,8 +87,8 @@ class SubformField extends FormField
 			case 'formsource':
 			case 'min':
 			case 'max':
-			case 'layout':
-			case 'groupByFieldset':
+//			case 'layout':
+//			case 'groupByFieldset':
 			case 'buttons':
 				return $this->$name;
 		}
@@ -132,7 +132,7 @@ class SubformField extends FormField
 				}
 				break;
 
-			case 'groupByFieldset':
+/*			case 'groupByFieldset':
 				if ($value !== null)
 				{
 					$value = (string) $value;
@@ -150,7 +150,7 @@ class SubformField extends FormField
 					$this->layout = !$this->multiple ? 'joomla.form.field.subform.default' : 'joomla.form.field.subform.repeatable';
 				}
 
-				break;
+				break;*/
 
 			case 'buttons':
 
@@ -248,7 +248,7 @@ class SubformField extends FormField
 		$data['control']   = $control;
 		$data['buttons']   = $this->buttons;
 		$data['fieldname'] = $this->fieldname;
-		$data['groupByFieldset'] = $this->groupByFieldset;
+//		$data['groupByFieldset'] = $this->groupByFieldset;
 
 		/**
 		 * For each rendering process of a subform element, we want to have a
@@ -380,7 +380,7 @@ class SubformField extends FormField
 	 *
 	 * @return   Form[]  Array of Form instances for the rows.
 	 *
-	 * @since   JTF 3.0.0
+	 * @since   3.0.0
 	 */
 	private function loadSubFormData(Form &$subForm)
 	{
