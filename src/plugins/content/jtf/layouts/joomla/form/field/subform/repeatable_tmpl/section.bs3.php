@@ -1,7 +1,7 @@
 <?php
 /**
  * @package      Joomla.Plugin
- * @subpackage   System.Jtf
+ * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2018 JoomTools.de - All rights reserved.

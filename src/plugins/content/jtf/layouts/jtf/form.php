@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2017 JoomTools.de - All rights reserved.
+ * @copyright    (c) 2018 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 

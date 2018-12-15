@@ -3,9 +3,9 @@
  * @package      Joomla.Plugin
  * @subpackage   Content.Jtf
  *
- * @author      Guido De Gobbis <support@joomtools.de>
- * @copyright   2017 JoomTools.de - All rights reserved.
- * @license     GNU General Public License version 3 or later
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;

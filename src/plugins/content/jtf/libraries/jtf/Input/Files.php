@@ -1,9 +1,11 @@
 <?php
 /**
- * Part of the Joomla Framework Input Package
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
  *
- * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
  */
 
 namespace Jtf\Input;
