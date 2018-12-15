@@ -72,8 +72,13 @@ class Bs3
 		$classes['class']['gridgroup'][] = 'form-group';
 		$classes['class']['gridlabel'][] = 'control-label';
 
+		$classes['class']['note'] = array(
+			'buttonclass' => array('close'),
+			'buttonicon'  => array('&times;'),
+		);
+
 		$classes['class']['calendar'] = array(
-			'class'       => array('form-control'),
+//			'class'       => array('form-control'),
 			'buttonclass' => array('btn btn-secondary'),
 			'buttonicon'  => array('glyphicon glyphicon-calendar'),
 		);
@@ -96,7 +101,7 @@ class Bs3
 		);
 
 		$classes['class']['textarea'] = array(
-			'class' => array('form-control'),
+//			'class' => array('form-control'),
 		);
 
 		$classes['class']['file'] = array(

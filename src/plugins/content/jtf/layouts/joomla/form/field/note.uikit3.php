@@ -10,21 +10,24 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 extract($displayData);
 
 /**
  * Layout variables
  * -----------------
- * @var   string   $class         Classes for the input.
- * @var   string   $close         Set close icon for the notice.
- * @var   string   $description   Description of the field.
- * @var   string   $label         Label of the field.
- * @var   string   $heading       Heading h1-h6.
+ * @var   string  $buttonclass  Classes special for the button.
+ * @var   string  $buttonicon   Classes special for the button to set an icon.
+ * @var   string  $class        Classes for the input.
+ * @var   string  $description  Description of the field.
+ * @var   string  $heading      Tag for heading (h1, h2, h3, etc.).
+ * @var   string  $label        Label of the field.
  */
 
 // Including fallback code for HTML5 non supported browsers.
-JHtml::_('jquery.framework');
-JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
+HTMLHelper::_('jquery.framework');
+HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
 
 $class = !empty($class) ? ' class="' . $class . '"' : '';
 
