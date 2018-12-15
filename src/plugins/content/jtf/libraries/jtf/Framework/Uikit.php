@@ -91,10 +91,8 @@ class Uikit
 		);
 
 		$classes['class']['calendar'] = array(
-			'buttons' => array(
-				'buttonclass' => array('uk-button'),
-				'buttonicon'  => array('uk-icon-calendar'),
-			),
+			'buttonclass' => array('uk-button'),
+			'buttonicon'  => array('uk-icon-calendar'),
 		);
 
 		$classes['class']['checkbox'] = array(

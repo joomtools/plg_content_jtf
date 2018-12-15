@@ -10,12 +10,14 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 extract($displayData);
 
 // Get some system objects.
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 /**
  * Layout variables
@@ -46,8 +48,11 @@ $document = JFactory::getDocument();
  * @var   array    $checkedOptions  Options that will be set as checked.
  * @var   boolean  $hasValue        Has this field a value assigned?
  * @var   array    $options         Options available for this field.
+ * @var   integer  $maxLength       The maximum length that the field shall accept.
  *
  * Calendar Specific
+ * @var   string   $buttonclass     The class for the icon button
+ * @var   string   $buttonicon      The iconclass for the shown icon
  * @var   string   $localesPath     The relative path for the locale file
  * @var   string   $helperPath      The relative path for the helper file
  * @var   string   $minYear         The minimum year, that will be subtracted/added to current year
@@ -62,9 +67,6 @@ $document = JFactory::getDocument();
  */
 
 $inputvalue = '';
-$icon       = !empty($buttonicon) ? $buttonicon : 'glyphicon glyphicon-calendar';
-$button     = !empty($buttonclass) ? $buttonclass : 'btn btn-secondary';
-
 
 // Build the attributes array.
 $attributes = array();
@@ -85,7 +87,7 @@ if ($required)
 // Handle the special case for "now".
 if (strtoupper($value) == 'NOW')
 {
-	$value = JFactory::getDate()->format('Y-m-d H:i:s');
+	$value = Factory::getDate()->format('Y-m-d H:i:s');
 }
 
 $readonly = isset($attributes['readonly']) && $attributes['readonly'] == 'readonly';
@@ -99,13 +101,13 @@ if (is_array($attributes))
 $cssFileExt = ($direction === 'rtl') ? '-rtl.css' : '.css';
 
 // Load polyfills for older IE
-JHtml::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
+HTMLHelper::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
 
 // The static assets for the calendar
-JHtml::_('script', $localesPath, false, true, false, false, true);
-JHtml::_('script', $helperPath, false, true, false, false, true);
-JHtml::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
-JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
+HTMLHelper::_('script', $localesPath, false, true, false, false, true);
+HTMLHelper::_('script', $helperPath, false, true, false, false, true);
+HTMLHelper::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
+HTMLHelper::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 ?>
 <div class="field-calendar">
 	<?php if (!$readonly && !$disabled) : ?>
@@ -122,13 +124,13 @@ JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 		/>
 		<div class="input-group-btn">
 			<button type="button"
-					class="<?php echo ($readonly || $disabled) ? "hidden " . $button : $button; ?>"
+					class="<?php echo ($readonly || $disabled) ? "hidden " . $buttonclass : $buttonclass; ?>"
 					id="<?php echo $id; ?>_btn"
 					data-inputfield="<?php echo $id; ?>"
 					data-dayformat="<?php echo $format; ?>"
 					data-button="<?php echo $id; ?>_btn"
-					data-firstday="<?php echo JFactory::getLanguage()->getFirstDay(); ?>"
-					data-weekend="<?php echo JFactory::getLanguage()->getWeekEnd(); ?>"
+					data-firstday="<?php echo Factory::getLanguage()->getFirstDay(); ?>"
+					data-weekend="<?php echo Factory::getLanguage()->getWeekEnd(); ?>"
 					data-today-btn="<?php echo $todaybutton; ?>"
 					data-week-numbers="<?php echo $weeknumbers; ?>"
 					data-show-time="<?php echo $showtime; ?>"
@@ -138,7 +140,7 @@ JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 				<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
 				<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
 			>
-				<span class="<?php echo $icon; ?>"></span>
+				<span class="<?php echo $buttonicon; ?>"></span>
 			</button>
 		</div>
 		<?php if (!$readonly && !$disabled) : ?>
