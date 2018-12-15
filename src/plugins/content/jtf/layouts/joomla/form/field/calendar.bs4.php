@@ -69,7 +69,7 @@ $inputvalue = '';
 $attributes = array();
 
 empty($size) ? null : $attributes['size'] = $size;
-empty($maxlength) ? null : $attributes['maxlength'] = ' maxlength="' . $maxLength . '"';
+empty($maxlength) ? null : $attributes['maxlength'] = $maxLength;
 empty($class) ? null : $attributes['class'] = $class;
 !$readonly ? null : $attributes['readonly'] = 'readonly';
 !$disabled ? null : $attributes['disabled'] = 'disabled';
@@ -85,6 +85,11 @@ if ($required)
 if (strtoupper($value) == 'NOW')
 {
 	$value = Factory::getDate()->format('Y-m-d H:i:s');
+}
+
+if (!empty($buttonclass))
+{
+	$buttonclass = ' ' . $buttonclass;
 }
 
 $readonly = isset($attributes['readonly']) && $attributes['readonly'] == 'readonly';
@@ -111,13 +116,14 @@ if (!$readonly || !$disabled)
 ?>
 <div class="field-calendar">
 	<?php if ($readonly || $disabled) : ?>
-		<input type="text"
-			   value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
-			<?php echo $attributes; ?>
-		/>
-		<button type="button" class="<?php echo $buttonclass; ?>">
-			<span class="<?php echo $buttonicon; ?>"></span>
-		</button>
+		<div class="input-group">
+			<div <?php echo $attributes; ?>>
+				<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>
+			</div>
+			<div class="input-group-append">
+				<span class="input-group-text <?php echo $buttonicon; ?>"></span>
+			</div>
+		</div>
 		<input type="hidden"
 			   id="<?php echo $id; ?>"
 			   name="<?php echo $name; ?>"
@@ -127,33 +133,37 @@ if (!$readonly || !$disabled)
 			   autocomplete="off"
 		/>
 	<?php else : ?>
-		<input type="text"
-			   id="<?php echo $id; ?>"
-			   name="<?php echo $name; ?>"
-			   value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
-			<?php echo $attributes; ?>
-			<?php !empty($hint) ? 'placeholder="' . $hint . '"' : ''; ?>
-			   data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-			   autocomplete="off"
-		/>
-		<button type="button"
-				class="<?php echo $buttonclass; ?>"
-				id="<?php echo $id; ?>_btn"
-				data-inputfield="<?php echo $id; ?>"
-				data-dayformat="<?php echo $format; ?>"
-				data-button="<?php echo $id; ?>_btn"
-				data-firstday="<?php echo Factory::getLanguage()->getFirstDay(); ?>"
-				data-weekend="<?php echo Factory::getLanguage()->getWeekEnd(); ?>"
-				data-today-btn="<?php echo $todaybutton; ?>"
-				data-week-numbers="<?php echo $weeknumbers; ?>"
-				data-show-time="<?php echo $showtime; ?>"
-				data-show-others="<?php echo $filltable; ?>"
-				data-time-24="<?php echo $timeformat; ?>"
-				data-only-months-nav="<?php echo $singleheader; ?>"
-			<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
-			<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
-		>
-			<span class="<?php echo $buttonicon; ?>"></span>
-		</button>
+		<div class="input-group">
+			<input type="text"
+				   id="<?php echo $id; ?>"
+				   name="<?php echo $name; ?>"
+				   value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
+				<?php echo $attributes; ?>
+				<?php !empty($hint) ? 'placeholder="' . $hint . '"' : ''; ?>
+				   data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
+				   autocomplete="off"
+			/>
+			<div class="input-group-append">
+				<button type="button"
+						class="input-group-text<?php echo $buttonclass; ?>"
+						id="<?php echo $id; ?>_btn"
+						data-inputfield="<?php echo $id; ?>"
+						data-dayformat="<?php echo $format; ?>"
+						data-button="<?php echo $id; ?>_btn"
+						data-firstday="<?php echo Factory::getLanguage()->getFirstDay(); ?>"
+						data-weekend="<?php echo Factory::getLanguage()->getWeekEnd(); ?>"
+						data-today-btn="<?php echo $todaybutton; ?>"
+						data-week-numbers="<?php echo $weeknumbers; ?>"
+						data-show-time="<?php echo $showtime; ?>"
+						data-show-others="<?php echo $filltable; ?>"
+						data-time-24="<?php echo $timeformat; ?>"
+						data-only-months-nav="<?php echo $singleheader; ?>"
+					<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
+					<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
+				>
+					<span class="<?php echo $buttonicon; ?>"></span>
+				</button>
+			</div>
+		</div>
 	<?php endif; ?>
 </div>

@@ -11,13 +11,10 @@
 defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Utilities\ArrayHelper;
 
 extract($displayData);
-
-// Get some system objects.
-$document = Factory::getDocument();
 
 /**
  * Layout variables
@@ -100,50 +97,68 @@ if (is_array($attributes))
 
 $cssFileExt = ($direction === 'rtl') ? '-rtl.css' : '.css';
 
-// Load polyfills for older IE
-HTMLHelper::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
+if (!$readonly || !$disabled)
+{
+	// Load polyfills for older IE
+	HTMLHelper::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
 
-// The static assets for the calendar
-HTMLHelper::_('script', $localesPath, false, true, false, false, true);
-HTMLHelper::_('script', $helperPath, false, true, false, false, true);
-HTMLHelper::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
-HTMLHelper::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
+	// The static assets for the calendar
+	HTMLHelper::_('script', $localesPath, array('version' => 'auto', 'relative' => true));
+	HTMLHelper::_('script', $helperPath, array('version' => 'auto', 'relative' => true));
+	HTMLHelper::_('script', 'system/fields/calendar.min.js', array('version' => 'auto', 'relative' => true));
+	HTMLHelper::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array('version' => 'auto', 'relative' => true));
+}
 ?>
 <div class="field-calendar">
-	<?php if (!$readonly && !$disabled) : ?>
-	<div class="input-group">
-		<?php endif; ?>
-		<input type="text"
+	<?php if ($readonly || $disabled) : ?>
+		<div class="input-group">
+			<div <?php echo $attributes; ?>>
+				<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>
+			</div>
+			<div class="input-group-addon">
+				<span class="<?php echo $buttonicon; ?>"></span>
+			</div>
+		</div>
+		<input type="hidden"
 			   id="<?php echo $id; ?>"
 			   name="<?php echo $name; ?>"
 			   value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
 			<?php echo $attributes; ?>
-			<?php !empty($hint) ? 'placeholder="' . $hint . '"' : ''; ?>
 			   data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
 			   autocomplete="off"
 		/>
-		<div class="input-group-btn">
-			<button type="button"
-					class="<?php echo ($readonly || $disabled) ? "hidden " . $buttonclass : $buttonclass; ?>"
-					id="<?php echo $id; ?>_btn"
-					data-inputfield="<?php echo $id; ?>"
-					data-dayformat="<?php echo $format; ?>"
-					data-button="<?php echo $id; ?>_btn"
-					data-firstday="<?php echo Factory::getLanguage()->getFirstDay(); ?>"
-					data-weekend="<?php echo Factory::getLanguage()->getWeekEnd(); ?>"
-					data-today-btn="<?php echo $todaybutton; ?>"
-					data-week-numbers="<?php echo $weeknumbers; ?>"
-					data-show-time="<?php echo $showtime; ?>"
-					data-show-others="<?php echo $filltable; ?>"
-					data-time-24="<?php echo $timeformat; ?>"
-					data-only-months-nav="<?php echo $singleheader; ?>"
-				<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
-				<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
-			>
-				<span class="<?php echo $buttonicon; ?>"></span>
-			</button>
+	<?php else : ?>
+		<div class="input-group">
+			<input type="text"
+				   id="<?php echo $id; ?>"
+				   name="<?php echo $name; ?>"
+				   value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
+				<?php echo $attributes; ?>
+				<?php !empty($hint) ? 'placeholder="' . $hint . '"' : ''; ?>
+				   data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
+				   autocomplete="off"
+			/>
+			<div class="input-group-btn">
+				<button type="button"
+						class="<?php echo $buttonclass; ?>"
+						id="<?php echo $id; ?>_btn"
+						data-inputfield="<?php echo $id; ?>"
+						data-dayformat="<?php echo $format; ?>"
+						data-button="<?php echo $id; ?>_btn"
+						data-firstday="<?php echo Factory::getLanguage()->getFirstDay(); ?>"
+						data-weekend="<?php echo Factory::getLanguage()->getWeekEnd(); ?>"
+						data-today-btn="<?php echo $todaybutton; ?>"
+						data-week-numbers="<?php echo $weeknumbers; ?>"
+						data-show-time="<?php echo $showtime; ?>"
+						data-show-others="<?php echo $filltable; ?>"
+						data-time-24="<?php echo $timeformat; ?>"
+						data-only-months-nav="<?php echo $singleheader; ?>"
+					<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
+					<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
+				>
+					<span class="<?php echo $buttonicon; ?>"></span>
+				</button>
+			</div>
 		</div>
-		<?php if (!$readonly && !$disabled) : ?>
-	</div>
-<?php endif; ?>
+	<?php endif; ?>
 </div>

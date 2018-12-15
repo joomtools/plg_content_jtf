@@ -81,14 +81,21 @@ class Uikit3
 		}
 
 		$classes['class']['fieldset'] = array(
-			'class'      => array('uk-fieldset uk-margin-bottom'),
+			'class'      => array(
+				'uk-fieldset',
+				'uk-margin-bottom',
+				),
 			'labelClass' => array('uk-legend'),
 			'descClass'  => array('uk-fieldset-desc'),
 		);
 
 		$classes['class']['calendar'] = array(
 			'class'       => array('uk-input'),
-			'buttonclass' => array('uk-button-default'),
+			'buttonclass' => array(
+				'uk-form-icon',
+				'uk-form-icon-flip',
+				'uk-button-default',
+				),
 			'buttonicon'  => array('calendar'),
 		);
 
@@ -119,12 +126,18 @@ class Uikit3
 
 		$classes['class']['file'] = array(
 			'uploadicon'  => array('upload;ratio:2'),
-			'buttonclass' => array('uk-button uk-button-success'),
+			'buttonclass' => array(
+				'uk-button',
+				'uk-button-success',
+				),
 			'buttonicon'  => array('copy'),
 		);
 
 		$classes['class']['submit'] = array(
-			'buttonclass' => array('uk-button uk-button-default'),
+			'buttonclass' => array(
+				'uk-button',
+				'uk-button-default',
+				),
 		);
 
 		if ($inline)
