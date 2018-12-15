@@ -49,7 +49,7 @@ class Bs4
 	{
 		$inline         = false;
 		$classes        = array();
-		$classes['css'] = '';
+		$classes['css'] = '[data-showon][style="display: none;"] {display: none !important;}';
 
 		$classes['class']['form'][] = 'form-validate';
 
@@ -62,8 +62,7 @@ class Bs4
 
 			case 'horizontal':
 				$classes['class']['form'][]      = 'form-horizontal';
-				$classes['class']['gridgroup'][] = 'form-group row';
-				$classes['class']['gridlabel'][] = 'col-form-label';
+				$classes['class']['gridgroup'][] = 'row';
 
 			case 'stacked':
 			default:
@@ -72,7 +71,18 @@ class Bs4
 
 		$classes['class']['default'][]   = 'form-control';
 		$classes['class']['gridgroup'][] = 'form-group';
+		$classes['class']['gridlabel'][] = 'col-form-label';
 		$classes['class']['gridfield'][] = '';
+
+		$classes['class']['note'] = array(
+			'buttonclass' => array('close'),
+			'buttonicon'  => array('&times;'),
+		);
+
+		if ($orientation == 'horizontal')
+		{
+			$classes['class']['note']['gridfield'][] = 'col-sm-12';
+		}
 
 		$classes['class']['calendar'] = array(
 			'buttonclass' => array('btn'),
@@ -105,6 +115,10 @@ class Bs4
 				'class'      => array('form-check-input'),
 				'labelclass' => array('form-check-label'),
 			),
+		);
+
+		$classes['class']['textarea'] = array(
+			'class' => array('form-control'),
 		);
 
 		$classes['class']['file'] = array(

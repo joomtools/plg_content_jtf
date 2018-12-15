@@ -98,7 +98,7 @@ class Bs2
 		);
 
 		$classes['class']['checkboxes'] = array(
-			'clas'    => array('checkboxes'),
+			'class'    => array('checkboxes'),
 			'options' => array(
 				'labelclass' => array('checkbox'),
 			),

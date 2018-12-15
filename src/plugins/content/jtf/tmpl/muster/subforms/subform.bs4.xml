@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="horizontal"
-      class="col-sm-4"
-      gridlabel="col-sm-3"
-      gridfield="col-sm-9"
+<form orientation="stacked"
+      class="col-sm-6"
 >
 
 	<field name="list"
 	       type="list"
-	       icon="icon-list"
+	       icon="fa fa-list"
 	       description="JTF_LIST_DESC"
 	       label="JTF_LIST_LABEL"
 	       default=""
@@ -21,6 +19,7 @@
 
 	<field name="subform_text"
 	       type="text"
+	       icon="fa fa-pencil"
 	       description="JTF_TXT_DESC"
 	       label="JTF_TXT_LABEL"
 	       maxlength="60"

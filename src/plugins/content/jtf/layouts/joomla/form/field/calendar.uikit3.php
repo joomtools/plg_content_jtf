@@ -110,9 +110,6 @@ if (!$readonly || !$disabled)
 	HTMLHelper::_('script', $helperPath, array('version' => 'auto', 'relative' => true));
 	HTMLHelper::_('script', 'system/fields/calendar.min.js', array('version' => 'auto', 'relative' => true));
 	HTMLHelper::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array('version' => 'auto', 'relative' => true));
-	Factory::getDocument()->addStyleDeclaration(
-		'.field-calendar input {margin-right: 40px;padding-right: 40px;}'
-	);
 }
 ?>
 <div class="field-calendar">

@@ -51,7 +51,10 @@ class Uikit
 		$classes        = array();
 		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
 
-		$classes['class']['form'] = array('uk-form', 'form-validate');
+		$classes['class']['form'] = array(
+			'uk-form',
+			'form-validate'
+		);
 
 		switch ($orientation)
 		{
@@ -70,9 +73,11 @@ class Uikit
 				break;
 		}
 
-		$classes['class']['form']      = array_unique($classes['class']['form']);
 		$classes['class']['default'][] = 'uk-input';
-		$classes['class']['gridgroup'] = array('fix-flexbox uk-form-row');
+		$classes['class']['gridgroup'] = array(
+			'fix-flexbox',
+			'uk-form-row',
+		);
 
 		if (!$inline)
 		{
@@ -81,13 +86,19 @@ class Uikit
 		}
 
 		$classes['class']['fieldset'] = array(
-			'class'      => array('uk-fieldset uk-margin-bottom'),
+			'class'      => array(
+				'uk-fieldset',
+				'uk-margin-bottom',
+			),
 			'labelClass' => array('uk-legend'),
 			'descClass'  => array('uk-fieldset-desc'),
 		);
 
 		$classes['class']['note'] = array(
-			'buttonclass' => array('uk-alert-close uk-close'),
+			'buttonclass' => array(
+				'uk-alert-close',
+				'uk-close',
+			),
 		);
 
 		$classes['class']['calendar'] = array(
@@ -130,7 +141,10 @@ class Uikit
 		);
 
 		$classes['class']['submit'] = array(
-			'buttonclass' => array('uk-button uk-button-default'),
+			'buttonclass' => array(
+				'uk-button',
+				'uk-button-default'
+			),
 		);
 
 		if ($inline)

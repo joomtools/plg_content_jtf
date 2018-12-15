@@ -49,7 +49,8 @@ class Uikit3
 	{
 		$inline         = false;
 		$classes        = array();
-		$classes['css'] = '';
+		$classes['css'] = '.field-calendar input {margin-right: 40px;padding-right: 40px;}';
+//		$classes['css'] .= 'input[type=checkbox]:not(:checked), input[type=radio]:not(:checked), .uk-input, .uk-textarea {background-color: white !important;}';
 
 		$classes['class']['form'] = array('uk-form', 'form-validate');
 

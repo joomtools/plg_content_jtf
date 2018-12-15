@@ -12,23 +12,26 @@ defined('_JEXEC') or die;
 
 use Jtf\Framework\FrameworkHelper;
 
+extract($displayData);
+
 /**
  * Make thing clear
  *
- * @var JForm   $tmpl               The Empty form for template
- * @var array   $forms              Array of JForm instances for render the rows
- * @var bool    $multiple           The multiple state for the form field
- * @var int     $min                Count of minimum repeating in multiple mode
- * @var int     $max                Count of maximum repeating in multiple mode
- * @var string  $fieldname          The field name
- * @var string  $control            The forms control
- * @var string  $label              The field label
- * @var string  $description        The field description
- * @var array   $buttons            Array of the buttons that will be rendered
- * @var int     $unique_subform_id  Whether group the subform fields by it`s fieldset
+ * @var   JForm   $tmpl               The Empty form for template
+ * @var   array   $forms              Array of JForm instances for render the rows
+ * @var   bool    $multiple           The multiple state for the form field
+ * @var   int     $min                Count of minimum repeating in multiple mode
+ * @var   int     $max                Count of maximum repeating in multiple mode
+ * @var   string  $fieldname          The field name
+ * @var   string  $control            The forms control
+ * @var   string  $label              The field label
+ * @var   string  $description        The field description
+ * @var   array   $buttons            Array of the buttons that will be rendered
+ * @var   int     $unique_subform_id  Whether group the subform fields by it`s fieldset
  */
-extract($displayData); ?>
-<?php foreach ($forms as $k => $form) :
+
+foreach ($forms as $k => $form)
+{
 	$form = FrameworkHelper::setFrameworkClasses($form);
 	echo $this->sublayout('section',
 		array(
@@ -39,7 +42,8 @@ extract($displayData); ?>
 			'unique_subform_id' => $unique_subform_id,
 		)
 	);
-endforeach; ?>
+} ?>
+
 <?php if ($multiple) : ?>
 	<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
 		<?php $tmpl = FrameworkHelper::setFrameworkClasses($tmpl);
@@ -54,6 +58,7 @@ endforeach; ?>
 		); ?>
 	</template>
 <?php endif; ?>
+
 <script>
 	(function ($) {
 		$(document).on('subform-row-add', function (event, row) {

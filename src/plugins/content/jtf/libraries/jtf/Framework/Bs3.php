@@ -62,6 +62,7 @@ class Bs3
 
 			case 'horizontal':
 				$classes['class']['form'][] = 'form-horizontal';
+				$classes['class']['gridgroup'][] = 'row';
 
 			case 'stacked':
 			default:
@@ -76,6 +77,11 @@ class Bs3
 			'buttonclass' => array('close'),
 			'buttonicon'  => array('&times;'),
 		);
+
+		if ($orientation == 'horizontal')
+		{
+			$classes['class']['note']['gridfield'][] = 'col-sm-12';
+		}
 
 		$classes['class']['calendar'] = array(
 //			'class'       => array('form-control'),
@@ -101,7 +107,7 @@ class Bs3
 		);
 
 		$classes['class']['textarea'] = array(
-//			'class' => array('form-control'),
+			'class' => array('form-control'),
 		);
 
 		$classes['class']['file'] = array(

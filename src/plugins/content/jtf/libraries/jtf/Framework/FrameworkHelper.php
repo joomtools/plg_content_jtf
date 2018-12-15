@@ -304,6 +304,22 @@ class FrameworkHelper
 		$type        = $field->getAttribute('type');
 		$fieldname   = $field->getAttribute('name');
 
+		$frwkClassesOptionsFields = array(
+			'checkboxes', 'radio',
+		);
+
+		$frwkClassesDefaultFields = array(
+			'text', 'email', 'plz', 'tel', 'list', 'combo', 'category', 'calendar',
+		);
+
+		$buttonWithIconFields = array(
+			'submit', 'calendar', 'file', 'note',
+		);
+
+		$noIconFields = array(
+			'checkboxes', 'checkbox', 'radio', 'captcha', 'textarea',
+		);
+
 		$this->hiddenLabel['field'] = !empty($field->getAttribute('hiddenLabel'))
 			? filter_var($field->getAttribute('hiddenLabel'), FILTER_VALIDATE_BOOLEAN)
 			: null;
@@ -339,7 +355,7 @@ class FrameworkHelper
 			$form->setFieldAttribute($fieldname, 'hiddenLabel', true);
 		}
 
-		if (in_array($type, array('text', 'email', 'plz', 'tel', 'list', 'combo', 'category')))
+		if (in_array($type, $frwkClassesDefaultFields))
 		{
 			if (!empty($frwkClasses['default']))
 			{
@@ -372,12 +388,12 @@ class FrameworkHelper
 			}
 		}
 
-		if (in_array($type, array('checkboxes', 'checkbox', 'radio', 'captcha', 'textarea')))
+		if (in_array($type, $noIconFields))
 		{
 			$form->setFieldAttribute($fieldname, 'icon', null);
 		}
 
-		if (in_array($type, array('checkboxes', 'radio')))
+		if (in_array($type, $frwkClassesOptionsFields))
 		{
 			$optionClass = ArrayHelper::arrayUnique(
 				array_merge(
@@ -405,7 +421,7 @@ class FrameworkHelper
 			$form->setFieldAttribute($fieldname, 'optionlabelclass', implode(' ', $optionLabelClass));
 		}
 
-		if (in_array($type, array('submit', 'calendar', 'color', 'file', 'note')))
+		if (in_array($type, $buttonWithIconFields))
 		{
 			$uploadicon  = null;
 			$buttonicon  = null;
