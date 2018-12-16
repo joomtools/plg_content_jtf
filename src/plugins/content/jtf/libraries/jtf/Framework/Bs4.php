@@ -63,6 +63,7 @@ class Bs4
 			case 'horizontal':
 				$classes['class']['form'][]      = 'form-horizontal';
 				$classes['class']['gridgroup'][] = 'row';
+				break;
 
 			case 'stacked':
 			default:

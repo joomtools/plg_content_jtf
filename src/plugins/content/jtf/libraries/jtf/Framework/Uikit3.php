@@ -50,6 +50,8 @@ class Uikit3
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '.field-calendar input {margin-right: 40px;padding-right: 40px;}';
+		$classes['css'] .= '.uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
+		$classes['css'] .= '.uk-form-stacked .uk-form-controls {margin-left: 0 !important;}';
 //		$classes['css'] .= 'input[type=checkbox]:not(:checked), input[type=radio]:not(:checked), .uk-input, .uk-textarea {background-color: white !important;}';
 
 		$classes['class']['form'] = array('uk-form', 'form-validate');
@@ -60,14 +62,13 @@ class Uikit3
 				$inline = true;
 				break;
 
-			case 'stacked':
-				$classes['class']['form'][] = 'uk-form-stacked';
-				break;
-
 			case 'horizontal':
 				$classes['class']['form'][] = 'uk-form-horizontal';
+				break;
 
+			case 'stacked':
 			default:
+				$classes['class']['form'][] = 'uk-form-stacked';
 				break;
 		}
 

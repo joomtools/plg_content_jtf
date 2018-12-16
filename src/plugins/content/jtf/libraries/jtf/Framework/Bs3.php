@@ -49,7 +49,7 @@ class Bs3
 	{
 		$inline         = false;
 		$classes        = array();
-		$classes['css'] = '';
+		$classes['css'] = '.form-stacked .control-label {text-align: left;}';
 
 		$classes['class']['form'][] = 'form-validate';
 
@@ -63,9 +63,11 @@ class Bs3
 			case 'horizontal':
 				$classes['class']['form'][] = 'form-horizontal';
 				$classes['class']['gridgroup'][] = 'row';
+				break;
 
 			case 'stacked':
 			default:
+			$classes['class']['form'][] = 'form-stacked';
 				break;
 		}
 

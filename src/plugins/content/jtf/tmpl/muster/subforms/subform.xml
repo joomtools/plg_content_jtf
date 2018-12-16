@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form class="span4"
-      gridlabel="span4"
-      gridfield="span8"
+<form orientation="stacked"
+      class="span4"
 >
 
 	<field name="subform_text"

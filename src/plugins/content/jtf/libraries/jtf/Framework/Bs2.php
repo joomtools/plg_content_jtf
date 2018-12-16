@@ -49,7 +49,9 @@ class Bs2
 	{
 		$inline         = false;
 		$classes        = array();
-		$classes['css'] = '';
+		$classes['css'] = '.form-stacked .control-label {width: auto !important; float: none !important; text-align: left;}';
+		$classes['css'] .= '.form-stacked .controls {margin-left: 0 !important;}';
+		$classes['css'] .= '.field-calendar .input-append .btn {padding: 4px 6px !important;}';
 
 		$classes['class']['form'][] = 'form-validate';
 
@@ -68,9 +70,11 @@ class Bs2
 				$classes['class']['gridgroup'][] = 'row';
 //				$classes['class']['gridlabel'][] = 'span3';
 //				$classes['class']['gridfield'][] = 'span9';
+				break;
 
 			case 'stacked':
 			default:
+			$classes['class']['form'][] = 'form-stacked';
 				break;
 		}
 

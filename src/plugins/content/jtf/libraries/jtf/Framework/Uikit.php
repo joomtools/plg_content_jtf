@@ -50,6 +50,8 @@ class Uikit
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
+		$classes['css'] .= '.uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
+		$classes['css'] .= '.uk-form-stacked .uk-form-controls {margin-left: 0 !important;}';
 
 		$classes['class']['form'] = array(
 			'uk-form',
@@ -62,14 +64,13 @@ class Uikit
 				$inline = true;
 				break;
 
-			case 'stacked':
-				$classes['class']['form'][] = 'uk-form-stacked';
-				break;
-
 			case 'horizontal':
 				$classes['class']['form'][] = 'uk-form-horizontal';
+				break;
 
+			case 'stacked':
 			default:
+				$classes['class']['form'][] = 'uk-form-stacked';
 				break;
 		}
 

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="horizontal"
+<form orientation="stacked"
       class="col-sm-4"
-      gridlabel="col-sm-3"
-      gridfield="col-sm-9"
 >
 
 	<field name="list"
