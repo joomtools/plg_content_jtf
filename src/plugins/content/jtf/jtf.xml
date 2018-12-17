@@ -20,7 +20,7 @@
 				<field name="component_exclusions"
 				       type="textarea"
 				       rows="10"
-				       default="com_finder&#10;com_contact"
+				       default="com_finder&#10;"
 				       label="JTF_XML_EXCLUDE_OPTION_LABEL"
 				       description="JTF_XML_EXCLUDE_OPTION_DESC"
 				/>
