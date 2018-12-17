@@ -12,7 +12,9 @@ namespace Jtf\Form\Rule;
 
 defined('JPATH_PLATFORM') or die;
 
-use Jtf\Form\Form;
+//use Jtf\Form\Form;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormRule;
 use Joomla\Registry\Registry;
 

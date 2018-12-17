@@ -12,7 +12,9 @@ namespace Jtf\Form\Rule;
 
 defined('JPATH_PLATFORM') or die;
 
-use Jtf\Form\Form;
+//use Jtf\Form\Form;
+use Joomla\CMS\Form\Form;
+use Jtf\Form\Field\SubformField;
 use Joomla\CMS\Form\FormRule;
 use Joomla\Registry\Registry;
 
@@ -43,7 +45,7 @@ class SubformRule extends FormRule
 		// Get the form field object.
 		$field = $form->getField($element['name'], $group);
 
-		if (!($field instanceof \JFormFieldSubform))
+		if (!($field instanceof SubformField))
 		{
 			throw new \UnexpectedValueException(sprintf('%s is no subform field.', $element['name']));
 		}
