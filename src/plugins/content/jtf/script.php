@@ -69,11 +69,12 @@ class PlgContentJtfInstallerScript
 
 			$deletes['folder'] = array(
 				// JTF 3.0.0-rc24 -> 3.0.0-rc25
-				$pluginPath . '/layouts/subform/repeatable',
+				$pluginPath . '/layouts/joomla/form/field/subform/repeatable',
 				$pluginPath . '/libraries/joomla/form/rules',
 				$pluginPath . '/libraries/jtf/Frameworks',
-				// JTF 3.0.0-rc22 -> 3.0.0-rc23
+				// JTF 3.0.0-rc22 or older -> 3.0.0-rc23
 				$pluginPath . '/assets/js/system',
+				$pluginPath . '/libraries/frameworks',
 			);
 
 			$deletes['file']   = array(
@@ -87,30 +88,64 @@ class PlgContentJtfInstallerScript
 				$pluginPath . '/libraries/joomla/form/fields/plz.php',
 				$pluginPath . '/libraries/joomla/form/fields/subform.php',
 				$pluginPath . '/libraries/joomla/form/fields/submit.php',
+				JPATH_ROOT . '/administrator/language/de-DE/de-DE.plg_content_jtf.ini',
+				JPATH_ROOT . '/administrator/language/de-DE/de-DE.plg_content_jtf.sys.ini',
+				JPATH_ROOT . '/administrator/language/en-GB/en-GB.plg_content_jtf.ini',
+				JPATH_ROOT . '/administrator/language/en-GB/en-GB.plg_content_jtf.sys.ini',
 			);
 
-			foreach ($deletes as $key => $delete)
+			$notDeleted = '';
+
+			foreach ($deletes as $key => $orphans)
 			{
-				if ($key == 'folder')
+				$notDeleted .= $this->deleteOrphans($key, $orphans);
+			}
+			
+			if (!empty($notDeleted))
+			{
+				$app->enqueueMessage($notDeleted, 'error');
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param   string  $type     Wich type are orphans of (file or folder)
+	 * @param   array   $orphans  Array of files or folders to delete
+	 *
+	 *
+	 * @since version
+	 */
+	private function deleteOrphans($type, array $orphans)
+	{
+		$notDeleted = '';
+
+		foreach ($orphans as $item)
+		{
+			if ($type == 'folder')
+			{
+				if (is_dir($item))
 				{
-					if (is_dir($delete))
+					if (Folder::delete($item) === false)
 					{
-						Folder::delete($delete);
+						$notDeleted .= Text::sprintf('PLG_CONTENT_JTF_NOT_DELETED', $item);
 					}
 				}
+			}
 
-				if ($key == 'file')
+			if ($type == 'file')
+			{
+				if (is_file($item))
 				{
-					if (is_file($delete))
+					if (File::delete($item) === false)
 					{
-						File::delete($delete);
+						$notDeleted .= Text::sprintf('PLG_CONTENT_JTF_NOT_DELETED', $item);
 					}
 				}
 			}
 		}
-
-
-
-		return true;
+		
+		return $notDeleted;
 	}
 }
