@@ -48,7 +48,6 @@ class FileRule extends FormRule
 
 		unset($value['max_file_size']);
 
-
 		if (!$required && empty($value))
 		{
 			return true;
