@@ -129,7 +129,19 @@ foreach ($fieldsets->fieldset as $fieldset)
 										continue;
 									}
 
-									$subFormValue = $form->getValue($fieldname . '.' . $valuesKey . '.' . $subFormName);
+									if (!empty((bool) $field['multiple']))
+									{
+										$subFormValue = $form->getValue($fieldname . '.' . $valuesKey . '.' . $subFormName);
+									}
+									else
+									{
+										if ($valuesKey != $subFormName)
+										{
+											continue;
+										}
+
+										$subFormValue = $form->getValue($fieldname . '.' . $valuesKey);
+									}
 
 									if ($subFormType == 'file' && $fileTimeOut == '' && $fileClear > 0)
 									{
@@ -164,7 +176,7 @@ foreach ($fieldsets->fieldset as $fieldset)
 										}
 
 										$subFormValue = implode(", ", $subFormValues);
-										unset($subFormValues);
+										unset ($subFormValues);
 									} ?>
 									<tr>
 										<th style="width:30%; text-align: left;">
