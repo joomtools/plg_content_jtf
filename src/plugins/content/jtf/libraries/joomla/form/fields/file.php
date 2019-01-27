@@ -62,7 +62,7 @@ class JFormFieldFile extends JFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string  $name  The property name for which to get the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -84,7 +84,7 @@ class JFormFieldFile extends JFormField
 	/**
 	 * Method to set certain otherwise inaccessible properties of the form field object.
 	 *
-	 * @param   string  $name   The property name for which to the the value.
+	 * @param   string  $name   The property name for which to set the value.
 	 * @param   mixed   $value  The value of the property.
 	 *
 	 * @return  void
@@ -97,9 +97,6 @@ class JFormFieldFile extends JFormField
 		{
 			case 'accept':
 			case 'uploadicon':
-				$this->{$name} = (string) $value;
-				break;
-
 			case 'uploadmaxsize':
 				$this->{$name} = (string) $value;
 				break;
