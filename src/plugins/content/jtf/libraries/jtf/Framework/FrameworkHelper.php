@@ -14,6 +14,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
+use Jtf\Form\Form;
 
 class FrameworkHelper
 {
@@ -281,6 +282,17 @@ class FrameworkHelper
 
 				foreach ($fields as $field)
 				{
+					// Recursion on subformfield
+					if (strtolower($field->type) == 'subform')
+					{
+						FrameworkHelper::setFrameworkClasses($field->loadSubForm());
+
+						if ($field->loadSubForm()->setEnctype)
+						{
+							$this->form->setEnctype = true;
+						}
+					}
+
 					$this->setFieldClass($field);
 				}
 			}
