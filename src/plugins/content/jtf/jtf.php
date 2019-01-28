@@ -716,7 +716,7 @@ class PlgContentJtf extends CMSPlugin
 					{
 						if ($savedFile = $this->saveFiles($value))
 						{
-							$validatedFiles = $savedFile;
+							$validatedFiles = array_merge($validatedFiles, $savedFile);
 							continue;
 						}
 						else
