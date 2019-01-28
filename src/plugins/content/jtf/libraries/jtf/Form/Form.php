@@ -43,6 +43,13 @@ class Form extends \Joomla\CMS\Form\Form
 	 * @since  11.1
 	 */
 	public $layoutPaths = array();
+	/**
+	 * Array of Set enctype.
+	 *
+	 * @var    array
+	 * @since  11.1
+	 */
+	public $setEnctype = false;
 
 
 	/**
