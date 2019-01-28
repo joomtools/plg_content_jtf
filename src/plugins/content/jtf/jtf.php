@@ -150,6 +150,13 @@ class PlgContentJtf extends CMSPlugin
 		if (version_compare(JVERSION, '4', 'ge'))
 		{
 			Factory::getContainer()->registerServiceProvider(new Jtf\Service\Provider\Form);
+
+			JLoader::registerNamespace('Jtf\\Form\\Field', JPATH_PLUGINS . '/content/jtf/libraries/jtf/Form/Joomla4/Field', false, false, 'psr4');
+		}
+		else
+		{
+
+			JLoader::registerNamespace('Jtf\\Form\\Field', JPATH_PLUGINS . '/content/jtf/libraries/jtf/Form/Joomla3/Field', false, false, 'psr4');
 		}
 
 		$this->debug = (boolean) $this->params->get('debug', 0);
