@@ -12,6 +12,18 @@ defined('_JEXEC') or die;
 
 extract($displayData);
 
+/**
+ * Layout variables
+ * ---------------------
+ * @var   int     $id
+ * @var   JForm   $form
+ * @var   string  $fileClear
+ * @var   string  $formClass
+ * @var   string  $controlFields
+ * @var   bool    $enctype
+ */
+
+$form->setAttribute('fileTimeOut', '');
 $fieldsets = $form->getXML();
 
 foreach ($fieldsets->fieldset as $fieldset)
@@ -45,6 +57,11 @@ foreach ($fieldsets->fieldset as $fieldset)
 				continue;
 			}
 
+			if ($type == 'note')
+			{
+				$value = trim(JText::_((string) $field['description']));
+			}
+
 			if ($type == 'file' && $fileClear > 0)
 			{
 				$fileTimeOut .= JText::sprintf('JTF_FILE_TIMEOUT', $fileClear);
@@ -62,144 +79,34 @@ foreach ($fieldsets->fieldset as $fieldset)
 				//continue;
 			}
 
-			if (is_array($value))
-			{
-				if ($type != 'subform')
-				{
-					foreach ($value as $_key => $_value)
-					{
-						if ($type == 'file')
-						{
-							$values[] = $_key . ': ' . $_value . ' *';
-						}
-						else
-						{
-							$values[] = strip_tags(trim(JText::_($_value)));
-						}
-					}
-
-					if (empty($values))
-					{
-						$values = array();
-					}
-
-					$value = implode(", ", $values);
-					unset($values);
-				}
-			}
+			$sublayoutValues = array(
+				'form'          => $form,
+				'value'         => $value,
+				'fieldName'     => (string) $field['name'],
+				'fieldMultiple' => filter_var($field['multiple'], FILTER_VALIDATE_BOOLEAN),
+				'fileClear'     => $fileClear,
+				'fileTimeOut'   => $fileTimeOut,
+			);
 
 			echo strip_tags($label) . ": ";
 
-			if (!is_array($value))
+			if ($type == 'subform')
 			{
-				echo $value ? strip_tags(JText::_($value)) : '--';
+				echo $this->sublayout('subform', $sublayoutValues);
 			}
 			else
 			{
-				if ($type == 'subform')
-				{
-					$fieldname      = (string) $field['name'];
-					$setTable       = false;
-					$counter        = count($value) - 1;
-					$subForm       = $form->getField($fieldname)->loadSubForm();
-					$subFormFields = $subForm->getGroup('');
-
-					if (!empty($value))
-					{
-						$setTable = true;
-						echo "\n====\n";
-
-					}
-
-					foreach ($value as $valuesKey => $subValues)
-					{
-						foreach ($subFormFields as $subFormField)
-						{
-							$subFormType  = $subFormField->getAttribute('type');
-							$subFormLabel = $subFormField->getAttribute('label');
-							$subFormName  = $subFormField->getAttribute('name');
-
-							if (!empty($subFormField->getAttribute('notmail')))
-							{
-								continue;
-							}
-
-							if (!empty((bool) $field['multiple']))
-							{
-								$subFormValue = $form->getValue($fieldname . '.' . $valuesKey . '.' . $subFormName);
-							}
-							else
-							{
-								if ($valuesKey != $subFormName)
-								{
-									continue;
-								}
-
-								$subFormValue = $form->getValue($fieldname . '.' . $valuesKey);
-							}
-
-							if ($subFormType == 'file' && $fileTimeOut == '' && $fileClear > 0)
-							{
-								$fileTimeOut .= JText::sprintf('JTF_FILE_TIMEOUT', $fileClear);
-							}
-
-							if (empty($subFormValue))
-							{
-								// Comment out 'continue', if you want to submit only filled fields
-								//continue;
-							}
-
-							if (is_array($subFormValue))
-							{
-								foreach ($subFormValue as $_key => $_value)
-								{
-									if ($subFormType == 'file')
-									{
-										$subFormValues[] = $_key . ': ' . $_value . ' *';
-									}
-									else
-									{
-										$subFormValues[] = strip_tags(trim(JText::_($_value)));
-									}
-								}
-
-								if (empty($subFormValues))
-								{
-									$subFormValues = array();
-								}
-
-								$subFormValue = implode(", ", $subFormValues);
-								unset ($subFormValues);
-							}
-
-							echo strip_tags(JText::_($subFormLabel)) . ': ';
-							echo $subFormValue ? strip_tags(JText::_($subFormValue)) : '--';
-							echo "\n";
-						}
-
-						if ($valuesKey < $counter)
-						{
-							echo "\n";
-						}
-					}
-
-					if ($setTable)
-					{
-						echo "====\n";
-					}
-				}
-				else
-				{
-					foreach ($value as $_value)
-					{
-						echo $_value ? strip_tags($_value) : '--';
-						echo "\n";
-					}
-				}
+				echo $this->sublayout('mainform', $sublayoutValues);
 			}
 
 			echo "\n";
-			echo $fileTimeOut;
 		}
 	}
+
+	if (empty($fileTimeOut))
+	{
+		$fileTimeOut = $form->getAttribute('fileTimeOut', '');
+	}
+
+	echo $fileTimeOut;
 }
