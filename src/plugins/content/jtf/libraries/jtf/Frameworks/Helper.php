@@ -492,9 +492,9 @@ class FrameworkHelper
 				$classes['field']['gridlabel']
 			);
 
-			$form->setFieldAttribute($fieldname, 'icon', null);
-			$form->setFieldAttribute($fieldname, 'buttonicon', null);
-			$form->setFieldAttribute($fieldname, 'buttonclass', null);
+			// $form->setFieldAttribute($fieldname, 'icon', null);
+			// $form->setFieldAttribute($fieldname, 'buttonicon', null);
+			// $form->setFieldAttribute($fieldname, 'buttonclass', null);
 		}
 
 		$fieldClass = ArrayHelper::arrayUnique(
