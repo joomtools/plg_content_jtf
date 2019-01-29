@@ -76,12 +76,13 @@ foreach ($fieldsets->fieldset as $fieldset)
 			if (empty($value))
 			{
 				// Comment out 'continue', if you want to submit only filled fields
-				//continue;
+				// continue;
 			}
 
 			$sublayoutValues = array(
 				'form'          => $form,
 				'value'         => $value,
+				'type'          => $type,
 				'fieldName'     => (string) $field['name'],
 				'fieldMultiple' => filter_var($field['multiple'], FILTER_VALIDATE_BOOLEAN),
 				'fileClear'     => $fileClear,
