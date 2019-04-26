@@ -17,9 +17,10 @@ extract($displayData);
  * ---------------------
  * @var   JForm   $form
  * @var   mixed   $value
+ * @var   string  $type
  * @var   string  $fieldName
  * @var   string  $fileClear
- * @var   string  fileTimeOut
+ * @var   string  $fileTimeOut
  * @var   bool    $fieldMultiple
  */
 

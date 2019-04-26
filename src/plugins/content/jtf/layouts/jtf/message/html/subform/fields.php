@@ -17,9 +17,10 @@ extract($displayData);
  * ---------------------
  * @var   JForm   $form
  * @var   mixed   $value
+ * @var   string  $type
  * @var   string  $fieldName
  * @var   string  $fileClear
- * @var   string  fileTimeOut
+ * @var   string  $fileTimeOut
  * @var   bool    $fieldMultiple
  * @var   string  $i
  */
@@ -29,7 +30,7 @@ $subFormFields = $subForm->getGroup('');
 
 foreach ($subFormFields as $subFormField)
 {
-	$values       = isset($value[$fieldName . $i])
+	$values       = $i != ''
 		? $value[$fieldName . $i]
 		: $value;
 	$subFormType  = $subFormField->getAttribute('type');
