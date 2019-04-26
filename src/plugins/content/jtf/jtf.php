@@ -30,6 +30,7 @@ use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use Jtf\Form\Form;
 
@@ -1429,6 +1430,9 @@ class PlgContentJtf extends CMSPlugin
 			->where('id=' . $db->quote($id));
 
 		$content = $db->setQuery($query)->loadObject();
+
+		// Prepare content
+		$content->text = JHtml::_('content.prepare', $content->text, '', 'mod_custom.content');
 
 		return $content;
 	}
