@@ -84,6 +84,7 @@ foreach ($fieldsets->fieldset as $fieldset)
 					'fieldMultiple' => filter_var($field['multiple'], FILTER_VALIDATE_BOOLEAN),
 					'fileClear'     => $fileClear,
 					'fileTimeOut'   => $fileTimeOut,
+					'type'          => $type,
 				);
 				?>
 				<tr>
