@@ -15,25 +15,41 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
- * @var   string $id        Form attribute id and name.
- * @var   \JForm $form      JForm object instance.
- * @var   string $enctype   Set form attribute enctype, if file field is set.
- * @var   string $formClass Classes for the form.
- * @var   string $frwkCss   Css styles needed for selected css-framework.
+ * @var   string  $id             Form attribute id and name.
+ * @var   \JForm  $form           JForm object instance.
+ * @var   string  $enctype        Set form attribute enctype, if file field is set.
+ * @var   string  $formClass      Classes for the form.
+ * @var   string  $frwkCss        Css styles needed for selected css-framework.
+ * @var   string  $controlFields  Form hidden control fields.
+ * @var   string  $fillouttime    Minimum time to wait before submit form.
  */
 
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
+JHtml::_('script', 'plugins/content/jtf/assets/js/domIsReady.js', array('version' => 'auto'));
 JHtml::_('script', 'plugins/content/jtf/assets/js/scrollToError.js', array('version' => 'auto'));
+JHtml::_('script', 'plugins/content/jtf/assets/js/timeToFill.js', array('version' => 'auto'));
 
-$invalidColor           = '#ff0000';
-$invalidBackgroundColor = '#f2dede';
-$role                   = '';
+$invalidColor            = '#ff0000';
+$invalidBackgroundColor  = '#f2dede';
+$role                    = '';
+$frwk                    = $form->framework[0];
+$jtfBadgeClass           = [];
+$jtfBadgeClass['uikit3'] = 'uk-badge';
+$jtfBadgeClass['uikit']  = 'uk-badge uk-badge-notification';
+$jtfBadgeClass['bs4']    = 'badge badge-dark';
+$jtfBadgeClass['bs3']    = 'badge';
+$jtfBadgeClass['joomla'] = 'badge badge-inverse';
 
-if ($form->framework[0] == 'bs3')
+if ($frwk == 'bs3')
 {
 	$role = ' role="form"';
 }
+
+JFactory::getDocument()->addScriptDeclaration(
+	'const jtfttf=' . $fillouttime . ','
+	. 'jtfBadgeClass="' . $jtfBadgeClass[$frwk] . '";'
+);
 
 JFactory::getDocument()->addStyleDeclaration(
 	".invalid:not(label) { 
