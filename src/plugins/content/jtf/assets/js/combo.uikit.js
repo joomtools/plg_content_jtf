@@ -7,7 +7,6 @@
  * @license      GNU General Public License version 3 or later
 **/
 
-
 (function($,document,undefined)
 {
 	var combobox = function(options, elem)
