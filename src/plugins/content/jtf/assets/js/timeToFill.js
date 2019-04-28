@@ -12,7 +12,7 @@
 
 	domIsReady(function () {
 		let ttf = jtfttf,
-			submit = document.querySelector('.contact-form [type="submit"]'),
+			submit = document.querySelector('.jtf.contact-form [type="submit"]'),
 			spanCounter = document.createElement('span'),
 			myTimer = (() => {
 				spanCounter.innerHTML = ttf--;
