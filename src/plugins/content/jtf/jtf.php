@@ -18,7 +18,6 @@ use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Profiler\Profiler;
-use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use Jtf\Form\Form;
 
@@ -119,6 +118,26 @@ class PlgContentJtf extends CMSPlugin
 	 * @since   3.0.0
 	 */
 	private $uParams = array();
+
+	/**
+	 * Array with allowed params to override
+	 *
+	 * @var     array
+	 * @since   3.0.0
+	 */
+	private $uParamsAllowedOverride = array(
+		'fillouttime',
+		'mailto',
+		'cc',
+		'bcc',
+		'visitor_name',
+		'visitor_email',
+		'subject',
+		'message_article',
+		'redirect_menuid',
+		'theme',
+		'framework',
+	);
 
 	/**
 	 * Debug
@@ -293,8 +312,8 @@ class PlgContentJtf extends CMSPlugin
 				$submitedValues = $this->app->input->get($formTheme, array(), 'post', 'array');
 				$honeypot       = $submitedValues['jtf_important_notices'];
 				$startTime      = $this->app->getUserState('plugins.content.jtf.start');
-				$fillOutTime    = $this->debug || JDEBUG
-					? 10000
+				$fillOutTime    = $this->debug || JDEBUG || $this->uParams['fillouttime'] == 0
+					? 100000
 					: microtime(1) - $startTime;
 				$notSpamBot     = $fillOutTime > $this->uParams['fillouttime'] ? true : false;
 
@@ -410,7 +429,12 @@ class PlgContentJtf extends CMSPlugin
 		$this->form    = null;
 
 		// Set default minimum fillout time
-		$this->uParams['fillouttime'] = $this->params->get('filloutTime', 16);
+		$this->uParams['fillouttime'] = 0;
+
+		if ($this->params->get('filloutTime_onoff', 1) == 1)
+		{
+			$this->uParams['fillouttime'] = $this->params->get('filloutTime', 10);
+		}
 
 		// Set default captcha value
 		$this->uParams['captcha'] = $this->params->get('captcha');
@@ -446,7 +470,7 @@ class PlgContentJtf extends CMSPlugin
 		$this->uParams['file_clear'] = (int) $this->params->get('file_clear', 30);
 
 		// Set default path in images to save uploaded files
-		$this->uParams['file_path'] = trim($this->params->get('file_path', 'uploads'), '\/');
+		$this->uParams['file_path'] = trim($this->params->get('file_path', 'uploads'), '\\/');
 
 		// Set default framework value
 		if ($this->params->get('framework') == 'joomla')
@@ -486,6 +510,11 @@ class PlgContentJtf extends CMSPlugin
 
 				$key   = trim(strtolower($key));
 				$value = trim($value, '\/');
+
+				if (!in_array($key, $this->uParamsAllowedOverride))
+				{
+					continue;
+				}
 
 				if ($key == 'framework')
 				{
