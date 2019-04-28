@@ -14,10 +14,6 @@
 		##FILES##
 	</files>
 
-	<languages folder="language">
-		##LANGUAGE_FILES##
-	</languages>
-
 	<scriptfile>script.php</scriptfile>
 
 	<config>
