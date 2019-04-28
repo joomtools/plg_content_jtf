@@ -6,9 +6,14 @@
  * @copyright    (c) 2017 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
 **/
-jQuery(document).ready(function () {
-	document.formvalidator.setHandler('plz', function (value) {
-		regex = /^\d{5}$/;
-		return regex.test(value);
+
+(function (document, domIsReady) {
+	"use strict";
+
+	domIsReady(function () {
+		document.formvalidator.setHandler('plz', function (value) {
+			let regex = /^\d{5}$/;
+			return regex.test(value);
+		});
 	});
-});
+})(document, domIsReady);

@@ -56,9 +56,9 @@ $format = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s />';
 
 // The alt option for JText::alt
 $alt   = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
-$class = !empty($class) ? ' class="' . trim($class) . '"' : '';
+//$class = !empty($class) ? ' class="radio ' . trim($class) . '"' : '';
 ?>
-<fieldset id="<?php echo $id; ?>"<?php echo $class; ?>
+<fieldset id="<?php echo $id; ?>" class="<?php echo trim($class . ' radio' . ($readonly || $disabled ? ' disabled' : '') . ($readonly ? ' readonly' : '')); ?>"
 	<?php echo $disabled ? 'disabled' : ''; ?>
 	<?php echo $required ? 'required aria-required="true"' : ''; ?>
 	<?php echo $autofocus ? 'autofocus' : ''; ?>>

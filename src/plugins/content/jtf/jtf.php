@@ -132,6 +132,26 @@ class PlgContentJtf extends CMSPlugin
 	private $uParams = array();
 
 	/**
+	 * Array with allowed params to override
+	 *
+	 * @var     array
+	 * @since   3.0.0
+	 */
+	private $uParamsAllowedOverride = array(
+		'fillouttime',
+		'mailto',
+		'cc',
+		'bcc',
+		'visitor_name',
+		'visitor_email',
+		'subject',
+		'message_article',
+		'redirect_menuid',
+		'theme',
+		'framework',
+	);
+
+	/**
 	 * Debug
 	 *
 	 * @var     boolean
@@ -208,6 +228,8 @@ class PlgContentJtf extends CMSPlugin
 			|| $this->doNotLoad->extension == 'com_config'
 			|| $this->app->input->getCmd('layout') == 'edit')
 		{
+			$this->app->setUserState('plugins.content.jtf.start', null);
+
 			return;
 		}
 
@@ -215,6 +237,7 @@ class PlgContentJtf extends CMSPlugin
 		if ($this->doNotLoad->active)
 		{
 			$this->app->enqueueMessage(Text::sprintf('JTF_CAN_NOT_LOAD', $this->doNotLoad->extension), 'notice');
+			$this->app->setUserState('plugins.content.jtf.start', null);
 
 			return;
 		}
@@ -222,6 +245,8 @@ class PlgContentJtf extends CMSPlugin
 		// Get all matches or return
 		if (!preg_match_all(self::PLUGIN_REGEX, $article->text, $matches))
 		{
+			$this->app->setUserState('plugins.content.jtf.start', null);
+
 			return;
 		}
 
@@ -281,12 +306,15 @@ class PlgContentJtf extends CMSPlugin
 				$token          = JSession::checkToken();
 				$submitedValues = $this->app->input->get($formTheme, array(), 'post', 'array');
 				$honeypot       = $submitedValues['jtf_important_notices'];
-				$startTime      = $this->app->input->getFloat('start');
-				$fillOutTime    = $this->debug || JDEBUG ? 10000 : microtime(1) - $startTime;
+				$startTime      = $this->app->getUserState('plugins.content.jtf.start');
+				$fillOutTime    = $this->debug || JDEBUG || $this->uParams['fillouttime'] == 0
+					? 100000
+					: microtime(1) - $startTime;
 				$notSpamBot     = $fillOutTime > $this->uParams['fillouttime'] ? true : false;
 
 				if ($honeypot != '' || !$notSpamBot || !$token)
 				{
+					$this->app->setUserState('plugins.content.jtf.start', null);
 					$this->app->redirect(JRoute::_('index.php', false));
 				}
 
@@ -336,11 +364,13 @@ class PlgContentJtf extends CMSPlugin
 
 						if ($this->uParams['redirect_menuid'] === null)
 						{
+							$this->app->setUserState('plugins.content.jtf.start', null);
 							$this->app->enqueueMessage($text, 'message');
 							$this->app->redirect(JRoute::_('index.php', false));
 						}
 						else
 						{
+							$this->app->setUserState('plugins.content.jtf.start', null);
 							$this->app->redirect(JRoute::_('index.php?Itemid=' . (int)$this->uParams['redirect_menuid'], false));
 						}
 					}
@@ -360,6 +390,7 @@ class PlgContentJtf extends CMSPlugin
 			self::$count++;
 
 			$this->clearOldFiles();
+			$this->app->setUserState('plugins.content.jtf.start', microtime(1));
 		}
 
 		// Set profiler start time and memory usage and mark afterLoad in the profiler.
@@ -392,10 +423,13 @@ class PlgContentJtf extends CMSPlugin
 		$this->uParams = array();
 		$this->form    = null;
 
-		$this->uParams['startTime'] = microtime(1);
-
 		// Set default minimum fillout time
-		$this->uParams['fillouttime'] = $this->params->get('filloutTime', 16);
+		$this->uParams['fillouttime'] = 0;
+
+		if ($this->params->get('filloutTime_onoff', 1) == 1)
+		{
+			$this->uParams['fillouttime'] = $this->params->get('filloutTime', 10);
+		}
 
 		// Set default captcha value
 		$this->uParams['captcha'] = $this->params->get('captcha');
@@ -431,7 +465,7 @@ class PlgContentJtf extends CMSPlugin
 		$this->uParams['file_clear'] = (int) $this->params->get('file_clear', 30);
 
 		// Set default path in images to save uploaded files
-		$this->uParams['file_path'] = trim($this->params->get('file_path', 'uploads'), '\/');
+		$this->uParams['file_path'] = trim($this->params->get('file_path', 'uploads'), '\\/');
 
 		// Set default framework value
 		$this->uParams['framework'] = (array) $this->params->get('framework');
@@ -457,6 +491,11 @@ class PlgContentJtf extends CMSPlugin
 
 				$key   = trim(strtolower($key));
 				$value = trim($value, '\/');
+
+				if (!in_array($key, $this->uParamsAllowedOverride))
+				{
+					continue;
+				}
 
 				if ($key == 'framework')
 				{
@@ -951,7 +990,6 @@ class PlgContentJtf extends CMSPlugin
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
 			. '<input type="hidden" name="view" value="' . $this->app->input->get('view') . '" />'
 			. '<input type="hidden" name="Itemid" value="' . $this->app->input->get('Itemid') . '" />'
-			. '<input type="hidden" name="start" value="' . $this->uParams['startTime'] . '" />'
 			. '<input type="hidden" name="id" value="' . $this->app->input->get('id') . '" />';
 
 		if (!empty($form->setEnctype))
@@ -966,6 +1004,7 @@ class PlgContentJtf extends CMSPlugin
 			'formClass'     => $formClass,
 			'enctype'       => $enctype,
 			'controlFields' => $controlFields,
+			'fillouttime' => $this->uParams['fillouttime'],
 		);
 
 		$renderer = new JLayoutFile($filename);
@@ -1429,6 +1468,9 @@ class PlgContentJtf extends CMSPlugin
 			->where('id=' . $db->quote($id));
 
 		$content = $db->setQuery($query)->loadObject();
+
+		// Prepare content
+		$content->text = JHtml::_('content.prepare', $content->text, '', 'mod_custom.content');
 
 		return $content;
 	}

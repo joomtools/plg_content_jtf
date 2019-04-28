@@ -14,10 +14,6 @@
 		##FILES##
 	</files>
 
-	<languages folder="language">
-		##LANGUAGE_FILES##
-	</languages>
-
 	<scriptfile>script.php</scriptfile>
 
 	<config>
@@ -43,14 +39,24 @@
 					<option value="joomla">JTF_XML_CAPTCHA_VALUE_JOOMLA</option>
 				</field>
 
+				<field name="filloutTime_onoff"
+				       type="radio"
+				       class="btn-group btn-group-yesno"
+				       default="1"
+				       label="JTF_XML_FILLOUT_ONOFF_LABEL"
+				       description="JTF_XML_FILLOUT_ONOFF_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
 				<field name="filloutTime"
-				       type="integer"
-				       default="16"
-				       first="10"
-				       last="40"
-				       step="2"
+				       type="text"
+				       default="10"
 				       label="JTF_XML_FILLOUT_LABEL"
 				       description="JTF_XML_FILLOUT_DESC"
+				       showon="filloutTime_onoff:1"
+				       filter="integer"
 				/>
 
 				<field name="file_path"
@@ -61,13 +67,11 @@
 				/>
 
 				<field name="file_clear"
-				       type="integer"
+				       type="text"
 				       default="30"
-				       first="0"
-				       last="365"
-				       step="5"
 				       label="JTF_XML_FILE_CLEAR_LABEL"
 				       description="JTF_XML_FILE_CLEAR_DESC"
+				       filter="integer"
 				/>
 
 				<field name="framework"

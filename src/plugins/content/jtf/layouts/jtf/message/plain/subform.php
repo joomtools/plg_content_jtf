@@ -20,8 +20,9 @@ extract($displayData);
  * @var   string  $type
  * @var   string  $fieldName
  * @var   string  $fileClear
- * @var   string  fileTimeOut
+ * @var   string  $fileTimeOut
  * @var   bool    $fieldMultiple
+ * @var   string  $type
  */
 
 if (!empty($value))
