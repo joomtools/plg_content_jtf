@@ -183,7 +183,7 @@ class JFormFieldFile extends JFormField
 
 		$name = str_replace('][]', ']', $data['name']);
 
-		$uploadmaxsize_name = $name . '][max_file_size]';
+		$uploadmaxsize_name = $name . '[max_file_size]';
 
 		$extraData = array(
 			'accept'             => $this->accept,
