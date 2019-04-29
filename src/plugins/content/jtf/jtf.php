@@ -655,7 +655,6 @@ class PlgContentJtf extends CMSPlugin
 		$setValidationFor = array(
 			'calendar',
 			'captcha',
-			'checkbox',
 			'checkboxes',
 			'color',
 			'e-mail',
@@ -699,7 +698,7 @@ class PlgContentJtf extends CMSPlugin
 			{
 				if ($field->validate == '')
 				{
-					if (in_array($fieldType, array('checkbox', 'checkboxes', 'list', 'radio')))
+					if (in_array($fieldType, array('checkboxes', 'list', 'radio')))
 					{
 						$form->setFieldAttribute($fieldname, 'validate', 'options');
 					}
