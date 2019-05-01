@@ -17,6 +17,7 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Profiler\Profiler;
 use Joomla\Utilities\ArrayHelper;
 use Jtf\Form\Form;
@@ -398,10 +399,7 @@ class PlgContentJtf extends CMSPlugin
 			$this->app->setUserState('plugins.content.jtf.start', microtime(1));
 		}
 
-		if (Factory::getConfig()->get('cache', 0) != 0)
-		{
-			$this->removeCache($context);
-		}
+		$this->removeCache($context);
 
 		// Set profiler start time and memory usage and mark afterLoad in the profiler.
 		JDEBUG ? Profiler::getInstance('Application')->mark('plgContentJtf') : null;
@@ -1509,15 +1507,34 @@ class PlgContentJtf extends CMSPlugin
 	 */
 	private function removeCache($context)
 	{
+		$cachePagePlugin = PluginHelper::isEnabled('system', 'cache');
+		$cacheIsActive   = Factory::getConfig()->get('caching', 0) != 0
+			? true
+			: false;
+
+		if (!$cacheIsActive && !$cachePagePlugin)
+		{
+			return;
+		}
+
 		$key         = (array) JUri::getInstance()->toString();
 		$key         = md5(serialize($key));
 		$group       = strstr($context, '.', true);
-		$cacheGroups = array(
-			$group        => 'callback',
-			'page'        => 'callback',
-			'com_modules' => '',
-			'com_content' => 'view',
-		);
+		$cacheGroups = array();
+
+		if($cacheIsActive)
+		{
+			$cacheGroups = array(
+				$group        => 'callback',
+				'com_modules' => '',
+				'com_content' => 'view',
+			);
+		}
+
+		if($cachePagePlugin)
+		{
+			$cacheGroups['page'] = 'callback';
+		}
 
 		foreach ($cacheGroups as $group => $handler)
 		{
