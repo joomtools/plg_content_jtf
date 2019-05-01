@@ -38,7 +38,7 @@
 
 				<field name="filloutTime_onoff"
 				       type="radio"
-				       class="btn-group btn-group-yesno"
+				       class="switcher"
 				       default="1"
 				       label="JTF_XML_FILLOUT_ONOFF_LABEL"
 				       description="JTF_XML_FILLOUT_ONOFF_DESC"
@@ -80,7 +80,7 @@
 
 				<field name="debug"
 				       type="radio"
-				       class="btn-group btn-group-yesno"
+				       class="switcher"
 				       default="0"
 				       label="JTF_XML_DEBUG_LABEL"
 				       description="JTF_XML_DEBUG_DESC"
@@ -92,7 +92,7 @@
 			</fieldset>
 		</fields>
 	</config>
-	
+
 	<updateservers>
 		<server type="extension" priority="1" name="JTF_XML_NAME">https://raw.githubusercontent.com/JoomTools/plg_content_jtf/master/update.xml</server>
 	</updateservers>
