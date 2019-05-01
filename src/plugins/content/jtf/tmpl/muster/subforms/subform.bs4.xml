@@ -19,7 +19,7 @@
 
 	<field name="subform_text"
 	       type="text"
-	       icon="fa fa-pencil"
+	       icon="fa fa-pencil-alt"
 	       description="JTF_TXT_DESC"
 	       label="JTF_TXT_LABEL"
 	       maxlength="60"

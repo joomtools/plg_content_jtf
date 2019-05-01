@@ -85,7 +85,7 @@
 
 		<field name="showon_text"
 		       type="text"
-		       icon="fa fa-pencil"
+		       icon="fa fa-pencil-alt"
 		       maxlength="60"
 		       description="JTF_SHW_TXT_DESC"
 		       label="JTF_SHW_TXT_LABEL"
@@ -95,7 +95,7 @@
 
 		<field name="text"
 		       type="text"
-		       icon="fa fa-pencil"
+		       icon="fa fa-pencil-alt"
 		       maxlength="60"
 		       description="JTF_TXT_DESC"
 		       label="JTF_TXT_LABEL"
@@ -124,7 +124,7 @@
 
 		<field name="subject"
 		       type="text"
-		       icon="fa fa-pencil"
+		       icon="fa fa-pencil-alt"
 		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
