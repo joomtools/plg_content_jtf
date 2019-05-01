@@ -393,6 +393,11 @@ class PlgContentJtf extends CMSPlugin
 			$this->app->setUserState('plugins.content.jtf.start', microtime(1));
 		}
 
+		if (Factory::getConfig()->get('cache', 0) != 0)
+		{
+			$this->removeCache($context);
+		}
+
 		// Set profiler start time and memory usage and mark afterLoad in the profiler.
 		JDEBUG ? Profiler::getInstance('Application')->mark('plgContentJtf') : null;
 	}
@@ -1473,5 +1478,33 @@ class PlgContentJtf extends CMSPlugin
 		$content->text = JHtml::_('content.prepare', $content->text, '', 'mod_custom.content');
 
 		return $content;
+	}
+
+	/**
+	 * Remove caching if plugin is called
+	 *
+	 * @param   string  $context
+	 *
+	 * @return   void
+	 * @since    3.0.0
+	 */
+	private function removeCache($context)
+	{
+		$key         = (array) JUri::getInstance()->toString();
+		$key         = md5(serialize($key));
+		$group       = strstr($context, '.', true);
+		$cacheGroups = array(
+			$group        => 'callback',
+			'page'        => 'callback',
+			'com_modules' => '',
+			'com_content' => 'view',
+		);
+
+		foreach ($cacheGroups as $group => $handler)
+		{
+			$cache = JFactory::getCache($group, $handler);
+			$cache->cache->remove($key);
+			$cache->cache->setCaching(false);
+		}
 	}
 }
