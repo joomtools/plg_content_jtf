@@ -46,6 +46,7 @@ if ($fillouttime > 0)
 	$jtfBadgeClass['uikit']  = 'uk-badge uk-badge-notification';
 	$jtfBadgeClass['bs4']    = 'badge badge-dark';
 	$jtfBadgeClass['bs3']    = 'badge';
+	$jtfBadgeClass['bs2'] = 'badge badge-inverse';
 	$jtfBadgeClass['joomla'] = 'badge badge-inverse';
 
 	JFactory::getDocument()->addScriptDeclaration(
