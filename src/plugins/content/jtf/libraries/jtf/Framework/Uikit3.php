@@ -51,7 +51,9 @@ class Uikit3
 		$classes        = array();
 		$classes['css'] = '.field-calendar input {margin-right: 40px;padding-right: 40px;}';
 		$classes['css'] .= '.uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
-		$classes['css'] .= '.uk-form-stacked .uk-form-controls {margin-left: 0 !important;}';
+		$classes['css'] .= '.uk-form-stacked .uk-form-controls {width: 100% !important; margin-left: 0 !important;}';
+		$classes['css'] .= '.checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
+		$classes['css'] .= '.checkbox , .radio {padding-left: 0 !important;}';
 //		$classes['css'] .= 'input[type=checkbox]:not(:checked), input[type=radio]:not(:checked), .uk-input, .uk-textarea {background-color: white !important;}';
 
 		$classes['class']['form'] = array('uk-form', 'form-validate');
