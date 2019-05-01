@@ -188,6 +188,13 @@ class FileField extends FormField
 			$uploadmaxsize = Utility::getMaxUploadSize();
 		}
 
+		if (strpos($data['name'], '][]') === false)
+		{
+			$data['name'] = $data['name'] . '[]';
+		}
+
+		$name = str_replace('][]', ']', $data['name']);
+
 		$uploadmaxsize_name = $name . '][max_file_size]';
 		$extraData          = array(
 			'accept'             => $this->accept,
