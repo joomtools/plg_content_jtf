@@ -10,15 +10,16 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
-JFormHelper::loadFieldClass('list');
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Form\Field\ListField;
 
 /**
  * List of supported frameworks
  *
  * @since   3.0.0
  */
-class JFormFieldFrwk extends JFormFieldList
+class JFormFieldFrwk extends ListField
 {
 	/**
 	 * The form field type.
@@ -45,7 +46,7 @@ class JFormFieldFrwk extends JFormFieldList
 	protected function getOptions()
 	{
 		$frwkPath = JPATH_PLUGINS . '/content/jtf/libraries/jtf/Framework';
-		$frwk = JFolder::files($frwkPath);
+		$frwk = Folder::files($frwkPath);
 
 		$options = array();
 
@@ -56,7 +57,7 @@ class JFormFieldFrwk extends JFormFieldList
 
 		foreach ($frwk as $file)
 		{
-			$fileName = JFile::stripExt($file);
+			$fileName = File::stripExt($file);
 
 			if (in_array($fileName, $this->exclude))
 			{
