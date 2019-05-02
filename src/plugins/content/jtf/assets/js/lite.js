@@ -1,7 +1,7 @@
 !function (i) {
 	if ("object" == typeof exports && "undefined" != typeof module) module.exports = i(); else if ("function" == typeof define && define.amd) define([], i); else {
 		var a;
-		a = "undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : this, a.mimelite = i()
+		a = "undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : this, a.mimelite = i();
 	}
 }(function () {
 	return function i(a, p, t) {
@@ -12,26 +12,26 @@
 					if (!n && m) return m(l, !0);
 					if (e) return e(l, !0);
 					var s = new Error("Cannot find module '" + l + "'");
-					throw s.code = "MODULE_NOT_FOUND", s
+					throw s.code = "MODULE_NOT_FOUND", s;
 				}
 				var c = p[l] = {exports: {}};
 				a[l][0].call(c.exports, function (i) {
 					var p = a[l][1][i];
-					return o(p ? p : i)
-				}, c, c.exports, i, a, p, t)
+					return o(p ? p : i);
+				}, c, c.exports, i, a, p, t);
 			}
-			return p[l].exports
+			return p[l].exports;
 		}
 
 		for (var e = "function" == typeof require && require, l = 0; l < t.length; l++) o(t[l]);
-		return o
+		return o;
 	}({
 		1: [function (i, a, p) {
 			"use strict";
 
 			function t() {
 				this._types = Object.create(null), this._extensions = Object.create(null);
-				for (var i = 0; i < arguments.length; i++) this.define(arguments[i])
+				for (var i = 0; i < arguments.length; i++) this.define(arguments[i]);
 			}
 
 			t.prototype.define = function (i, a) {
@@ -40,27 +40,29 @@
 						var e = t[o];
 						if ("*" != e[0]) {
 							if (!a && e in this._types) throw new Error('Attempt to change mapping for "' + e + '" extension from "' + this._types[e] + '" to "' + p + '". Pass `force=true` to allow this, otherwise remove "' + e + '" from the list of extensions for "' + p + '".');
-							this._types[e] = p
+							this._types[e] = p;
 						}
 					}
 					if (a || !this._extensions[p]) {
-						this._extensions[p] = t
+						this._extensions[p] = t;
 					}
 				}
 			}, t.prototype.getType = function (i) {
 				i = String(i);
-				var a = i.replace(/^.*[\/\\]/, "").toLowerCase(), p = a.replace(/^.*\./, "").toLowerCase(),
-					t = a.length < i.length, o = p.length < a.length - 1;
-				return (o || !t) && this._types[p] || null
+				var a = i.replace(/^.*[\/\\]/, "").toLowerCase(),
+					p = a.replace(/^.*\./, "").toLowerCase(),
+					t = a.length < i.length,
+					o = p.length < a.length - 1;
+				return (o || !t) && this._types[p] || null;
 			}, t.prototype.getTypes = function (i) {
 				i = String(i);
-				var wildcard = (i.split('/')[1] == '*') ? true : false,
-					_return  = '';
+				var wildcard = i.split('/')[1] == '*' ? true : false,
+					_return = '';
 				if (wildcard === true) {
 					i = /^\s*([^;\s]*)/.test(i) && RegExp.$1 && i.split('/')[0];
 					var matches = [];
-					matches = jQuery.map( this._extensions, function( value, index ) {
-						var patt = new RegExp("^"+i+"/");
+					matches = jQuery.map(this._extensions, function (value, index) {
+						var patt = new RegExp("^" + i + "/");
 						if (patt.test(index)) {
 							return index;
 						}
@@ -69,16 +71,16 @@
 				} else {
 					_return = i = /^\s*([^;\s]*)/.test(i) && RegExp.$1, i || null;
 				}
-				return _return
+				return _return;
 			}, t.prototype.getExtension = function (i) {
 				i = String(i);
-				var wildcard = (i.split('/')[1] == '*') ? true : false,
-					_return  = '';
+				var wildcard = i.split('/')[1] == '*' ? true : false,
+					_return = '';
 				if (wildcard === true) {
 					i = /^\s*([^;\s]*)/.test(i) && RegExp.$1 && i.split('/')[0];
 					var matches = [];
-					matches = jQuery.map( this._extensions, function( value, index ) {
-						var patt = new RegExp("^"+i+"/");
+					matches = jQuery.map(this._extensions, function (value, index) {
+						var patt = new RegExp("^" + i + "/");
 						if (patt.test(index)) {
 							return value.toString();
 						}
@@ -89,12 +91,13 @@
 					var type = this._extensions[i.toLowerCase()];
 					_return = type ? type.toString() : null;
 				}
-				return _return
-			}, a.exports = t
+				return _return;
+			}, a.exports = t;
 		}, {}], 2: [function (i, a, p) {
 			"use strict";
+
 			var t = i("./Mime");
-			a.exports = new t(i("./types/standard"))
+			a.exports = new t(i("./types/standard"));
 		}, {"./Mime": 1, "./types/standard": 3}], 3: [function (i, a, p) {
 			a.exports = {
 				"application/andrew-inset": ["ez"],
@@ -324,7 +327,7 @@
 				"video/ogg": ["ogv"],
 				"video/quicktime": ["qt", "mov"],
 				"video/webm": ["webm"]
-			}
+			};
 		}, {}]
-	}, {}, [2])(2)
+	}, {}, [2])(2);
 });

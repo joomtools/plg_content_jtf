@@ -6,6 +6,8 @@
 	<fieldset name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
 	          label="JTF_FIELDSET_DEFAULT_LABEL"
+	          gridlabel="uk-width-1-4@s"
+	          gridfield="uk-width-3-4@s"
 	>
 		<field name="list"
 		       type="list"
