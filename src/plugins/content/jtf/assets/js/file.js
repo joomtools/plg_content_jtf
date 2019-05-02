@@ -90,16 +90,13 @@ jQuery(document).ready(function ($) {
 				return bytes + ' B';
 			}
 
-			var units = si
-				? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-				: ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'],
+			var units = si ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'],
 				u = -1;
 
 			do {
 				bytes /= thresh;
 				++u;
-			}
-			while (Math.abs(bytes) >= thresh && u < units.length - 1);
+			} while (Math.abs(bytes) >= thresh && u < units.length - 1);
 
 			return bytes.toFixed(1) + ' ' + units[u];
 		}
@@ -111,28 +108,24 @@ jQuery(document).ready(function ($) {
 
 			for (var i = 0, f; f = files[i]; i++) {
 				if (allowedFile(f.type)) {
-					output.push('<li><strong>Upload: ', f.name, '</strong> (',
-						humanReadableSize(f.size, true), ')</li>');
+					output.push('<li><strong>Upload: ', f.name, '</strong> (', humanReadableSize(f.size, true), ')</li>');
 				} else {
-					uploadError += '<p><strong>Error: ' + f.name
-						+ '</strong> - ' + errorFileType + '</p>';
+					uploadError += '<p><strong>Error: ' + f.name + '</strong> - ' + errorFileType + '</p>';
 				}
 			}
 
 			if (uploadsize > maxsize) {
-				uploadError += '<p><strong>Error: ' + humanReadableSize(uploadsize, true)
-					+ '</strong> - ' + errorFileSize + '</p>';
+				uploadError += '<p><strong>Error: ' + humanReadableSize(uploadsize, true) + '</strong> - ' + errorFileSize + '</p>';
 			}
 
-			if (uploadError)
-			{
+			if (uploadError) {
 				setInvalid();
-				document.formvalidator.setHandler('file', function() {
+				document.formvalidator.setHandler('file', function () {
 					return false;
 				});
 			} else {
 				unsetInvalid();
-				document.formvalidator.setHandler('file', function() {
+				document.formvalidator.setHandler('file', function () {
 					return true;
 				});
 			}

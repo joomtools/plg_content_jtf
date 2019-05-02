@@ -50,6 +50,7 @@ class FrameworkUikit
 		$inline         = false;
 		$classes        = array();
 		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
+		$classes['css'] .= '.checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
 
 		$classes['class']['form'] = array('uk-form', 'form-validate');
 
