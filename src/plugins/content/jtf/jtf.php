@@ -251,7 +251,7 @@ class PlgContentJtf extends CMSPlugin
 			return;
 		}
 
-		FormHelper::addFieldPath(JPATH_PLUGINS . '/system/jtf/libraries/jtf/Form/Field');
+//		FormHelper::addFieldPath(JPATH_PLUGINS . '/system/jtf/libraries/jtf/Form/Field');
 		FormHelper::addFieldPrefix('Jtf\\Form\\Field');
 		FormHelper::addRulePath(JPATH_PLUGINS . '/system/jtf/libraries/jtf/Form/Rule');
 		FormHelper::addRulePrefix('Jtf\\Form\\Rule');
