@@ -6,7 +6,7 @@
 	>
 		<field name="name"
 		       type="text"
-		       icon="glyphicon glyphicon-user"
+		       icon="fa fa-user"
 		       maxlength="60"
 		       description="JTF_NAME_DESC"
 		       label="JTF_NAME_LABEL"
@@ -15,7 +15,7 @@
 		/>
 		<field name="email"
 		       type="email"
-		       icon="glyphicon glyphicon-envelope"
+		       icon="fa fa-envelope"
 		       maxlength="60"
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
@@ -25,7 +25,7 @@
 		/>
 		<field name="subject"
 		       type="text"
-		       icon="glyphicon glyphicon-pencil"
+		       icon="fa fa-pencil"
 		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
@@ -34,7 +34,7 @@
 		/>
 		<field name="message"
 		       type="textarea"
-		       icon="glyphicon glyphicon-pencil"
+		       icon="fa fa-pencil"
 		       cols="30"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
@@ -51,8 +51,6 @@
 		       description=""
 		       label="JTF_PRIVACY_POLICY_LABEL"
 		       default=""
-		       validate="options"
-		       filter="string"
 		       required="true"
 		       hiddenLabel="true"
 		>

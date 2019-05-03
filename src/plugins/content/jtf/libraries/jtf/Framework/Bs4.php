@@ -91,7 +91,7 @@ class Bs4
 		);
 
 		$classes['class']['list'] = array(
-			'class'   => array('custom-check'),
+			'class'   => array('custom-select'),
 		);
 
 		$classes['class']['checkbox'] = array(
