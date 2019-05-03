@@ -79,6 +79,10 @@ class FrameworkBs4
 			'buttonicon'  => array('icon-calendar'),
 		);
 
+		$classes['class']['list'] = array(
+			'class'   => array('custom-select'),
+		);
+
 		$classes['class']['checkbox'] = array(
 			'class'   => array('form-check'),
 			'options' => array(
