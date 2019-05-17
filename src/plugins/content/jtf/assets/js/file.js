@@ -36,6 +36,10 @@ jQuery(document).ready(function ($) {
 			if (fileExt !== null) {
 				sep = acceptedExt ? ',' : '';
 				acceptedExt += sep + fileExt;
+
+				if (fileExt === 'zip') {
+					acceptedType += sep + 'application/x-zip-compressed';
+				}
 			}
 
 			if (mimeType !== null) {
@@ -44,7 +48,7 @@ jQuery(document).ready(function ($) {
 			}
 		}
 
-		acceptedExt = acceptedExt.replace(/,/g, " .");
+		acceptedExt = '.' + acceptedExt.replace(/,/g, " .");
 		acceptedType = acceptedType.replace(/,/g, " ");
 
 		$allowedExt.html(msgAllowedExt + acceptedExt);

@@ -83,7 +83,11 @@ if (!empty($options['gridfield']))
 			{
 				echo $input;
 			} ?>
-
+			<?php if ($this->options->get('suffixes')[0] == 'bs4') : ?>
+			<small class="form-text text-muted">
+				<?php echo $description; ?>
+			</small>
+			<?php endif; ?>
 		</div>
 
 	<?php endif; ?>
