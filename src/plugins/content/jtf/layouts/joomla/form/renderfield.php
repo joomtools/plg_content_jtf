@@ -24,7 +24,7 @@ if (!empty($options['showonEnabled']))
 {
 	JHtml::_('jquery.framework');
 	JHtml::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
-	JHtml::_('script', 'plugins/content/jtf/assets/js/showon.js', array('version' => 'auto'));
+	JHtml::_('script', 'plugins/content/jtf/assets/js/showon.min.js', array('version' => 'auto'));
 }
 
 $container = array();
@@ -83,7 +83,7 @@ if (!empty($options['gridfield']))
 			{
 				echo $input;
 			} ?>
-			<?php if ($this->options->get('suffixes')[0] == 'bs4') : ?>
+			<?php if (in_array('bs4', (array) $this->options->get('suffixes'), true)) : ?>
 			<small class="form-text text-muted">
 				<?php echo $description; ?>
 			</small>
