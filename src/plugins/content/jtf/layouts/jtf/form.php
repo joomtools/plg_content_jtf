@@ -26,8 +26,8 @@ extract($displayData);
 
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
-JHtml::_('script', 'plugins/content/jtf/assets/js/domIsReady.js', array('version' => 'auto'));
-JHtml::_('script', 'plugins/content/jtf/assets/js/scrollToError.js', array('version' => 'auto'));
+JHtml::_('script', 'plugins/content/jtf/assets/js/domIsReady.min.js', array('version' => 'auto'));
+JHtml::_('script', 'plugins/content/jtf/assets/js/scrollToError.min.js', array('version' => 'auto'));
 
 $invalidColor            = '#ff0000';
 $invalidBackgroundColor  = '#f2dede';
@@ -48,11 +48,16 @@ if ($fillouttime > 0)
 	$jtfBadgeClass['bs3']    = 'badge';
 	$jtfBadgeClass['joomla'] = 'badge badge-inverse';
 
-	JFactory::getDocument()->addScriptDeclaration(
-		'const jtfttf=' . $fillouttime . ','
-		. 'jtfBadgeClass="' . $jtfBadgeClass[$frwk] . '";'
-	);
-	JHtml::_('script', 'plugins/content/jtf/assets/js/timeToFill.js', array('version' => 'auto'));
+	JFactory::getDocument()->addScriptDeclaration("
+		if (typeof jtfttf === 'undefined') {
+			var jtfttf = {},
+				jtfBadgeClass = {};
+		}
+		
+		jtfttf['" . $id . "'] = " . $fillouttime . ";
+		jtfBadgeClass['" . $id . "'] = '" . $jtfBadgeClass[$frwk] . "';
+	");
+	JHtml::_('script', 'plugins/content/jtf/assets/js/timeToFill.min.js', array('version' => 'auto'));
 }
 
 JFactory::getDocument()->addStyleDeclaration(
