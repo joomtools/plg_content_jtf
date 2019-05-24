@@ -59,10 +59,11 @@ $format = '<input type="checkbox" id="%1$s" name="%2$s" value="%3$s" %4$s />';
 // The alt option for JText::alt
 $alt   = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
 $class = !empty($class) ? ' class="' . trim($class) . '"' : '';
+$required = $required ? 'required aria-required="true"' : '';
 ?>
 
-<fieldset id="<?php echo $id; ?>"
-	<?php echo $required ? 'required aria-required="true"' : ''; ?>
+<fieldset class="checkboxes required" id="<?php echo $id; ?>"
+	<?php echo $required; ?>
 	<?php echo $autofocus ? 'autofocus' : ''; ?>>
 
 	<?php foreach ($options as $i => $option) :
@@ -99,7 +100,7 @@ $class = !empty($class) ? ' class="' . trim($class) . '"' : '';
 
 		$oid        = $id . $i;
 		$value      = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
-		$attributes = array_filter(array($checked, $optionClass, $disabled, $onchange, $onclick));
+		$attributes = array_filter(array($checked, $optionClass, $disabled, $onchange, $onclick, $required));
 		?>
 	<div<?php echo $class; ?>>
 		<?php echo sprintf($format, $oid, $name, $value, implode(' ', $attributes)); ?>
