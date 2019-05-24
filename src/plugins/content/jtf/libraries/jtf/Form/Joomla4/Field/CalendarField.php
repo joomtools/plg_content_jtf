@@ -15,6 +15,7 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Factory;
 use Jtf\Form\FormField;
 use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
 
 /**
  * Form Field class for the Joomla Platform.
@@ -217,6 +218,9 @@ class CalendarField extends FormField
 		{
 			$showTime = (string) $this->element['showtime'];
 
+			$lang  = $this->app->getLanguage();
+			$debug = $lang->setDebug(false);
+
 			if ($showTime && $showTime != 'false')
 			{
 				$this->format = Text::_('DATE_FORMAT_CALENDAR_DATETIME');
@@ -225,6 +229,8 @@ class CalendarField extends FormField
 			{
 				$this->format = Text::_('DATE_FORMAT_CALENDAR_DATE');
 			}
+
+			$lang->setDebug($debug);
 		}
 
 		// If a known filter is given use it.
@@ -283,7 +289,7 @@ class CalendarField extends FormField
 		$data      = parent::getLayoutData();
 		$tag       = $this->app->getLanguage()->getTag();
 		$calendar  = $this->app->getLanguage()->getCalendar();
-		$direction = strtolower(Factory::getDocument()->getDirection());
+		$direction = strtolower($this->app->getDocument()->getDirection());
 
 		// Get the appropriate file for the current language date helper
 		$helperPath = 'system/fields/calendar-locales/date/gregorian/date-helper.min.js';
@@ -328,5 +334,68 @@ class CalendarField extends FormField
 		);
 
 		return array_merge($data, $extraData);
+	}
+
+	/**
+	 * Method to filter a field value.
+	 *
+	 * @param   mixed     $value  The optional value to use as the default for the field.
+	 * @param   string    $group  The optional dot-separated form group path on which to find the field.
+	 * @param   Registry  $input  An optional Registry object with the entire data set to filter
+	 *                            against the entire form.
+	 *
+	 * @return  mixed   The filtered value.
+	 *
+	 * @since   4.0.0
+	 */
+	public function filter($value, $group = null, Registry $input = null)
+	{
+		// Make sure there is a valid SimpleXMLElement.
+		if (!($this->element instanceof \SimpleXMLElement))
+		{
+			throw new \UnexpectedValueException(sprintf('%s::filter `element` is not an instance of SimpleXMLElement', get_class($this)));
+		}
+
+		// Get the field filter type.
+		$filter = (string) $this->element['filter'];
+
+		$return = $value;
+
+		switch (strtoupper($filter))
+		{
+			// Convert a date to UTC based on the server timezone offset.
+			case 'SERVER_UTC':
+				if ((int) $value > 0)
+				{
+					// Get the server timezone setting.
+					$offset = $this->app->getConfig()->get('offset');
+
+					// Return an SQL formatted datetime string in UTC.
+					$return = Factory::getDate($value, $offset)->toSql();
+				}
+				else
+				{
+					$return = '';
+				}
+				break;
+
+			// Convert a date to UTC based on the user timezone offset.
+			case 'USER_UTC':
+				if ((int) $value > 0)
+				{
+					// Get the user timezone setting defaulting to the server timezone setting.
+					$offset = $this->app->getIdentity()->getParam('timezone', Factory::getConfig()->get('offset'));
+
+					// Return an SQL formatted datetime string in UTC.
+					$return = Factory::getDate($value, $offset)->toSql();
+				}
+				else
+				{
+					$return = '';
+				}
+				break;
+		}
+
+		return $return;
 	}
 }

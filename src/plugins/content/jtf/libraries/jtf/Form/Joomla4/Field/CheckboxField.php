@@ -141,12 +141,12 @@ class CheckboxField extends FormField
 		$onclick  = !empty($this->onclick) ? ' onclick="' . $this->onclick . '"' : '';
 		$onchange = !empty($this->onchange) ? ' onchange="' . $this->onchange . '"' : '';
 
-		// Including fallback code for HTML5 non supported browsers.
-		HTMLHelper::_('jquery.framework');
-		HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
+		$html = '<div class="form-check form-check-inline">';
+		$html .= '<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '" value="'
+				. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $class . $checked . $disabled . $onclick . $onchange
+				. $required . $autofocus . ' />';
+		$html .= '</div>';
 
-		return '<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '" value="'
-			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $class . $checked . $disabled . $onclick . $onchange
-			. $required . $autofocus . ' />';
+		return $html;
 	}
 }

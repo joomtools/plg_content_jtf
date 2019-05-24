@@ -12,7 +12,6 @@ namespace Jtf\Form\Field;
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -32,6 +31,14 @@ class CategoryField extends ListField
 	 * @since   3.0.0
 	 */
 	public $type = 'Category';
+
+	/**
+	 * Global application object
+	 *
+	 * @var     \Joomla\CMS\Application\CMSApplication
+	 * @since   3.0.0
+	 */
+	protected $app = null;
 
 	/**
 	 * Method to get the field options for category
@@ -80,7 +87,7 @@ class CategoryField extends ListField
 			if ((string) $this->element['action'])
 			{
 				// Get the current user object.
-				$user = Factory::getUser();
+				$user = $this->app->getIdentity();
 
 				foreach ($options as $i => $option)
 				{
