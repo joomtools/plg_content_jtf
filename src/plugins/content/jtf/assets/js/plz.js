@@ -7,13 +7,9 @@
  * @license      GNU General Public License version 3 or later
  **/
 
-(function (document, domIsReady) {
-	"use strict";
-
-	domIsReady(function () {
-		document.formvalidator.setHandler('plz', function (value) {
-			var regex = /^\d{5}$/;
-			return regex.test(value);
-		});
+domIsReady(function () {
+	document.formvalidator.setHandler('plz', function (value) {
+		var regex = /^\d{5}$/;
+		return regex.test(value);
 	});
-})(document, domIsReady);
+});
