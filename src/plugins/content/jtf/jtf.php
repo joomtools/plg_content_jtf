@@ -17,6 +17,11 @@ JLoader::register('FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/fo
 JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true);
 JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true, false, 'psr4');
 
+JLoader::register('JFormFieldCaptcha', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields/CaptchaField.php', true);
+JLoader::register('CaptchaField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields/CaptchaField.php', true);
+JLoader::registerNamespace('Joomla\CMS\Form\Field\CaptchaField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields/CaptchaField.php', true);
+JLoader::registerNamespace('Joomla\CMS\Form\Field\CaptchaField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields/CaptchaField.php', true, false, 'psr4');
+
 
 // Add form fields
 JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields');
