@@ -109,7 +109,7 @@ JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 ?>
 <div class="field-calendar">
 	<?php if (!$readonly && !$disabled) : ?>
-	<div class="uk-form-icon">
+	<div class="uk-form-icon uk-button-group">
 		<?php endif; ?>
 		<input type="text"
 			   id="<?php echo $id; ?>"
