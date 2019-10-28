@@ -17,6 +17,11 @@ JLoader::register('FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/fo
 JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true);
 JLoader::registerNamespace('Joomla\CMS\Form\FormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true, false, 'psr4');
 
+JLoader::register('JFormFieldCaptcha', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields/CaptchaField.php', true);
+JLoader::register('CaptchaField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields/CaptchaField.php', true);
+JLoader::registerNamespace('Joomla\CMS\Form\Field\CaptchaField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields/CaptchaField.php', true);
+JLoader::registerNamespace('Joomla\CMS\Form\Field\CaptchaField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields/CaptchaField.php', true, false, 'psr4');
+
 
 // Add form fields
 JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fields');
@@ -33,6 +38,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Profiler\Profiler;
 use Joomla\Utilities\ArrayHelper;
 use Jtf\Form\Form;
+use Joomla\CMS\Form\Rule\CaptchaRule;
+//use Joomla\CMS\Captcha\Captcha;
 
 /**
  * @package      Joomla.Plugin
@@ -330,6 +337,16 @@ class PlgContentJtf extends CMSPlugin
 				$this->setFieldValidates();
 
 				$valid = $this->getForm()->validate($submitedValues);
+
+				// Validate captcha
+				if ($valid && !empty($this->uParams['captcha']))
+				{
+					$captchaRule  = new CaptchaRule();
+					$element      = new SimpleXMLElement('<element></element>');
+					$captchaValue = !empty($submitedValues['captcha']) ? $submitedValues['captcha'] : '';
+
+					$valid = $captchaRule->test($element, $captchaValue, null, null, $this->getForm());
+				}
 
 				if ($valid)
 				{
@@ -1107,7 +1124,7 @@ class PlgContentJtf extends CMSPlugin
 			else
 			{
 				$captcha = 'captcha';
-				$cField  = new SimpleXMLElement('<field name="captcha" type="captcha" validate="captcha" description="JTF_CAPTCHA_DESC" label="JTF_CAPTCHA_LABEL"></field>');
+				$cField  = new SimpleXMLElement('<field name="captcha" type="captcha" validate="captcha" description="JTF_CAPTCHA_DESC" label="JTF_CAPTCHA_LABEL" required="true"></field>');
 
 				$form->setField($cField, null, true, 'submit');
 			}

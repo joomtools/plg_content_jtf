@@ -84,11 +84,7 @@ class FrameworkBs4
 		);
 
 		$classes['class']['checkbox'] = array(
-			'class'   => array('form-check'),
-			'options' => array(
-				'class'      => array('form-check-input'),
-				'labelclass' => array('form-check-label'),
-			),
+			'class'   => array(),
 		);
 
 		$classes['class']['checkboxes'] = array(
