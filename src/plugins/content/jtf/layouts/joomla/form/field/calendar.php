@@ -10,12 +10,11 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 
 extract($displayData);
-
-// Get some system objects.
-$document = JFactory::getDocument();
 
 /**
  * Layout variables
@@ -71,7 +70,8 @@ $attributes = array();
 
 empty($size) ? null : $attributes['size'] = $size;
 empty($maxlength) ? null : $attributes['maxlength'] = ' maxlength="' . $maxLength . '"';
-empty($class) ? null : $attributes['class'] = $class;
+$attributes['class'] = 'validate-dateformat';
+empty($class) ? null : $attributes['class'] .= ' ' . $class;
 !$readonly ? null : $attributes['readonly'] = 'readonly';
 !$disabled ? null : $attributes['disabled'] = 'disabled';
 empty($onchange) ? null : $attributes['onchange'] = $onchange;
@@ -85,7 +85,7 @@ if ($required)
 // Handle the special case for "now".
 if (strtoupper($value) == 'NOW')
 {
-	$value = JFactory::getDate()->format('Y-m-d H:i:s');
+	$value = Factory::getDate()->format('Y-m-d H:i:s');
 }
 
 $readonly = isset($attributes['readonly']) && $attributes['readonly'] == 'readonly';
@@ -99,13 +99,16 @@ if (is_array($attributes))
 $cssFileExt = ($direction === 'rtl') ? '-rtl.css' : '.css';
 
 // Load polyfills for older IE
-JHtml::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
+HTMLHelper::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
 
 // The static assets for the calendar
-JHtml::_('script', $localesPath, false, true, false, false, true);
-JHtml::_('script', $helperPath, false, true, false, false, true);
-JHtml::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
-JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
+HTMLHelper::_('script', $localesPath, false, true, false, false, true);
+HTMLHelper::_('script', $helperPath, false, true, false, false, true);
+HTMLHelper::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
+HTMLHelper::_('script', 'plugins/content/jtf/assets/js/moment.min.js', array('version' => 'auto'));
+HTMLHelper::_('script', 'plugins/content/jtf/assets/js/validateDateFormat.min.js', array('version' => 'auto'));
+HTMLHelper::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
+
 ?>
 <div class="field-calendar">
 	<?php if (!$readonly && !$disabled) : ?>
