@@ -22,7 +22,6 @@ use Joomla\CMS\Profiler\Profiler;
 use Joomla\Utilities\ArrayHelper;
 use Jtf\Form\Form;
 use Joomla\CMS\Form\Rule\CaptchaRule;
-//use Joomla\CMS\Captcha\Captcha;
 
 /**
  * @package      Joomla.Plugin

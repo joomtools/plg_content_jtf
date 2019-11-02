@@ -12,8 +12,8 @@ namespace Jtf\Form\Field;
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Captcha\Captcha;
 use Jtf\Form\FormField;
+use Jtf\Captcha\Captcha;
 
 /**
  * Captcha field.
@@ -106,7 +106,7 @@ class CaptchaField extends FormField
 		$result = parent::setup($element, $value, $group);
 		$default = $this->app->get('captcha');
 
-		if ($this->app->isClient('site'))
+		if ($this->app->isClient('site') && !$this->form instanceof \Jtf\Form\Form)
 		{
 			$default = $this->app->getParams()->get('captcha', $default);
 		}
