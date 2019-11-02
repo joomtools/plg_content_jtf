@@ -10,12 +10,11 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 
 extract($displayData);
-
-// Get some system objects.
-$document = JFactory::getDocument();
 
 /**
  * Layout variables
@@ -71,21 +70,22 @@ $attributes = array();
 
 empty($size) ? null : $attributes['size'] = $size;
 empty($maxlength) ? null : $attributes['maxlength'] = ' maxlength="' . $maxLength . '"';
-empty($class) ? null : $attributes['class'] = $class;
+$attributes['class'] = 'validate-dateformat';
+empty($class) ? null : $attributes['class'] .= ' ' . $class;
 !$readonly ? null : $attributes['readonly'] = 'readonly';
 !$disabled ? null : $attributes['disabled'] = 'disabled';
 empty($onchange) ? null : $attributes['onchange'] = $onchange;
 
 if ($required)
 {
-	$attributes['required']      = '';
-	$attributes['aria-required'] = 'true';
+    $attributes['required']      = '';
+    $attributes['aria-required'] = 'true';
 }
 
 // Handle the special case for "now".
 if (strtoupper($value) == 'NOW')
 {
-	$value = JFactory::getDate()->format('Y-m-d H:i:s');
+    $value = Factory::getDate()->format('Y-m-d H:i:s');
 }
 
 $readonly = isset($attributes['readonly']) && $attributes['readonly'] == 'readonly';
@@ -93,51 +93,54 @@ $disabled = isset($attributes['disabled']) && $attributes['disabled'] == 'disabl
 
 if (is_array($attributes))
 {
-	$attributes = ArrayHelper::toString($attributes);
+    $attributes = ArrayHelper::toString($attributes);
 }
 
 $cssFileExt = ($direction === 'rtl') ? '-rtl.css' : '.css';
 
 // Load polyfills for older IE
-JHtml::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
+HTMLHelper::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
 
 // The static assets for the calendar
-JHtml::_('script', $localesPath, false, true, false, false, true);
-JHtml::_('script', $helperPath, false, true, false, false, true);
-JHtml::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
-JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
+HTMLHelper::_('script', $localesPath, false, true, false, false, true);
+HTMLHelper::_('script', $helperPath, false, true, false, false, true);
+HTMLHelper::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
+HTMLHelper::_('script', 'plugins/content/jtf/assets/js/moment.min.js', array('version' => 'auto'));
+HTMLHelper::_('script', 'plugins/content/jtf/assets/js/validateDateFormat.min.js', array('version' => 'auto'));
+HTMLHelper::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
+
 ?>
 <div class="field-calendar">
-	<?php if (!$readonly && !$disabled) : ?>
-	<div class="uk-form-icon">
-		<?php endif; ?>
-		<input type="text"
-			   id="<?php echo $id; ?>"
-			   name="<?php echo $name; ?>"
-			   value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
-			<?php echo $attributes; ?>
-			<?php !empty($hint) ? 'placeholder="' . $hint . '"' : ''; ?>
-			   data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-			   autocomplete="off"
-		/>
-		<button type="button"
-				class="<?php echo ($readonly || $disabled) ? "hidden " . $button : $button; ?>"
-				id="<?php echo $id; ?>_btn"
-				data-inputfield="<?php echo $id; ?>"
-				data-dayformat="<?php echo $format; ?>"
-				data-button="<?php echo $id; ?>_btn"
-				data-firstday="<?php echo JFactory::getLanguage()->getFirstDay(); ?>"
-				data-weekend="<?php echo JFactory::getLanguage()->getWeekEnd(); ?>"
-				data-today-btn="<?php echo $todaybutton; ?>"
-				data-week-numbers="<?php echo $weeknumbers; ?>"
-				data-show-time="<?php echo $showtime; ?>"
-				data-show-others="<?php echo $filltable; ?>"
-				data-time-24="<?php echo $timeformat; ?>"
-				data-only-months-nav="<?php echo $singleheader; ?>"
-			<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
-			<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
-		><span class="<?php echo $icon; ?>"></span></button>
-		<?php if (!$readonly && !$disabled) : ?>
-	</div>
+    <?php if (!$readonly && !$disabled) : ?>
+    <div class="uk-form-icon uk-button-group">
+        <?php endif; ?>
+        <input type="text"
+               id="<?php echo $id; ?>"
+               name="<?php echo $name; ?>"
+               value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
+            <?php echo $attributes; ?>
+            <?php !empty($hint) ? 'placeholder="' . $hint . '"' : ''; ?>
+               data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
+               autocomplete="off"
+        />
+        <button type="button"
+                class="<?php echo ($readonly || $disabled) ? "hidden " . $button : $button; ?>"
+                id="<?php echo $id; ?>_btn"
+                data-inputfield="<?php echo $id; ?>"
+                data-dayformat="<?php echo $format; ?>"
+                data-button="<?php echo $id; ?>_btn"
+                data-firstday="<?php echo JFactory::getLanguage()->getFirstDay(); ?>"
+                data-weekend="<?php echo JFactory::getLanguage()->getWeekEnd(); ?>"
+                data-today-btn="<?php echo $todaybutton; ?>"
+                data-week-numbers="<?php echo $weeknumbers; ?>"
+                data-show-time="<?php echo $showtime; ?>"
+                data-show-others="<?php echo $filltable; ?>"
+                data-time-24="<?php echo $timeformat; ?>"
+                data-only-months-nav="<?php echo $singleheader; ?>"
+            <?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
+            <?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
+        ><span class="<?php echo $icon; ?>"></span></button>
+        <?php if (!$readonly && !$disabled) : ?>
+    </div>
 <?php endif; ?>
 </div>

@@ -39,7 +39,6 @@ use Joomla\CMS\Profiler\Profiler;
 use Joomla\Utilities\ArrayHelper;
 use Jtf\Form\Form;
 use Joomla\CMS\Form\Rule\CaptchaRule;
-//use Joomla\CMS\Captcha\Captcha;
 
 /**
  * @package      Joomla.Plugin
@@ -121,7 +120,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @var     array
 	 * @since   3.0.0
 	 */
-	private $fileFields = array();
+	private $fileFields = [];
 
 	/**
 	 * Array with submitted Files
@@ -129,7 +128,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @var     array
 	 * @since   3.0.0
 	 */
-	private $submitedFiles = array();
+	private $submitedFiles = [];
 
 	/**
 	 * Array with User params
@@ -137,7 +136,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @var     array
 	 * @since   3.0.0
 	 */
-	private $uParams = array();
+	private $uParams = [];
 
 	/**
 	 * Array with allowed params to override
@@ -145,7 +144,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @var     array
 	 * @since   3.0.0
 	 */
-	private $uParamsAllowedOverride = array(
+	private $uParamsAllowedOverride = [
 		'fillouttime',
 		'mailto',
 		'cc',
@@ -157,7 +156,7 @@ class PlgContentJtf extends CMSPlugin
 		'redirect_menuid',
 		'theme',
 		'framework',
-	);
+	];
 
 	/**
 	 * Debug
