@@ -13,8 +13,8 @@ namespace Jtf\Framework;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
-use Jtf\Form\Form;
 
 class FrameworkHelper
 {
@@ -56,6 +56,7 @@ class FrameworkHelper
 //		$test = array('test teste  doppel', 'weiter', 'nocheins    test teste');
 //		$test = $self->getClassArray($test);
 
+		$self->setGloblAssets();
 		$self->getFrameworkClass();
 		$self->getFormAttributes();
 		$self->getFieldsetAttributes();
@@ -625,5 +626,13 @@ class FrameworkHelper
 		$form->setFieldAttribute($fieldname, 'gridfield', implode(' ', $gridfield));
 
 		return;
+	}
+
+	private function setGloblAssets()
+	{
+		HTMLHelper::_('behavior.keepalive');
+		HTMLHelper::_('behavior.formvalidator');
+		HTMLHelper::_('script', 'plugins/content/jtf/assets/js/domIsReady.min.js', array('version' => 'auto'));
+		HTMLHelper::_('script', 'plugins/content/jtf/assets/js/scrollToError.min.js', array('version' => 'auto'));
 	}
 }

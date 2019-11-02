@@ -24,11 +24,6 @@ extract($displayData);
  * @var   string  $fillouttime    Minimum time to wait before submit form.
  */
 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidator');
-JHtml::_('script', 'plugins/content/jtf/assets/js/domIsReady.js', array('version' => 'auto'));
-JHtml::_('script', 'plugins/content/jtf/assets/js/scrollToError.js', array('version' => 'auto'));
-
 $invalidColor            = '#ff0000';
 $invalidBackgroundColor  = '#f2dede';
 $role                    = '';
