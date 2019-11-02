@@ -69,8 +69,9 @@ $inputvalue = '';
 $attributes = array();
 
 empty($size) ? null : $attributes['size'] = $size;
-empty($maxlength) ? null : $attributes['maxlength'] = ' maxlength="' . $maxLength . '"';
-empty($class) ? null : $attributes['class'] = $class;
+empty($maxlength) ? null : $attributes['maxlength'] = $maxLength;
+$attributes['class'] = 'validate-dateformat';
+empty($class) ? null : $attributes['class'] .= ' ' . $class;
 !$readonly ? null : $attributes['readonly'] = 'readonly';
 !$disabled ? null : $attributes['disabled'] = 'disabled';
 empty($onchange) ? null : $attributes['onchange'] = $onchange;
@@ -84,7 +85,7 @@ if ($required)
 // Handle the special case for "now".
 if (strtoupper($value) == 'NOW')
 {
-    $value = JFactory::getDate()->format('Y-m-d H:i:s');
+    $value = Factory::getDate()->format('Y-m-d H:i:s');
 }
 
 $readonly = isset($attributes['readonly']) && $attributes['readonly'] == 'readonly';
@@ -107,6 +108,8 @@ if (!$readonly || !$disabled)
 	HTMLHelper::_('script', $helperPath, array('version' => 'auto', 'relative' => true));
 	HTMLHelper::_('script', 'system/fields/calendar.min.js', array('version' => 'auto', 'relative' => true));
 	HTMLHelper::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array('version' => 'auto', 'relative' => true));
+	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/moment.min.js', array('version' => 'auto'));
+	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/validateDateFormat.min.js', array('version' => 'auto'));
 }
 ?>
 <div class="field-calendar">
@@ -121,7 +124,6 @@ if (!$readonly || !$disabled)
             <?php !empty($hint) ? 'placeholder="' . $hint . '"' : ''; ?>
                data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
                autocomplete="off"
-               <?php // TODO readonly nur mit Kalenderfunktion ?>
         />
         <button type="button"
                 class="<?php echo ($readonly || $disabled) ? "hidden " . $button : $button; ?>"
@@ -129,8 +131,8 @@ if (!$readonly || !$disabled)
                 data-inputfield="<?php echo $id; ?>"
                 data-dayformat="<?php echo $format; ?>"
                 data-button="<?php echo $id; ?>_btn"
-                data-firstday="<?php echo JFactory::getLanguage()->getFirstDay(); ?>"
-                data-weekend="<?php echo JFactory::getLanguage()->getWeekEnd(); ?>"
+                data-firstday="<?php echo Factory::getLanguage()->getFirstDay(); ?>"
+                data-weekend="<?php echo Factory::getLanguage()->getWeekEnd(); ?>"
                 data-today-btn="<?php echo $todaybutton; ?>"
                 data-week-numbers="<?php echo $weeknumbers; ?>"
                 data-show-time="<?php echo $showtime; ?>"

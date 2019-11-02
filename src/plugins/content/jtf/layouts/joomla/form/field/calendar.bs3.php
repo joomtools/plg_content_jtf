@@ -70,7 +70,8 @@ $attributes = array();
 
 empty($size) ? null : $attributes['size'] = $size;
 empty($maxlength) ? null : $attributes['maxlength'] = ' maxlength="' . $maxLength . '"';
-empty($class) ? null : $attributes['class'] = $class;
+$attributes['class'] = 'validate-dateformat';
+empty($class) ? null : $attributes['class'] .= ' ' . $class;
 !$readonly ? null : $attributes['readonly'] = 'readonly';
 !$disabled ? null : $attributes['disabled'] = 'disabled';
 empty($onchange) ? null : $attributes['onchange'] = $onchange;
@@ -107,6 +108,8 @@ if (!$readonly || !$disabled)
 	HTMLHelper::_('script', $helperPath, array('version' => 'auto', 'relative' => true));
 	HTMLHelper::_('script', 'system/fields/calendar.min.js', array('version' => 'auto', 'relative' => true));
 	HTMLHelper::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array('version' => 'auto', 'relative' => true));
+	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/moment.min.js', array('version' => 'auto'));
+	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/validateDateFormat.min.js', array('version' => 'auto'));
 }
 ?>
 <div class="field-calendar">
