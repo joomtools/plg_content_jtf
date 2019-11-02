@@ -110,7 +110,8 @@ if (!$readonly || !$disabled)
 }
 ?>
 <div class="field-calendar">
-	<?php if ($readonly || $disabled) : ?>
+	<?php if (!$readonly && !$disabled) : ?>
+	<div class="uk-form-icon uk-button-group">
 		<input type="text"
 			   value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
 			<?php echo $attributes; ?>
@@ -126,6 +127,7 @@ if (!$readonly || !$disabled)
 			   data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
 			   autocomplete="off"
 		/>
+	</div>
 	<?php else : ?>
 		<input type="text"
 			   id="<?php echo $id; ?>"
