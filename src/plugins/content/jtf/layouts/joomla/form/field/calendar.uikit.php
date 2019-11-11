@@ -109,6 +109,10 @@ HTMLHelper::_('script', 'plugins/content/jtf/assets/js/moment.min.js', array('ve
 HTMLHelper::_('script', 'plugins/content/jtf/assets/js/validateDateFormat.min.js', array('version' => 'auto'));
 HTMLHelper::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 
+Factory::getDocument()->addStyleDeclaration(
+	".uk-button-group {font-size:100.01%!important}"
+);
+
 ?>
 <div class="field-calendar">
     <?php if (!$readonly && !$disabled) : ?>
