@@ -10,6 +10,16 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Profiler\Profiler;
+use Joomla\Utilities\ArrayHelper;
+use Jtf\Form\Form;
+use Joomla\CMS\Form\Rule\CaptchaRule;
+
 JLoader::discover('Jtf\Frameworks\Framework', JPATH_PLUGINS . '/content/jtf/libraries/jtf/Frameworks');
 JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
 JLoader::register('JFormField', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/FormField.php', true);
@@ -28,17 +38,12 @@ JFormHelper::addFieldPath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/fi
 
 // Add form rules
 JFormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules');
-JLoader::registerNamespace('Joomla\\CMS\\Form\\Rule', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules', false, false, 'psr4');
+JLoader::registerNamespace('Joomla\CMS\Form\Rule', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules', false, false, 'psr4');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Profiler\Profiler;
-use Joomla\Utilities\ArrayHelper;
-use Jtf\Form\Form;
-use Joomla\CMS\Form\Rule\CaptchaRule;
+JLoader::register('JFormRuleTel', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules/TelRule.php', true);
+JLoader::register('TelRule', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules/TelRule.php', true);
+JLoader::registerNamespace('Joomla\CMS\Form\Rule\TelRule', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules/TelRule.php', true);
+JLoader::registerNamespace('Joomla\CMS\Form\Rule\TelRule', JPATH_PLUGINS . '/content/jtf/libraries/joomla/form/rules/TelRule.php', true, false, 'psr4');
 
 /**
  * @package      Joomla.Plugin
