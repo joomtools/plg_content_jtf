@@ -175,7 +175,8 @@ domIsReady(() => {
 		}
 	};
 
-	document.querySelectorAll('.uploader-wrapper').forEach((elm) => {
+	let uploaderWrapper = document.querySelectorAll('.uploader-wrapper');
+	Array.prototype.forEach.call(uploaderWrapper, function (elm) {
 		jtfUploadFile(elm, {
 			id: elm.querySelector('.legacy-uploader input[type="file"]').getAttribute('id'),
 			uploadMaxSize: elm.querySelector('.legacy-uploader input[type="hidden"]').getAttribute('value')

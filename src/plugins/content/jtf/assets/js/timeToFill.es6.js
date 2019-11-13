@@ -10,7 +10,7 @@
 domIsReady(() => {
 	let forms = document.querySelectorAll('.jtf.contact-form form');
 
-	forms.forEach((form) => {
+	Array.prototype.forEach.call(forms, function (form) {
 		let formId = form.getAttribute('id'),
 			submit = document.querySelector('.jtf.contact-form form#' + formId + ' [type="submit"]');
 		let ttf = jtfttf[formId],

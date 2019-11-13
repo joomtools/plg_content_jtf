@@ -29,7 +29,7 @@ domIsReady(() => {
 		};
 
 	let showonElements = document.querySelectorAll('[data-showon]');
-	showonElements.forEach((elm) => {
+	Array.prototype.forEach.call(showonElements, function (elm) {
 		let isActive = false,
 			formFields = elm.querySelectorAll('input, select, textarea, fieldset');
 
@@ -37,7 +37,7 @@ domIsReady(() => {
 			isActive = true;
 		}
 
-		formFields.forEach((elm) => {
+		Array.prototype.forEach.call(formFields, function (elm) {
 			toggleNovalidate(elm, isActive);
 		});
 
@@ -53,7 +53,7 @@ domIsReady(() => {
 					isActive = true;
 				}
 
-				formFields.forEach((elm) => {
+				Array.prototype.forEach.call(formFields, function (elm) {
 					toggleNovalidate(elm, isActive);
 				});
 			});

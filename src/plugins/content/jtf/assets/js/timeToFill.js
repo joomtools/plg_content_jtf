@@ -10,7 +10,7 @@
  **/
 domIsReady(function () {
   var forms = document.querySelectorAll('.jtf.contact-form form');
-  forms.forEach(function (form) {
+  Array.prototype.forEach.call(forms, function (form) {
     var formId = form.getAttribute('id'),
         submit = document.querySelector('.jtf.contact-form form#' + formId + ' [type="submit"]');
 
