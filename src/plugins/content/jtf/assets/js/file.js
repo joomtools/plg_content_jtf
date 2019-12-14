@@ -1,154 +1,181 @@
+"use strict";
+
 /**
  * @package      Joomla.Plugin
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2017 JoomTools.de - All rights reserved.
+ * @copyright    (c) 2019 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  **/
+domIsReady(function () {
+  var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
+    var acceptedType = '',
+        acceptedExt = '';
 
-jQuery(document).ready(function ($) {
-	$.fn.jtfUploadFile = function (optionlist) {
-		var $dragZone = this.find('.dragarea'),
-			$allowedExt = this.find('.allowedExt'),
-			$fileInput = $('#' + optionlist.id),
-			$uploadList = this.find('.upload-list'),
-			$label = $('label[for="' + optionlist.id + '"'),
-			accept = $fileInput.attr('accept').split(','),
-			maxsize = optionlist.uploadMaxSize,
-			msgAllowedExt = Joomla.JText._('JTF_UPLOAD_ALLOWED_FILES_EXT', ''),
-			errorFileSize = Joomla.JText._('JTF_UPLOAD_ERROR_MESSAGE_SIZE', ''),
-			errorFileType = Joomla.JText._('JTF_UPLOAD_ERROR_FILE_NOT_ALLOWED', '');
+    var dragZone = elm.querySelector('.dragarea'),
+        allowedExt = elm.querySelector('.allowedExt'),
+        fileInput = document.querySelector('#' + optionlist.id),
+        uploadList = elm.querySelector('.upload-list'),
+        label = document.querySelector('label[for="' + optionlist.id + '"'),
+        accept = fileInput.getAttribute('accept').split(','),
+        maxsize = optionlist.uploadMaxSize,
+        msgAllowedExt = Joomla.JText._('JTF_UPLOAD_ALLOWED_FILES_EXT', ''),
+        errorFileSize = Joomla.JText._('JTF_UPLOAD_ERROR_MESSAGE_SIZE', ''),
+        errorFileType = Joomla.JText._('JTF_UPLOAD_ERROR_FILE_NOT_ALLOWED', ''); // Set list of mimetype and file extension
 
-		// Set list of mimetype and file extension
-		for (var i = 0, acceptedType = '', acceptedExt = '', sep = ''; i < accept.length; ++i) {
-			var mimeType = mimelite.getType(accept[i].replace(".", ""));
-			var fileExt = mimelite.getExtension(accept[i].replace(".", ""));
 
-			if (mimeType === null) {
-				mimeType = mimelite.getTypes(accept[i].replace(".", ""));
-			}
+    for (var i = 0, sep = ''; i < accept.length; ++i) {
+      var mimeType = mimelite.getType(accept[i].replace(".", "")),
+          fileExt = mimelite.getExtension(accept[i].replace(".", ""));
 
-			if (fileExt === null) {
-				fileExt = accept[i].replace(".", "");
-			}
+      if (mimeType === null) {
+        mimeType = mimelite.getTypes(accept[i].replace(".", ""));
+      }
 
-			if (fileExt !== null) {
-				sep = acceptedExt ? ',' : '';
-				acceptedExt += sep + fileExt;
-			}
+      if (fileExt === null) {
+        fileExt = accept[i].replace(".", "");
+      }
 
-			if (mimeType !== null) {
-				sep = acceptedType ? ',' : '';
-				acceptedType += sep + mimeType;
-			}
-		}
+      if (fileExt !== null) {
+        sep = acceptedExt ? ',' : '';
+        acceptedExt += sep + fileExt;
 
-		acceptedExt = acceptedExt.replace(/,/g, " .");
-		acceptedType = acceptedType.replace(/,/g, " ");
+        if (fileExt === 'zip') {
+          acceptedType += sep + 'application/x-zip-compressed';
+        }
+      }
 
-		$allowedExt.html(msgAllowedExt + acceptedExt);
+      if (mimeType !== null) {
+        sep = acceptedType ? ',' : '';
+        acceptedType += sep + mimeType;
+      }
+    }
 
-		function allowedFile(fileType) {
-			if (fileType) {
-				var patt = new RegExp(fileType);
+    acceptedExt = '.' + acceptedExt.replace(/,/g, " .");
+    acceptedType = acceptedType.replace(/,/g, " ");
+    allowedExt.innerHTML = msgAllowedExt + acceptedExt;
 
-				if (patt.test(acceptedType)) {
-					return true;
-				}
-			}
+    function allowedFile(fileType) {
+      if (fileType) {
+        var patt = new RegExp(fileType);
 
-			return false;
-		}
+        if (patt.test(acceptedType)) {
+          return true;
+        }
+      }
 
-		function getTotalFilesSize(files) {
-			var size = 0;
+      return false;
+    }
 
-			for (var i = 0, f; f = files[i]; i++) {
-				size += f.size;
-			}
+    function getTotalFilesSize(files) {
+      var size = 0;
 
-			return size;
-		}
+      for (var _i = 0, f = files[_i]; _i < files.length; _i++) {
+        size += f.size;
+      }
 
-		function setInvalid() {
-			$label.addClass('invalid').attr('aria-invalid', true);
-			$dragZone.addClass('invalid').attr('aria-invalid', true);
-			$fileInput.addClass('invalid').attr('aria-invalid', true);
-		}
+      return size;
+    }
 
-		function unsetInvalid() {
-			$label.removeClass('invalid').attr('aria-invalid', false);
-			$dragZone.removeClass('invalid').attr('aria-invalid', false);
-			$fileInput.removeClass('invalid').attr('aria-invalid', false);
-		}
+    function setInvalid() {
+      label.classList.add('invalid');
+      label.setAttribute('aria-invalid', true);
+      dragZone.classList.add('invalid');
+      dragZone.setAttribute('aria-invalid', true);
+      fileInput.classList.add('invalid');
+      fileInput.setAttribute('aria-invalid', true);
+    }
 
-		function humanReadableSize(bytes, si) {
-			var thresh = si ? 1000 : 1024;
+    function unsetInvalid() {
+      label.classList.remove('invalid');
+      label.setAttribute('aria-invalid', false);
+      dragZone.classList.remove('invalid');
+      dragZone.setAttribute('aria-invalid', false);
+      fileInput.classList.remove('invalid');
+      fileInput.setAttribute('aria-invalid', false);
+    }
 
-			if (Math.abs(bytes) < thresh) {
-				return bytes + ' B';
-			}
+    function humanReadableSize(bytes, si) {
+      var thresh = si ? 1000 : 1024;
 
-			var units = si ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'],
-				u = -1;
+      if (Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+      }
 
-			do {
-				bytes /= thresh;
-				++u;
-			} while (Math.abs(bytes) >= thresh && u < units.length - 1);
+      var units = si ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'],
+          u = -1;
 
-			return bytes.toFixed(1) + ' ' + units[u];
-		}
+      do {
+        bytes /= thresh;
+        ++u;
+      } while (Math.abs(bytes) >= thresh && u < units.length - 1);
 
-		function dateiauswahl(files) {
-			var output = [],
-				uploadError = '',
-				uploadsize = getTotalFilesSize(files);
+      return bytes.toFixed(1) + ' ' + units[u];
+    }
 
-			for (var i = 0, f; f = files[i]; i++) {
-				if (allowedFile(f.type)) {
-					output.push('<li><strong>Upload: ', f.name, '</strong> (', humanReadableSize(f.size, true), ')</li>');
-				} else {
-					uploadError += '<p><strong>Error: ' + f.name + '</strong> - ' + errorFileType + '</p>';
-				}
-			}
+    function dateiauswahl(elm) {
+      var files = {},
+          output = [],
+          uploadError = '';
 
-			if (uploadsize > maxsize) {
-				uploadError += '<p><strong>Error: ' + humanReadableSize(uploadsize, true) + '</strong> - ' + errorFileSize + '</p>';
-			}
+      if (typeof elm.originalEvent !== 'undefined') {
+        files = elm.originalEvent.target.files;
+      } else {
+        files = elm.target.files;
+      }
 
-			if (uploadError) {
-				setInvalid();
-				document.formvalidator.setHandler('file', function () {
-					return false;
-				});
-			} else {
-				unsetInvalid();
-				document.formvalidator.setHandler('file', function () {
-					return true;
-				});
-			}
+      var uploadsize = getTotalFilesSize(files);
 
-			$uploadList.html(uploadError + '<ul style="text-align: left;">' + output.join('') + '</ul>');
-		}
+      for (var _i2 = 0, f = files[_i2]; _i2 < files.length; _i2++) {
+        if (allowedFile(f.type)) {
+          output.push('<li><strong>Upload: ', f.name, '</strong> (', humanReadableSize(f.size, true), ')</li>');
+        } else {
+          uploadError += '<p><strong>Error: ' + f.name + '</strong> - ' + errorFileType + '</p>';
+        }
+      }
 
-		$fileInput.on('drag dragstart dragend dragover dragenter dragleave change', function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-		}).on('dragenter dragover', function (e) {
-			$dragZone.addClass('hover');
-		}).on('dragleave dragend drop', function (e) {
-			$dragZone.removeClass('hover');
-		}).on('change', function (e) {
-			dateiauswahl(e.originalEvent.target.files);
-		});
-	};
+      if (uploadsize > maxsize) {
+        uploadError += '<p><strong>Error: ' + humanReadableSize(uploadsize, true) + '</strong> - ' + errorFileSize + '</p>';
+      }
 
-	$('.uploader-wrapper').each(function () {
-		$(this).jtfUploadFile({
-			id: $(this).find('.legacy-uploader input[type="file"]').attr('id'),
-			uploadMaxSize: $(this).find('.legacy-uploader input[type="hidden"]').attr('value')
-		});
-	});
+      if (uploadError) {
+        setInvalid();
+        document.formvalidator.setHandler('file', function () {
+          return false;
+        });
+      } else {
+        unsetInvalid();
+        document.formvalidator.setHandler('file', function () {
+          return true;
+        });
+      }
+
+      uploadList.innerHTML = uploadError + '<ul style="text-align: left;">' + output.join('') + '</ul>';
+    }
+
+    if (typeof fileInput !== 'undefined') {
+      fileInput.addEventListener('drag dragstart dragend dragover dragenter dragleave change', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+      fileInput.addEventListener('dragenter dragover', function (e) {
+        dragZone.classList.add('hover');
+      });
+      fileInput.addEventListener('dragleave dragend drop', function (e) {
+        dragZone.classList.remove('hover');
+      });
+      fileInput.addEventListener('change', function (e) {
+        dateiauswahl(e);
+      });
+    }
+  };
+
+  var uploaderWrapper = document.querySelectorAll('.uploader-wrapper');
+  Array.prototype.forEach.call(uploaderWrapper, function (elm) {
+    jtfUploadFile(elm, {
+      id: elm.querySelector('.legacy-uploader input[type="file"]').getAttribute('id'),
+      uploadMaxSize: elm.querySelector('.legacy-uploader input[type="hidden"]').getAttribute('value')
+    });
+  });
 });

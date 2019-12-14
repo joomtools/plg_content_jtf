@@ -15,12 +15,16 @@ domIsReady(function () {
 				'L',
 				'D.M.YY',
 				'D-M-YY',
+				'D/M/YY',
 				'D.M.YYYY',
 				'D-M-YYYY',
+				'D/M/YYYY',
 				'DD.MM.YY',
 				'DD-MM-YY',
+				'DD/MM/YY',
 				'DD.MM.YYYY',
-				'DD-MM-YYYY'
+				'DD-MM-YYYY',
+				'DD/MM/YYYY'
 			],
 			isValid = moment(value, dayformat, 'de', true).isValid();
 
