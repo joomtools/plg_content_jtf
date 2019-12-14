@@ -7,12 +7,13 @@
  * @license      GNU General Public License version 3 or later
  **/
 
-((document, domIsReady) => {
-	"use strict";
+domIsReady(() => {
+	let forms = document.querySelectorAll('.jtf.contact-form form');
 
-	domIsReady(() => {
-		let ttf = jtfttf,
-			submit = document.querySelector('.jtf.contact-form [type="submit"]'),
+	Array.prototype.forEach.call(forms, function (form) {
+		let formId = form.getAttribute('id'),
+			submit = document.querySelector('.jtf.contact-form form#' + formId + ' [type="submit"]');
+		let ttf = jtfttf[formId],
 			spanCounter = document.createElement('span'),
 			myTimer = () => {
 				spanCounter.innerHTML = ttf--;
@@ -21,7 +22,7 @@
 			};
 
 		submit.setAttribute('disabled', 'disabled');
-		spanCounter.setAttribute('class', 'jtf-timer ' + jtfBadgeClass);
+		spanCounter.setAttribute('class', 'jtf-timer ' + jtfBadgeClass[formId]);
 		spanCounter.setAttribute('style', 'margin-left: 1em;');
 		submit.appendChild(spanCounter);
 
@@ -31,6 +32,6 @@
 			clearTimeout(timer);
 			submit.removeAttribute('disabled');
 			submit.removeChild(spanCounter);
-		}, (jtfttf + 1) * 1000);
+		}, (jtfttf[formId] + 1) * 1000);
 	});
-})(document, domIsReady);
+});

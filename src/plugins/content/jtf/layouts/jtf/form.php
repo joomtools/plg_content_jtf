@@ -44,11 +44,16 @@ if ($fillouttime > 0)
 	$jtfBadgeClass['bs2'] = 'badge badge-inverse';
 	$jtfBadgeClass['joomla'] = 'badge badge-inverse';
 
-	JFactory::getDocument()->addScriptDeclaration(
-		'const jtfttf=' . $fillouttime . ','
-		. 'jtfBadgeClass="' . $jtfBadgeClass[$frwk] . '";'
-	);
-	JHtml::_('script', 'plugins/content/jtf/assets/js/timeToFill.js', array('version' => 'auto'));
+	JFactory::getDocument()->addScriptDeclaration("
+		if (typeof jtfttf === 'undefined') {
+			var jtfttf = {},
+				jtfBadgeClass = {};
+		}
+		
+		jtfttf['" . $id . "'] = " . $fillouttime . ";
+		jtfBadgeClass['" . $id . "'] = '" . $jtfBadgeClass[$frwk] . "';
+	");
+	JHtml::_('script', 'plugins/content/jtf/assets/js/timeToFill.min.js', array('version' => 'auto'));
 }
 
 JFactory::getDocument()->addStyleDeclaration(
