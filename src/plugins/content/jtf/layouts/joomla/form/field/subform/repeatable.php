@@ -98,9 +98,9 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets'; ?>
 
 			if ($(row).find('.uploader-wrapper') !== undefined) {
 				$(row).find('.uploader-wrapper').each(function() {
-					$(this).jtfUploadFile({
-						id: $(this).find('.legacy-uploader input[type="file"]').attr('id'),
-						uploadMaxSize: $(this).find('.legacy-uploader input[type="hidden"]').attr('value')
+					jtfUploadFile(this, {
+						id: this.querySelector('.legacy-uploader input[type="file"]').getAttribute('id'),
+						uploadMaxSize: this.querySelector('.legacy-uploader input[type="hidden"]').getAttribute('value')
 					});
 				});
 			}
