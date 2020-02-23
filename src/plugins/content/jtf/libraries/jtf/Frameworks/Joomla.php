@@ -98,7 +98,6 @@ class FrameworkJoomla
 		);
 
 		$classes['class']['checkboxes'] = array(
-			'class'    => array('checkboxes'),
 			'options' => array(
 				'labelclass' => array('checkbox'),
 			),
