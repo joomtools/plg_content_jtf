@@ -115,7 +115,6 @@ class Uikit
 
 		$classes['class']['checkboxes'] = array(
 			'gridfield'   => array('uk-form-controls-text'),
-			'class'       => array('checkboxes'),
 			'options' => array(
 				'class' => array('uk-checkbox'),
 			),

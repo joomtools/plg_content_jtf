@@ -104,7 +104,6 @@ class Uikit3
 		);
 
 		$classes['class']['checkboxes'] = array(
-			'class'   => array('checkboxes'),
 			'options' => array(
 				'class' => array('uk-checkbox'),
 			),
