@@ -66,82 +66,6 @@ class Form extends \Joomla\CMS\Form\Form
 	}
 
 	/**
-	 * Method to validate form data.
-	 *
-	 * Validation warnings will be pushed into JForm::errors and should be
-	 * retrieved with JForm::getErrors() when validate returns boolean false.
-	 *
-	 * @param   array   $data   An array of field values to validate.
-	 * @param   string  $group  The optional dot-separated form group path on which to filter the
-	 *                          fields to be validated.
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @since   11.1
-	 */
-	public function validate($data, $group = null)
-	{
-		// Make sure there is a valid JForm XML document.
-		if (!($this->xml instanceof \SimpleXMLElement))
-		{
-			return false;
-		}
-
-		$return = true;
-
-		// Create an input registry object from the data to validate.
-		$input = new Registry($data);
-
-		// Get the fields for which to validate the data.
-		$fields = $this->findFieldsByGroup($group);
-
-		if (!$fields)
-		{
-			// PANIC!
-			return false;
-		}
-
-		// Validate the fields.
-		foreach ($fields as $field)
-		{
-			$value = null;
-			$name = (string) $field['name'];
-
-			if (!$input->exists($name))
-			{
-				continue;
-			}
-
-			// Get the group names as strings for ancestor fields elements.
-			$attrs = $field->xpath('ancestor::fields[@name]/@name');
-			$groups = array_map('strval', $attrs ? $attrs : array());
-			$group = implode('.', $groups);
-
-			// Get the value from the input data.
-			if ($group)
-			{
-				$value = $input->get($group . '.' . $name);
-			}
-			else
-			{
-				$value = $input->get($name);
-			}
-
-			// Validate the field.
-			$valid = $this->validateField($field, $group, $value, $input);
-
-			// Check for an error.
-			if ($valid instanceof \Exception)
-			{
-				$this->errors[] = $valid;
-				$return         = false;
-			}
-		}
-
-		return $return;
-	}
-
-	/**
 	 * Set the value of an attribute of the form itself
 	 *
 	 * @param   string  $name   Name of the attribute to get
@@ -149,7 +73,7 @@ class Form extends \Joomla\CMS\Form\Form
 	 *
 	 * @return  void
 	 *
-	 * @since   3.7
+	 * @since   JTF 3.0.0
 	 */
 	public function setAttribute($name, $value = null)
 	{
@@ -172,18 +96,6 @@ class Form extends \Joomla\CMS\Form\Form
 		}
 
 		$this->syncPaths();
-	}
-
-	/**
-	 * Return all errors, if any.
-	 *
-	 * @return   array  Array of error messages or RuntimeException objects.
-	 *
-	 * @since   11.1
-	 */
-	public function getErrors()
-	{
-		return $this->errors;
 	}
 
 	/**
