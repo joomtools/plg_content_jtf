@@ -317,7 +317,7 @@ class PlgContentJtf extends CMSPlugin
 			{
 				$token          = JSession::checkToken();
 				$submitedValues = $this->app->input->get($formTheme, array(), 'post', 'array');
-				$honeypot       = $submitedValues['jtf_important_notices'];
+				$honeypot       = $submitedValues['jtf_captcha_math'];
 				$startTime      = $this->app->getUserState('plugins.content.jtf.start');
 				$fillOutTime    = $this->debug || JDEBUG || $this->uParams['fillouttime'] == 0
 					? 100000
@@ -1103,7 +1103,7 @@ class PlgContentJtf extends CMSPlugin
 	private function setCaptcha($captcha)
 	{
 		$form   = $this->getForm();
-		$hField = new SimpleXMLElement('<field name="jtf_important_notices" type="text" gridgroup="jtfhp" hiddenLabel="true" notmail="1"></field>');
+		$hField = new SimpleXMLElement('<field name="jtf_captcha_math" label="JTF_CAPTCHA_MATH" hint="12+5" type="text" gridgroup="jtfhp" notmail="1"></field>');
 
 		$form->setField($hField, null, true, 'submit');
 		Factory::getDocument()->addStyleDeclaration('.hidden{display:none;visibility:hidden;}.jtfhp{position:absolute;top:-999em;left:-999em;height:0;width:0;}');
