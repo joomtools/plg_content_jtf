@@ -7,9 +7,9 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>3.0.0-rc41</version>
+        <version>3.0.0-rc42</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/3.0.0-rc41/plg_content_jtf-3.0.0-rc41.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/3.0.0-rc42/plg_content_jtf-3.0.0-rc42.zip</downloadurl>
         </downloads>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="3.[1234567890]"/>
