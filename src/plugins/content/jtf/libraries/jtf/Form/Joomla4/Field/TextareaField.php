@@ -56,6 +56,14 @@ class TextareaField extends FormField
 	protected $maxlength;
 
 	/**
+	 * Does this field support a character counter?
+	 *
+	 * @var    boolean
+	 * @since  __DEPLOY_VERSION__
+	 */
+	protected $charcounter = false;
+
+	/**
 	 * Name of the layout being used to render the field
 	 *
 	 * @var    string
@@ -79,6 +87,7 @@ class TextareaField extends FormField
 			case 'rows':
 			case 'columns':
 			case 'maxlength':
+			case 'charcounter':
 				return $this->$name;
 		}
 
@@ -105,15 +114,19 @@ class TextareaField extends FormField
 				$this->$name = (int) $value;
 				break;
 
+			case 'charcounter':
+				$this->charcounter = strtolower($value) === 'true';
+				break;
+
 			default:
 				parent::__set($name, $value);
 		}
 	}
 
 	/**
-	 * Method to attach a \Form object to the field.
+	 * Method to attach a Form object to the field.
 	 *
-	 * @param   \SimpleXMLElement  $element  The SimpleXMLElement object representing the `<field>` tag for the form field object.
+	 * @param   SimpleXMLElement  $element  The SimpleXMLElement object representing the `<field>` tag for the form field object.
 	 * @param   mixed              $value    The form field value to validate.
 	 * @param   string             $group    The field name group control value. This acts as an array container for the field.
 	 *                                       For example if the field has name="foo" and the group value is set to "bar" then the
@@ -133,6 +146,7 @@ class TextareaField extends FormField
 			$this->rows      = isset($this->element['rows']) ? (int) $this->element['rows'] : false;
 			$this->columns   = isset($this->element['cols']) ? (int) $this->element['cols'] : false;
 			$this->maxlength = isset($this->element['maxlength']) ? (int) $this->element['maxlength'] : false;
+			$this->charcounter = isset($this->element['charcounter']) ? strtolower($this->element['charcounter']) === 'true' : false;
 		}
 
 		return $return;
@@ -171,7 +185,8 @@ class TextareaField extends FormField
 		$extraData = array(
 			'maxlength'    => $maxlength,
 			'rows'         => $rows,
-			'columns'      => $columns
+			'columns'      => $columns,
+			'charcounter'  => $this->charcounter
 		);
 
 		return array_merge($data, $extraData);
