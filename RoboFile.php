@@ -27,7 +27,7 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function __construct()
 	{
-		$this->stopOnFail(true);
+		$this->stopOnFail(false);
 	}
 
 	/**
