@@ -30,8 +30,8 @@ $subFormFields = $subForm->getGroup('');
 
 foreach ($subFormFields as $subFormField)
 {
-	$values       = $i != ''
-		? $value[$fieldName . $i]
+	$values       = ($i !== '')
+		? $value[$i]
 		: $value;
 	$subFormType  = $subFormField->getAttribute('type');
 	$subFormLabel = $subFormField->getAttribute('label');

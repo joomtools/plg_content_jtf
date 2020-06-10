@@ -26,6 +26,7 @@ extract($displayData);
 
 if (!empty($value))
 {
+	$displayData['value'] = array_values($value);
 	?>
 	<table cellpadding="2" border="1">
 		<tbody>
