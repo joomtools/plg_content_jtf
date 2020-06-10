@@ -27,6 +27,8 @@ extract($displayData);
 
 if (!empty($value))
 {
+	$displayData['value'] = array_values($value);
+
 	echo "\n====\n";
 
 	if ($fieldMultiple)
