@@ -955,56 +955,73 @@ class PlgContentJtf extends CMSPlugin
 		foreach (array('mailto', 'cc', 'bcc', 'visitor_name', 'visitor_email') as $name)
 		{
 			$recipients[$name] = null;
+			$recipient         = array();
 
-			if (!empty($this->uParams[$name]))
+			if (empty($this->uParams[$name]) && $name == 'mailto')
 			{
-				$items = explode(';', $this->uParams[$name]);
-				$i     = 0;
-
-				if ($name == 'visitor_email')
+				if (!empty(Factory::getConfig()->get('replyto')))
 				{
-					$items = array($items[0]);
+					$recipients['mailto'][] = Factory::getConfig()->get('replyto');
+				}
+				else
+				{
+					$recipients['mailto'][] = Factory::getConfig()->get('mailfrom');
 				}
 
-				foreach ($items as $item)
-				{
-					$item = str_replace('#', '@', trim($item));
-
-					if (strpos($item, '@') !== false)
-					{
-						$recipient[$item] = $i++;
-					}
-					else
-					{
-						$value = $this->getValue($item);
-						$value = str_replace('#', '@', trim($value));
-
-						$recipient[$value] = $i++;
-					}
-				}
-
-				$recipients[$name] = array_flip($recipient);
-				unset($recipient);
-
-				if (in_array($name, array('visitor_name', 'visitor_email')))
-				{
-					$recipients[$name] = trim(implode(' ', $recipients[$name]));
-				}
-
+				continue;
 			}
-			else
+
+			$items = explode(';', $this->uParams[$name]);
+
+			if ($name == 'visitor_email')
 			{
-				if ($name == 'mailto')
+				$items = array($items[0]);
+			}
+
+			foreach ($items as $item)
+			{
+				$value = null;
+
+				if (strpos($item, '@') !== false)
 				{
-					if (!empty(Factory::getConfig()->get('replyto')))
-					{
-						$recipients['mailto'][] = Factory::getConfig()->get('replyto');
-					}
-					else
-					{
-						$recipients['mailto'][] = Factory::getConfig()->get('mailfrom');
-					}
+					$value = trim($item);
 				}
+
+				if (strpos($item, '#') !== false)
+				{
+					$value = str_replace('#', '@', trim($item));
+				}
+
+				if (!empty($value))
+				{
+					$recipient[] = $value;
+
+					continue;
+				}
+
+				$value = $this->getValue($item);
+
+				if (is_string($value))
+				{
+					$value = (array) $value;
+				}
+
+				$value = array_values(array_filter($value));
+
+				array_walk($value,
+					function (&$email) {
+						$email = str_replace('#', '@', trim($email));
+					}
+				);
+
+				$recipient = array_merge($recipient, $value);
+			}
+
+			$recipients[$name] = is_array($recipient) ? ArrayHelper::arrayUnique($recipient) : $recipient;
+
+			if (in_array($name, array('visitor_name', 'visitor_email')))
+			{
+				$recipients[$name] = trim(implode(' ', $recipients[$name]));
 			}
 		}
 
