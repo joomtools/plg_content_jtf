@@ -1,5 +1,5 @@
 {
-  "name"       : "JoomTools/plg_content_jtf",
+  "name"       : "joomtools/plg_content_jtf",
   "description": "Plugin to create individual forms",
   "license"    : "GPL-3+",
   "require"    : {
