@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -52,7 +52,8 @@ class Uikit
 		$classes['css'] = '.uk-form-icon:not(.uk-form-icon-flip)>select { padding-left: 40px !important; }';
 		$classes['css'] .= '.uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
 		$classes['css'] .= '.uk-form-stacked .uk-form-controls {margin-left: 0 !important;}';
-		$classes['css'] .= '.checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
+		$classes['css'] .= '.uk-checkbox, .uk-radio {margin-left: 6px !important;}';
+		$classes['css'] .= '.uk-radio {margin-top: 4px !important; margin-right: 4px !important;}';
 
 		$classes['class']['form'] = array(
 			'uk-form',
@@ -75,10 +76,14 @@ class Uikit
 				break;
 		}
 
-		$classes['class']['default'][] = 'uk-input';
-		$classes['class']['gridgroup'] = array(
+		$classes['class']['default'][]        = 'uk-input';
+		$classes['class']['gridgroup']        = array(
 			'fix-flexbox',
 			'uk-form-row',
+		);
+		$classes['class']['descriptionclass'] = array(
+			'form-text',
+			'text-muted',
 		);
 
 		if (!$inline)

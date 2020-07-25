@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -24,7 +24,7 @@ extract($displayData);
 
 $subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : ''; ?>
 
-<div class="subform-repeatable-group<?php echo $subformClass; ?> subform-repeatable-group-<?php echo $unique_subform_id; ?>"
+<div class="subform-repeatable-group <?php echo $subformClass; ?> subform-repeatable-group-<?php echo $unique_subform_id; ?>"
 	 data-base-name="<?php echo $basegroup; ?>"
 	 data-group="<?php echo $group; ?>">
 

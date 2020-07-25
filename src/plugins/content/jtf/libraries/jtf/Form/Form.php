@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -22,25 +22,65 @@ use Joomla\CMS\Factory;
  * It uses XML definitions to construct form fields and a variety of field and rule classes to
  * render and validate the form.
  *
- * @since   3.0.0
+ * @since  3.0.0
  */
 class Form extends \Joomla\CMS\Form\Form
 {
 	/**
 	 * Array of layoutPaths.
 	 *
-	 * @var     array
-	 * @since   3.0.0
+	 * @var    array
+	 * @since  3.0.0
 	 */
 	public $layoutPaths = array();
+
 	/**
-	 * Array of Set enctype.
+	 * Array of frameworks.
 	 *
 	 * @var    array
-	 * @since  11.1
+	 * @since  3.0.0
+	 */
+	public $framework = array();
+
+	/**
+	 * Set enctype.
+	 *
+	 * @var    boolean
+	 * @since  3.0.0
 	 */
 	public $setEnctype = false;
 
+	/**
+	 * Set the option to display the required field description.
+	 *
+	 * @var    boolean
+	 * @since  3.0.0
+	 */
+	public $showRequiredFieldDescription = true;
+
+	/**
+	 * Set the value for field description type.
+	 *
+	 * @var    string
+	 * @since  3.0.0
+	 */
+	public $showfielddescriptionas = 'text';
+
+	/**
+	 * Set the value for field marker.
+	 *
+	 * @var    string
+	 * @since  3.0.0
+	 */
+	public $fieldmarker = 'optional';
+
+	/**
+	 * Set the value for field marker place.
+	 *
+	 * @var    string
+	 * @since  3.0.0
+	 */
+	public $fieldmarkerplace = 'field';
 
 	/**
 	 * Method to instantiate the form object.
@@ -66,19 +106,13 @@ class Form extends \Joomla\CMS\Form\Form
 	 * @param   string|boolean  $xpath    An optional xpath to search for the fields.
 	 *
 	 * @return  Form  Form instance.
+	 * @since   3.0.0
 	 *
-	 * @since   1.7.0
-	 * @deprecated  5.0 Use the FormFactory service from the container
 	 * @throws  \InvalidArgumentException if no data provided.
 	 * @throws  \RuntimeException if the form could not be loaded.
 	 */
 	public static function getInstance($name, $data = null, $options = array(), $replace = true, $xpath = false)
 	{
-		if (version_compare(JVERSION, '4', 'lt'))
-		{
-			return parent::getInstance($name, $data, $options, $replace, $xpath);
-		}
-
 		// Reference to array with form instances
 		$forms = &self::$forms;
 
@@ -93,7 +127,7 @@ class Form extends \Joomla\CMS\Form\Form
 			}
 
 			// Instantiate the form.
-			$forms[$name] = Factory::getContainer()->get(FormFactoryInterface::class)->createForm($name, $options);
+			$forms[$name] = new self($name, $options);
 
 			// Load the data.
 			if (substr($data, 0, 1) == '<')
@@ -121,8 +155,8 @@ class Form extends \Joomla\CMS\Form\Form
 	 * @param   string  $name   Name of the attribute to get
 	 * @param   string  $value  Value to set for the attribute
 	 *
-	 * @return   void
-	 * @since    3.0.0
+	 * @return  void
+	 * @since   3.0.0
 	 */
 	public function setAttribute($name, $value = null)
 	{
@@ -150,8 +184,8 @@ class Form extends \Joomla\CMS\Form\Form
 	/**
 	 * Reset submitted Values
 	 *
-	 * @return   void
-	 * @since    3.0.0
+	 * @return  void
+	 * @since   3.0.0
 	 */
 	public function resetData()
 	{

@@ -40,4 +40,15 @@
 		<option value="JTF_OPTION3">JTF_OPTION3</option>
 	</field>
 
+	<field name="subform_file"
+	       type="file"
+	       description="JTF_FILE_DESC"
+	       label="JTF_FILE_LABEL"
+	       control="simple"
+	       validate="file"
+	       accept=".zip,.pdf,image/*"
+	       multiple="multiple"
+	       uploadmaxsize="1"
+	/>
+
 </form>

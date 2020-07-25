@@ -4,11 +4,13 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('JPATH_BASE') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
 
 extract($displayData);
 
@@ -41,10 +43,7 @@ extract($displayData);
  * @var   array   $options      Options available for this field.
  */
 
-// Including fallback code for HTML5 non supported browsers.
-JHtml::_('jquery.framework');
-JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
-JHtml::_('behavior.combobox');
+HTMLHelper::_('behavior.combobox');
 
 $attr = !empty($class) ? ' class="combobox ' . $class . '"' : ' class="combobox"';
 $attr .= !empty($size) ? ' size="' . $size . '"' : '';

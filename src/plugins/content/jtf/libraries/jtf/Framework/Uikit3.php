@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -74,9 +74,13 @@ class Uikit3
 				break;
 		}
 
-		$classes['class']['legend'][]    = 'uk-legend';
-		$classes['class']['default'][]   = 'uk-input';
-		$classes['class']['gridgroup'][] = 'uk-form-row uk-margin';
+		$classes['class']['legend'][]         = 'uk-legend';
+		$classes['class']['default'][]        = 'uk-input';
+		$classes['class']['gridgroup'][]      = 'uk-form-row uk-margin';
+		$classes['class']['descriptionclass'] = array(
+			'form-text',
+			'text-muted',
+		);
 
 		if (!$inline)
 		{

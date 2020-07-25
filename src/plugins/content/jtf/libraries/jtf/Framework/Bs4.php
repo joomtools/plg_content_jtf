@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
  **/
 class Bs4
 {
-	public static $name = 'Bootstrap v4';
+	public static $name = 'Bootstrap v4 (Joomla 4 core)';
 
 	private $classes;
 
@@ -70,10 +70,14 @@ class Bs4
 				break;
 		}
 
-		$classes['class']['default'][]   = 'form-control';
-		$classes['class']['gridgroup'][] = 'form-group';
-		$classes['class']['gridlabel'][] = 'col-form-label';
-		$classes['class']['gridfield'][] = '';
+		$classes['class']['default'][]        = 'form-control';
+		$classes['class']['gridgroup'][]      = 'form-group';
+		$classes['class']['gridlabel'][]      = 'col-form-label';
+		$classes['class']['gridfield'][]      = '';
+		$classes['class']['descriptionclass'] = array(
+			'form-text',
+			'text-muted',
+		);
 
 		$classes['class']['note'] = array(
 			'buttonclass' => array('close'),
@@ -126,7 +130,10 @@ class Bs4
 		);
 
 		$classes['class']['submit'] = array(
-			'buttonclass' => array('btn'),
+			'buttonclass' => array(
+				'btn',
+				'btn-primary',
+			),
 		);
 
 		if ($inline)

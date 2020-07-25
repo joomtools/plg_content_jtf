@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -49,7 +49,12 @@ class Bs3
 	{
 		$inline         = false;
 		$classes        = array();
-		$classes['css'] = '.form-stacked .control-label {text-align: left;}';
+		$classes['css'] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label {text-align: left;}';
+		$classes['css'] .= '.jtf fieldset.radio {padding-top: 0;}';
+		$classes['css'] .= '.jtf .radio label.radio {display: block;}';
+		$classes['css'] .= '.jtf .radio label.radio-inline {display: inline-block;}';
+		$classes['css'] .= '.jtf .checkboxes label.checkbox {display: block;}';
+		$classes['css'] .= '.jtf .checkboxes label.checkbox-inline {display: inline-block;}';
 
 		$classes['class']['form'][] = 'form-validate';
 
@@ -71,9 +76,13 @@ class Bs3
 				break;
 		}
 
-		$classes['class']['default'][]   = 'form-control';
-		$classes['class']['gridgroup'][] = 'form-group';
-		$classes['class']['gridlabel'][] = 'control-label';
+		$classes['class']['default'][]        = 'form-control';
+		$classes['class']['gridgroup'][]      = 'form-group';
+		$classes['class']['gridlabel'][]      = 'control-label';
+		$classes['class']['descriptionclass'] = array(
+			'form-text',
+			'text-muted',
+		);
 
 		$classes['class']['note'] = array(
 			'buttonclass' => array('close'),
@@ -118,13 +127,16 @@ class Bs3
 		);
 
 		$classes['class']['submit'] = array(
-			'buttonclass' => array('btn'),
+			'buttonclass' => array(
+				'btn',
+				'btn-primary',
+			),
 		);
 
 		if ($inline)
 		{
-			$classes['class']['checkboxes']['class'][] = 'checkbox-inline';
-			$classes['class']['radio']['class'][]      = 'radio-inline';
+			$classes['class']['checkboxes']['class'] = array('checkbox-inline');
+			$classes['class']['radio']['class']      = array('radio-inline');
 		}
 
 		$this->classes = $classes;

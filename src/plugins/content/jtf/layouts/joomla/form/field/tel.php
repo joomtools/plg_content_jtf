@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -46,10 +46,6 @@ extract($displayData);
  * @var   integer  $maxLength       The maximum length that the field shall accept.
  */
 
-// Including fallback code for HTML5 non supported browsers.
-JHtml::_('jquery.framework');
-JHtml::_('script', 'system/html5fallback.js', false, true);
-
 $autocomplete = !$autocomplete ? ' autocomplete="off"' : ' autocomplete="' . $autocomplete . '"';
 $autocomplete = $autocomplete == ' autocomplete="on"' ? '' : $autocomplete;
 
@@ -63,11 +59,12 @@ $attributes = array(
 	$spellcheck ? '' : 'spellcheck="false"',
 	$onchange ? ' onchange="' . $onchange . '"' : '',
 	!empty($maxLength) ? $maxLength : '',
+	!empty($pattern) ? ' pattern="' . $pattern . '"' : ' pattern="[0-9\-\(\)\/\+\s]*"',
 	$required ? 'required aria-required="true"' : '',
 );
 ?>
 <input type="tel" name="<?php
 echo $name; ?>" <?php
-echo !empty($class) ? ' class="' . $class . '"' : ' class="' . $class . '"'; ?> id="<?php
+echo !empty($class) ? ' class="validate-tel ' . $class . '"' : ' class="validate-tel"'; ?> id="<?php
 echo $id; ?>" value="<?php
 echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>" <?php echo implode(' ', $attributes); ?> />

@@ -4,13 +4,14 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('JPATH_BASE') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 extract($displayData);
 
@@ -39,13 +40,12 @@ extract($displayData);
  * @var   boolean  $hasValue        Has this field a value assigned?
  */
 
-// Including fallback code for HTML5 non supported browsers.
-HtmlHelper::_('jquery.framework');
-HtmlHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
-HtmlHelper::_('script', 'plugins/content/jtf/assets/js/plz.js', array('version' => 'auto'));
+HtmlHelper::_('script', 'plugins/content/jtf/assets/js/jtfPlz.min.js', array('version' => 'auto'));
 
 $autocomplete = !$autocomplete ? 'autocomplete="off"' : 'autocomplete="' . $autocomplete . '"';
 $autocomplete = $autocomplete === 'autocomplete="on"' ? '' : $autocomplete;
+
+$hint = Text::_($hint);
 
 $attributes = array(
 	!empty($class) ? 'class="validate-plz ' . $class . '"' : 'class="validate-plz"',

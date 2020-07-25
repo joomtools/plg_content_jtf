@@ -9,7 +9,7 @@
 	>
 		<field name="list"
 		       type="list"
-		       icon="fa fa-list"
+		       icon="icon-list"
 		       description="JTF_LIST_DESC"
 		       label="JTF_LIST_LABEL"
 		       default=""
@@ -94,7 +94,7 @@
 
 		<field name="showon_text"
 		       type="text"
-		       icon="fa fa-pencil-alt"
+		       icon="icon-pencil-alt"
 		       maxlength="60"
 		       description="JTF_SHW_TXT_DESC"
 		       label="JTF_SHW_TXT_LABEL"

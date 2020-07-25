@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -12,7 +12,6 @@ namespace Jtf\Form\Rule;
 
 defined('JPATH_PLATFORM') or die;
 
-//use Jtf\Form\Form;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormRule;
@@ -21,7 +20,7 @@ use Joomla\Registry\Registry;
 /**
  * Form Rule class for the Joomla Platform.
  *
- * @since  11.1
+ * @since   3.0.0
  */
 class FileRule extends FormRule
 {
@@ -36,9 +35,8 @@ class FileRule extends FormRule
 	 * @param   Registry           $input    An optional Registry object with the entire data set to validate against the entire form.
 	 * @param   Form               $form     The form object for which the field is being tested.
 	 *
-	 * @return  boolean  True if the value is valid, false otherwise.
-	 *
-	 * @since   11.1
+	 * @return   boolean  True if the value is valid, false otherwise.
+	 * @since    3.0.0
 	 */
 	public function test(\SimpleXMLElement $element, $value, $group = null, Registry $input = null, Form $form = null)
 	{
@@ -78,21 +76,21 @@ class FileRule extends FormRule
 			}
 		}
 
-		$allowedType = implode('|', $acceptFileType);
-		$allowedMime = implode('|', $acceptFileMime);
+		$regexAllowedType = '/\.(?:' . implode('|', $acceptFileType) . ')$/i';
+		$regexAllowedMime = '@^(' . implode('|', $acceptFileMime) . ')$@i';
 
 		foreach ($value as $key => $file)
 		{
 			$test = false;
 
-			if ($allowedMime)
+			if ($regexAllowedMime)
 			{
-				$test = preg_match('@^(' . $allowedMime . ')$@i', $file->type);
+				$test = preg_match($regexAllowedMime, $file->type);
 			}
 
-			if (!$test && $allowedType)
+			if (!$test && $regexAllowedType)
 			{
-				$test = preg_match('/\.(?:' . $allowedType . ')$/i', $file->name);
+				$test = preg_match($regexAllowedType, $file->name);
 			}
 
 			if (!$test)
@@ -108,7 +106,7 @@ class FileRule extends FormRule
 			$message = Text::_($element['label']);
 			$message = Text::sprintf('JTF_FILE_FIELD_ERROR', $message);
 
-			return new \UnexpectedValueException($message);
+			throw new \UnexpectedValueException($message);
 
 		}
 

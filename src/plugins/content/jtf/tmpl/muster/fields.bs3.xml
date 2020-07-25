@@ -15,9 +15,15 @@
 		       default=""
 		       validate="options"
 		       required="true"
+		       descriptionclass="testDescClass"
 		>
 			<option value="">JTF_OPTION_NONE</option>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
+			<option value="&lt;OPTGROUP&gt;">Group1</option>
+			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
+			<option value="&lt;OPTGROUP&gt;">Group2</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
 
@@ -26,6 +32,7 @@
 		       description="JTF_CHK_DESC"
 		       label="JTF_CHK_LABEL"
 		       validate="options"
+		       hiddenlabel="true"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>

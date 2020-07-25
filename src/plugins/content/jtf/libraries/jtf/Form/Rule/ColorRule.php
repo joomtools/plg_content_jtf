@@ -1,16 +1,17 @@
 <?php
 /**
- * Joomla! Content Management System
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
  *
- * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
  */
 
 namespace Jtf\Form\Rule;
 
 defined('JPATH_PLATFORM') or die;
 
-//use Jtf\Form\Form;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormRule;
 use Joomla\Registry\Registry;

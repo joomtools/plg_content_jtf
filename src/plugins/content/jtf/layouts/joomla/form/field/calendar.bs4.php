@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -12,6 +12,7 @@ defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 
 extract($displayData);
@@ -48,8 +49,9 @@ extract($displayData);
  * @var   integer  $maxLength       The maximum length that the field shall accept.
  *
  * Calendar Specific
- * @var   string   $buttonclass     The class for the icon button
- * @var   string   $buttonicon      The iconclass for the shown icon
+ * @var   string   $format          The date format
+ * @var   string   $buttonClass     The class for the icon button
+ * @var   string   $buttonIcon      The iconclass for the shown icon
  * @var   string   $localesPath     The relative path for the locale file
  * @var   string   $helperPath      The relative path for the helper file
  * @var   string   $minYear         The minimum year, that will be subtracted/added to current year
@@ -87,9 +89,9 @@ if (strtoupper($value) == 'NOW')
 	$value = Factory::getDate()->format('Y-m-d H:i:s');
 }
 
-if (!empty($buttonclass))
+if (!empty($buttonClass))
 {
-	$buttonclass = ' ' . $buttonclass;
+	$buttonClass = ' ' . $buttonClass;
 }
 
 $readonly = isset($attributes['readonly']) && $attributes['readonly'] == 'readonly';
@@ -121,7 +123,7 @@ if (!$readonly || !$disabled)
 				<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>
 			</div>
 			<div class="input-group-append">
-				<span class="input-group-text <?php echo $buttonicon; ?>"></span>
+				<span class="input-group-text <?php echo $buttonIcon; ?>"></span>
 			</div>
 		</div>
 		<input type="hidden"
@@ -145,7 +147,7 @@ if (!$readonly || !$disabled)
 			/>
 			<div class="input-group-append">
 				<button type="button"
-						class="input-group-text<?php echo $buttonclass; ?>"
+						class="input-group-text<?php echo $buttonClass; ?>"
 						id="<?php echo $id; ?>_btn"
 						data-inputfield="<?php echo $id; ?>"
 						data-dayformat="<?php echo $format; ?>"
@@ -160,8 +162,9 @@ if (!$readonly || !$disabled)
 						data-only-months-nav="<?php echo $singleheader; ?>"
 					<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
 					<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
+						title="<?php echo Text::_('JLIB_HTML_BEHAVIOR_OPEN_CALENDAR'); ?>"
 				>
-					<span class="<?php echo $buttonicon; ?>"></span>
+					<span class="<?php echo $buttonIcon; ?>"></span>
 				</button>
 			</div>
 		</div>

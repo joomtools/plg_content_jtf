@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form orientation="horizontal"
-      gridlabel="span4"
-      gridfield="span7"
+      gridlabel="span3"
+      gridfield="span9"
 >
 	<fieldset name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
@@ -15,9 +15,15 @@
 		       default=""
 		       validate="options"
 		       required="true"
+		       descriptionclass="testDescClass"
 		>
 			<option value="">JTF_OPTION_NONE</option>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
+			<option value="&lt;OPTGROUP&gt;">Group1</option>
+			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
+			<option value="&lt;OPTGROUP&gt;">Group2</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
 
@@ -26,6 +32,8 @@
 		       description="JTF_CHK_DESC"
 		       label="JTF_CHK_LABEL"
 		       validate="options"
+		       hiddenlabel="true"
+		       required="true"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -38,6 +46,7 @@
 		       label="JTF_CHK_INLINE_LABEL"
 		       validate="options"
 		       optionlabelclass="inline"
+		       optionclass="optionClass"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -48,8 +57,9 @@
 		       type="radio"
 		       description="JTF_RADIO_DESC"
 		       label="JTF_RADIO_LABEL"
-		       default="JTF_OPTION1"
+		       default=""
 		       validate="options"
+		       required="true"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -96,6 +106,8 @@
 		       description="JTF_TXT_DESC"
 		       label="JTF_TXT_LABEL"
 		       required="true"
+		       hiddenlabel="true"
+		       hint="Platzhaltertext"
 		/>
 
 		<field name="email"
@@ -106,6 +118,7 @@
 		       label="JTF_EMAIL_LABEL"
 		       validate="email"
 		       required="true"
+		       hiddenlabel="true"
 		/>
 
 		<field name="tel"
@@ -179,7 +192,6 @@
 		       label="JTF_SUBFORM_LABEL"
 		       required="true"
 		       showon="subform_showon:JYES"
-		       layout="joomla.form.field.subform.repeatable"
 		       buttons="add,remove"
 		       min="1"
 		/>

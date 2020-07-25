@@ -15,36 +15,74 @@
 	<scriptfile>script.php</scriptfile>
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="/plugins/content/jtf/libraries/joomla/form/fields">
-
-				<field name="component_exclusions"
-				       type="textarea"
-				       rows="10"
-				       default="com_finder&#10;"
-				       label="JTF_XML_EXCLUDE_OPTION_LABEL"
-				       description="JTF_XML_EXCLUDE_OPTION_DESC"
-				/>
-
+			<fieldset name="basic">
 				<field name="captcha"
-				       type="list"
-				       class="chzn-color-state"
-				       default="custom"
+				       type="radio"
+				       layout="joomla.form.field.radio.switcher"
+				       class="btn-group btn-group-yesno"
+				       default="1"
 				       label="JTF_XML_CAPTCHA_LABEL"
 				       description="JTF_XML_CAPTCHA_DESC"
 				>
-					<option value="0">JOPTION_DO_NOT_USE</option>
-					<option value="joomla">JTF_XML_CAPTCHA_VALUE_JOOMLA</option>
+					<option value="0">JOFF</option>
+					<option value="1">JON</option>
+				</field>
+
+				<field name="show_field_description_as"
+				       type="list"
+				       default="tooltip"
+				       label="JTF_XML_FIELD_SHOW_DESCRIPTION_AS_LABEL"
+				       description="JTF_XML_FIELD_SHOW_DESCRIPTION_AS_DESC"
+				>
+					<option value="0">JOFF</option>
+					<option value="tooltip">JTF_XML_FIELD_SHOW_DESCRIPTION_AS_VALUE_TOOLTIP</option>
+					<option value="text">JTF_XML_FIELD_SHOW_DESCRIPTION_AS_VALUE_TEXT</option>
+				</field>
+
+				<field name="field_marker"
+				       type="list"
+				       default="required"
+				       label="JTF_XML_FIELD_MARKER_LABEL"
+				       description="JTF_XML_FIELD_MARKER_DESC"
+				>
+					<option value="required">JTF_XML_FIELD_MARKER_VALUE_REQUIRED</option>
+					<option value="optional">JTF_XML_FIELD_MARKER_VALUE_OPTIONAL</option>
+				</field>
+
+				<field name="field_marker_place"
+				       type="radio"
+				       default="label"
+				       label="JTF_XML_FIELD_MARKER_PLACE_LABEL"
+				       description="JTF_XML_FIELD_MARKER_PLACE_DESC"
+				>
+					<option value="label">JTF_XML_FIELD_MARKER_PLACE_VALUE_LABEL</option>
+					<option value="hint">JTF_XML_FIELD_MARKER_PLACE_VALUE_HINT</option>
+					<option value="field">JTF_XML_FIELD_MARKER_PLACE_VALUE_FIELD</option>
+				</field>
+
+				<field name="show_required_field_description"
+				       type="radio"
+				       layout="joomla.form.field.radio.switcher"
+				       class="btn-group btn-group-yesno"
+				       default="1"
+				       label="JTF_XML_SHOW_REQUIRED_FIELD_DESCRIPTION_LABEL"
+				       description="JTF_XML_SHOW_REQUIRED_FIELD_DESCRIPTION_LA_DESC"
+				       showon="field_marker:required[AND]field_marker_place:label"
+				>
+					<option value="0">JOFF</option>
+					<option value="1">JON</option>
 				</field>
 
 				<field name="filloutTime_onoff"
 				       type="radio"
-				       class="switcher"
+				       layout="joomla.form.field.radio.switcher"
+				       class="btn-group btn-group-yesno"
 				       default="1"
 				       label="JTF_XML_FILLOUT_ONOFF_LABEL"
 				       description="JTF_XML_FILLOUT_ONOFF_DESC"
 				>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
+					<option value="0">JOFF</option>
+					<option value="1">JON</option>
 				</field>
 
 				<field name="filloutTime"
@@ -73,14 +111,14 @@
 
 				<field name="framework"
 				       type="frwk"
-				       default="joomla"
 				       label="JTF_XML_FRAMEWORK_LABEL"
 				       description="JTF_XML_FRAMEWORK_DESC"
 				/>
 
 				<field name="debug"
 				       type="radio"
-				       class="switcher"
+				       layout="joomla.form.field.radio.switcher"
+				       class="btn-group btn-group-yesno"
 				       default="0"
 				       label="JTF_XML_DEBUG_LABEL"
 				       description="JTF_XML_DEBUG_DESC"
@@ -88,7 +126,6 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
 			</fieldset>
 		</fields>
 	</config>

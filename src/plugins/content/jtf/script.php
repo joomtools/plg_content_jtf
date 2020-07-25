@@ -3,9 +3,9 @@
  * @package      Joomla.Plugin
  * @subpackage   Content.Jtf
  *
- * @author      Guido De Gobbis <support@joomtools.de>
- * @copyright   2019 JoomTools.de - All rights reserved.
- * @license     GNU General Public License version 3 or later
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
@@ -30,6 +30,7 @@ class PlgContentJtfInstallerScript
 	 * @since   3.0.0
 	 */
 	public $minimumJoomla = '3.9';
+
 	/**
 	 * Minimum PHP version to install
 	 *
@@ -74,10 +75,10 @@ class PlgContentJtfInstallerScript
 
 		if ($action === 'update')
 		{
-			$deletes = [];
+			$deletes = array();
 
 			$deletes['folder'] = array(
-				// before 3.0.0-rc31
+				// Before 3.0.0-rc31
 				$pluginPath . '/assets/fields',
 				$pluginPath . '/assets/frameworks',
 				$pluginPath . '/assets/j3.7.x',
@@ -88,7 +89,7 @@ class PlgContentJtfInstallerScript
 			);
 
 			$deletes['file'] = array(
-				// before 3.0.0-rc31
+				// Before 3.0.0-rc31
 				$pluginPath . '/assets/file.php',
 				$pluginPath . '/layouts/joomla/form/renderfield.bs3.php',
 				$pluginPath . '/layouts/joomla/form/renderfield.uikit.php',
@@ -139,6 +140,7 @@ class PlgContentJtfInstallerScript
 					}
 				}
 			}
+
 			if ($type == 'file')
 			{
 				if (is_file($item))

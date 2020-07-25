@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Language\Text;
+
+extract($displayData);
 
 $layout = new FileLayout('joomla.form.field.subform.repeatable_tmpl');
 $layout->setSuffixes($displayData['tmpl']->framework);

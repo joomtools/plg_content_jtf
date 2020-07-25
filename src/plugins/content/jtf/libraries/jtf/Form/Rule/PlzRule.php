@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -12,7 +12,6 @@ namespace Jtf\Form\Rule;
 
 defined('JPATH_PLATFORM') or die;
 
-//use Jtf\Form\Form;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormRule;
 use Joomla\Registry\Registry;
@@ -20,15 +19,15 @@ use Joomla\Registry\Registry;
 /**
  * Form Rule class for the Joomla Platform.
  *
- * @since  11.1
+ * @since   3.0.0
  */
 class PlzRule extends FormRule
 {
 	/**
 	 * The regular expression to use in testing a form field value.
 	 *
-	 * @var    string
-	 * @since  11.1
+	 * @var     string
+	 * @since   3.0.0
 	 */
 	protected $regex = '^\d{5}$';
 
@@ -43,9 +42,8 @@ class PlzRule extends FormRule
 	 * @param   Registry           $input    An optional Registry object with the entire data set to validate against the entire form.
 	 * @param   Form               $form     The form object for which the field is being tested.
 	 *
-	 * @return  boolean  True if the value is valid, false otherwise.
-	 *
-	 * @since   11.1
+	 * @return   boolean  True if the value is valid, false otherwise.
+	 * @since    3.0.0
 	 */
 	public function test(\SimpleXMLElement $element, $value, $group = null, Registry $input = null, Form $form = null)
 	{
@@ -58,11 +56,6 @@ class PlzRule extends FormRule
 		}
 
 		// Test the value against the regular expression.
-		if (!parent::test($element, $value, $group, $input, $form))
-		{
-			return false;
-		}
-
-		return true;
+		return parent::test($element, $value, $group, $input, $form);
 	}
 }

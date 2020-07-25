@@ -43,7 +43,7 @@
 	       description="JTF_CHK_INLINE_DESC"
 	       label="JTF_CHK_INLINE_LABEL"
 	       validate="options"
-	       optionlabelclass="inline"
+	       optionlabelclass="checkbox-inline"
 	       required="true"
 	>
 		<option value="JTF_OPTION1">JTF_OPTION1</option>

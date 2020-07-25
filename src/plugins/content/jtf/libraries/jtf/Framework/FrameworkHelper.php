@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -33,12 +33,14 @@ class FrameworkHelper
 		'gridfield',
 		'class',
 		'labelClass',
+		'hiddenlabel',
 		'buttonclass',
 		'icon',
 		'buttonicon',
 		'uploadicon',
 		'optionclass',
 		'optionlabelclass',
+		'descriptionclass',
 	);
 	private $frwkClasses = null;
 	private $hiddenLabel = array(
@@ -53,10 +55,6 @@ class FrameworkHelper
 		$self       = new static;
 		$self->form = $form;
 
-//		$test = array('test teste  doppel', 'weiter', 'nocheins    test teste');
-//		$test = $self->getClassArray($test);
-
-		$self->setGloblAssets();
 		$self->getFrameworkClass();
 		$self->getFormAttributes();
 		$self->getFieldsetAttributes();
@@ -74,7 +72,12 @@ class FrameworkHelper
 			$orientation = $form->getAttribute('orientation', '');
 		}
 
-		$framework = 'joomla';
+		$framework = 'bs2';
+
+		if (version_compare(JVERSION, '4', 'ge'))
+		{
+			$framework = 'bs4';
+		}
 
 		if (!empty($form->framework[0]))
 		{
@@ -178,6 +181,10 @@ class FrameworkHelper
 			? filter_var($form->getAttribute('hiddenLabel'), FILTER_VALIDATE_BOOLEAN)
 			: null;
 
+		$this->hiddenLabel['form'] = empty($this->hiddenLabel['form']) && !empty($form->getAttribute('hiddenlabel'))
+			? filter_var($form->getAttribute('hiddenlabel'), FILTER_VALIDATE_BOOLEAN)
+			: null;
+
 		if (!empty($formClasses))
 		{
 			$form->setAttribute('class', implode(' ', $formClasses));
@@ -202,23 +209,27 @@ class FrameworkHelper
 					? filter_var((string) $fieldset['hiddenLabel'], FILTER_VALIDATE_BOOLEAN)
 					: null;
 
+				$this->hiddenLabel['fieldset'] = empty($this->hiddenLabel['fieldset']) && !empty((string) $fieldset['hiddenlabel'])
+					? filter_var((string) $fieldset['hiddenlabel'], FILTER_VALIDATE_BOOLEAN)
+					: null;
+
 				$fieldsetClasses['class'] = null;
-				$fieldsetClasses['labelClass'] = null;
-				$fieldsetClasses['descClass'] = null;
+				$fieldsetClasses['labelclass'] = null;
+				$fieldsetClasses['descriptionclass'] = null;
 
 				if (!empty($this->frwkClasses['fieldset']['class']))
 				{
 					$fieldsetClasses['class'] = $this->getClassArray($this->frwkClasses['fieldset']['class']);
 				}
 
-				if (!empty($this->frwkClasses['fieldset']['labelClass']))
+				if (!empty($this->frwkClasses['fieldset']['labelclass']))
 				{
-					$fieldsetClasses['labelClass'] = $this->getClassArray($this->frwkClasses['fieldset']['labelClass']);
+					$fieldsetClasses['labelclass'] = $this->getClassArray($this->frwkClasses['fieldset']['labelclass']);
 				}
 
-				if (!empty($this->frwkClasses['fieldset']['descClass']))
+				if (!empty($this->frwkClasses['fieldset']['descriptionclass']))
 				{
-					$fieldsetClasses['descClass'] = $this->getClassArray($this->frwkClasses['fieldset']['descClass']);
+					$fieldsetClasses['descriptionclass'] = $this->getClassArray($this->frwkClasses['fieldset']['descriptionclass']);
 				}
 
 				if (!empty((string) $fieldset['class']))
@@ -231,21 +242,41 @@ class FrameworkHelper
 					);
 				}
 
+				if (!empty((string) $fieldset['labelclass']))
+				{
+					$fieldsetClasses['labelclass'] = ArrayHelper::arrayUnique(
+						array_merge(
+							$this->getClassArray($fieldsetClasses['labelclass']),
+							$this->getClassArray((string) $fieldset['labelclass'])
+						)
+					);
+				}
+
 				if (!empty((string) $fieldset['labelClass']))
 				{
-					$fieldsetClasses['labelClass'] = ArrayHelper::arrayUnique(
+					$fieldsetClasses['labelclass'] = ArrayHelper::arrayUnique(
 						array_merge(
-							$this->getClassArray($fieldsetClasses['labelClass']),
+							$this->getClassArray($fieldsetClasses['labelclass']),
 							$this->getClassArray((string) $fieldset['labelClass'])
+						)
+					);
+				}
+
+				if (!empty((string) $fieldset['descriptionclass']))
+				{
+					$fieldsetClasses['descriptionclass'] = ArrayHelper::arrayUnique(
+						array_merge(
+							$this->getClassArray($fieldsetClasses['descriptionclass']),
+							$this->getClassArray((string) $fieldset['descriptionclass'])
 						)
 					);
 				}
 
 				if (!empty((string) $fieldset['descClass']))
 				{
-					$fieldsetClasses['descClass'] = ArrayHelper::arrayUnique(
+					$fieldsetClasses['descriptionclass'] = ArrayHelper::arrayUnique(
 						array_merge(
-							$this->getClassArray($fieldsetClasses['descClass']),
+							$this->getClassArray($fieldsetClasses['descriptionclass']),
 							$this->getClassArray((string) $fieldset['descClass'])
 						)
 					);
@@ -337,13 +368,17 @@ class FrameworkHelper
 			? filter_var($field->getAttribute('hiddenLabel'), FILTER_VALIDATE_BOOLEAN)
 			: null;
 
+		$this->hiddenLabel['field'] = empty($this->hiddenLabel['field']) && !empty($field->getAttribute('hiddenlabel'))
+			? filter_var($field->getAttribute('hiddenlabel'), FILTER_VALIDATE_BOOLEAN)
+			: null;
+
 		switch (true)
 		{
-			case $this->hiddenLabel['field']:
+			case ($this->hiddenLabel['field']):
 				$fieldHiddenLabel = true;
 				break;
 
-			case $this->hiddenLabel['field'] === false:
+			case ($this->hiddenLabel['field'] === false):
 				$fieldHiddenLabel = false;
 				break;
 
@@ -365,21 +400,21 @@ class FrameworkHelper
 
 		if ($fieldHiddenLabel || in_array($type, $this->hiddenLabelTypes))
 		{
-			$form->setFieldAttribute($fieldname, 'hiddenLabel', true);
+			$form->setFieldAttribute($fieldname, 'hiddenlabel', true);
 		}
 
 		if (in_array($type, $frwkClassesDefaultFields))
 		{
 			if (!empty($frwkClasses['default']))
 			{
-				$classes['frwk']['class'] = ArrayHelper::arrayUnique(
-					array_merge(
-						$this->getClassArray($this->frwkClasses['default']),
-						!empty($classes['frwk']['class'])
-							? $this->getClassArray($classes['frwk']['class'])
-							: array()
-					)
+				$classes['frwk']['class'] = array_merge(
+					$this->getClassArray($this->frwkClasses['default']),
+					!empty($classes['frwk']['class'])
+						? $this->getClassArray($classes['frwk']['class'])
+						: array()
 				);
+
+				$classes['frwk']['class'] = ArrayHelper::arrayUnique($classes['frwk']['class']);
 
 				unset($frwkClasses['default']);
 			}
@@ -408,27 +443,26 @@ class FrameworkHelper
 
 		if (in_array($type, $frwkClassesOptionsFields))
 		{
-			$optionClass = ArrayHelper::arrayUnique(
-				array_merge(
-					!empty($classes['frwk']['options']['class'])
-						? $this->getClassArray($classes['frwk']['options']['class'])
-						: array(),
-					!empty($classes['field']['optionclass'])
-						? $classes['field']['optionclass']
-						: array()
-				)
+			$optionClass = array_merge(
+				!empty($classes['frwk']['options']['class'])
+					? $this->getClassArray($classes['frwk']['options']['class'])
+					: array(),
+				!empty($classes['field']['optionclass'])
+					? $classes['field']['optionclass']
+					: array()
 			);
 
-			$optionLabelClass = ArrayHelper::arrayUnique(
-				array_merge(
-					!empty($classes['frwk']['options']['labelclass'])
-						? $this->getClassArray($classes['frwk']['options']['labelclass'])
-						: array(),
-					!empty($classes['field']['optionlabelclass'])
-						? $classes['field']['optionlabelclass']
-						: array()
-				)
+			$optionLabelClass = array_merge(
+				!empty($classes['frwk']['options']['labelclass'])
+					? $this->getClassArray($classes['frwk']['options']['labelclass'])
+					: array(),
+				!empty($classes['field']['optionlabelclass'])
+					? $classes['field']['optionlabelclass']
+					: array()
 			);
+
+			$optionClass      = ArrayHelper::arrayUnique($optionClass);
+			$optionLabelClass = ArrayHelper::arrayUnique($optionLabelClass);
 
 			$form->setFieldAttribute($fieldname, 'optionclass', implode(' ', $optionClass));
 			$form->setFieldAttribute($fieldname, 'optionlabelclass', implode(' ', $optionLabelClass));
@@ -479,16 +513,16 @@ class FrameworkHelper
 
 			if (!empty($classes['field']['buttonclass']))
 			{
-				$buttonclass = ArrayHelper::arrayUnique(
-					array_merge(
-						!empty($buttonclass)
-							? $buttonclass
-							: array(),
-						!empty($classes['field']['buttonclass'])
-							? $this->getClassArray($classes['field']['buttonclass'])
-							: array()
-					)
+				$buttonclass = array_merge(
+					!empty($buttonclass)
+						? $buttonclass
+						: array(),
+					!empty($classes['field']['buttonclass'])
+						? $this->getClassArray($classes['field']['buttonclass'])
+						: array()
 				);
+
+				$buttonclass = ArrayHelper::arrayUnique($buttonclass);
 			}
 
 			if ($type == 'file')
@@ -528,20 +562,18 @@ class FrameworkHelper
 			);
 
 			$form->setFieldAttribute($fieldname, 'icon', null);
-//			$form->setFieldAttribute($fieldname, 'buttonicon', null);
-//			$form->setFieldAttribute($fieldname, 'buttonclass', null);
 		}
 
-		$fieldClass = ArrayHelper::arrayUnique(
-			array_merge(
-				!empty($classes['frwk']['class'])
-					? $this->getClassArray($classes['frwk']['class'])
-					: array(),
-				!empty($classes['field']['class'])
-					? $this->getClassArray($classes['field']['class'])
-					: array()
-			)
+		$fieldClass = array_merge(
+			!empty($classes['frwk']['class'])
+				? $this->getClassArray($classes['frwk']['class'])
+				: array(),
+			!empty($classes['field']['class'])
+				? $this->getClassArray($classes['field']['class'])
+				: array()
 		);
+
+		$fieldClass = ArrayHelper::arrayUnique($fieldClass);
 
 		$form->setFieldAttribute($fieldname, 'class', implode(' ', $fieldClass));
 
@@ -621,18 +653,15 @@ class FrameworkHelper
 			);
 		}
 
+		if (empty($classes['field']['descriptionclass']) && !empty($frwkClasses['descriptionclass']))
+		{
+			$form->setFieldAttribute($fieldname, 'descriptionclass', implode(' ', $frwkClasses['descriptionclass']));
+		}
+
 		$form->setFieldAttribute($fieldname, 'gridgroup', implode(' ', $gridgroup));
 		$form->setFieldAttribute($fieldname, 'gridlabel', implode(' ', $gridlabel));
 		$form->setFieldAttribute($fieldname, 'gridfield', implode(' ', $gridfield));
 
 		return;
-	}
-
-	private function setGloblAssets()
-	{
-		HTMLHelper::_('behavior.keepalive');
-		HTMLHelper::_('behavior.formvalidator');
-		HTMLHelper::_('script', 'plugins/content/jtf/assets/js/domIsReady.min.js', array('version' => 'auto'));
-		HTMLHelper::_('script', 'plugins/content/jtf/assets/js/scrollToError.min.js', array('version' => 'auto'));
 	}
 }

@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
  **/
 class Bs2
 {
-	public static $name = 'Bootstrap v2';
+	public static $name = 'Bootstrap v2 (Joomla 3 core)';
 
 	private $classes;
 
@@ -49,9 +49,12 @@ class Bs2
 	{
 		$inline         = false;
 		$classes        = array();
-		$classes['css'] = '.form-stacked .control-label {width: auto !important; float: none !important; text-align: left;}';
-		$classes['css'] .= '.form-stacked .controls {margin-left: 0 !important;}';
-		$classes['css'] .= '.field-calendar .input-append .btn {padding: 4px 6px !important;}';
+		$classes['css'] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label {width: auto; float: none; text-align: left;}';
+		$classes['css'] .= '.jtf .form-stacked fieldset:not(.form-horizontal) .controls {margin-left: 0;}';
+		$classes['css'] .= '.jtf .field-calendar .input-append .btn {padding: 4px 6px;}';
+		$classes['css'] .= '.jtf form .row {margin-left: 0;}';
+		$classes['css'] .= '.jtf .control-label label { font-weight: bold; }
+';
 
 		$classes['class']['form'][] = 'form-validate';
 
@@ -61,25 +64,25 @@ class Bs2
 				$inline                          = true;
 				$classes['class']['form'][]      = 'form-inline';
 				$classes['class']['gridgroup'][] = 'inline';
-				$classes['class']['gridlabel'][] = 'inline';
-				$classes['class']['gridfield'][] = 'inline';
 				break;
 
 			case 'horizontal':
 				$classes['class']['form'][]      = 'form-horizontal';
 				$classes['class']['gridgroup'][] = 'row';
-//				$classes['class']['gridlabel'][] = 'span3';
-//				$classes['class']['gridfield'][] = 'span9';
 				break;
 
 			case 'stacked':
 			default:
-			$classes['class']['form'][] = 'form-stacked';
-				break;
+			$classes['class']['form'][]      = 'form-stacked';
+			$classes['class']['gridgroup'][] = 'row';
+			break;
 		}
 
-		$classes['class']['default'][]   = 'input';
-		$classes['class']['gridgroup'][] = 'control-group';
+		$classes['class']['default'][]        = 'input';
+		$classes['class']['gridgroup'][]      = 'control-group';
+		$classes['class']['descriptionclass'] = array(
+			'help-block',
+		);
 
 		if (!$inline)
 		{
@@ -88,6 +91,7 @@ class Bs2
 		}
 
 		$classes['class']['note'] = array(
+			'gridfield' => array('span12'),
 			'buttonclass' => array('close'),
 			'buttonicon'  => array('&times;'),
 		);
@@ -120,7 +124,10 @@ class Bs2
 		);
 
 		$classes['class']['submit'] = array(
-			'buttonclass' => array('btn'),
+			'buttonclass' => array(
+				'btn',
+				'btn-primary',
+			),
 		);
 
 		if ($inline)

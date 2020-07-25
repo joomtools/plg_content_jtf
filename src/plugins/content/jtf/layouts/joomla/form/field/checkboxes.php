@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -43,10 +43,6 @@ extract($displayData);
  * @var   array   $options        Options available for this field.
  */
 
-// Including fallback code for HTML5 non supported browsers.
-JHtml::_('jquery.framework');
-JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
-
 /**
  * The format of the input tag to be filled in using sprintf.
  *     %1 - id
@@ -60,8 +56,8 @@ $format = '<input type="checkbox" id="%1$s" name="%2$s" value="%3$s" %4$s />';
 $alt = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
 ?>
 
-<fieldset id="<?php echo $id; ?>" class="<?php echo trim($class . ' checkboxes'); ?>"
-	<?php echo $required ? 'required aria-required="true"' : ''; ?>
+<fieldset id="<?php echo $id; ?>"
+		  class="<?php echo trim($class . ' checkboxes' . ($readonly || $disabled ? ' disabled' : '') . ($readonly ? ' readonly' : '')); ?>"
 	<?php echo $autofocus ? 'autofocus' : ''; ?>>
 
 	<?php foreach ($options as $i => $option) : ?>

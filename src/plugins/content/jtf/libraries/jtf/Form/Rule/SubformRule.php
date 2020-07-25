@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2018 JoomTools.de - All rights reserved.
+ * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -12,7 +12,6 @@ namespace Jtf\Form\Rule;
 
 defined('JPATH_PLATFORM') or die;
 
-//use Jtf\Form\Form;
 use Joomla\CMS\Form\Form;
 use Jtf\Form\Field\SubformField;
 use Joomla\CMS\Form\FormRule;
@@ -37,8 +36,7 @@ class SubformRule extends FormRule
 	 * @param   Form               $form     The form object for which the field is being tested.
 	 *
 	 * @return   boolean  True if the value is valid, false otherwise.
-	 *
-	 * @since   JTF 3.0.0
+	 * @since    3.0.0
 	 */
 	public function test(\SimpleXMLElement $element, $value, $group = null, Registry $input = null, Form $form = null)
 	{
