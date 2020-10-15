@@ -989,7 +989,10 @@ class PlgContentJtf extends CMSPlugin
 					continue;
 				}
 
-				$value = $this->getValue($item);
+				if (empty($value = $this->getValue($item)))
+				{
+					continue;
+				}
 
 				if (is_string($value))
 				{
