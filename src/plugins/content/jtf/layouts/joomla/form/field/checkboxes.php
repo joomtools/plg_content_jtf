@@ -8,6 +8,9 @@
  * @license      GNU General Public License version 3 or later
  */
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Utilities\ArrayHelper;
+
 defined('JPATH_BASE') or die;
 
 extract($displayData);
@@ -43,46 +46,62 @@ extract($displayData);
  * @var   array   $options        Options available for this field.
  */
 
-/**
- * The format of the input tag to be filled in using sprintf.
- *     %1 - id
- *     %2 - name
- *     %3 - value
- *     %4 = any other attributes
- */
-$format = '<input type="checkbox" id="%1$s" name="%2$s" value="%3$s" %4$s />';
+// Build the fieldset attributes array.
+$fieldsetAttributes          = array();
+$fieldsetAttributes['id']    = $id;
+$fieldsetAttributes['class'] = empty($class) ? 'checkboxes checkboxes-group' : 'checkboxes checkboxes-group ' . trim($class);;
 
-// The alt option for JText::alt
-$alt = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
+!$readonly  ? null : $fieldsetAttributes['readonly']  = 'readonly';
+!$disabled  ? null : $fieldsetAttributes['disabled']  = 'disabled';
+!$autofocus ? null : $fieldsetAttributes['autofocus'] = 'autofocus';
+
+if ($required)
+{
+	$fieldsetAttributes['required']      = 'required';
+	$fieldsetAttributes['aria-required'] = 'true';
+}
+
+$fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 ?>
+<fieldset <?php echo $fieldsetAttributes; ?>>
+	<?php foreach ($options as $i => $option) :
+		$optionId  = $id . $i;
+		$isChecked = in_array((string) $option->value, $checkedOptions, true);
+		$isChecked = (!$hasValue && $option->checked) ? true : $isChecked;
 
-<fieldset id="<?php echo $id; ?>"
-		  class="<?php echo trim($class . ' checkboxes' . ($readonly || $disabled ? ' disabled' : '') . ($readonly ? ' readonly' : '')); ?>"
-	<?php echo $autofocus ? 'autofocus' : ''; ?>>
+		// Build the label attributes array.
+		$optionLabelAttributes        = array();
+		$optionLabelAttributes['for'] = $optionId;
 
-	<?php foreach ($options as $i => $option) : ?>
-		<?php
-			// Initialize some option attributes.
-			$checked = in_array((string) $option->value, $checkedOptions, true) ? 'checked' : '';
+		empty($option->labelclass) ? null : $optionLabelAttributes['class']    = $option->labelclass;
+		empty($option->disable)    ? null : $optionLabelAttributes['disabled'] = 'disabled';
 
-			// In case there is no stored value, use the option's default state.
-			$checked        = (!$hasValue && $option->checked) ? 'checked' : $checked;
-			$optionClass    = !empty($option->class) ? 'class="' . $option->class . '"' : '';
-			$optionDisabled = !empty($option->disable) || $disabled ? 'disabled' : '';
+		// Build the option attributes array.
+		$optionAttributes          = array();
+		$optionAttributes['type']  = 'checkbox';
+		$optionAttributes['id']    = $optionId;
+		$optionAttributes['name']  = $name;
+		$optionAttributes['value'] = empty($option->value) ? '' : htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
 
-			$optionLabelClass = !empty($option->labelclass) ? ' class="' . $option->labelclass . '"' : '';
+		empty($option->class)        ? null : $optionAttributes['class']    = $option->class;
+		empty($option->onclick)      ? null : $optionAttributes['onclick']  = $option->onclick;
+		empty($option->onchange)     ? null : $optionAttributes['onchange'] = $option->onchange;
+		empty($option->disable)      ? null : $optionAttributes['disabled'] = 'disabled';
+		!$isChecked                  ? null : $optionAttributes['checked']  = 'checked';
 
-			// Initialize some JavaScript option attributes.
-			$onclick  = !empty($option->onclick) ? 'onclick="' . $option->onclick . '"' : '';
-			$onchange = !empty($option->onchange) ? 'onchange="' . $option->onchange . '"' : '';
-
-			$oid        = $id . $i;
-			$value      = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
-			$attributes = array_filter(array($checked, $optionClass, $optionDisabled, $onchange, $onclick));
+		$optionAttributes      = ArrayHelper::toString($optionAttributes);
+		$optionLabelAttributes = ArrayHelper::toString($optionLabelAttributes);
 		?>
 
-		<label for="<?php echo $oid; ?>"<?php echo $optionLabelClass; ?>>
-			<?php echo sprintf($format, $oid, $name, $value, implode(' ', $attributes)); ?>
-		<?php echo $option->text; ?></label>
+		<label <?php echo $optionLabelAttributes ?>
+			<?php if (!empty($option->optionattr)) :
+				HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+				HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'));
+				echo $option->optionattr; ?>
+			<?php endif; ?>
+		>
+			<input <?php echo $optionAttributes; ?> />
+			<?php echo $option->text; ?>
+		</label>
 	<?php endforeach; ?>
 </fieldset>

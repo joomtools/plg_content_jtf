@@ -76,18 +76,17 @@ if ($fillouttime > 0)
 	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfTimeToFill.min.js', array('version' => 'auto'));
 }
 
-Factory::getDocument()->addStyleDeclaration(
-	".jtf .invalid:not(label) { 
-		border-color: " . $invalidColor . " !important;
-		background-color: " . $invalidBackgroundColor . " !important;
-	}
-	.jtf .invalid,
-	.jtf .invalid::placeholder { color: " . $invalidColor . "; }
-	.jtf .invalid:-ms-input-placeholder { color: " . $invalidColor . "; }
-	.jtf .invalid::-ms-input-placeholder { color: " . $invalidColor . "; }
-	.jtf .marker { font-weight: bold; }
-	.jtf .inline { display: inline-block; vertical-align: top; }"
-);
+Factory::getDocument()->addStyleDeclaration("
+	.hidden{display:none;visibility:hidden;}
+	.jtfhp{position:absolute;width:1px;height:1px;padding:0!important;margin:-1px!important;overflow:hidden;clip:rect(0,0,0,0);border:0;float:none!important;}
+	.jtf .invalid:not(label):not(fieldset){border-color:" . $invalidColor . "!important;background-color:" . $invalidBackgroundColor . "!important;}
+	.jtf .invalid,.jtf .invalid::placeholder{color:" . $invalidColor . ";}
+	.jtf .invalid:-ms-input-placeholder{color:" . $invalidColor . ";}
+	.jtf .invalid::-ms-input-placeholder{color:" . $invalidColor . ";}
+	.jtf .marker{font-weight:bold;}
+	.jtf [disabled]{pointer-events:none;}
+	.jtf .inline{display:inline-block!important;line-height:150%;}
+");
 
 ?>
 <div class="jtf contact-form">
@@ -108,10 +107,10 @@ Factory::getDocument()->addStyleDeclaration(
 		<?php foreach ($form->getFieldsets() as $fieldset) :
 			$fieldsetClass = !empty($fieldset->class)
 				? ' class="' . $fieldset->class . '"' : '';
-			$fieldsetLabelClass = !empty($fieldset->labelClass)
-				? ' class="' . $fieldset->labelClass . '"' : '';
-			$fieldsetDescClass = !empty($fieldset->descClass)
-				? ' class="' . $fieldset->descClass . '"' : ''; ?>
+			$fieldsetLabelClass = !empty($fieldset->labelclass)
+				? ' class="' . $fieldset->labelclass . '"' : '';
+			$fieldsetDescClass = !empty($fieldset->descriptionclass)
+				? ' class="' . $fieldset->descriptionclass . '"' : ''; ?>
 
 			<fieldset<?php echo $fieldsetClass; ?>>
 

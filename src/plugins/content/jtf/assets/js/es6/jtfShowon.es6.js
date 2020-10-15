@@ -10,39 +10,43 @@
 let jtfDomIsReady = window.jtfDomIsReady || {};
 
 jtfDomIsReady(() => {
-  const setNovalidate = (elm) => {
-      if (!elm.classList.contains('novalidate')) {
-        elm.classList.add('novalidate');
-        elm.setAttribute('disabled', 'disabled');
+  const setNovalidate = (field) => {
+      if (!field.classList.contains('novalidate')) {
+        field.classList.add('novalidate');
+        field.setAttribute('disabled', 'disabled');
       }
     },
 
-    removeNovalidate = (elm) => {
-      if (elm.classList.contains('novalidate')) {
-        elm.classList.remove('novalidate');
-        elm.removeAttribute('disabled');
+    removeNovalidate = (field) => {
+      if (field.classList.contains('novalidate')) {
+        field.classList.remove('novalidate');
+        field.removeAttribute('disabled');
       }
     },
 
-    toggleNovalidate = (elm, isActive) => {
+    toggleNovalidate = (field, isActive) => {
       if (isActive) {
-        removeNovalidate(elm);
+        removeNovalidate(field);
       } else {
-        setNovalidate(elm);
+        setNovalidate(field);
       }
     };
 
   let showonElements = document.querySelectorAll('[data-showon]');
-  Array.prototype.forEach.call(showonElements, function (elm) {
+  Array.prototype.forEach.call(showonElements, function (parent) {
     let isActive = false,
-      formFields = elm.querySelectorAll('input, select, textarea, fieldset');
+      formFields = parent.querySelectorAll('input, select, textarea, fieldset');
 
-    if (elm.style.display !== 'none') {
+    if (parent.style.display !== 'none') {
       isActive = true;
     }
 
-    Array.prototype.forEach.call(formFields, function (elm) {
-      toggleNovalidate(elm, isActive);
+    if (!isActive && parent.classList.contains('uk-display-block')) {
+      parent.classList.remove('uk-display-block');
+    }
+
+    Array.prototype.forEach.call(formFields, function (field) {
+      toggleNovalidate(field, isActive);
     });
 
     const showonObserverConfig = {
@@ -52,14 +56,13 @@ jtfDomIsReady(() => {
       },
 
       showonObserver = new MutationObserver(function () {
+        isActive = parent.style.display !== 'none';
 
-        isActive = elm.style.display !== 'none';
-
-        Array.prototype.forEach.call(formFields, function (elm) {
-          toggleNovalidate(elm, isActive);
+        Array.prototype.forEach.call(formFields, function (field) {
+          toggleNovalidate(field, isActive);
         });
       });
 
-    showonObserver.observe(elm, showonObserverConfig);
+    showonObserver.observe(parent, showonObserverConfig);
   });
 });

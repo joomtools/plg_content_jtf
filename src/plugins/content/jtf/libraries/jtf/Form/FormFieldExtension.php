@@ -12,8 +12,9 @@ namespace Jtf\Form;
 
 defined('JPATH_PLATFORM') or die;
 
+use Jtf\Layout\FileLayout;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Layout\FileLayout;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Abstract Form Field class for the Joomla Platform.
@@ -261,6 +262,18 @@ trait FormFieldExtension
 				}
 			}
 
+			if ($this->readonly)
+			{
+				$element['required'] = 'false';
+				$this->__set('required', 'false');
+			}
+
+			if ($this->disabled)
+			{
+				$element['required'] = 'false';
+				$this->__set('required', 'false');
+			}
+
 			return true;
 		}
 
@@ -277,15 +290,16 @@ trait FormFieldExtension
 	 */
 	public function renderField($options = array())
 	{
-		$fieldMarker            = $this->fieldmarker;
-		$issetHiddenLabel       = $this->hiddenlabel;
-		$issetLabel             = !empty($label = $this->getAttribute('label'));
-		$issetHint              = !empty($hint = $this->hint);
-		$newHint                = array();
-		$isHintExcludedField        = in_array(
-			strtolower($this->type),
+		$type                = strtolower($this->type);
+		$fieldMarker         = $this->fieldmarker;
+		$issetHiddenLabel    = $this->hiddenlabel;
+		$issetLabel          = !empty($label = $this->getAttribute('label'));
+		$issetHint           = !empty($hint = $this->hint);
+		$newHint             = array();
+		$fieldMarkerDesc     = Text::_('JTF_FIELD_MARKED_DESC_' . strtoupper($fieldMarker));
+		$isHintExcludedField = in_array(
+			$type,
 			array(
-				'submit',
 				'editor',
 				'checkbox',
 				'checkboxes',
@@ -293,6 +307,15 @@ trait FormFieldExtension
 				'list',
 				'captcha',
 				'file',
+			)
+		);
+
+		$isDisabledDescriptionField = in_array(
+			$type,
+			array(
+				'note',
+				'spacer',
+				'submit',
 			)
 		);
 
@@ -316,24 +339,24 @@ trait FormFieldExtension
 		if ($isHintExcludedField && $this->fieldmarkerplace == 'hint')
 		{
 			$this->fieldmarkerplace = 'field';
-			$this->hint = '';
 		}
 
-		if ($this->fieldmarkerplace == 'hint')
+		if ($this->fieldmarkerplace == 'hint'
+			&& !$isDisabledDescriptionField
+			&& (($fieldMarker == 'required' && $this->required) || ($fieldMarker != 'required' && !$this->required))
+		)
 		{
-			$newHint[] = Text::_('JTF_FIELD_MARKED_HINT_' . strtoupper($fieldMarker));
+			$newHint[]  = Text::_('JTF_FIELD_MARKED_HINT_' . strtoupper($fieldMarker));
 			$this->hint = implode(' ', $newHint);
 		}
 
-		$fieldMarkerDesc = Text::_('JTF_FIELD_MARKED_DESC_' . strtoupper($fieldMarker));
-
-		if (strtolower($this->type) == 'submit' || $this->fieldmarkerplace != 'field')
+		if ($isDisabledDescriptionField || $this->fieldmarkerplace != 'field')
 		{
 			$fieldMarkerDesc = '';
 		}
 
 		// Description preprocess
-		$description = !empty($this->description) ? $this->description : null;
+		$description = !empty($this->description) && !$isDisabledDescriptionField ? $this->description : null;
 		$description = !empty($description) && $this->translateDescription ? Text::_($description) : $description;
 
 		$options['id']                     = $this->id;
@@ -399,14 +422,29 @@ trait FormFieldExtension
 	 */
 	protected function getOptions()
 	{
-		$options         = parent::getOptions();
-		$optonClass      = $this->optionclass;
-		$optonLabelClass = $this->optionlabelclass;
+		$options = parent::getOptions();
+
+		// Define global option class attributes
+		$globalOptonClass      = empty((string) $this->optionclass)
+			? array()
+			: explode(' ', trim((string) $this->optionclass));
+		$globalOptonLabelClass = empty((string) $this->optionlabelclass)
+			? array()
+			: explode(' ', trim((string) $this->optionlabelclass));
 
 		foreach ($options as &$option)
 		{
-			$option->class = $optonClass;
-			$option->labelclass = $optonLabelClass;
+			$optonClass      = empty((string) $this->optionclass)
+				? array()
+				: explode(' ', trim((string) $this->optionclass));
+			$optonClass      = ArrayHelper::arrayUnique(array_merge($globalOptonClass, $optonClass));
+			$optonLabelClass = empty((string) $this->labelclass)
+				? array()
+				: explode(' ', trim((string) $this->labelclass));
+			$optonLabelClass = ArrayHelper::arrayUnique(array_merge($globalOptonLabelClass, $optonLabelClass));
+
+			$option->class = implode(' ', $optonClass);
+			$option->labelclass = implode(' ', $optonLabelClass);
 		}
 
 		return $options;
@@ -422,7 +460,17 @@ trait FormFieldExtension
 	 */
 	protected function getRenderer($layoutId = 'default')
 	{
-		$renderer  = parent::getRenderer($layoutId);
+		$renderer = new FileLayout($layoutId);
+
+		$renderer->setDebug($this->isDebugEnabled());
+
+		$layoutPaths = $this->getLayoutPaths();
+
+		if ($layoutPaths)
+		{
+			$renderer->setIncludePaths($layoutPaths);
+		}
+
 		$framework = !empty($this->form->framework) ? $this->form->framework : array();
 
 		// Set Framwork as Layout->Suffix
@@ -431,11 +479,11 @@ trait FormFieldExtension
 			$renderer->setSuffixes($framework);
 		}
 
-		$layoutPaths = $this->getLayoutPaths();
+		$layoutFileExists = $renderer->checkLayoutExists();
 
-		if ($layoutPaths)
+		if (!$layoutFileExists)
 		{
-			$renderer->addIncludePaths($layoutPaths);
+			throw new \UnexpectedValueException(sprintf('%s has no layout assigned.', $this->fieldname));
 		}
 
 		return $renderer;
@@ -449,7 +497,7 @@ trait FormFieldExtension
 	 */
 	protected function getLayoutPaths()
 	{
-		return !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
+		return !empty($this->form->layoutPaths) ? $this->form->layoutPaths : parent::getLayoutPaths();
 	}
 
 	/**

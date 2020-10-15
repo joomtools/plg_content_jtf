@@ -27,7 +27,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @var   string
 	 *
-	 * @since   3.0.0
+	 * @since  3.0.0
 	 */
 	public $minimumJoomla = '3.9';
 
@@ -36,7 +36,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @var   string
 	 *
-	 * @since   3.0.0
+	 * @since  3.0.0
 	 */
 	public $minimumPhp = '7.0';
 
@@ -46,10 +46,10 @@ class PlgContentJtfInstallerScript
 	 * @param   string      $action     Which action is happening (install|uninstall|discover_install|update)
 	 * @param   JInstaller  $installer  The class calling this method
 	 *
-	 * @return   boolean  True on success
-	 * @throws   Exception
+	 * @return  boolean  True on success
+	 * @throws  Exception
 	 *
-	 * @since   3.0.0
+	 * @since  3.0.0
 	 */
 	public function preflight($action, $installer)
 	{
@@ -111,6 +111,8 @@ class PlgContentJtfInstallerScript
 			{
 				$app->enqueueMessage($notDeleted, 'error');
 			}
+
+			$this->updatePlgConfig();
 		}
 
 		return true;
@@ -120,7 +122,7 @@ class PlgContentJtfInstallerScript
 	 * @param   string  $type     Wich type are orphans of (file or folder)
 	 * @param   array   $orphans  Array of files or folders to delete
 	 *
-	 * @return   string
+	 * @return  string
 	 *
 	 * @since   3.0.0
 	 */
@@ -154,5 +156,15 @@ class PlgContentJtfInstallerScript
 		}
 
 		return $notDeleted;
+	}
+
+	/**
+	 * Update plugin configuration
+	 *
+	 * @since  __DEPLOY_VERSION__
+	 */
+	protected function updatePlgConfig()
+	{
+		$db = Factory::getDbo();
 	}
 }

@@ -20,6 +20,11 @@ class FrameworkHelper
 {
 	private static $flexboxCssFix = false;
 	private static $frameworkCssSet = false;
+
+	/**
+	 * @var    \Jtf\Form\Form
+	 * @since  3.0.0
+	 */
 	private $form = null;
 	private $classes = array(
 		'frwk'     => array(),
@@ -42,6 +47,7 @@ class FrameworkHelper
 		'optionlabelclass',
 		'descriptionclass',
 	);
+	private $frwk        = null;
 	private $frwkClasses = null;
 	private $hiddenLabel = array(
 		'form' => null,
@@ -79,7 +85,7 @@ class FrameworkHelper
 			$framework = 'bs4';
 		}
 
-		if (!empty($form->framework[0]))
+		if (!empty($form->framework[0]) && $form->framework[0] != 'joomla')
 		{
 			$framework = $form->framework[0];
 		}
@@ -90,10 +96,11 @@ class FrameworkHelper
 		}
 
 		$frwkClassName     = 'Jtf\\Framework\\' . ucfirst($framework);
-		$frwkClasses       = new $frwkClassName($orientation);
-		$this->frwkClasses = $frwkClasses->getClasses();
+		$frwk              = new $frwkClassName($orientation);
+		$this->frwk        = $frwk;
+		$this->frwkClasses = $frwk->getClasses();
 
-		$this->setFrameworkCss($frwkClasses->getCss());
+		$this->setFrameworkCss($frwk->getCss());
 
 		if (!empty($this->frwkClasses['gridgroup']))
 		{
@@ -111,7 +118,7 @@ class FrameworkHelper
 		}
 
 		// Probably not more needed
-		$form->frwkClasses = $frwkClasses;
+		$form->frwkClasses = $frwk;
 	}
 
 	private function setFelxboxCssFix()
@@ -205,6 +212,8 @@ class FrameworkHelper
 		{
 			foreach ($fieldsets->fieldset as $fieldset)
 			{
+				$fieldsetName = (string) $fieldset['name'];
+
 				$this->hiddenLabel['fieldset'] = !empty((string) $fieldset['hiddenLabel'])
 					? filter_var((string) $fieldset['hiddenLabel'], FILTER_VALIDATE_BOOLEAN)
 					: null;
@@ -213,13 +222,21 @@ class FrameworkHelper
 					? filter_var((string) $fieldset['hiddenlabel'], FILTER_VALIDATE_BOOLEAN)
 					: null;
 
-				$fieldsetClasses['class'] = null;
-				$fieldsetClasses['labelclass'] = null;
-				$fieldsetClasses['descriptionclass'] = null;
+				$fieldsetClasses['class'] = array();
+				$fieldsetClasses['labelclass'] = array();
+				$fieldsetClasses['descriptionclass'] = array();
+
+				$orientation = (string) $fieldset['orientation'];
+				$orientation = $this->frwk->getOrientationClass($orientation);
 
 				if (!empty($this->frwkClasses['fieldset']['class']))
 				{
 					$fieldsetClasses['class'] = $this->getClassArray($this->frwkClasses['fieldset']['class']);
+				}
+
+				if (!empty($orientation))
+				{
+					$fieldsetClasses['class'][] = $orientation;
 				}
 
 				if (!empty($this->frwkClasses['fieldset']['labelclass']))
@@ -260,6 +277,8 @@ class FrameworkHelper
 							$this->getClassArray((string) $fieldset['labelClass'])
 						)
 					);
+
+					$form->setFieldAttribute($fieldsetName, 'labelclass', $fieldsetClasses['labelclass']);
 				}
 
 				if (!empty((string) $fieldset['descriptionclass']))
@@ -280,6 +299,8 @@ class FrameworkHelper
 							$this->getClassArray((string) $fieldset['descClass'])
 						)
 					);
+
+					$form->setFieldAttribute($fieldsetName, 'descriptionclass', $fieldsetClasses['descriptionclass']);
 				}
 
 				foreach ($fieldsetClasses as $classKey => $classValue)
@@ -309,8 +330,7 @@ class FrameworkHelper
 					$this->classes['fieldset']['gridfield'] = $this->getClassArray((string) $fieldset['gridfield']);
 				}
 
-				$fieldsetName = (string) $fieldset['name'];
-				$fields       = $form->getFieldset($fieldsetName);
+				$fields = $form->getFieldset($fieldsetName);
 
 				foreach ($fields as $field)
 				{

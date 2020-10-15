@@ -45,10 +45,14 @@ class Bs3
 
 	private $classes;
 
+	private $orientation;
+
 	public function __construct($orientation = null)
 	{
-		$inline         = false;
-		$classes        = array();
+		$classes           = array();
+		$inline            = $orientation == 'inline';
+		$this->orientation = $orientation;
+
 		$classes['css'] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label {text-align: left;}';
 		$classes['css'] .= '.jtf fieldset.radio {padding-top: 0;}';
 		$classes['css'] .= '.jtf .radio label.radio {display: block;}';
@@ -58,31 +62,15 @@ class Bs3
 
 		$classes['class']['form'][] = 'form-validate';
 
-		switch ($orientation)
+		if (!$inline)
 		{
-			case 'inline':
-				$inline                     = true;
-				$classes['class']['form'][] = 'form-inline';
-				break;
-
-			case 'horizontal':
-				$classes['class']['form'][] = 'form-horizontal';
 				$classes['class']['gridgroup'][] = 'row';
-				break;
-
-			case 'stacked':
-			default:
-			$classes['class']['form'][] = 'form-stacked';
-				break;
 		}
 
 		$classes['class']['default'][]        = 'form-control';
 		$classes['class']['gridgroup'][]      = 'form-group';
 		$classes['class']['gridlabel'][]      = 'control-label';
-		$classes['class']['descriptionclass'] = array(
-			'form-text',
-			'text-muted',
-		);
+		$classes['class']['descriptionclass'] = array('form-text', 'text-muted');
 
 		$classes['class']['note'] = array(
 			'buttonclass' => array('close'),
@@ -95,8 +83,7 @@ class Bs3
 		}
 
 		$classes['class']['calendar'] = array(
-//			'class'       => array('form-control'),
-			'buttonclass' => array('btn btn-secondary'),
+			'buttonclass' => array('btn', 'btn-default'),
 			'buttonicon'  => array('glyphicon glyphicon-calendar'),
 		);
 
@@ -127,10 +114,7 @@ class Bs3
 		);
 
 		$classes['class']['submit'] = array(
-			'buttonclass' => array(
-				'btn',
-				'btn-primary',
-			),
+			'buttonclass' => array('btn', 'btn-default'),
 		);
 
 		if ($inline)
@@ -150,5 +134,21 @@ class Bs3
 	public function getCss()
 	{
 		return $this->classes['css'];
+	}
+
+	public function getOrientationClass($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return 'uk-form-horizontal';
+
+			case 'stacked':
+				return 'uk-form-stacked';
+		}
+
+		return null;
 	}
 }

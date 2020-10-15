@@ -45,10 +45,14 @@ class Uikit3
 
 	private $classes;
 
+	private $orientation;
+
 	public function __construct($orientation = null)
 	{
-		$inline         = false;
-		$classes        = array();
+		$classes           = array();
+		$inline            = $orientation == 'inline';
+		$this->orientation = $orientation;
+
 		$classes['css'] = '.field-calendar input {margin-right: 40px;padding-right: 40px;}';
 		$classes['css'] .= '.uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
 		$classes['css'] .= '.uk-form-stacked .uk-form-controls {width: 100% !important; margin-left: 0 !important;}';
@@ -56,45 +60,26 @@ class Uikit3
 		$classes['css'] .= '.checkbox , .radio {padding-left: 0 !important;}';
 //		$classes['css'] .= 'input[type=checkbox]:not(:checked), input[type=radio]:not(:checked), .uk-input, .uk-textarea {background-color: white !important;}';
 
-		$classes['class']['form'] = array('uk-form', 'form-validate');
-
-		switch ($orientation)
-		{
-			case 'inline':
-				$inline = true;
-				break;
-
-			case 'horizontal':
-				$classes['class']['form'][] = 'uk-form-horizontal';
-				break;
-
-			case 'stacked':
-			default:
-				$classes['class']['form'][] = 'uk-form-stacked';
-				break;
-		}
-
+		$classes['class']['form']             = array('uk-form', 'form-validate');
 		$classes['class']['legend'][]         = 'uk-legend';
 		$classes['class']['default'][]        = 'uk-input';
-		$classes['class']['gridgroup'][]      = 'uk-form-row uk-margin';
-		$classes['class']['descriptionclass'] = array(
-			'form-text',
-			'text-muted',
-		);
+		$classes['class']['gridgroup']        = array('uk-form-row', 'uk-margin');
+		$classes['class']['descriptionclass'] = array('uk-text-light');
 
 		if (!$inline)
 		{
 			$classes['class']['gridlabel'][] = 'uk-form-label';
 			$classes['class']['gridfield'][] = 'uk-form-controls';
+			$classes['class']['gridgroup'][] = 'uk-width-1-1';
 		}
 
 		$classes['class']['fieldset'] = array(
-			'class'      => array(
+			'class'            => array(
 				'uk-fieldset',
 				'uk-margin-bottom',
-				),
-			'labelClass' => array('uk-legend'),
-			'descClass'  => array('uk-fieldset-desc'),
+			),
+			'labelclass'       => array('uk-legend'),
+			'descriptionclass' => array('uk-fieldset-desc'),
 		);
 
 		$classes['class']['calendar'] = array(
@@ -164,5 +149,21 @@ class Uikit3
 	public function getCss()
 	{
 		return $this->classes['css'];
+	}
+
+	public function getOrientationClass($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return 'uk-form-horizontal';
+
+			case 'stacked':
+				return 'uk-form-stacked';
+		}
+
+		return null;
 	}
 }

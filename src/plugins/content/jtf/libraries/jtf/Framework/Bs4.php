@@ -45,39 +45,20 @@ class Bs4
 
 	private $classes;
 
+	private $orientation;
+
 	public function __construct($orientation = null)
 	{
-		$inline         = false;
-		$classes        = array();
-		$classes['css'] = '[data-showon][style="display: none;"] {display: none !important;}';
+		$classes           = array();
+		$inline            = $orientation == 'inline';
+		$this->orientation = $orientation;
 
-		$classes['class']['form'][] = 'form-validate';
-
-		switch ($orientation)
-		{
-			case 'inline':
-				$inline                     = true;
-				$classes['class']['form'][] = 'form-inline';
-				break;
-
-			case 'horizontal':
-				$classes['class']['form'][]      = 'form-horizontal';
-				$classes['class']['gridgroup'][] = 'row';
-				break;
-
-			case 'stacked':
-			default:
-				break;
-		}
-
+		$classes['class']['form'][]           = 'form-validate';
 		$classes['class']['default'][]        = 'form-control';
 		$classes['class']['gridgroup'][]      = 'form-group';
 		$classes['class']['gridlabel'][]      = 'col-form-label';
 		$classes['class']['gridfield'][]      = '';
-		$classes['class']['descriptionclass'] = array(
-			'form-text',
-			'text-muted',
-		);
+		$classes['class']['descriptionclass'] = array('form-text', 'text-muted');
 
 		$classes['class']['note'] = array(
 			'buttonclass' => array('close'),
@@ -153,5 +134,21 @@ class Bs4
 	public function getCss()
 	{
 		return $this->classes['css'];
+	}
+
+	public function getOrientationClass($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return 'uk-form-horizontal';
+
+			case 'stacked':
+				return 'uk-form-stacked';
+		}
+
+		return null;
 	}
 }

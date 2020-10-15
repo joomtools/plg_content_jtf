@@ -65,47 +65,34 @@ extract($displayData);
  * @var   integer  $direction       The document direction
  */
 
-$inputvalue = '';
+$value = ($value != "0000-00-00 00:00:00") ? htmlspecialchars($value, ENT_COMPAT, 'UTF-8') : '';
 
-// Build the attributes array.
-$attributes          = array();
-$attributes['class'] = empty($class) ? 'validate-dateformat' : 'validate-dateformat ' . $class;
+// Build the field attributes array.
+$fieldAttributes                   = array();
+$fieldAttributes['id']             = $id;
+$fieldAttributes['name']           = $name;
+$fieldAttributes['value']          = $value;
+$fieldAttributes['autocomplete']   = 'off';
+$fieldAttributes['data-alt-value'] = $value;
+$fieldAttributes['class']          = empty($class) ? 'validate-dateformat' : 'validate-dateformat ' . trim($class);
 
-empty($size)      ? null : $attributes['size']        = $size;
-empty($maxlength) ? null : $attributes['maxlength']   = $maxLength;
-!$readonly        ? null : $attributes['readonly']    = 'readonly';
-!$disabled        ? null : $attributes['disabled']    = 'disabled';
-empty($onchange)  ? null : $attributes['onchange']    = $onchange;
-empty($hint)      ? null : $attributes['placeholder'] = $hint;
-
-
+empty($size)      ? null : $fieldAttributes['size']        = $size;
+empty($maxlength) ? null : $fieldAttributes['maxlength']   = $maxLength;
+!$readonly        ? null : $fieldAttributes['readonly']    = 'readonly';
+!$disabled        ? null : $fieldAttributes['disabled']    = 'disabled';
+empty($onchange)  ? null : $fieldAttributes['onchange']    = $onchange;
+empty($hint)      ? null : $fieldAttributes['placeholder'] = $hint;
 
 if ($required)
 {
-	$attributes['required']      = 'required';
-	$attributes['aria-required'] = 'true';
+	$fieldAttributes['required']      = 'required';
+	$fieldAttributes['aria-required'] = 'true';
 }
 
-// Handle the special case for "now".
-if (strtoupper($value) == 'NOW')
+if (!$disabled || !$readonly)
 {
-	$value = Factory::getDate()->format(str_replace('%', '',$format));
-}
+	$cssFileExt = ($direction === 'rtl') ? '-rtl.css' : '.css';
 
-if ($readonly || $disabled)
-{
-	$buttonClass .= ' hidden';
-}
-
-if (is_array($attributes))
-{
-	$attributes = ArrayHelper::toString($attributes);
-}
-
-$cssFileExt = ($direction === 'rtl') ? '-rtl.css' : '.css';
-
-if (!$readonly || !$disabled)
-{
 	// Load polyfills for older IE
 	HTMLHelper::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
 
@@ -118,56 +105,31 @@ if (!$readonly || !$disabled)
 	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfValidateDateFormat.min.js', array('version' => 'auto'));
 }
 
-?>
-<div class="field-calendar">
-	<?php if ($readonly || $disabled) : ?>
-		<div class="input-append">
-			<input type="text"
-				   value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
-				<?php echo $attributes; ?>
-				   data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-				   autocomplete="off"
-			/>
-			<span class="add-on <?php echo $buttonIcon; ?>"></span>
-		</div>
-		<input type="hidden"
-			   id="<?php echo $id; ?>"
-			   name="<?php echo $name; ?>"
-			   value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
-			<?php echo $attributes; ?>
-			   data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-			   autocomplete="off"
-		/>
-	<?php else : ?>
-		<div class="input-append">
-			<input type="text"
-				   id="<?php echo $id; ?>"
-				   name="<?php echo $name; ?>"
-				   value="<?php echo htmlspecialchars(($value != "0000-00-00 00:00:00") ? $value : '', ENT_COMPAT, 'UTF-8'); ?>"
-				<?php echo $attributes; ?>
-				   data-alt-value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-				   autocomplete="off"
-			/>
-			<button type="button"
-					class="<?php echo $buttonClass; ?>"
-					id="<?php echo $id; ?>_btn"
-					data-inputfield="<?php echo $id; ?>"
-					data-dayformat="<?php echo $format; ?>"
-					data-button="<?php echo $id; ?>_btn"
-					data-firstday="<?php echo Factory::getLanguage()->getFirstDay(); ?>"
-					data-weekend="<?php echo Factory::getLanguage()->getWeekEnd(); ?>"
-					data-today-btn="<?php echo $todaybutton; ?>"
-					data-week-numbers="<?php echo $weeknumbers; ?>"
-					data-show-time="<?php echo $showtime; ?>"
-					data-show-others="<?php echo $filltable; ?>"
-					data-time-24="<?php echo $timeformat; ?>"
-					data-only-months-nav="<?php echo $singleheader; ?>"
-				<?php echo !empty($minYear) ? 'data-min-year="' . $minYear . '"' : ''; ?>
-				<?php echo !empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : ''; ?>
-					title="<?php echo Text::_('JLIB_HTML_BEHAVIOR_OPEN_CALENDAR'); ?>"
-			>
-				<span class="<?php echo $buttonIcon; ?>"></span>
-			</button>
-		</div>
-	<?php endif; ?>
-</div>
+// Build the button attributes array.
+$buttonAttributes                         = array();
+$buttonAttributes['id']                   = $id . '_btn';
+$buttonAttributes['class']                = trim($buttonClass);
+$buttonAttributes['title']                = Text::_('JLIB_HTML_BEHAVIOR_OPEN_CALENDAR');
+$buttonAttributes['data-inputfield']      = $id;
+$buttonAttributes['data-button']          = $id . '_btn';
+$buttonAttributes['data-firstday']        = Factory::getLanguage()->getFirstDay();
+$buttonAttributes['data-weekend']         = Factory::getLanguage()->getWeekEnd();
+$buttonAttributes['data-dayformat']       = $format;
+$buttonAttributes['data-today-btn']       = $todaybutton;
+$buttonAttributes['data-week-numbers']    = $weeknumbers;
+$buttonAttributes['data-show-time']       = $showtime;
+$buttonAttributes['data-show-others']     = $filltable;
+$buttonAttributes['data-time-24']         = $timeformat;
+$buttonAttributes['data-only-months-nav'] = $singleheader;
+$buttonAttributes['data-min-year']        = empty($minYear) ? '' : $minYear;
+$buttonAttributes['data-max-year']        = empty($maxYear) ? '' : $maxYear;
+
+($disabled || $readonly) ? $buttonAttributes['disabled'] = 'disabled' : null;
+
+$fieldData = array(
+	'fieldAttributes'  => ArrayHelper::toString($fieldAttributes),
+	'buttonAttributes' => ArrayHelper::toString($buttonAttributes),
+	'buttonIcon'       => $buttonIcon,
+);
+
+echo $this->sublayout('field', $fieldData);

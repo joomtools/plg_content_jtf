@@ -10,7 +10,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
 
 extract($displayData);
 
@@ -42,79 +44,62 @@ extract($displayData);
  * @var   string   $validate          Validation rules to apply.
  * @var   string   $value             Value attribute of the field.
  * @var   array    $options           Options available for this field.
- * @var   string   $optionclass       Class for the option.
- * @var   string   $optionlabelclass  Class for the option label.
  */
 
-/**
- * The format of the input tag to be filled in using sprintf.
- *     %1 - id
- *     %2 - name
- *     %3 - value
- *     %4 = any other attributes
- */
-$format = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s />';
+// Build the fieldset attributes array.
+$fieldsetAttributes          = array();
+$fieldsetAttributes['id']    = $id;
+$fieldsetAttributes['class'] = empty($class) ? 'radio radio-group' : 'radio radio-group ' . trim($class);;
 
-// The alt option for JText::alt
-$alt = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
-//$class = !empty($class) ? ' class="radio ' . trim($class) . '"' : '';
+!$readonly  ? null : $fieldsetAttributes['readonly']  = 'readonly';
+!$disabled  ? null : $fieldsetAttributes['disabled']  = 'disabled';
+!$autofocus ? null : $fieldsetAttributes['autofocus'] = 'autofocus';
+
+if ($required)
+{
+	$fieldsetAttributes['required']      = 'required';
+	$fieldsetAttributes['aria-required'] = 'true';
+}
+
+$fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 ?>
-<fieldset id="<?php echo $id; ?>"
-		  class="<?php echo trim($class . ' radios' . ($readonly || $disabled ? ' disabled' : '') . ($readonly ? ' readonly' : '')); ?>"
-	<?php echo $disabled ? 'disabled' : ''; ?>
-	<?php echo $readonly || $disabled ? 'style="pointer-events: none"' : '' ?>
-	<?php echo $required ? 'required aria-required="true"' : ''; ?>
-	<?php echo $autofocus ? 'autofocus' : ''; ?>>
+<fieldset <?php echo $fieldsetAttributes; ?>>
+	<?php foreach ($options as $i => $option) :
+		$optionId = $id . $i;
 
-	<?php if (!empty($options)) : ?>
-		<?php foreach ($options as $i => $option) :
+		// Build the label attributes array.
+		$optionLabelAttributes        = array();
+		$optionLabelAttributes['for'] = $optionId;
 
-			$newOptionClass = array();
-			$newOptionLabelClass = array();
+		empty($option->labelclass) ? null : $optionLabelAttributes['class']    = $option->labelclass;
+		empty($option->disable)    ? null : $optionLabelAttributes['disabled'] = 'disabled';
 
-			if (!empty($option->class))
-			{
-				$newOptionClass = explode(' ', $option->class);
-			}
+		// Build the option attributes array.
+		$optionAttributes          = array();
+		$optionAttributes['type']  = 'radio';
+		$optionAttributes['id']    = $optionId;
+		$optionAttributes['name']  = $name;
+		$optionAttributes['value'] = empty($option->value) ? '' : htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
 
-			if (!empty($option->labelclass))
-			{
-				$newOptionLabelClass = explode(' ', $option->labelclass);
-			}
+		empty($option->class)        ? null : $optionAttributes['class']    = $option->class;
+		empty($option->onclick)      ? null : $optionAttributes['onclick']  = $option->onclick;
+		empty($option->onchange)     ? null : $optionAttributes['onchange'] = $option->onchange;
+		empty($option->disable)      ? null : $optionAttributes['disabled'] = 'disabled';
+		!($option->value === $value) ? null : $optionAttributes['checked']  = 'checked';
 
-			if (!empty($optionclass))
-			{
-				$newOptionClass[] = $optionclass;
-			}
+		$optionAttributes      = ArrayHelper::toString($optionAttributes);
+		$optionLabelAttributes = ArrayHelper::toString($optionLabelAttributes);
+		?>
 
-			if (!empty($optionlabelclass))
-			{
-				$newOptionLabelClass[] = $optionlabelclass;
-			}
-
-			$optionClass      = !empty($newOptionClass) ? 'class="' . implode(' ', $newOptionClass) . '"' : '';
-			$optionLabelClass = !empty($newOptionLabelClass) ? ' class="' . implode(' ', $newOptionLabelClass) . '"' : '';
-
-			// Initialize some option attributes.
-			$checked  = ((string) $option->value === $value) ? 'checked="checked"' : '';
-			$disabled = !empty($option->disable) || ($disabled && !$checked) ? 'disabled' : '';
-			$style    = $disabled ? 'style="pointer-events: none"' : '';
-
-			// Initialize some JavaScript option attributes.
-			$onclick    = !empty($option->onclick) ? 'onclick="' . $option->onclick . '"' : '';
-			$onchange   = !empty($option->onchange) ? 'onchange="' . $option->onchange . '"' : '';
-			$oid        = $id . $i;
-			$ovalue     = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
-			$attributes = array_filter(array($checked, $optionClass, $disabled, $style, $onchange, $onclick));
-			?>
-
-			<?php if ($required) : ?>
-			<?php $attributes[] = 'required aria-required="true"'; ?>
-		<?php endif; ?>
-			<label for="<?php echo $oid; ?>"<?php echo trim($optionLabelClass . ' ' . $style); ?>>
-				<?php echo sprintf($format, $oid, $name, $ovalue, implode(' ', $attributes)); ?>
-				<?php echo Text::alt($option->text, $alt); ?>
-			</label>
-		<?php endforeach; ?>
-	<?php endif; ?>
+		<label <?php echo $optionLabelAttributes ?>
+			<?php if (!empty($option->optionattr)) :
+				HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+				HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'));
+				echo $option->optionattr; ?>
+			<?php endif; ?>
+		>
+		<input <?php echo $optionAttributes; ?> />
+			<?php echo $option->text; ?>
+		</label>
+	<?php endforeach; ?>
 </fieldset>

@@ -46,9 +46,9 @@ extract($displayData);
  * @var   array    $control         Is this field checked?
  */
 
-if ($validate !== 'color' && in_array($format, array('rgb', 'rgba'), true))
+if ($validate !== 'color' && in_array($inputField, array('rgb', 'rgba'), true))
 {
-	$alpha = ($format === 'rgba');
+	$alpha = ($inputField === 'rgba');
 	$placeholder = $alpha ? 'rgba(0, 0, 0, 0.5)' : 'rgb(0, 0, 0)';
 }
 else
@@ -56,7 +56,7 @@ else
 	$placeholder = '#rrggbb';
 }
 
-$inputclass   = ($keywords && ! in_array($format, array('rgb', 'rgba'), true)) ? ' keywords' : ' ' . $format;
+$inputclass   = ($keywords && ! in_array($inputField, array('rgb', 'rgba'), true)) ? ' keywords' : ' ' . $inputField;
 $class        = ' class="' . trim('minicolors ' . $class) . ($validate === 'color' ? '' : $inputclass) . '"';
 $control      = $control ? ' data-control="' . $control . '"' : '';
 $format       = $format ? ' data-format="' . $format . '"' : '';

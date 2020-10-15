@@ -70,7 +70,9 @@ if (!empty($options['gridField']))
 		<div<?php echo $gridLabel; ?>>
 			<?php echo $label; ?>
 		</div>
-		<div<?php echo $gridField; ?>></div>
+		<?php if (!empty($gridField)) : ?>
+			<div<?php echo $gridField; ?>></div>
+		<?php endif; ?>
 	<?php else : ?>
 
 		<?php if (!empty($label)) : ?>
@@ -79,31 +81,35 @@ if (!empty($options['gridField']))
 			</div>
 		<?php endif; ?>
 
-		<div<?php echo $gridField; ?>>
+		<?php if (!empty($gridField)) : ?>
+			<div<?php echo $gridField; ?>>
+		<?php endif; ?>
 
-			<?php if (!empty($options['icon'])) : ?>
-				<?php echo $this->sublayout(
-					'icon_prepend',
-					array(
-						'icon'  => $options['icon'],
-						'input' => $input,
-					)
-				); ?>
-			<?php else : ?>
-				<?php echo $input; ?>
-			<?php endif; ?>
+		<?php if (!empty($options['icon'])) : ?>
+			<?php echo $this->sublayout(
+				'icon_prepend',
+				array(
+					'icon'  => $options['icon'],
+					'input' => $input,
+				)
+			); ?>
+		<?php else : ?>
+			<?php echo $input; ?>
+		<?php endif; ?>
 
-			<?php if ($showfieldMarkerDesc) : ?>
-				<div id="<?php echo $options['id'] . '-marker'; ?>" class="marker <?php echo $descriptionClass; ?>">
-					<small><?php echo $fieldMarkerDesc; ?></small><br/>
-				</div>
-			<?php endif; ?>
+		<?php if ($showfieldMarkerDesc) : ?>
+			<div id="<?php echo $options['id'] . '-marker'; ?>" class="marker <?php echo $descriptionClass; ?>">
+				<small><?php echo $fieldMarkerDesc; ?></small><br/>
+			</div>
+		<?php endif; ?>
 
-			<?php if ($showFieldDescription) : ?>
-				<div id="<?php echo $options['id'] . '-desc'; ?>" class="description <?php echo $descriptionClass; ?>">
-					<small><?php echo $description; ?></small>
-				</div>
-			<?php endif; ?>
-		</div>
+		<?php if ($showFieldDescription) : ?>
+			<div id="<?php echo $options['id'] . '-desc'; ?>" class="description <?php echo $descriptionClass; ?>">
+				<small><?php echo $description; ?></small>
+			</div>
+		<?php endif; ?>
+		<?php if (!empty($gridField)) : ?>
+			</div>
+		<?php endif; ?>
 	<?php endif; ?>
 </div>
