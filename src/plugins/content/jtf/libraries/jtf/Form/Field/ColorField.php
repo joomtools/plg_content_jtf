@@ -24,15 +24,15 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Color Form Field class for the Joomla Platform.
  * This implementation is designed to be compatible with HTML5's `<input type="color">`
  *
- * @link    http://www.w3.org/TR/html-markup/input.color.html
- * @since   3.0.0
+ * @since  3.0.0
  */
 class ColorField extends \JFormFieldColor
 {
 	/**
 	 * The control.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $control;

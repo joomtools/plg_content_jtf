@@ -24,8 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Provides radio button inputs
  *
- * @link   http://www.w3.org/TR/html-markup/command.radio.html#command.radio
- * @since  1.7.0
+ * @since  3.0.0
  */
 class RadioField extends \JFormFieldRadio
 {

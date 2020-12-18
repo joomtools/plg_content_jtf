@@ -19,24 +19,25 @@ use Jtf\Form\FormFieldExtension;
  * Form Field class for the Joomla Platform.
  * Supports a one line text field.
  *
- * @link   http://www.w3.org/TR/html-markup/input.text.html#input.text
- * @since  11.1
+ * @since  3.0.0
  */
 class PlzField extends FormField
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var    string
-	 * @since  11.1
+	 * @var   string
+	 *
+	 * @since  3.0.0
 	 */
 	protected $type = 'Plz';
 
 	/**
 	 * Name of the layout being used to render the field
 	 *
-	 * @var    string
-	 * @since  3.7
+	 * @var   string
+	 *
+	 * @since  3.0.0
 	 */
 	protected $layout = 'joomla.form.field.plz';
 

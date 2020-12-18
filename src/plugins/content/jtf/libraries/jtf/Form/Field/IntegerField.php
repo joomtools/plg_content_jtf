@@ -24,7 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Provides a select list of integers with specified first, last and step values.
  *
- * @since   3.0.0
+ * @since  3.0.0
  */
 class IntegerField extends \JFormFieldInteger
 {

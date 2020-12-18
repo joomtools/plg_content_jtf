@@ -6,7 +6,7 @@
 	<copyright>(C) JoomTools. All rights reserved.</copyright>
 	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
 	<authorEmail>support@joomtools.de</authorEmail>
-	<authorUrl>https://github.com/JoomTools/plg_content_jtf</authorUrl>
+	<authorUrl>https://github.com/joomtools/plg_content_jtf</authorUrl>
 	<version>##VERSION##</version>
 	<description>JTF_XML_DESC</description>
 	<files>
@@ -123,14 +123,14 @@
 				       label="JTF_XML_DEBUG_LABEL"
 				       description="JTF_XML_DEBUG_DESC"
 				>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
+					<option value="0">JOFF</option>
+					<option value="1">JON</option>
 				</field>
 			</fieldset>
 		</fields>
 	</config>
 
 	<updateservers>
-		<server type="extension" priority="1" name="JTF_XML_NAME">https://raw.githubusercontent.com/JoomTools/plg_content_jtf/master/update.xml</server>
+		<server type="extension" priority="1" name="JTF_XML_NAME">https://raw.githubusercontent.com/joomtools/plg_content_jtf/master/update.xml</server>
 	</updateservers>
 </extension>

@@ -25,8 +25,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Single checkbox field.
  * This is a boolean field with null for false and the specified option for true
  *
- * @link    http://www.w3.org/TR/html-markup/input.checkbox.html#input.checkbox
- * @since   3.0.0
+ * @since  3.0.0
  */
 class CheckboxField extends \JFormFieldCheckbox
 {

@@ -27,7 +27,8 @@ class SubmitField extends FormField
 	/**
 	 * The form field type.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $type = 'Submit';
@@ -35,13 +36,14 @@ class SubmitField extends FormField
 	/**
 	 * Name of the layout being used to render the field
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $layout = 'joomla.form.field.submit';
 
 	use FormFieldExtension {
-		getLayoutData as traitgetLayoutData;
+		getLayoutData as traitGetLayoutData;
 	}
 
 	/**
@@ -49,11 +51,11 @@ class SubmitField extends FormField
 	 *
 	 * @return  string  The field label markup.
 	 *
-	 * @since   3.0.0
+	 * @since  3.0.0
 	 */
-	protected function getLabel()
+	protected function getLabel(): string
 	{
-		$data = $this->traitgetLayoutData();
+		$data = $this->traitGetLayoutData();
 
 		if ($data['label'] == $this->fieldname)
 		{

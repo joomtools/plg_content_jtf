@@ -13,25 +13,55 @@ namespace Jtf\Framework;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\FormField;
 use Joomla\Utilities\ArrayHelper;
+use Jtf\Form\Form;
 
+/**
+ * Helper for css framework
+ *
+ * @since  3.0.0
+ */
 class FrameworkHelper
 {
+	/**
+	 * @var   boolean
+	 *
+	 * @since  3.0.0
+	 */
 	private static $flexboxCssFix = false;
+
+	/**
+	 * @var   boolean
+	 *
+	 * @since  3.0.0
+	 */
 	private static $frameworkCssSet = false;
 
 	/**
-	 * @var    \Jtf\Form\Form
+	 * @var   Form
+	 *
 	 * @since  3.0.0
 	 */
-	private $form = null;
+	private $form;
+
+	/**
+	 * @var   array[]
+	 *
+	 * @since  3.0.0
+	 */
 	private $classes = array(
 		'frwk'     => array(),
 		'form'     => array(),
 		'fieldset' => array(),
 		'field'    => array(),
 	);
+
+	/**
+	 * @var   string[]
+	 *
+	 * @since  3.0.0
+	 */
 	private $fieldAttributes = array(
 		'gridgroup',
 		'gridglabel',
@@ -47,16 +77,52 @@ class FrameworkHelper
 		'optionlabelclass',
 		'descriptionclass',
 	);
-	private $frwk        = null;
-	private $frwkClasses = null;
+
+	/**
+	 * @var   object
+	 *
+	 * @since  3.0.0
+	 */
+	private $frwk;
+
+	/**
+	 * @var   array[]
+	 *
+	 * @since  3.0.0
+	 */
+	private $frwkClasses = array();
+
+	/**
+	 * @var   array[]
+	 *
+	 * @since  3.0.0
+	 */
 	private $hiddenLabel = array(
 		'form' => null,
 		'fieldset' => null,
 		'field' => null,
 	);
-	private $hiddenLabelTypes = array('note', 'submit');
 
-	public static function setFrameworkClasses($form)
+	/**
+	 * @var   string[]
+	 *
+	 * @since  3.0.0
+	 */
+	private $hiddenLabelTypes = array(
+		'note',
+		'submit'
+	);
+
+	/**
+	 * Set framework specific css classes
+	 *
+	 * @param   Form  $form  Form to manipulate
+	 *
+	 * @return  Form
+	 *
+	 * @since  3.0.0
+	 */
+	public static function setFrameworkClasses(Form $form): Form
 	{
 		$self       = new static;
 		$self->form = $form;
@@ -68,6 +134,13 @@ class FrameworkHelper
 		return $self->form;
 	}
 
+	/**
+	 * Get framework specific css classes from defined framework class
+	 *
+	 * @return  void
+	 *
+	 * @since  3.0.0
+	 */
 	private function getFrameworkClass()
 	{
 		$form        =& $this->form;
@@ -92,7 +165,7 @@ class FrameworkHelper
 
 		if (in_array($framework, array('uikit')))
 		{
-			$this->setFelxboxCssFix();
+			$this->setFlexboxCssFix();
 		}
 
 		$frwkClassName     = 'Jtf\\Framework\\' . ucfirst($framework);
@@ -118,20 +191,36 @@ class FrameworkHelper
 		}
 
 		// Probably not more needed
-		$form->frwkClasses = $frwk;
+		// $form->frwkClasses = $frwk;
 	}
 
-	private function setFelxboxCssFix()
+	/**
+	 * Set css fix for uikit 2 flexbox
+	 *
+	 * @return  void
+	 *
+	 * @since  3.0.0
+	 */
+	private function setFlexboxCssFix()
 	{
 		if (self::$flexboxCssFix !== true)
 		{
-			$cssFix = '.fix-flexbox{max-width:100%;box-sizing: border-box;}';
+			$cssFix = '.fix-flexbox{max-width:100%;box-sizing:border-box;}';
 			Factory::getDocument()->addStyleDeclaration($cssFix);
 			self::$flexboxCssFix = true;
 		}
 	}
 
-	private function setFrameworkCss($css)
+	/**
+	 * Set framework specific css
+	 *
+	 * @param   string  $css  Css to add as style declaration in head
+	 *
+	 * @return  void
+	 *
+	 * @since  3.0.0
+	 */
+	private function setFrameworkCss(string $css)
 	{
 		if (self::$frameworkCssSet !== true)
 		{
@@ -140,7 +229,17 @@ class FrameworkHelper
 		}
 	}
 
-	private function getClassArray($classes, &$target = array())
+	/**
+	 * Format form field css classes to an array
+	 *
+	 * @param   mixed  $classes  String or array with css classes
+	 * @param   array  $target   Array to merge css classes
+	 *
+	 * @return  array
+	 *
+	 * @since  3.0.0
+	 */
+	private function getClassArray($classes, &$target = array()): array
 	{
 		if (empty($classes))
 		{
@@ -173,6 +272,13 @@ class FrameworkHelper
 		return $target;
 	}
 
+	/**
+	 * Get special attributes from form element
+	 *
+	 * @return  void
+	 *
+	 * @since  3.0.0
+	 */
 	private function getFormAttributes()
 	{
 		$form        =& $this->form;
@@ -202,6 +308,13 @@ class FrameworkHelper
 		$this->classes['form']['gridfield'] = $this->getClassArray($form->getAttribute('gridfield'));
 	}
 
+	/**
+	 * Get special attributes from fieldset element
+	 *
+	 * @return  void
+	 *
+	 * @since  3.0.0
+	 */
 	private function getFieldsetAttributes()
 	{
 		$form            =& $this->form;
@@ -334,10 +447,10 @@ class FrameworkHelper
 
 				foreach ($fields as $field)
 				{
-					// Recursion on subformfield
+					// Recursion on subform field
 					if (strtolower($field->type) == 'subform')
 					{
-						FrameworkHelper::setFrameworkClasses($field->loadSubForm());
+						self::setFrameworkClasses($field->loadSubForm());
 
 						if ($field->loadSubForm()->setEnctype)
 						{
@@ -360,13 +473,22 @@ class FrameworkHelper
 		}
 	}
 
-	private function setFieldClass($field)
+	/**
+	 * Set framework specific css classes to form field
+	 *
+	 * @param   FormField  $field  Form field to manipulate
+	 *
+	 * @return  void
+	 *
+	 * @since  3.0.0
+	 */
+	private function setFieldClass(FormField $field)
 	{
 		$form        =& $this->form;
 		$frwkClasses = $this->frwkClasses;
 		$classes     = $this->classes;
 		$type        = $field->getAttribute('type');
-		$fieldname   = $field->getAttribute('name');
+		$fieldName   = $field->getAttribute('name');
 
 		$frwkClassesOptionsFields = array(
 			'checkboxes', 'radio',
@@ -394,24 +516,16 @@ class FrameworkHelper
 
 		switch (true)
 		{
-			case ($this->hiddenLabel['field']):
-				$fieldHiddenLabel = true;
+			case !is_null($this->hiddenLabel['field']):
+				$fieldHiddenLabel = $this->hiddenLabel['field'];
 				break;
 
-			case ($this->hiddenLabel['field'] === false):
-				$fieldHiddenLabel = false;
+			case !is_null($this->hiddenLabel['fieldset']):
+				$fieldHiddenLabel = $this->hiddenLabel['fieldset'];
 				break;
 
-			case ($this->hiddenLabel['fieldset']):
-				$fieldHiddenLabel = true;
-				break;
-
-			case ($this->hiddenLabel['fieldset'] === false):
-				$fieldHiddenLabel = false;
-				break;
-
-			case ($this->hiddenLabel['form']):
-				$fieldHiddenLabel = true;
+			case !is_null($this->hiddenLabel['form']):
+				$fieldHiddenLabel = $this->hiddenLabel['form'];
 				break;
 
 			default:
@@ -420,7 +534,7 @@ class FrameworkHelper
 
 		if ($fieldHiddenLabel || in_array($type, $this->hiddenLabelTypes))
 		{
-			$form->setFieldAttribute($fieldname, 'hiddenlabel', true);
+			$form->setFieldAttribute($fieldName, 'hiddenlabel', true);
 		}
 
 		if (in_array($type, $frwkClassesDefaultFields))
@@ -458,7 +572,7 @@ class FrameworkHelper
 
 		if (in_array($type, $noIconFields))
 		{
-			$form->setFieldAttribute($fieldname, 'icon', null);
+			$form->setFieldAttribute($fieldName, 'icon', null);
 		}
 
 		if (in_array($type, $frwkClassesOptionsFields))
@@ -484,65 +598,65 @@ class FrameworkHelper
 			$optionClass      = ArrayHelper::arrayUnique($optionClass);
 			$optionLabelClass = ArrayHelper::arrayUnique($optionLabelClass);
 
-			$form->setFieldAttribute($fieldname, 'optionclass', implode(' ', $optionClass));
-			$form->setFieldAttribute($fieldname, 'optionlabelclass', implode(' ', $optionLabelClass));
+			$form->setFieldAttribute($fieldName, 'optionclass', implode(' ', $optionClass));
+			$form->setFieldAttribute($fieldName, 'optionlabelclass', implode(' ', $optionLabelClass));
 		}
 
 		if (in_array($type, $buttonWithIconFields))
 		{
-			$uploadicon  = null;
-			$buttonicon  = null;
-			$buttonclass = null;
+			$uploadIcon  = null;
+			$buttonIcon  = null;
+			$buttonClass = null;
 
 			if (!empty($classes['frwk']['uploadicon']))
 			{
-				$uploadicon  = $this->getClassArray($classes['frwk']['uploadicon']);
+				$uploadIcon  = $this->getClassArray($classes['frwk']['uploadicon']);
 			}
 
 			if (!empty($classes['frwk']['buttonicon']))
 			{
-				$buttonicon  = $this->getClassArray($classes['frwk']['buttonicon']);
+				$buttonIcon  = $this->getClassArray($classes['frwk']['buttonicon']);
 			}
 
 			if (!empty($classes['frwk']['buttonclass']))
 			{
-				$buttonclass = $this->getClassArray($classes['frwk']['buttonclass']);
+				$buttonClass = $this->getClassArray($classes['frwk']['buttonclass']);
 			}
 
 			if (!empty($classes['field']['icon']))
 			{
 				if ($type == 'file')
 				{
-					$uploadicon = $this->getClassArray($classes['field']['icon']);
+					$uploadIcon = $this->getClassArray($classes['field']['icon']);
 				}
 				else
 				{
-					$buttonicon = $this->getClassArray($classes['field']['icon']);
+					$buttonIcon = $this->getClassArray($classes['field']['icon']);
 				}
 			}
 
 			if (!empty($classes['field']['uploadicon']))
 			{
-				$uploadicon = $this->getClassArray($classes['field']['uploadicon']);
+				$uploadIcon = $this->getClassArray($classes['field']['uploadicon']);
 			}
 
 			if (!empty($classes['field']['buttonicon']))
 			{
-				$buttonicon = $this->getClassArray($classes['field']['buttonicon']);
+				$buttonIcon = $this->getClassArray($classes['field']['buttonicon']);
 			}
 
 			if (!empty($classes['field']['buttonclass']))
 			{
-				$buttonclass = array_merge(
-					!empty($buttonclass)
-						? $buttonclass
+				$buttonClass = array_merge(
+					!empty($buttonClass)
+						? $buttonClass
 						: array(),
 					!empty($classes['field']['buttonclass'])
 						? $this->getClassArray($classes['field']['buttonclass'])
 						: array()
 				);
 
-				$buttonclass = ArrayHelper::arrayUnique($buttonclass);
+				$buttonClass = ArrayHelper::arrayUnique($buttonClass);
 			}
 
 			if ($type == 'file')
@@ -550,30 +664,31 @@ class FrameworkHelper
 				$form->setEnctype = true;
 			}
 
-			if (!empty($uploadicon))
+			if (!empty($uploadIcon))
 			{
-				$form->setFieldAttribute($fieldname, 'uploadicon', implode(' ', $uploadicon));
+				$form->setFieldAttribute($fieldName, 'uploadicon', implode(' ', $uploadIcon));
 			}
 
-			if (!empty($buttonicon))
+			if (!empty($buttonIcon))
 			{
-				$form->setFieldAttribute($fieldname, 'buttonicon', implode(' ', $buttonicon));
+				$form->setFieldAttribute($fieldName, 'buttonicon', implode(' ', $buttonIcon));
 			}
 
-			if (!empty($buttonclass))
+			if (!empty($buttonClass))
 			{
-				$form->setFieldAttribute($fieldname, 'buttonclass', implode(' ', $buttonclass));
+				$form->setFieldAttribute($fieldName, 'buttonclass', implode(' ', $buttonClass));
 			}
 
-			if (!empty($uploadicon) || !empty($buttonicon) || !empty($buttonclass))
+			if (!empty($uploadIcon) || !empty($buttonIcon) || !empty($buttonClass))
 			{
-				$form->setFieldAttribute($fieldname, 'icon', null);
+				$form->setFieldAttribute($fieldName, 'icon', null);
 			}
 		}
 
 		if ($type == 'note')
 		{
-			unset($classes['form']['gridfield'],
+			unset(
+				$classes['form']['gridfield'],
 				$classes['fieldset']['gridfield'],
 				$classes['field']['gridfield'],
 				$classes['form']['gridlabel'],
@@ -581,7 +696,7 @@ class FrameworkHelper
 				$classes['field']['gridlabel']
 			);
 
-			$form->setFieldAttribute($fieldname, 'icon', null);
+			$form->setFieldAttribute($fieldName, 'icon', null);
 		}
 
 		$fieldClass = array_merge(
@@ -595,93 +710,91 @@ class FrameworkHelper
 
 		$fieldClass = ArrayHelper::arrayUnique($fieldClass);
 
-		$form->setFieldAttribute($fieldname, 'class', implode(' ', $fieldClass));
+		$form->setFieldAttribute($fieldName, 'class', implode(' ', $fieldClass));
 
-		$gridgroup = !empty($classes['frwk']['gridgroup'])
+		$gridGroup = !empty($classes['frwk']['gridgroup'])
 			? $classes['frwk']['gridgroup']
 			: array();
-		$gridlabel = !empty($classes['frwk']['gridlabel'])
+		$gridLabel = !empty($classes['frwk']['gridlabel'])
 			? $classes['frwk']['gridlabel']
 			: array();
-		$gridfield = !empty($classes['frwk']['gridfield'])
+		$gridField = !empty($classes['frwk']['gridfield'])
 			? $classes['frwk']['gridfield']
 			: array();
 
 		if (!empty($classes['field']['gridgroup']))
 		{
-			$gridgroup = array_merge(
-				$gridgroup,
+			$gridGroup = array_merge(
+				$gridGroup,
 				$classes['field']['gridgroup']
 			);
 		}
 		elseif (!empty($classes['fieldset']['gridgroup']))
 		{
-			$gridgroup = array_merge(
-				$gridgroup,
+			$gridGroup = array_merge(
+				$gridGroup,
 				$classes['fieldset']['gridgroup']
 			);
 		}
 		elseif (!empty($classes['form']['gridgroup']))
 		{
-			$gridgroup = array_merge(
-				$gridgroup,
+			$gridGroup = array_merge(
+				$gridGroup,
 				$classes['form']['gridgroup']
 			);
 		}
 
 		if (!empty($classes['field']['gridlabel']))
 		{
-			$gridlabel = array_merge(
-				$gridlabel,
+			$gridLabel = array_merge(
+				$gridLabel,
 				$classes['field']['gridlabel']
 			);
 		}
 		elseif (!empty($classes['fieldset']['gridlabel']))
 		{
-			$gridlabel = array_merge(
-				$gridlabel,
+			$gridLabel = array_merge(
+				$gridLabel,
 				$classes['fieldset']['gridlabel']
 			);
 		}
 		elseif (!empty($classes['form']['gridlabel']))
 		{
-			$gridlabel = array_merge(
-				$gridlabel,
+			$gridLabel = array_merge(
+				$gridLabel,
 				$classes['form']['gridlabel']
 			);
 		}
 
 		if (!empty($classes['field']['gridfield']))
 		{
-			$gridfield = array_merge(
-				$gridfield,
+			$gridField = array_merge(
+				$gridField,
 				$classes['field']['gridfield']
 			);
 		}
 		elseif (!empty($classes['fieldset']['gridfield']))
 		{
-			$gridfield = array_merge(
-				$gridfield,
+			$gridField = array_merge(
+				$gridField,
 				$classes['fieldset']['gridfield']
 			);
 		}
 		elseif (!empty($classes['form']['gridfield']))
 		{
-			$gridfield = array_merge(
-				$gridfield,
+			$gridField = array_merge(
+				$gridField,
 				$classes['form']['gridfield']
 			);
 		}
 
 		if (empty($classes['field']['descriptionclass']) && !empty($frwkClasses['descriptionclass']))
 		{
-			$form->setFieldAttribute($fieldname, 'descriptionclass', implode(' ', $frwkClasses['descriptionclass']));
+			$form->setFieldAttribute($fieldName, 'descriptionclass', implode(' ', $frwkClasses['descriptionclass']));
 		}
 
-		$form->setFieldAttribute($fieldname, 'gridgroup', implode(' ', $gridgroup));
-		$form->setFieldAttribute($fieldname, 'gridlabel', implode(' ', $gridlabel));
-		$form->setFieldAttribute($fieldname, 'gridfield', implode(' ', $gridfield));
-
-		return;
+		$form->setFieldAttribute($fieldName, 'gridgroup', implode(' ', $gridGroup));
+		$form->setFieldAttribute($fieldName, 'gridlabel', implode(' ', $gridLabel));
+		$form->setFieldAttribute($fieldName, 'gridfield', implode(' ', $gridField));
 	}
 }

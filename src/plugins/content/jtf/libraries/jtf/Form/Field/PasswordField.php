@@ -24,9 +24,8 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Text field for passwords
  *
- * @link    http://www.w3.org/TR/html-markup/input.password.html#input.password
- * @note    Two password fields may be validated as matching using JFormRuleEquals
- * @since   3.0.0
+ * @note   Two password fields may be validated as matching using JFormRuleEquals
+ * @since  3.0.0
  */
 class PasswordField extends \JFormFieldPassword
 {

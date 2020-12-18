@@ -13,12 +13,13 @@ namespace Jtf\Form\Field;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
+use Jtf\Form\Form;
 use Jtf\Form\FormFieldExtension;
 
 /**
  * Captcha field.
  *
- * @since   3.0.0
+ * @since  3.0.0
  */
 class CaptchaField extends \Joomla\CMS\Form\Field\CaptchaField
 {
@@ -35,17 +36,18 @@ class CaptchaField extends \Joomla\CMS\Form\Field\CaptchaField
 	 *                                       For example if the field has name="foo" and the group value is set to "bar" then the
 	 *                                       full field name would end up being "bar[foo]".
 	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @since   3.0.0
+	 * @return  boolean     True on success.
+	 * @throws  \Exception
+
+	 * @since  3.0.0
 	 */
-	public function setup(\SimpleXMLElement $element, $value, $group = null)
+	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
 	{
 		$app = Factory::getApplication();
 
 		$default = $app->get('captcha');
 
-		if ($app->isClient('site') && $this->form instanceof \Jtf\Form\Form)
+		if ($app->isClient('site') && $this->form instanceof Form)
 		{
 			$app->getParams()->set('captcha', $default);
 		}

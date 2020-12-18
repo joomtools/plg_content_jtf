@@ -24,7 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Implements a combo box field.
  *
- * @since  1.7.0
+ * @since  3.0.0
  */
 class ComboField extends \JFormFieldCombo
 {

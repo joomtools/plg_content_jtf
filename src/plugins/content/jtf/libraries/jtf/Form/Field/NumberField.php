@@ -24,8 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Provides a one line text box with up-down handles to set a number in the field.
  *
- * @link    http://www.w3.org/TR/html-markup/input.text.html#input.text
- * @since   3.0.0
+ * @since  3.0.0
  */
 class NumberField extends \JFormFieldNumber
 {

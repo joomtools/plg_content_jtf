@@ -24,15 +24,16 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Supports a generic list of options.
  *
- * @since   3.0.0
+ * @since  3.0.0
  */
 class ListField extends \JFormFieldList
 {
 	/**
 	 * Name of the layout being used to render the field
 	 *
-	 * @var     string
-	 * @since   3.0.0
+	 * @var   string
+	 *
+	 * @since  3.0.0
 	 */
 	protected $layout = 'joomla.form.field.list';
 
@@ -42,10 +43,11 @@ class ListField extends \JFormFieldList
 	 * Method to get the field input markup for a generic list.
 	 * Use the multiple attribute to enable multiselect.
 	 *
-	 * @return   string  The field input markup.
-	 * @since    3.0.0
+	 * @return  string  The field input markup.
+	 *
+	 * @since  3.0.0
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		$data = $this->getLayoutData();
 

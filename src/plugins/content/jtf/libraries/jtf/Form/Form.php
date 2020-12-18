@@ -13,7 +13,6 @@ namespace Jtf\Form;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
-use Joomla\CMS\Factory;
 
 /**
  * Form Class for the Joomla Platform.
@@ -29,7 +28,8 @@ class Form extends \Joomla\CMS\Form\Form
 	/**
 	 * Array of layoutPaths.
 	 *
-	 * @var    array
+	 * @var   array
+	 *
 	 * @since  3.0.0
 	 */
 	public $layoutPaths = array();
@@ -37,7 +37,8 @@ class Form extends \Joomla\CMS\Form\Form
 	/**
 	 * Array of frameworks.
 	 *
-	 * @var    array
+	 * @var   array
+	 *
 	 * @since  3.0.0
 	 */
 	public $framework = array();
@@ -45,7 +46,8 @@ class Form extends \Joomla\CMS\Form\Form
 	/**
 	 * Set enctype.
 	 *
-	 * @var    boolean
+	 * @var   boolean
+	 *
 	 * @since  3.0.0
 	 */
 	public $setEnctype = false;
@@ -53,7 +55,8 @@ class Form extends \Joomla\CMS\Form\Form
 	/**
 	 * Set the option to display the required field description.
 	 *
-	 * @var    boolean
+	 * @var   boolean
+	 *
 	 * @since  3.0.0
 	 */
 	public $showRequiredFieldDescription = true;
@@ -61,7 +64,8 @@ class Form extends \Joomla\CMS\Form\Form
 	/**
 	 * Set the value for field description type.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	public $showfielddescriptionas = 'text';
@@ -69,7 +73,8 @@ class Form extends \Joomla\CMS\Form\Form
 	/**
 	 * Set the value for field marker.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	public $fieldmarker = 'optional';
@@ -77,7 +82,8 @@ class Form extends \Joomla\CMS\Form\Form
 	/**
 	 * Set the value for field marker place.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	public $fieldmarkerplace = 'field';
@@ -88,9 +94,9 @@ class Form extends \Joomla\CMS\Form\Form
 	 * @param   string  $name     The name of the form.
 	 * @param   array   $options  An array of form options.
 	 *
-	 * @since   3.0.0
+	 * @since  3.0.0
 	 */
-	public function __construct($name, array $options = array())
+	public function __construct(string $name, array $options = array())
 	{
 		parent::__construct($name, $options);
 	}
@@ -106,12 +112,13 @@ class Form extends \Joomla\CMS\Form\Form
 	 * @param   string|boolean  $xpath    An optional xpath to search for the fields.
 	 *
 	 * @return  Form  Form instance.
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 *
 	 * @throws  \InvalidArgumentException if no data provided.
 	 * @throws  \RuntimeException if the form could not be loaded.
 	 */
-	public static function getInstance($name, $data = null, $options = array(), $replace = true, $xpath = false)
+	public static function getInstance($name, $data = null, $options = array(), $replace = true, $xpath = false): Form
 	{
 		// Reference to array with form instances
 		$forms = &self::$forms;
@@ -153,12 +160,13 @@ class Form extends \Joomla\CMS\Form\Form
 	 * Set the value of an attribute of the form itself
 	 *
 	 * @param   string  $name   Name of the attribute to get
-	 * @param   string  $value  Value to set for the attribute
+	 * @param   null    $value  Value to set for the attribute
 	 *
 	 * @return  void
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	public function setAttribute($name, $value = null)
+	public function setAttribute(string $name, $value = null)
 	{
 		if ($this->xml instanceof \SimpleXMLElement)
 		{
@@ -185,7 +193,8 @@ class Form extends \Joomla\CMS\Form\Form
 	 * Reset submitted Values
 	 *
 	 * @return  void
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
 	public function resetData()
 	{
@@ -198,16 +207,17 @@ class Form extends \Joomla\CMS\Form\Form
 	 * @param   \SimpleXMLElement  $element  The XML element object representation of the form field.
 	 * @param   string             $group    The optional dot-separated form group path on which to find the field.
 	 * @param   mixed              $value    The optional value to use as the default for the field.
-	 * @param   Registry           $input    An optional Registry object with the entire data set to validate
+	 * @param   Registry|null      $input    An optional Registry object with the entire data set to validate
 	 *                                       against the entire form.
 	 *
 	 * @return  boolean  Boolean true if field value is valid, Exception on failure.
 	 *
+	 * @since  3.0.0
+	 *
 	 * @throws  \InvalidArgumentException
 	 * @throws  \UnexpectedValueException
-	 * @since   3.0.0
 	 */
-	protected function validateField(\SimpleXMLElement $element, $group = null, $value = null, Registry $input = null)
+	protected function validateField(\SimpleXMLElement $element, $group = null, $value = null, Registry $input = null): bool
 	{
 		if (!empty($showOn = (string) $element['showon']))
 		{
@@ -244,13 +254,13 @@ class Form extends \Joomla\CMS\Form\Form
 	/**
 	 * Evaluates whether the field was displayed
 	 *
-	 * @param   string  $showOn  The value of the showon attribute.
+	 * @param   string  $showOn  The value of the show on attribute.
 	 *
-	 * @return  bool
+	 * @return  boolean
 	 *
-	 * @since   3.0.0
+	 * @since  3.0.0
 	 */
-	private function isFieldShown($showOn)
+	private function isFieldShown(string $showOn): bool
 	{
 		$regex = array(
 			'search' => array(
@@ -272,17 +282,18 @@ class Form extends \Joomla\CMS\Form\Form
 	/**
 	 * Evaluate showon values
 	 *
-	 * @param   string[]  $values  Array of strings with showon name:value pair
+	 * @param   string[]  $values  Array of strings with show on name:value pair
 	 *
-	 * @return  bool
+	 * @return  boolean
 	 *
-	 * @since   3.0.0
+	 * @since  3.0.0
 	 */
-	private function fieldIsShownValidation($values)
+	private function fieldIsShownValidation(array $values): bool
 	{
-		$valuesSum      = count($values) -1;
+		$valuesSum      = count($values) - 1;
 		$conditionValid = array();
 		$values         = (array) $values;
+		$isShown        = false;
 
 		if (empty($values))
 		{
@@ -315,9 +326,9 @@ class Form extends \Joomla\CMS\Form\Form
 
 			list($fieldName, $expectedValue) = explode($separator, $value);
 
-			$fieldvalue      = (array) $this->getValue($fieldName);
-			$valueValidation = (($not === false && in_array($expectedValue, $fieldvalue))
-				|| ($not === true && !in_array($expectedValue, $fieldvalue)));
+			$fieldValue      = (array) $this->getValue($fieldName);
+			$valueValidation = (($not === false && in_array($expectedValue, $fieldValue))
+				|| ($not === true && !in_array($expectedValue, $fieldValue)));
 
 			if ($glue === '')
 			{

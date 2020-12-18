@@ -17,8 +17,7 @@ use Jtf\Form\FormFieldExtension;
 /**
  * A textarea field for content creation
  *
- * @see     Editor
- * @since   3.0.0
+ * @since  3.0.0
  */
 class EditorField extends \Joomla\CMS\Form\Field\EditorField
 {

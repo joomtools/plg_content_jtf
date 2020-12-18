@@ -28,7 +28,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Provides a pop up date picker linked to a button.
  * Optionally may be filtered to use user's or server's time zone.
  *
- * @since   3.0.0
+ * @since  3.0.0
  */
 class CalendarField extends \JFormFieldCalendar
 {
@@ -39,12 +39,12 @@ class CalendarField extends \JFormFieldCalendar
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   3.0.0
+	 * @since  3.0.0
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
-		$config    = Factory::getConfig();
-		$user      = Factory::getUser();
+		$config = Factory::getConfig();
+		$user   = Factory::getUser();
 
 		// Translate the format if requested
 		$translateFormat = (string) $this->element['translateformat'];
@@ -94,6 +94,7 @@ class CalendarField extends \JFormFieldCalendar
 					// Get a date object based on the correct timezone.
 					$date->setTimezone(new \DateTimeZone($config->get('offset')));
 				}
+				break;
 
 			case 'USER_UTC':
 				// Convert a date to UTC based on the user timezone.
@@ -102,6 +103,7 @@ class CalendarField extends \JFormFieldCalendar
 					// Get a date object based on the correct timezone.
 					$date->setTimezone($user->getTimezone());
 				}
+				break;
 
 			default:
 				// Transform the date string.

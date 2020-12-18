@@ -17,7 +17,7 @@ use Jtf\Form\FormFieldExtension;
 /**
  * List of Tags field.
  *
- * @since  3.1
+ * @since  3.0.0
  */
 class TagField extends \Joomla\CMS\Form\Field\TagField
 {

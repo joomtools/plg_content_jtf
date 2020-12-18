@@ -12,8 +12,8 @@ namespace Jtf\Form\Field;
 
 defined('JPATH_PLATFORM') or die;
 
-use Jtf\Form\Form;
 use Joomla\CMS\Form\FormHelper;
+use Jtf\Form\Form;
 use Jtf\Form\FormFieldExtension;
 
 if (version_compare(JVERSION, '4', 'lt'))
@@ -45,10 +45,11 @@ class SubformField extends \JFormFieldSubform
 	 * @param   string  $name   The property name for which to set the value.
 	 * @param   mixed   $value  The value of the property.
 	 *
-	 * @return   void
-	 * @since    3.0
+	 * @return  void
+	 *
+	 * @since  3.0
 	 */
-	public function __set($name, $value)
+	public function __set(string $name, $value)
 	{
 		switch ($name)
 		{
@@ -68,10 +69,11 @@ class SubformField extends \JFormFieldSubform
 	 * @param   mixed              $value    The form field value to validate.
 	 * @param   string             $group    The field name group control value.
 	 *
-	 * @return   boolean  True on success.
-	 * @since    3.0
+	 * @return  boolean  True on success.
+	 *
+	 * @since  3.0
 	 */
-	public function setup(\SimpleXMLElement $element, $value, $group = null)
+	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
 	{
 		if (!$this->traitSetup($element, $value, $group))
 		{
@@ -115,9 +117,9 @@ class SubformField extends \JFormFieldSubform
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   3.6
+	 * @since  3.0.0
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		// Prepare data for renderer
 		$data    = $this->getLayoutData();
@@ -134,13 +136,13 @@ class SubformField extends \JFormFieldSubform
 			return $e->getMessage();
 		}
 
-		$data['tmpl']      = $tmpl;
-		$data['forms']     = $forms;
-		$data['min']       = $this->min;
-		$data['max']       = $this->max;
-		$data['control']   = $control;
-		$data['buttons']   = $this->buttons;
-		$data['fieldname'] = $this->fieldname;
+		$data['tmpl']            = $tmpl;
+		$data['forms']           = $forms;
+		$data['min']             = $this->min;
+		$data['max']             = $this->max;
+		$data['control']         = $control;
+		$data['buttons']         = $this->buttons;
+		$data['fieldname']       = $this->fieldname;
 		$data['groupByFieldset'] = $this->groupByFieldset;
 
 		/**
@@ -148,8 +150,8 @@ class SubformField extends \JFormFieldSubform
 		 * separate unique subform id present to could distinguish the eventhandlers
 		 * regarding adding/moving/removing rows from nested subforms from their parents.
 		 */
-		static $unique_subform_id = 0;
-		$data['unique_subform_id'] = ('sr-' . ($unique_subform_id++));
+		static $uniqueSubformId = 0;
+		$data['unique_subform_id'] = ('sr-' . ($uniqueSubformId++));
 
 		// Prepare renderer
 		$renderer = $this->getRenderer($this->layout);
@@ -181,12 +183,12 @@ class SubformField extends \JFormFieldSubform
 	/**
 	 * Loads the Form instance for the subform.
 	 *
-	 * @return   Form  The form instance.
+	 * @return  Form  The form instance.
 	 *
-	 * @throws   \InvalidArgumentException if no form provided.
-	 * @throws   \RuntimeException if the form could not be loaded.
+	 * @throws  \InvalidArgumentException if no form provided.
+	 * @throws  \RuntimeException if the form could not be loaded.
 	 *
-	 * @since   3.0.0
+	 * @since  3.0.0
 	 */
 	public function loadSubForm()
 	{
@@ -213,12 +215,13 @@ class SubformField extends \JFormFieldSubform
 	/**
 	 * Binds given data to the subform and its elements.
 	 *
-	 * @param   Form  &$subForm  Form instance of the subform.
+	 * @param   Form  $subForm  Form instance of the subform.
 	 *
-	 * @return   Form[]  Array of Form instances for the rows.
-	 * @since    3.0.0
+	 * @return  Form[]  Array of Form instances for the rows.
+	 *
+	 * @since  3.0.0
 	 */
-	private function loadSubFormData(Form &$subForm)
+	private function loadSubFormData(Form &$subForm): array
 	{
 		$layoutPaths   = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
 		$framework     = !empty($this->form->framework) ? $this->form->framework : array();

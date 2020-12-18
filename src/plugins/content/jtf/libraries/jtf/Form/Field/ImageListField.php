@@ -23,7 +23,7 @@ if (version_compare(JVERSION, '4', 'lt'))
 /**
  * Supports an HTML select list of image
  *
- * @since   3.0.0
+ * @since  3.0.0
  */
 class ImageListField extends \JFormFieldImageList
 {

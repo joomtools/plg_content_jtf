@@ -12,6 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
 
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
@@ -53,7 +54,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @since  3.0.0
 	 */
-	private static $count;
+	private static $count = 0;
 
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -67,14 +68,14 @@ class PlgContentJtf extends CMSPlugin
 	/**
 	 * Global application object
 	 *
-	 * @var   \Joomla\CMS\Application\CMSApplication
+	 * @var   CMSApplication
 	 *
 	 * @since  3.0.0
 	 */
-	protected $app = null;
+	protected $app;
 
 	/**
-	 * Set captcha name
+	 * Set captcha field name
 	 *
 	 * @var   string
 	 *
@@ -98,7 +99,63 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @since  3.0.0
 	 */
-	private $form = null;
+	private $form;
+
+	/**
+	 * Array with User params
+	 *
+	 * @var   array[]
+	 *
+	 * @since  3.0.0
+	 */
+	private $uParams = array();
+
+	/**
+	 * Array with extension names (URL option) where jtf should not be executed.
+	 *
+	 * @var   array
+	 *
+	 * @since  3.0.0
+	 */
+	private $excludeOnExtensions = array(
+		'com_finder',
+		'com_config',
+	);
+
+	/**
+	 * @var   boolean
+	 *
+	 * @since  3.0.0
+	 */
+	private $doNotLoad = false;
+
+	/**
+	 * Array with allowed params to override
+	 *
+	 * @var   string[]
+	 *
+	 * @since  3.0.0
+	 */
+	private $uParamsAllowedOverride = array(
+		'fillouttime',
+		'mailto',
+		'cc',
+		'bcc',
+		'visitor_name',
+		'visitor_email',
+		'subject',
+		'message_article',
+		'redirect_menuid',
+		'theme',
+		'framework',
+	);
+
+	/**
+	 * @var   boolean
+	 *
+	 * @since  3.0.0
+	 */
+	private $debug = false;
 
 	/**
 	 * JFormField validation
@@ -128,70 +185,12 @@ class PlgContentJtf extends CMSPlugin
 	private $submitedFiles = [];
 
 	/**
-	 * Array with User params
-	 *
-	 * @var   array
-	 *
-	 * @since  3.0.0
-	 */
-	private $uParams = [];
-
-	/**
-	 * Array with extension names (URL option) where jtf should not be executed.
-	 *
-	 * @var   array
-	 *
-	 * @since  3.0.0
-	 */
-	private $excludeOnExtensions = array(
-		'com_finder',
-		'com_config',
-	);
-
-	/**
-	 * @var   boolean
-	 *
-	 * @since  3.0.0
-	 */
-	private $doNotLoad = false;
-
-	/**
-	 * Array with allowed params to override
-	 *
-	 * @var   array
-	 *
-	 * @since  3.0.0
-	 */
-	private $uParamsAllowedOverride = array(
-		'fillouttime',
-		'mailto',
-		'cc',
-		'bcc',
-		'visitor_name',
-		'visitor_email',
-		'subject',
-		'message_article',
-		'redirect_menuid',
-		'theme',
-		'framework',
-	);
-
-	/**
-	 * Debug
-	 *
-	 * @var   boolean
-	 *
-	 * @since  3.0.0
-	 */
-	private $debug = false;
-
-	/**
 	 * Constructor
 	 *
 	 * @param   object  $subject  The object to observe
 	 * @param   array   $config   An optional associative array of configuration settings.
-	 *                             Recognized key values include 'name', 'group', 'params', 'language'
-	 *                             (this list is not meant to be comprehensive).
+	 *                            Recognized key values include 'name', 'group', 'params', 'language'
+	 *                            (this list is not meant to be comprehensive).
 	 *
 	 * @since  3.0.0
 	 */
@@ -212,8 +211,6 @@ class PlgContentJtf extends CMSPlugin
 		{
 			$this->doNotLoad = true;
 		}
-
-		self::$count = 0;
 	}
 
 	/**
@@ -225,9 +222,10 @@ class PlgContentJtf extends CMSPlugin
 	 * @param   integer  $page     The 'page' number
 	 *
 	 * @return  void
-	 * @throws  \Exception
 	 *
 	 * @since  3.0.0
+	 *
+	 * @throws  \Exception
 	 */
 	public function onContentPrepare(string $context, object &$article, &$params, $page = 0)
 	{
@@ -583,9 +581,9 @@ class PlgContentJtf extends CMSPlugin
 	{
 		$error    = array();
 		$files    = array();
-		$pathinfo = pathinfo($filePath);
-		$ext      = $pathinfo['extension'];
-		$file     = $pathinfo['filename'];
+		$pathInfo = pathinfo($filePath);
+		$ext      = $pathInfo['extension'];
+		$file     = $pathInfo['filename'];
 		$template = $this->app->getTemplate();
 
 		foreach ($this->uParams['framework'] as $frwk)
@@ -665,11 +663,11 @@ class PlgContentJtf extends CMSPlugin
 	/**
 	 * Define form object, if not defined
 	 *
-	 * @return  object
+	 * @return  Form
 	 *
 	 * @since  3.0.0
 	 */
-	private function getForm()
+	private function getForm(): Form
 	{
 		if (!empty($this->form))
 		{
@@ -901,9 +899,10 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  boolean|\RuntimeException  Boolean true if successful, boolean false if the `mailonline` configuration is set to 0,
 	 *                                     or a JException object if the mail function does not exist or sending the message fails.
-	 * @throws  \RuntimeException
 	 *
 	 * @since  3.0.0
+	 *
+	 * @throws  \RuntimeException
 	 */
 	private function sendMail()
 	{
@@ -963,30 +962,29 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @param   string  $name  Field name of submitted value
 	 *
-	 * @return  mixed
+	 * @return  string
 	 *
 	 * @since  3.0.0
 	 */
-	private function getValue(string $name)
+	private function getValue(string $name): string
 	{
 		$data  = $this->getForm()->getData()->toArray();
-		$value = null;
+		$value = (string) $this->uParams[$name];
 
-		if (!empty($this->uParams[$name]))
+		if (!empty($value))
 		{
-			$value = $this->uParams[$name];
-
 			if (!empty($data[$value]))
 			{
-				$value = $data[$value];
+				return $data[$value];
 			}
 		}
-		elseif (!empty($data[$name]))
+
+		if (!empty($data[$name]))
 		{
-			$value = $data[$name];
+			return $data[$name];
 		}
 
-		return $value;
+		return '';
 	}
 
 	/**
@@ -1019,7 +1017,7 @@ class PlgContentJtf extends CMSPlugin
 				continue;
 			}
 
-			$items = explode(';', $this->uParams[$name]);
+			$items = explode(';', (string) $this->uParams[$name]);
 
 			if ($name == 'visitor_email')
 			{
@@ -1132,9 +1130,10 @@ class PlgContentJtf extends CMSPlugin
 	 * Get the content from article set as parameter for submit confirmation message
 	 *
 	 * @return  string
-	 * @throws  \Exception
 	 *
 	 * @since  3.0.0
+	 *
+	 * @throws  \Exception
 	 */
 	private function getMessageArticleContent(): string
 	{

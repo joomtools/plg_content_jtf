@@ -23,7 +23,7 @@ if (version_compare(JVERSION, '4', 'lt'))
 /**
  * Supports a custom SQL select list
  *
- * @since   3.0.0
+ * @since  3.0.0
  */
 class SQLField extends \JFormFieldSQL
 {

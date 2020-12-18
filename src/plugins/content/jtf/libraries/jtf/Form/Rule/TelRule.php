@@ -12,9 +12,9 @@ namespace Jtf\Form\Rule;
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormRule;
 use Joomla\Registry\Registry;
+use Jtf\Form\Form;
 
 /**
  * Form Rule class for the Joomla Platform
@@ -31,13 +31,14 @@ class TelRule extends FormRule
 	 * @param   string             $group    The field name group control value. This acts as an array container for the field.
 	 *                                       For example if the field has name="foo" and the group value is set to "bar" then the
 	 *                                       full field name would end up being "bar[foo]".
-	 * @param   Registry           $input    An optional Registry object with the entire data set to validate against the entire form.
-	 * @param   Form               $form     The form object for which the field is being tested.
+	 * @param   Registry|null      $input    An optional Registry object with the entire data set to validate against the entire form.
+	 * @param   Form|null          $form     The form object for which the field is being tested.
 	 *
-	 * @return   boolean  True if the value is valid, false otherwise.
-	 * @since    3.0.0
+	 * @return  boolean  True if the value is valid, false otherwise.
+	 *
+	 * @since  3.0.0
 	 */
-	public function test(\SimpleXMLElement $element, $value, $group = null, Registry $input = null, Form $form = null)
+	public function test(\SimpleXMLElement $element, $value, $group = null, Registry $input = null, Form $form = null): bool
 	{
 		// If the field is empty and not required, the field is valid.
 		$required = ((string) $element['required'] === 'true' || (string) $element['required'] === 'required');
@@ -56,7 +57,7 @@ class TelRule extends FormRule
 		 * @link http://blog.stevenlevithan.com/archives/validate-phone-number
 		 * @note that valid ITU-T and EPP must begin with +.
 		 */
-		$regexarray = array(
+		$regexArray = array(
 			'NANP' => '/^(?:\+?1[-. ]?)?\(?([2-9][0-8][0-9])\)?[-. ]?([2-9][0-9]{2})[-. ]?([0-9]{4})$/',
 			'ITU-T' => '/^\+(?:[0-9] ?){6,14}[0-9]$/',
 			'EPP' => '/^\+[0-9]{1,3}\.[0-9]{4,14}(?:x.+)?$/',
@@ -79,7 +80,7 @@ class TelRule extends FormRule
 				$plan = 'EPP';
 			}
 
-			$regex = $regexarray[$plan];
+			$regex = $regexArray[$plan];
 
 			// Test the value against the regular expression.
 			if (preg_match($regex, $value) == false)
@@ -94,10 +95,10 @@ class TelRule extends FormRule
 			 * 7 and 15 digits inclusive and no illegal characters (but common number separators
 			 * are allowed).
 			 */
-			$cleanvalue = preg_replace('/[+. \-(\)\/]/', '', $value);
+			$cleanValue = preg_replace('/[+. \-(\)\/]/', '', $value);
 			$regex = '/^[0-9]{7,15}?$/';
 
-			if (preg_match($regex, $cleanvalue) == true)
+			if (preg_match($regex, $cleanValue) == true)
 			{
 				return true;
 			}

@@ -24,7 +24,6 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Supports a one line text field.
  *
- * @link   http://www.w3.org/TR/html-markup/input.text.html#input.text
  * @since  3.0.0
  */
 class NoteField extends \JFormFieldNote
@@ -32,7 +31,8 @@ class NoteField extends \JFormFieldNote
 	/**
 	 * Name of the layout being used to render the field
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $layout = 'joomla.form.field.note';
@@ -47,9 +47,9 @@ class NoteField extends \JFormFieldNote
 	 *
 	 * @return  string  The field label markup.
 	 *
-	 * @since   11.1
+	 * @since  3.0.0
 	 */
-	protected function getLabel()
+	protected function getLabel(): string
 	{
 		return '';
 	}
@@ -59,9 +59,9 @@ class NoteField extends \JFormFieldNote
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   11.1
+	 * @since  3.0.0
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		return $this->getRenderer($this->layout)->render($this->getLayoutData());
 	}
@@ -71,19 +71,19 @@ class NoteField extends \JFormFieldNote
 	 *
 	 * @return  array
 	 *
-	 * @since   3.7.3
+	 * @since  3.0.0
 	 */
-	protected function getLayoutData()
+	protected function getLayoutData(): array
 	{
 		$data = $this->traitGetLayoutData();
 
 		if (empty($data['label']) && empty($data['description']))
 		{
-			return '';
+			return array();
 		}
 
 		$heading = $this->element['heading'] ? (string) $this->element['heading'] : 'h4';
-		$close = (string) $this->element['close'];
+		$close   = (string) $this->element['close'];
 
 		$extraData = array(
 			'heading' => $heading,

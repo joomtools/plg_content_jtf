@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -38,20 +39,19 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @since  3.0.0
 	 */
-	public $minimumPhp = '7.0';
+	public $minimumPhp = '7.3';
 
 	/**
 	 * Function to act prior the installation process begins
 	 *
-	 * @param   string      $action     Which action is happening (install|uninstall|discover_install|update)
-	 * @param   JInstaller  $installer  The class calling this method
+	 * @param   string     $action     Which action is happening (install|uninstall|discover_install|update)
+	 * @param   Installer  $installer  The class calling this method
 	 *
 	 * @return  boolean  True on success
-	 * @throws  Exception
-	 *
+	 * @throws \Exception
 	 * @since  3.0.0
 	 */
-	public function preflight($action, $installer)
+	public function preflight(string $action, Installer $installer): bool
 	{
 		$notDeleted = '';
 		$app        = Factory::getApplication();
@@ -119,14 +119,14 @@ class PlgContentJtfInstallerScript
 	}
 
 	/**
-	 * @param   string  $type     Wich type are orphans of (file or folder)
+	 * @param   string  $type     Which type are orphans of (file or folder)
 	 * @param   array   $orphans  Array of files or folders to delete
 	 *
 	 * @return  string
 	 *
 	 * @since   3.0.0
 	 */
-	private function deleteOrphans($type, array $orphans)
+	private function deleteOrphans(string $type, array $orphans): string
 	{
 		$notDeleted = '';
 
@@ -161,10 +161,55 @@ class PlgContentJtfInstallerScript
 	/**
 	 * Update plugin configuration
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @return  void
+	 *
+	 * @since  4.0.0
 	 */
 	protected function updatePlgConfig()
 	{
-		$db = Factory::getDbo();
+		$db    = Factory::getDbo();
+		$where = array(
+			$db->quoteName('name') . ' = ' . $db->quote('JTF_XML_NAME'),
+			$db->quoteName('type') . ' = ' . $db->quote('plugin'),
+			$db->quoteName('folder') . ' = ' . $db->quote('content'),
+			$db->quoteName('element') . ' = ' . $db->quote('jtf'),
+		);
+
+		$query = $db->getQuery(true)
+			->select($db->quoteName('params'))
+			->from($db->quoteName('#__extensions'))
+			->where($where);
+
+		$db->setQuery($query);
+
+		$result = json_decode($db->loadResult());
+
+		if ($result->framework == 'joomla')
+		{
+			$result->framework = 'bs4';
+
+			if (version_compare(JVERSION, '4', 'lt'))
+			{
+				$result->framework = 'bs2';
+			}
+		}
+
+		$captcha = '0';
+
+		if (!empty($result->captcha))
+		{
+			$captcha = '1';
+		}
+
+		$result->captcha = $captcha;
+
+		unset($result->component_exclusions);
+
+		$query = $db->getQuery(true)
+			->update($db->quoteName('#__extensions'))
+			->set($db->quoteName('params') . ' = ' . $db->quote(json_encode($result)))
+			->where($where);
+
+		$db->setQuery($query)->execute();
 	}
 }

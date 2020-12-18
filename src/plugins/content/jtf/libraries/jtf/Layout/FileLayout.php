@@ -16,8 +16,7 @@ defined('JPATH_PLATFORM') or die;
  * Base class for rendering a display layout
  * loaded from a layout file
  *
- * @link   https://docs.joomla.org/Special:MyLanguage/Sharing_layouts_across_views_or_extensions_with_JLayout
- * @since  3.0
+ * @since  3.0.0
  */
 class FileLayout extends \Joomla\CMS\Layout\FileLayout
 {
@@ -25,9 +24,10 @@ class FileLayout extends \Joomla\CMS\Layout\FileLayout
 	 * Check if the layout file exists
 	 *
 	 * @return  boolean
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	public function checkLayoutExists()
+	public function checkLayoutExists(): bool
 	{
 		$layoutPath = parent::getPath();
 

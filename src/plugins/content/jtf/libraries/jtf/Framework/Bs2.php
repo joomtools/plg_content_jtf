@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
  *                   ),
  *              );
  *
- * @since 3.0
+ * @since  3.0.0
  **/
 class Bs2
 {

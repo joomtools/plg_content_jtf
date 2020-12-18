@@ -26,7 +26,8 @@ trait FormFieldExtension
 	/**
 	 * The control.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $control;
@@ -34,7 +35,8 @@ trait FormFieldExtension
 	/**
 	 * The hidden state for the form field label.
 	 *
-	 * @var    boolean
+	 * @var   boolean
+	 *
 	 * @since  3.0.0
 	 */
 	protected $hiddenlabel = false;
@@ -42,7 +44,8 @@ trait FormFieldExtension
 	/**
 	 * The value of the gridgruop attribute.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $gridgroup;
@@ -50,7 +53,8 @@ trait FormFieldExtension
 	/**
 	 * The value of the gridlabel attribute.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $gridlabel;
@@ -58,7 +62,8 @@ trait FormFieldExtension
 	/**
 	 * The value of the gridfield attribute.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $gridfield;
@@ -66,7 +71,8 @@ trait FormFieldExtension
 	/**
 	 * The value of the optionlabelclass attribute.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $optionlabelclass;
@@ -74,7 +80,8 @@ trait FormFieldExtension
 	/**
 	 * The value of the optionclass attribute.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $optionclass;
@@ -82,7 +89,8 @@ trait FormFieldExtension
 	/**
 	 * The value of the icon attribute.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $icon;
@@ -90,7 +98,8 @@ trait FormFieldExtension
 	/**
 	 * The value of the buttonclass attribute.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $buttonclass;
@@ -98,7 +107,8 @@ trait FormFieldExtension
 	/**
 	 * The value of the buttonicon attribute.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $buttonicon;
@@ -106,7 +116,8 @@ trait FormFieldExtension
 	/**
 	 * The value of the description class based on framework.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $descriptionclass;
@@ -114,7 +125,8 @@ trait FormFieldExtension
 	/**
 	 * Set the value for field description type.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $showfielddescriptionas = 'text';
@@ -122,7 +134,8 @@ trait FormFieldExtension
 	/**
 	 * Set the value for field marker.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $fieldmarker = 'optional';
@@ -130,7 +143,8 @@ trait FormFieldExtension
 	/**
 	 * Set the value for field marker place.
 	 *
-	 * @var    string
+	 * @var   string
+	 *
 	 * @since  3.0.0
 	 */
 	protected $fieldmarkerplace = 'field';
@@ -141,9 +155,10 @@ trait FormFieldExtension
 	 * @param   string  $name  The property name for which to get the value.
 	 *
 	 * @return  mixed  The property value or null.
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	public function __get($name)
+	public function __get(string $name)
 	{
 		switch (strtolower($name))
 		{
@@ -179,9 +194,10 @@ trait FormFieldExtension
 	 * @param   mixed   $value  The value of the property.
 	 *
 	 * @return  void
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	public function __set($name, $value)
+	public function __set(string $name, $value)
 	{
 		switch (strtolower($name))
 		{
@@ -223,9 +239,10 @@ trait FormFieldExtension
 	 *                                       full field name would end up being "bar[foo]".
 	 *
 	 * @return  boolean  True on success.
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	public function setup(\SimpleXMLElement $element, $value, $group = null)
+	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
 	{
 		if (parent::setup($element, $value, $group))
 		{
@@ -286,9 +303,10 @@ trait FormFieldExtension
 	 * @param   array  $options  Options to be passed into the rendering of the field
 	 *
 	 * @return  string  A string containing the html for the control group
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	public function renderField($options = array())
+	public function renderField($options = array()): string
 	{
 		$type                = strtolower($this->type);
 		$fieldMarker         = $this->fieldmarker;
@@ -378,9 +396,10 @@ trait FormFieldExtension
 
 	/**
 	 * @return  Form
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	public function getForm()
+	public function getForm(): Form
 	{
 		return $this->form;
 	}
@@ -389,9 +408,10 @@ trait FormFieldExtension
 	 * Method to get the data to be passed to the layout for rendering.
 	 *
 	 * @return  array
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	protected function getLayoutData()
+	protected function getLayoutData(): array
 	{
 		$data = parent::getLayoutData();
 
@@ -418,9 +438,10 @@ trait FormFieldExtension
 	 * Method to get the field options.
 	 *
 	 * @return  array  The field option objects.
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	protected function getOptions()
+	protected function getOptions(): array
 	{
 		$options = parent::getOptions();
 
@@ -456,9 +477,10 @@ trait FormFieldExtension
 	 * @param   string  $layoutId  Id to load
 	 *
 	 * @return  FileLayout
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	protected function getRenderer($layoutId = 'default')
+	protected function getRenderer($layoutId = 'default'): FileLayout
 	{
 		$renderer = new FileLayout($layoutId);
 
@@ -473,7 +495,7 @@ trait FormFieldExtension
 
 		$framework = !empty($this->form->framework) ? $this->form->framework : array();
 
-		// Set Framwork as Layout->Suffix
+		// Set Framework as Layout->Suffix
 		if (!empty($framework))
 		{
 			$renderer->setSuffixes($framework);
@@ -493,9 +515,10 @@ trait FormFieldExtension
 	 * Allow to override renderer include paths in child fields
 	 *
 	 * @return  array
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	protected function getLayoutPaths()
+	protected function getLayoutPaths(): array
 	{
 		return !empty($this->form->layoutPaths) ? $this->form->layoutPaths : parent::getLayoutPaths();
 	}
@@ -504,9 +527,10 @@ trait FormFieldExtension
 	 * Is debug enabled for this field
 	 *
 	 * @return  boolean
-	 * @since   3.0.0
+	 *
+	 * @since  3.0.0
 	 */
-	protected function isDebugEnabled()
+	protected function isDebugEnabled(): bool
 	{
 		return ($this->getAttribute('debug', 'false') === 'true' || !empty($this->form->rendererDebug));
 	}

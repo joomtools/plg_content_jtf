@@ -25,8 +25,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Displays options as a list of checkboxes.
  * Multiselect may be forced to be true.
  *
- * @see     CheckboxesField
- * @since   3.0.0
+ * @since  3.0.0
  */
 class CheckboxesField extends \JFormFieldCheckboxes
 {

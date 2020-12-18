@@ -26,7 +26,6 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Provides an input field for files
  *
- * @link   http://www.w3.org/TR/html-markup/input.file.html#input.file
  * @since  3.0.0
  */
 class FileField extends \JFormFieldFile
@@ -34,7 +33,8 @@ class FileField extends \JFormFieldFile
 	/**
 	 * The icon shown for upload.
 	 *
-	 * @var    mixed
+	 * @var   mixed
+	 *
 	 * @since  3.0.0
 	 */
 	protected $uploadicon = null;
@@ -42,7 +42,8 @@ class FileField extends \JFormFieldFile
 	/**
 	 * The max upload size.
 	 *
-	 * @var    mixed
+	 * @var   mixed
+	 *
 	 * @since  3.0.0
 	 */
 	protected $uploadmaxsize = null;
@@ -62,9 +63,9 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  mixed  The property value or null.
 	 *
-	 * @since  3.0
+	 * @since  3.0.0
 	 */
-	public function __get($name)
+	public function __get(string $name)
 	{
 		switch ($name)
 		{
@@ -85,9 +86,9 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  void
 	 *
-	 * @since   3.2
+	 * @since  3.0.0
 	 */
-	public function __set($name, $value)
+	public function __set(string $name, $value)
 	{
 		switch ($name)
 		{
@@ -112,10 +113,10 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @see     JFormField::setup()
-	 * @since   3.0.0
+	 * @see    JFormField::setup()
+	 * @since  3.0.0
 	 */
-	public function setup(\SimpleXMLElement $element, $value, $group = null)
+	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
 	{
 		if (!$this->traitSetup($element, $value, $group))
 		{
@@ -140,9 +141,9 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   3.0.0
+	 * @since  3.0.0
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		// Switch the layouts
 		$this->layout = $this->control === 'simple' ? $this->layout . '.simple' : $this->layout;
@@ -154,10 +155,11 @@ class FileField extends \JFormFieldFile
 	/**
 	 * Method to get the data to be passed to the layout for rendering.
 	 *
-	 * @return   array
-	 * @since   3.0
+	 * @return  array
+	 *
+	 * @since  3.0.0
 	 */
-	protected function getLayoutData()
+	protected function getLayoutData(): array
 	{
 		$data = $this->traitGetLayoutData();
 

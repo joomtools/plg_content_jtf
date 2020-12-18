@@ -24,9 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Supports a URL text field
  *
- * @link    http://www.w3.org/TR/html-markup/input.url.html#input.url
- * @see     JFormRuleUrl for validation of full urls
- * @since   3.0.0
+ * @since  3.0.0
  */
 class UrlField extends \JFormFieldUrl
 {

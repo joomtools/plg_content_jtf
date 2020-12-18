@@ -23,8 +23,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Supports a one line text field.
  *
- * @link   http://www.w3.org/TR/html-markup/input.text.html#input.text
- * @since  1.7.0
+ * @since  3.0.0
  */
 class TextField extends \JFormFieldText
 {

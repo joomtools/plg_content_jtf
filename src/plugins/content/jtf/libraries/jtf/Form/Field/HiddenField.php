@@ -24,8 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Provides a hidden field
  *
- * @link    http://www.w3.org/TR/html-markup/input.hidden.html#input.hidden
- * @since   3.0.0
+ * @since  3.0.0
  */
 class HiddenField extends \JFormFieldHidden
 {
