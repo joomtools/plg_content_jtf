@@ -49,7 +49,7 @@ class SubformField extends \JFormFieldSubform
 	 *
 	 * @since  3.0
 	 */
-	public function __set(string $name, $value)
+	public function __set($name, $value)
 	{
 		switch ($name)
 		{

@@ -158,12 +158,13 @@ trait FormFieldExtension
 	 *
 	 * @since  3.0.0
 	 */
-	public function __get(string $name)
+	public function __get($name)
 	{
 		switch (strtolower($name))
 		{
 			case 'control':
 			case 'hiddenlabel':
+			case 'hiddenLabel':
 			case 'optionclass':
 			case 'optionlabelclass':
 			case 'gridgroup':
@@ -197,7 +198,7 @@ trait FormFieldExtension
 	 *
 	 * @since  3.0.0
 	 */
-	public function __set(string $name, $value)
+	public function __set($name, $value)
 	{
 		switch (strtolower($name))
 		{
@@ -219,6 +220,7 @@ trait FormFieldExtension
 				break;
 
 			case 'hiddenlabel':
+			case 'hiddenLabel':
 				$value       = (string) $value;
 				$name = strtolower($name);
 				$this->$name = ($value === 'true' || $value === $name || $value === '1');
@@ -339,9 +341,11 @@ trait FormFieldExtension
 
 		if ($issetHiddenLabel)
 		{
-			$this->labelclass             = 'jtfhp' . (string) $this->labelclass;
 			$this->fieldmarkerplace       = 'hint';
 			$this->showfielddescriptionas = 'text';
+			$this->labelclass             = !empty((string) $this->labelclass)
+				? 'jtfhp ' . (string) $this->labelclass
+				: 'jtfhp';
 
 			if (!$issetHint && $issetLabel && !$isHintExcludedField)
 			{
@@ -459,10 +463,7 @@ trait FormFieldExtension
 				? array()
 				: explode(' ', trim((string) $this->optionclass));
 			$optonClass      = ArrayHelper::arrayUnique(array_merge($globalOptonClass, $optonClass));
-			$optonLabelClass = empty((string) $this->labelclass)
-				? array()
-				: explode(' ', trim((string) $this->labelclass));
-			$optonLabelClass = ArrayHelper::arrayUnique(array_merge($globalOptonLabelClass, $optonLabelClass));
+			$optonLabelClass = ArrayHelper::arrayUnique($globalOptonLabelClass);
 
 			$option->class = implode(' ', $optonClass);
 			$option->labelclass = implode(' ', $optonLabelClass);

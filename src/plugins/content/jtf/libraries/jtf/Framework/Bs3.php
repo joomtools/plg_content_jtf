@@ -53,12 +53,11 @@ class Bs3
 		$inline            = $orientation == 'inline';
 		$this->orientation = $orientation;
 
-		$classes['css'] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label {text-align: left;}';
-		$classes['css'] .= '.jtf fieldset.radio {padding-top: 0;}';
-		$classes['css'] .= '.jtf .radio label.radio {display: block;}';
-		$classes['css'] .= '.jtf .radio label.radio-inline {display: inline-block;}';
-		$classes['css'] .= '.jtf .checkboxes label.checkbox {display: block;}';
-		$classes['css'] .= '.jtf .checkboxes label.checkbox-inline {display: inline-block;}';
+		$classes['css'] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label{text-align:left;}';
+		$classes['css'] .= '.jtf fieldset.radio :not(input){padding-top:0;}';
+		$classes['css'] .= '.jtf .radio label.radio:not(.radio-inline),.jtf .checkboxes label.checkbox:not(.checkbox-inline){display:block;margin-top:0;}';
+		$classes['css'] .= '.jtf .checkboxes label.checkbox:not(.checkbox-inline){padding-top:0;}';
+		$classes['css'] .= '.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:url("data:image/svg+xml;utf8,<svg fill=\"black\" height=\"24\" viewBox=\"0 0 32 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>") no-repeat center right;padding-right:24px;}';
 
 		$classes['class']['form'][] = 'form-validate';
 
@@ -92,6 +91,7 @@ class Bs3
 		);
 
 		$classes['class']['checkboxes'] = array(
+			'class' => array('checkbox'),
 			'options' => array(
 				'labelclass' => array('checkbox'),
 			),
@@ -143,12 +143,57 @@ class Bs3
 		switch ($orientation)
 		{
 			case 'horizontal':
-				return 'uk-form-horizontal';
+				return 'form-horizontal';
 
-			case 'stacked':
-				return 'uk-form-stacked';
+			case 'inline':
+				return 'form-inline';
+
+			default:
+				break;
 		}
 
 		return null;
+	}
+
+	public function getOrientationLabelsClasses($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return array(
+					'col-sm-3',
+					);
+
+			case 'stacked':
+				return array(
+					'col-sm-12',
+					);
+
+			default:
+				return array();
+		}
+	}
+
+	public function getOrientationFieldsClasses($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return array(
+					'col-sm-9',
+					);
+
+			case 'stacked':
+				return array(
+					'col-sm-12',
+					);
+
+			default:
+				return array();
+		}
 	}
 }

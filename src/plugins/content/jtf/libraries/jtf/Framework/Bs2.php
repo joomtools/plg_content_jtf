@@ -53,12 +53,15 @@ class Bs2
 		$inline            = $orientation == 'inline';
 		$this->orientation = $orientation;
 
-		$classes['css'] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label {width: auto; float: none; text-align: left;}';
-		$classes['css'] .= '.jtf .form-stacked fieldset:not(.form-horizontal) .controls {margin-left: 0;}';
-		$classes['css'] .= '.jtf .field-calendar .input-append .btn {padding: 4px 6px;}';
-		$classes['css'] .= '.jtf form .row {margin-left: 0;}';
-		$classes['css'] .= '.jtf .control-label label { font-weight: bold; }';
-		$classes['css'] .= '.jtf .radio-group { padding-left: 0; }';
+		$classes['css'] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label{width:auto;float:none;text-align:left;}';
+		$classes['css'] = '.jtf .form-horizontal .controls{margin-left:0;padding-left:20px;}';
+		$classes['css'] .= '.jtf .form-stacked fieldset:not(.form-horizontal) .controls{margin-left:0;}';
+		$classes['css'] .= '.jtf .field-calendar .input-append .btn{padding:7px 3px 0 7px;}';
+		$classes['css'] .= '.jtf .combobox.input-append .btn{padding:4px 8px 3px;}';
+		$classes['css'] .= '.jtf form .row{margin-left:0;}';
+		$classes['css'] .= '.jtf .control-label label{font-weight:bold;}';
+		$classes['css'] .= '.jtf .radio-group{padding-left:0;}';
+		$classes['css'] .= '.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:url("data:image/svg+xml;utf8,<svg fill=\"black\" height=\"24\" viewBox=\"0 0 32 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>") no-repeat center right;padding-right:24px;}';
 
 		$classes['class']['form'][] = 'form-validate';
 
@@ -145,12 +148,54 @@ class Bs2
 		switch ($orientation)
 		{
 			case 'horizontal':
-				return 'uk-form-horizontal';
+				return 'form-horizontal';
 
-			case 'stacked':
-				return 'uk-form-stacked';
+			case 'inline':
+				return 'form-inline';
 		}
 
 		return null;
+	}
+
+	public function getOrientationLabelsClasses($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return array(
+					'span3',
+				);
+
+			case 'inline':
+				return array();
+
+			default:
+				return array(
+					'span12',
+				);
+		}
+	}
+
+	public function getOrientationFieldsClasses($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return array(
+					'span9',
+				);
+
+			case 'inline':
+				return array();
+
+			default:
+			return array(
+				'span12',
+			);
+		}
 	}
 }

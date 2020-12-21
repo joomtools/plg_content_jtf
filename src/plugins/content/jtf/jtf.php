@@ -186,6 +186,7 @@ class PlgContentJtf extends CMSPlugin
 	{
 		// Don't run in administration Panel or when the content is being indexed
 		if (strpos($article->text, '{jtf') === false
+			|| ($context == 'com_content.category' && $this->app->input->getCmd('layout') != 'blog')
 			|| $context == 'com_finder.indexer'
 			|| $this->doNotLoad)
 		{
@@ -1295,7 +1296,7 @@ class PlgContentJtf extends CMSPlugin
 		else
 		{
 			$cField = new SimpleXMLElement(
-				'<field name="submit" type="submit" label="JTF_SUBMIT_BUTTON" hiddenLabel="true" notmail="1"></field>'
+				'<field name="submit" type="submit" label="JTF_SUBMIT_BUTTON" hiddenlabel="true" notmail="1"></field>'
 			);
 
 			$form->setField($cField, null, true, 'submit');

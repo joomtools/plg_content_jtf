@@ -51,9 +51,15 @@ if ($frwk == 'bs3')
 	$role = ' role="form"';
 }
 
+$jsToAdd = "var jtfFrwk = '" . strtoupper($frwk) . "';";
+$jsToAdd .= "if (typeof jtfTtf === 'undefined') {";
+$jsToAdd .= "	var jtfTtf = {},";
+$jsToAdd .= "		jtfBadgeClass = {};";
+$jsToAdd .= "}";
+
 if ($fillouttime > 0)
 {
-	$jtfBadgeClass           = [];
+	$jtfBadgeClass           = array();
 	$jtfBadgeClass['uikit3'] = 'uk-badge';
 	$jtfBadgeClass['uikit']  = 'uk-badge uk-badge-notification';
 	$jtfBadgeClass['bs4']    = 'label label-dark';
@@ -61,20 +67,13 @@ if ($fillouttime > 0)
 	$jtfBadgeClass['bs2']    = 'label label-inverse';
 	$jtfBadgeClass['joomla'] = 'label label-inverse';
 
-	Factory::getDocument()->addScriptDeclaration("
-		if (typeof jtfTtf === 'undefined') {
-			var jtfTtf = {},
-				jtfBadgeClass = {},
-				jtfFrwk;
-		}
-		
-		jtfTtf." . $id . " = " . $fillouttime . ";
-		jtfBadgeClass." . $id . " = '" . $jtfBadgeClass[$frwk] . "';
-		jtfFrwk = '" . strtoupper($frwk) . "';
-	");
+	$jsToAdd .= "jtfTtf." . $id . " = " . $fillouttime . ";";
+	$jsToAdd .= "jtfBadgeClass." . $id . " = '" . $jtfBadgeClass[$frwk] . "';";
 
 	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfTimeToFill.min.js', array('version' => 'auto'));
 }
+
+Factory::getDocument()->addScriptDeclaration($jsToAdd);
 
 Factory::getDocument()->addStyleDeclaration("
 	.hidden{display:none;visibility:hidden;}
@@ -85,8 +84,8 @@ Factory::getDocument()->addStyleDeclaration("
 	.jtf .invalid::-ms-input-placeholder{color:" . $invalidColor . ";}
 	.jtf .marker{font-weight:bold;}
 	.jtf [disabled]{pointer-events:none;}
-	.jtf .inline{display:inline-block!important;line-height:150%;}
-");
+	.jtf .inline{display:inline-block!important;line-height:150%;}"
+);
 
 ?>
 <div class="jtf contact-form">

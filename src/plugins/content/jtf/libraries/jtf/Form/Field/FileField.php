@@ -65,7 +65,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @since  3.0.0
 	 */
-	public function __get(string $name)
+	public function __get($name)
 	{
 		switch ($name)
 		{
@@ -88,7 +88,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @since  3.0.0
 	 */
-	public function __set(string $name, $value)
+	public function __set($name, $value)
 	{
 		switch ($name)
 		{

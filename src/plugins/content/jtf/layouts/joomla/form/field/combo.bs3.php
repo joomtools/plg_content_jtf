@@ -63,7 +63,7 @@ $attr .= !empty($onchange) ? ' onchange="' . $onchange . '"' : '';
 		<?php echo $attr; ?>
 		   autocomplete="off" />
 	<div class="input-group-btn btn-group">
-		<button type="button" class="btn dropdown-toggle">
+		<button type="button" class="btn btn-default dropdown-toggle">
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">

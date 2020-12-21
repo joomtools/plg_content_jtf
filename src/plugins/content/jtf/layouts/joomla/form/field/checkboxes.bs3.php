@@ -89,6 +89,15 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 		empty($option->disable)  ? null : $optionAttributes['disabled'] = 'disabled';
 		!$isChecked              ? null : $optionAttributes['checked']  = 'checked';
 
+		if ($required)
+		{
+				$optionAttributes['class']         = !empty($optionAttributes['class'])
+					? $optionAttributes['class'] . ' required'
+					: 'required';
+				$optionAttributes['required']      = 'required';
+				$optionAttributes['aria-required'] = 'true';
+		}
+
 		$optionAttributes      = ArrayHelper::toString($optionAttributes);
 		$optionLabelAttributes = ArrayHelper::toString($optionLabelAttributes);
 		?>

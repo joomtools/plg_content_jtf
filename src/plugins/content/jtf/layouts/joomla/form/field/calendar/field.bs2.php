@@ -24,8 +24,10 @@ extract($displayData);
 <div class="field-calendar">
 	<div class="input-append">
 		<input type="text" <?php echo $fieldAttributes; ?> />
-		<button type="button" <?php echo $buttonAttributes; ?>>
-			<span class="<?php echo $buttonIcon; ?>"></span>
-		</button>
+		<div class="btn-group">
+			<button type="button" <?php echo $buttonAttributes; ?>>
+				<span class="<?php echo $buttonIcon; ?>"></span>
+			</button>
+		</div>
 	</div>
 </div>

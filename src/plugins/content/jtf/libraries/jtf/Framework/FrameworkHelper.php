@@ -64,10 +64,10 @@ class FrameworkHelper
 	 */
 	private $fieldAttributes = array(
 		'gridgroup',
-		'gridglabel',
+		'gridlabel',
 		'gridfield',
 		'class',
-		'labelClass',
+		'labelclass',
 		'hiddenlabel',
 		'buttonclass',
 		'icon',
@@ -93,11 +93,54 @@ class FrameworkHelper
 	private $frwkClasses = array();
 
 	/**
+	 * @var   string
+	 *
+	 * @since  3.0.0
+	 */
+	private $orientation;
+
+	/**
 	 * @var   array[]
 	 *
 	 * @since  3.0.0
 	 */
 	private $hiddenLabel = array(
+		'form' => null,
+		'fieldset' => null,
+		'field' => null,
+	);
+
+	/**
+	 * @var   array[]
+	 *
+	 * @since  3.0.0
+	 */
+	private $gridGroup = array(
+		'default' => null,
+		'form' => null,
+		'fieldset' => null,
+		'field' => null,
+	);
+
+	/**
+	 * @var   array[]
+	 *
+	 * @since  3.0.0
+	 */
+	private $gridLabel = array(
+		'default' => null,
+		'form' => null,
+		'fieldset' => null,
+		'field' => null,
+	);
+
+	/**
+	 * @var   array[]
+	 *
+	 * @since  3.0.0
+	 */
+	private $gridField = array(
+		'default' => null,
 		'form' => null,
 		'fieldset' => null,
 		'field' => null,
@@ -151,6 +194,8 @@ class FrameworkHelper
 			$orientation = $form->getAttribute('orientation', '');
 		}
 
+		$this->orientation = $orientation;
+
 		$framework = 'bs2';
 
 		if (version_compare(JVERSION, '4', 'ge'))
@@ -177,17 +222,17 @@ class FrameworkHelper
 
 		if (!empty($this->frwkClasses['gridgroup']))
 		{
-			$this->classes['frwk']['gridgroup'] = $this->getClassArray($this->frwkClasses['gridgroup']);
+			$this->gridGroup['default'] = $this->getClassArray($this->frwkClasses['gridgroup']);
 		}
 
 		if (!empty($this->frwkClasses['gridlabel']))
 		{
-			$this->classes['frwk']['gridlabel'] = $this->getClassArray($this->frwkClasses['gridlabel']);
+			$this->gridLabel['default'] = $this->getClassArray($this->frwkClasses['gridlabel']);
 		}
 
 		if (!empty($this->frwkClasses['gridfield']))
 		{
-			$this->classes['frwk']['gridfield'] = $this->getClassArray($this->frwkClasses['gridfield']);
+			$this->gridField['default'] = $this->getClassArray($this->frwkClasses['gridfield']);
 		}
 
 		// Probably not more needed
@@ -273,6 +318,77 @@ class FrameworkHelper
 	}
 
 	/**
+	 * Get the final setting for hiddenlabel|gridgroup|gridlabel|gridfield
+	 *
+	 * @param   string  $attribute  The attribute name to return the value
+	 *
+	 * @return  boolean|string  Boolean if attribute is hiddenLabel, else css classes
+	 *
+	 * @since  3.0.0
+	 */
+	private function getFinalSetting(string $attribute)
+	{
+		$return = '';
+
+		$searches = array(
+			'group',
+			'label',
+			'field',
+		);
+
+		$replaces = array(
+			'Group',
+			'Label',
+			'Field',
+		);
+
+		$attribute = str_replace($searches, $replaces, $attribute);
+
+		if (strpos($attribute, 'grid') !== false)
+		{
+			if (!empty($this->$attribute['default']))
+			{
+				$return = implode(' ', $this->$attribute['default']);
+			}
+
+			switch (true)
+			{
+				case !empty($this->$attribute['field']):
+					$return .= ' ' . implode(' ', $this->$attribute['field']);
+					break;
+
+				case !empty($this->$attribute['fieldset']):
+					$return .= ' ' . implode(' ', $this->$attribute['fieldset']);
+					break;
+
+				case !empty($this->$attribute['form']):
+					$return .= ' ' . implode(' ', $this->$attribute['form']);
+					break;
+
+				default:
+					break;
+			}
+		}
+		else
+		{
+			switch (true)
+			{
+				case !empty($this->$attribute['field']) :
+				case !empty($this->$attribute['fieldset']) :
+				case !empty($this->$attribute['form']) :
+					$return = true;
+					break;
+
+				default:
+					$return = false;
+					break;
+			}
+		}
+
+		return $return;
+	}
+
+	/**
 	 * Get special attributes from form element
 	 *
 	 * @return  void
@@ -282,6 +398,7 @@ class FrameworkHelper
 	private function getFormAttributes()
 	{
 		$form        =& $this->form;
+		$orientation = $this->orientation;
 		$formClasses = $this->getClassArray($this->frwkClasses['form']);
 		$formClasses = ArrayHelper::arrayUnique(
 			array_merge(
@@ -290,22 +407,37 @@ class FrameworkHelper
 			)
 		);
 
-		$this->hiddenLabel['form'] = !empty($form->getAttribute('hiddenLabel'))
-			? filter_var($form->getAttribute('hiddenLabel'), FILTER_VALIDATE_BOOLEAN)
-			: null;
+		switch (true)
+		{
+			case !empty($form->getAttribute('hiddenlabel')) :
+				$this->hiddenLabel['form'] = filter_var($form->getAttribute('hiddenlabel'), FILTER_VALIDATE_BOOLEAN);
+				break;
 
-		$this->hiddenLabel['form'] = empty($this->hiddenLabel['form']) && !empty($form->getAttribute('hiddenlabel'))
-			? filter_var($form->getAttribute('hiddenlabel'), FILTER_VALIDATE_BOOLEAN)
-			: null;
+			case !empty($form->getAttribute('hiddenLabel')) :
+				$this->hiddenLabel['form'] = filter_var($form->getAttribute('hiddenLabel'), FILTER_VALIDATE_BOOLEAN);
+				break;
+
+			default:
+				$this->hiddenLabel['form'] = null;
+				break;
+		}
 
 		if (!empty($formClasses))
 		{
 			$form->setAttribute('class', implode(' ', $formClasses));
 		}
 
-		$this->classes['form']['gridgroup'] = $this->getClassArray($form->getAttribute('gridgroup'));
-		$this->classes['form']['gridlabel'] = $this->getClassArray($form->getAttribute('gridlabel'));
-		$this->classes['form']['gridfield'] = $this->getClassArray($form->getAttribute('gridfield'));
+		$this->gridGroup['form'] = !empty($form->getAttribute('gridgroup', ''))
+			? $this->getClassArray($form->getAttribute('gridgroup'))
+			: array();
+
+		$this->gridLabel['form'] = !empty($form->getAttribute('gridlabel', ''))
+			? $this->getClassArray($form->getAttribute('gridlabel'))
+			: $this->getClassArray($this->frwk->getOrientationLabelsClasses($orientation));
+
+		$this->gridField['form'] = !empty($form->getAttribute('gridfield', ''))
+			? $this->getClassArray($form->getAttribute('gridfield'))
+			: $this->getClassArray($this->frwk->getOrientationFieldsClasses($orientation));
 	}
 
 	/**
@@ -320,6 +452,12 @@ class FrameworkHelper
 		$form            =& $this->form;
 		$fieldsets       = $form->getXml();
 		$fieldsetClasses = array();
+		$formOrientation = null;
+
+		if (!empty($form->getAttribute('orientation', '')))
+		{
+			$formOrientation = $form->getAttribute('orientation', '');
+		}
 
 		if (!empty($fieldsets->fieldset))
 		{
@@ -327,20 +465,44 @@ class FrameworkHelper
 			{
 				$fieldsetName = (string) $fieldset['name'];
 
-				$this->hiddenLabel['fieldset'] = !empty((string) $fieldset['hiddenLabel'])
-					? filter_var((string) $fieldset['hiddenLabel'], FILTER_VALIDATE_BOOLEAN)
-					: null;
+				switch (true)
+				{
+					case !empty((string) $fieldset['hiddenlabel']) :
+						$this->hiddenLabel['fieldset'] = filter_var((string) $fieldset['hiddenlabel'], FILTER_VALIDATE_BOOLEAN);
+						break;
 
-				$this->hiddenLabel['fieldset'] = empty($this->hiddenLabel['fieldset']) && !empty((string) $fieldset['hiddenlabel'])
-					? filter_var((string) $fieldset['hiddenlabel'], FILTER_VALIDATE_BOOLEAN)
-					: null;
+					case !empty((string) $fieldset['hiddenLabel']) :
+						$this->hiddenLabel['fieldset'] = filter_var((string) $fieldset['hiddenLabel'], FILTER_VALIDATE_BOOLEAN);
+						break;
+
+					default:
+						$this->hiddenLabel['fieldset'] = null;
+						break;
+				}
+
+				$orientation = !empty((string) $fieldset['orientation'])
+					? (string) $fieldset['orientation']
+					: $formOrientation;
+
+				$this->orientation = $orientation;
+
+				$this->gridGroup['fieldset'] = !empty((string) $fieldset['gridgroup'])
+					? $this->getClassArray((string) $fieldset['gridgroup'])
+					: array();
+
+				$this->gridLabel['fieldset'] = !empty((string) $fieldset['gridlabel'])
+					? $this->getClassArray((string) $fieldset['gridlabel'])
+					: array();
+
+				$this->gridField['fieldset'] = !empty((string) $fieldset['gridfield'])
+					? $this->getClassArray((string) $fieldset['gridfield'])
+					: array();
+
+				$orientation = $this->frwk->getOrientationClass($orientation);
 
 				$fieldsetClasses['class'] = array();
 				$fieldsetClasses['labelclass'] = array();
 				$fieldsetClasses['descriptionclass'] = array();
-
-				$orientation = (string) $fieldset['orientation'];
-				$orientation = $this->frwk->getOrientationClass($orientation);
 
 				if (!empty($this->frwkClasses['fieldset']['class']))
 				{
@@ -366,7 +528,7 @@ class FrameworkHelper
 				{
 					$fieldsetClasses['class'] = ArrayHelper::arrayUnique(
 						array_merge(
-							$this->getClassArray($fieldsetClasses['class']),
+							$fieldsetClasses['class'],
 							$this->getClassArray((string) $fieldset['class'])
 						)
 					);
@@ -376,7 +538,7 @@ class FrameworkHelper
 				{
 					$fieldsetClasses['labelclass'] = ArrayHelper::arrayUnique(
 						array_merge(
-							$this->getClassArray($fieldsetClasses['labelclass']),
+							$fieldsetClasses['labelclass'],
 							$this->getClassArray((string) $fieldset['labelclass'])
 						)
 					);
@@ -386,19 +548,19 @@ class FrameworkHelper
 				{
 					$fieldsetClasses['labelclass'] = ArrayHelper::arrayUnique(
 						array_merge(
-							$this->getClassArray($fieldsetClasses['labelclass']),
+							$fieldsetClasses['labelclass'],
 							$this->getClassArray((string) $fieldset['labelClass'])
 						)
 					);
 
-					$form->setFieldAttribute($fieldsetName, 'labelclass', $fieldsetClasses['labelclass']);
+					$form->setFieldAttribute($fieldsetName, 'labelClass', null);
 				}
 
 				if (!empty((string) $fieldset['descriptionclass']))
 				{
 					$fieldsetClasses['descriptionclass'] = ArrayHelper::arrayUnique(
 						array_merge(
-							$this->getClassArray($fieldsetClasses['descriptionclass']),
+							$fieldsetClasses['descriptionclass'],
 							$this->getClassArray((string) $fieldset['descriptionclass'])
 						)
 					);
@@ -408,12 +570,12 @@ class FrameworkHelper
 				{
 					$fieldsetClasses['descriptionclass'] = ArrayHelper::arrayUnique(
 						array_merge(
-							$this->getClassArray($fieldsetClasses['descriptionclass']),
+							$fieldsetClasses['descriptionclass'],
 							$this->getClassArray((string) $fieldset['descClass'])
 						)
 					);
 
-					$form->setFieldAttribute($fieldsetName, 'descriptionclass', $fieldsetClasses['descriptionclass']);
+					$form->setFieldAttribute($fieldsetName, 'descClass', null);
 				}
 
 				foreach ($fieldsetClasses as $classKey => $classValue)
@@ -421,26 +583,9 @@ class FrameworkHelper
 					if (!empty($classValue))
 					{
 						$fieldset[$classKey] = implode(' ', $classValue);
+
+						$form->setFieldAttribute($fieldsetName, $classKey, $fieldset[$classKey]);
 					}
-				}
-
-				$this->classes['fieldset']['gridgroup'] = null;
-				$this->classes['fieldset']['gridlabel'] = null;
-				$this->classes['fieldset']['gridfield'] = null;
-
-				if (!empty((string) $fieldset['gridgroup']))
-				{
-					$this->classes['fieldset']['gridgroup'] = $this->getClassArray((string) $fieldset['gridgroup']);
-				}
-
-				if (!empty((string) $fieldset['gridlabel']))
-				{
-					$this->classes['fieldset']['gridlabel'] = $this->getClassArray((string) $fieldset['gridlabel']);
-				}
-
-				if (!empty((string) $fieldset['gridfield']))
-				{
-					$this->classes['fieldset']['gridfield'] = $this->getClassArray((string) $fieldset['gridfield']);
 				}
 
 				$fields = $form->getFieldset($fieldsetName);
@@ -489,6 +634,7 @@ class FrameworkHelper
 		$classes     = $this->classes;
 		$type        = $field->getAttribute('type');
 		$fieldName   = $field->getAttribute('name');
+		$orientation = $this->orientation;
 
 		$frwkClassesOptionsFields = array(
 			'checkboxes', 'radio',
@@ -506,31 +652,23 @@ class FrameworkHelper
 			'checkboxes', 'checkbox', 'radio', 'captcha', 'textarea',
 		);
 
-		$this->hiddenLabel['field'] = !empty($field->getAttribute('hiddenLabel'))
-			? filter_var($field->getAttribute('hiddenLabel'), FILTER_VALIDATE_BOOLEAN)
-			: null;
-
-		$this->hiddenLabel['field'] = empty($this->hiddenLabel['field']) && !empty($field->getAttribute('hiddenlabel'))
-			? filter_var($field->getAttribute('hiddenlabel'), FILTER_VALIDATE_BOOLEAN)
-			: null;
-
 		switch (true)
 		{
-			case !is_null($this->hiddenLabel['field']):
-				$fieldHiddenLabel = $this->hiddenLabel['field'];
+			case !empty($field->getAttribute('hiddenlabel')) :
+				$this->hiddenLabel['field'] = filter_var($field->getAttribute('hiddenlabel'), FILTER_VALIDATE_BOOLEAN);
 				break;
 
-			case !is_null($this->hiddenLabel['fieldset']):
-				$fieldHiddenLabel = $this->hiddenLabel['fieldset'];
-				break;
-
-			case !is_null($this->hiddenLabel['form']):
-				$fieldHiddenLabel = $this->hiddenLabel['form'];
+			case !empty($field->getAttribute('hiddenLabel')) :
+				$this->hiddenLabel['field'] = filter_var($field->getAttribute('hiddenLabel'), FILTER_VALIDATE_BOOLEAN);
+				$form->setAttribute($fieldName, 'hiddenLabel', null);
 				break;
 
 			default:
-				$fieldHiddenLabel = false;
+				$this->hiddenLabel['field'] = false;
+				break;
 		}
+
+		$fieldHiddenLabel = $this->getFinalSetting('hiddenlabel');
 
 		if ($fieldHiddenLabel || in_array($type, $this->hiddenLabelTypes))
 		{
@@ -542,7 +680,7 @@ class FrameworkHelper
 			if (!empty($frwkClasses['default']))
 			{
 				$classes['frwk']['class'] = array_merge(
-					$this->getClassArray($this->frwkClasses['default']),
+					$this->getClassArray($frwkClasses['default']),
 					!empty($classes['frwk']['class'])
 						? $this->getClassArray($classes['frwk']['class'])
 						: array()
@@ -569,6 +707,22 @@ class FrameworkHelper
 				$classes['field'][$attribute] = $this->getClassArray($field->getAttribute($attribute));
 			}
 		}
+
+		$this->gridGroup['field'] = !empty($classes['field']['gridgroup'])
+			? $classes['field']['gridgroup']
+			: array();
+
+		$this->gridLabel['field'] = !empty($classes['field']['gridlabel'])
+			? $classes['field']['gridlabel']
+			: array();
+
+		$this->gridField['field'] = !empty($classes['field']['gridfield'])
+			? $classes['field']['gridfield']
+			: array();
+
+		$classes['field']['gridgroup'] = $this->getClassArray($this->getFinalSetting('gridgroup'));
+		$classes['field']['gridlabel'] = $this->getClassArray($this->getFinalSetting('gridlabel'));
+		$classes['field']['gridfield'] = $this->getClassArray($this->getFinalSetting('gridfield'));
 
 		if (in_array($type, $noIconFields))
 		{
@@ -627,22 +781,22 @@ class FrameworkHelper
 			{
 				if ($type == 'file')
 				{
-					$uploadIcon = $this->getClassArray($classes['field']['icon']);
+					$uploadIcon = $classes['field']['icon'];
 				}
 				else
 				{
-					$buttonIcon = $this->getClassArray($classes['field']['icon']);
+					$buttonIcon = $classes['field']['icon'];
 				}
 			}
 
 			if (!empty($classes['field']['uploadicon']))
 			{
-				$uploadIcon = $this->getClassArray($classes['field']['uploadicon']);
+				$uploadIcon = $classes['field']['uploadicon'];
 			}
 
 			if (!empty($classes['field']['buttonicon']))
 			{
-				$buttonIcon = $this->getClassArray($classes['field']['buttonicon']);
+				$buttonIcon = $classes['field']['buttonicon'];
 			}
 
 			if (!empty($classes['field']['buttonclass']))
@@ -652,7 +806,7 @@ class FrameworkHelper
 						? $buttonClass
 						: array(),
 					!empty($classes['field']['buttonclass'])
-						? $this->getClassArray($classes['field']['buttonclass'])
+						? $classes['field']['buttonclass']
 						: array()
 				);
 
@@ -688,11 +842,7 @@ class FrameworkHelper
 		if ($type == 'note')
 		{
 			unset(
-				$classes['form']['gridfield'],
-				$classes['fieldset']['gridfield'],
 				$classes['field']['gridfield'],
-				$classes['form']['gridlabel'],
-				$classes['fieldset']['gridlabel'],
 				$classes['field']['gridlabel']
 			);
 
@@ -704,7 +854,7 @@ class FrameworkHelper
 				? $this->getClassArray($classes['frwk']['class'])
 				: array(),
 			!empty($classes['field']['class'])
-				? $this->getClassArray($classes['field']['class'])
+				? $classes['field']['class']
 				: array()
 		);
 
@@ -712,80 +862,23 @@ class FrameworkHelper
 
 		$form->setFieldAttribute($fieldName, 'class', implode(' ', $fieldClass));
 
-		$gridGroup = !empty($classes['frwk']['gridgroup'])
-			? $classes['frwk']['gridgroup']
-			: array();
-		$gridLabel = !empty($classes['frwk']['gridlabel'])
-			? $classes['frwk']['gridlabel']
-			: array();
-		$gridField = !empty($classes['frwk']['gridfield'])
-			? $classes['frwk']['gridfield']
-			: array();
+		$gridGroup = array();
+		$gridLabel = array();
+		$gridField = array();
 
 		if (!empty($classes['field']['gridgroup']))
 		{
-			$gridGroup = array_merge(
-				$gridGroup,
-				$classes['field']['gridgroup']
-			);
-		}
-		elseif (!empty($classes['fieldset']['gridgroup']))
-		{
-			$gridGroup = array_merge(
-				$gridGroup,
-				$classes['fieldset']['gridgroup']
-			);
-		}
-		elseif (!empty($classes['form']['gridgroup']))
-		{
-			$gridGroup = array_merge(
-				$gridGroup,
-				$classes['form']['gridgroup']
-			);
+			$gridGroup = $classes['field']['gridgroup'];
 		}
 
 		if (!empty($classes['field']['gridlabel']))
 		{
-			$gridLabel = array_merge(
-				$gridLabel,
-				$classes['field']['gridlabel']
-			);
-		}
-		elseif (!empty($classes['fieldset']['gridlabel']))
-		{
-			$gridLabel = array_merge(
-				$gridLabel,
-				$classes['fieldset']['gridlabel']
-			);
-		}
-		elseif (!empty($classes['form']['gridlabel']))
-		{
-			$gridLabel = array_merge(
-				$gridLabel,
-				$classes['form']['gridlabel']
-			);
+			$gridLabel = $classes['field']['gridlabel'];
 		}
 
 		if (!empty($classes['field']['gridfield']))
 		{
-			$gridField = array_merge(
-				$gridField,
-				$classes['field']['gridfield']
-			);
-		}
-		elseif (!empty($classes['fieldset']['gridfield']))
-		{
-			$gridField = array_merge(
-				$gridField,
-				$classes['fieldset']['gridfield']
-			);
-		}
-		elseif (!empty($classes['form']['gridfield']))
-		{
-			$gridField = array_merge(
-				$gridField,
-				$classes['form']['gridfield']
-			);
+			$gridField = $classes['field']['gridfield'];
 		}
 
 		if (empty($classes['field']['descriptionclass']) && !empty($frwkClasses['descriptionclass']))

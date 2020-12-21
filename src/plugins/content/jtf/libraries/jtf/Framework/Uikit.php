@@ -54,11 +54,12 @@ class Uikit
 		$this->orientation = $orientation;
 
 		$classes['css'] = '.jtf .uk-form-icon:not(.uk-form-icon-flip)>select{padding-left:40px!important;}';
-		$classes['css'] .= '.jtf .uk-form-stacked .uk-form-label{width:auto!important;float:none!important;}';
+//		$classes['css'] .= '.jtf .uk-form-stacked .uk-form-label{width:auto!important;float:none!important;}';
 		$classes['css'] .= '.jtf .uk-form-stacked .uk-form-controls{margin-left:0!important;}';
 		$classes['css'] .= '.jtf .uk-checkbox,.jtf .uk-radio{margin-left:6px!important;}';
 		$classes['css'] .= '.jtf .uk-radio{margin-top:4px!important;margin-right:4px!important;}';
 		$classes['css'] .= '.jtf .uk-button-group {font-size:100.01%!important}';
+		$classes['css'] .= '.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:url("data:image/svg+xml;utf8,<svg fill=\"black\" height=\"24\" viewBox=\"0 0 32 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>") no-repeat center right!important;padding-right:24px;}';
 
 		$classes['class']['form']             = array('uk-form', 'form-validate');
 		$classes['class']['default'][]        = 'uk-input';
@@ -166,5 +167,47 @@ class Uikit
 		}
 
 		return null;
+	}
+
+	public function getOrientationLabelsClasses($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return array(
+					'uk-width-1-4',
+				);
+
+			case 'stacked':
+				return array(
+					'uk-width-1-1',
+				);
+
+			default:
+				return array();
+		}
+	}
+
+	public function getOrientationFieldsClasses($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return array(
+					'uk-width-3-4',
+				);
+
+			case 'stacked':
+				return array(
+					'uk-width-1-1',
+				);
+
+			default:
+				return array();
+		}
 	}
 }

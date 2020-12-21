@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form orientation="stacked"
-      hiddenLabel="true"
+      hiddenlabels="true"
 >
 	<fieldset name="block1">
 		<field name="anrede"
@@ -13,7 +13,6 @@
 		       default=""
 		       validate="options"
 		       required="true"
-		       hiddenLabel="true"
 		>
 			<option value="">JTF_ANREDE_OPTION_NONE</option>
 			<option value="JTF_ANREDE_OPTION_HERR">JTF_ANREDE_OPTION_HERR</option>

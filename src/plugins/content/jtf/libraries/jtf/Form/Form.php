@@ -210,14 +210,14 @@ class Form extends \Joomla\CMS\Form\Form
 	 * @param   Registry|null      $input    An optional Registry object with the entire data set to validate
 	 *                                       against the entire form.
 	 *
-	 * @return  boolean  Boolean true if field value is valid, Exception on failure.
-	 *
-	 * @since  3.0.0
-	 *
+	 * @return  boolean|\Exception  Boolean true if field value is valid, Exception on failure.
 	 * @throws  \InvalidArgumentException
 	 * @throws  \UnexpectedValueException
+	 * @throws  \RuntimeException
+	 *
+	 * @since  3.0.0
 	 */
-	protected function validateField(\SimpleXMLElement $element, $group = null, $value = null, Registry $input = null): bool
+	protected function validateField(\SimpleXMLElement $element, $group = null, $value = null, Registry $input = null)
 	{
 		if (!empty($showOn = (string) $element['showon']))
 		{
