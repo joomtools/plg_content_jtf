@@ -294,6 +294,7 @@ class FrameworkHelper
 		if (is_string($classes))
 		{
 			$value = explode(' ', $classes);
+			$value = array_map('trim', $value);
 
 			if (count($value) > 1)
 			{
@@ -301,7 +302,7 @@ class FrameworkHelper
 			}
 			else
 			{
-				$target[] = trim($classes);
+				$target[] = $classes;
 			}
 		}
 
@@ -309,7 +310,11 @@ class FrameworkHelper
 		{
 			foreach ($classes as $class)
 			{
-				$class  = trim($class);
+				if (is_array($class))
+				{
+					$class = array_map('trim', $class);
+				}
+
 				$target = $this->getClassArray($class, $target);
 			}
 		}
@@ -492,11 +497,12 @@ class FrameworkHelper
 
 				$this->gridLabel['fieldset'] = !empty((string) $fieldset['gridlabel'])
 					? $this->getClassArray((string) $fieldset['gridlabel'])
-					: array();
+					: $this->getClassArray($this->frwk->getOrientationLabelsClasses($orientation));
+
 
 				$this->gridField['fieldset'] = !empty((string) $fieldset['gridfield'])
 					? $this->getClassArray((string) $fieldset['gridfield'])
-					: array();
+					: $this->getClassArray($this->frwk->getOrientationFieldsClasses($orientation));
 
 				$orientation = $this->frwk->getOrientationClass($orientation);
 
@@ -634,7 +640,6 @@ class FrameworkHelper
 		$classes     = $this->classes;
 		$type        = $field->getAttribute('type');
 		$fieldName   = $field->getAttribute('name');
-		$orientation = $this->orientation;
 
 		$frwkClassesOptionsFields = array(
 			'checkboxes', 'radio',
@@ -651,29 +656,6 @@ class FrameworkHelper
 		$noIconFields = array(
 			'checkboxes', 'checkbox', 'radio', 'captcha', 'textarea',
 		);
-
-		switch (true)
-		{
-			case !empty($field->getAttribute('hiddenlabel')) :
-				$this->hiddenLabel['field'] = filter_var($field->getAttribute('hiddenlabel'), FILTER_VALIDATE_BOOLEAN);
-				break;
-
-			case !empty($field->getAttribute('hiddenLabel')) :
-				$this->hiddenLabel['field'] = filter_var($field->getAttribute('hiddenLabel'), FILTER_VALIDATE_BOOLEAN);
-				$form->setAttribute($fieldName, 'hiddenLabel', null);
-				break;
-
-			default:
-				$this->hiddenLabel['field'] = false;
-				break;
-		}
-
-		$fieldHiddenLabel = $this->getFinalSetting('hiddenlabel');
-
-		if ($fieldHiddenLabel || in_array($type, $this->hiddenLabelTypes))
-		{
-			$form->setFieldAttribute($fieldName, 'hiddenlabel', true);
-		}
 
 		if (in_array($type, $frwkClassesDefaultFields))
 		{
@@ -708,6 +690,28 @@ class FrameworkHelper
 			}
 		}
 
+		switch (true)
+		{
+			case !empty($classes['field']['hiddenlabel']) :
+				$this->hiddenLabel['field'] = filter_var($classes['field']['hiddenlabel'], FILTER_VALIDATE_BOOLEAN);
+				break;
+
+			case !empty($classes['field']['hiddenLabel']) :
+				$this->hiddenLabel['field'] = filter_var($classes['field']['hiddenLabel'], FILTER_VALIDATE_BOOLEAN);
+				break;
+
+			default:
+				$this->hiddenLabel['field'] = false;
+				break;
+		}
+
+		$fieldHiddenLabel = $this->getFinalSetting('hiddenlabel');
+
+		if ($fieldHiddenLabel || in_array($type, $this->hiddenLabelTypes))
+		{
+			$form->setFieldAttribute($fieldName, 'hiddenlabel', true);
+		}
+
 		$this->gridGroup['field'] = !empty($classes['field']['gridgroup'])
 			? $classes['field']['gridgroup']
 			: array();
@@ -719,6 +723,27 @@ class FrameworkHelper
 		$this->gridField['field'] = !empty($classes['field']['gridfield'])
 			? $classes['field']['gridfield']
 			: array();
+
+		!empty($classes['frwk']['gridgroup'])
+			? $this->gridGroup['field'] = array_merge(
+				$this->gridGroup['field'],
+				$classes['frwk']['gridgroup']
+			)
+			: null;
+
+		!empty($classes['frwk']['gridlabel'])
+			? $this->gridLabel['field'] = array_merge(
+				$this->gridLabel['field'],
+				$classes['frwk']['gridlabel']
+			)
+			: null;
+
+		!empty($classes['frwk']['gridfield'])
+			? $this->gridField['field'] = array_merge(
+				$this->gridField['field'],
+				$classes['frwk']['gridfield']
+			)
+			: null;
 
 		$classes['field']['gridgroup'] = $this->getClassArray($this->getFinalSetting('gridgroup'));
 		$classes['field']['gridlabel'] = $this->getClassArray($this->getFinalSetting('gridlabel'));

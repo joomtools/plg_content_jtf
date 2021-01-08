@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form orientation="stacked">
 	<fieldset name="block1"
-	          class="form-horizontal"
+	          orientation="horizontal"
 	>
 		<field name="name"
 		       type="text"

@@ -77,7 +77,7 @@ Factory::getDocument()->addScriptDeclaration($jsToAdd);
 
 Factory::getDocument()->addStyleDeclaration("
 	.hidden{display:none;visibility:hidden;}
-	.jtfhp{position:absolute;width:1px;height:1px;padding:0!important;margin:-1px!important;overflow:hidden;clip:rect(0,0,0,0);border:0;float:none!important;}
+	.jtfhp{position:absolute;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0);border:0!important;float:none!important;}
 	.jtf .invalid:not(label):not(fieldset){border-color:" . $invalidColor . "!important;background-color:" . $invalidBackgroundColor . "!important;}
 	.jtf .invalid,.jtf .invalid::placeholder{color:" . $invalidColor . ";}
 	.jtf .invalid:-ms-input-placeholder{color:" . $invalidColor . ";}

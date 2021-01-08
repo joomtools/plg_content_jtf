@@ -126,6 +126,12 @@ class Uikit3
 		);
 
 		$classes['class']['submit'] = array(
+			'gridlabel' => array(
+				'jtfhp',
+			),
+			'gridfield' => array(
+				'uk-margin-remove-left',
+			),
 			'buttonclass' => array(
 				'uk-button',
 				'uk-button-default',
@@ -165,5 +171,15 @@ class Uikit3
 		}
 
 		return null;
+	}
+
+	public function getOrientationLabelsClasses($orientation = null)
+	{
+		return array();
+	}
+
+	public function getOrientationFieldsClasses($orientation = null)
+	{
+		return array();
 	}
 }

@@ -160,11 +160,9 @@ trait FormFieldExtension
 	 */
 	public function __get($name)
 	{
-		switch (strtolower($name))
+		switch ($name)
 		{
 			case 'control':
-			case 'hiddenlabel':
-			case 'hiddenLabel':
 			case 'optionclass':
 			case 'optionlabelclass':
 			case 'gridgroup':
@@ -179,6 +177,10 @@ trait FormFieldExtension
 			case 'fieldmarkerplace':
 				$name = strtolower($name);
 
+				return $this->$name;
+
+			case 'hiddenlabel':
+			case 'hiddenLabel':
 				return $this->$name;
 
 			default:

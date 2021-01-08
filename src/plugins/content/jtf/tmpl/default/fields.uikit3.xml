@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="stacked">
+<form orientation="horizontal">
 	<fieldset name="block1"
-	          gridlabel="uk-width-1-4@s uk-margin-top"
-	          gridfield="uk-width-3-4@s"
-	          gridgroup="uk-grid uk-width-1-1"
 	>
 		<field name="name"
 		       type="text"
@@ -45,6 +42,7 @@
 	</fieldset>
 	<fieldset name="consent_form"
 	          label="JTF_CONSENT_FORM"
+	          orientation="stacked"
 	>
 		<field name="privacy_policy"
 		       type="checkboxes"
@@ -54,7 +52,7 @@
 		       validate="options"
 		       filter="string"
 		       required="true"
-		       hiddenLabel="true"
+		       hiddenlabel="true"
 		>
 			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
 		</field>
