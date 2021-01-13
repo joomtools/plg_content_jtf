@@ -36,7 +36,7 @@ class FrameworkHelper
 	);
 	private $fieldAttributes = array(
 		'gridgroup',
-		'gridglabel',
+		'gridlabel',
 		'gridfield',
 		'class',
 		'labelClass',
