@@ -1296,7 +1296,7 @@ class PlgContentJtf extends CMSPlugin
 		else
 		{
 			$cField = new SimpleXMLElement(
-				'<field name="submit" type="submit" label="JTF_SUBMIT_BUTTON" hiddenlabel="true" notmail="1"></field>'
+				'<field name="submit" type="submit" label="JTF_SUBMIT_BUTTON" hiddenlabel="true" gridlabel="jtfhp" notmail="1"></field>'
 			);
 
 			$form->setField($cField, null, true, 'submit');
