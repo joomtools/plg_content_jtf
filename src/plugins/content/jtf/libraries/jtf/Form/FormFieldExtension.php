@@ -253,6 +253,7 @@ trait FormFieldExtension
 			$attributes = array(
 				'control',
 				'hiddenlabel',
+				'hiddenLabel',
 				'icon',
 				'buttonclass',
 				'buttonicon',

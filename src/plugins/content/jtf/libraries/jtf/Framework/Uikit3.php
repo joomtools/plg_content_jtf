@@ -126,9 +126,6 @@ class Uikit3
 		);
 
 		$classes['class']['submit'] = array(
-			'gridlabel' => array(
-				'jtfhp',
-			),
 			'gridfield' => array(
 				'uk-margin-remove-left',
 			),

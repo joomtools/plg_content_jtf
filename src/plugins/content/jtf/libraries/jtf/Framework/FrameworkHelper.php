@@ -69,6 +69,7 @@ class FrameworkHelper
 		'class',
 		'labelclass',
 		'hiddenlabel',
+		'hiddenLabel',
 		'buttonclass',
 		'icon',
 		'buttonicon',
@@ -293,8 +294,8 @@ class FrameworkHelper
 
 		if (is_string($classes))
 		{
-			$value = explode(' ', $classes);
-			$value = array_map('trim', $value);
+			$classes = trim($classes);
+			$value   = explode(' ', $classes);
 
 			if (count($value) > 1)
 			{
@@ -310,11 +311,6 @@ class FrameworkHelper
 		{
 			foreach ($classes as $class)
 			{
-				if (is_array($class))
-				{
-					$class = array_map('trim', $class);
-				}
-
 				$target = $this->getClassArray($class, $target);
 			}
 		}
@@ -664,7 +660,7 @@ class FrameworkHelper
 				$classes['frwk']['class'] = array_merge(
 					$this->getClassArray($frwkClasses['default']),
 					!empty($classes['frwk']['class'])
-						? $this->getClassArray($classes['frwk']['class'])
+						? $classes['frwk']['class']
 						: array()
 				);
 
@@ -692,12 +688,12 @@ class FrameworkHelper
 
 		switch (true)
 		{
-			case !empty($classes['field']['hiddenlabel']) :
-				$this->hiddenLabel['field'] = filter_var($classes['field']['hiddenlabel'], FILTER_VALIDATE_BOOLEAN);
+			case !empty($classes['field']['hiddenlabel'][0]) :
+				$this->hiddenLabel['field'] = filter_var($classes['field']['hiddenlabel'][0], FILTER_VALIDATE_BOOLEAN);
 				break;
 
-			case !empty($classes['field']['hiddenLabel']) :
-				$this->hiddenLabel['field'] = filter_var($classes['field']['hiddenLabel'], FILTER_VALIDATE_BOOLEAN);
+			case !empty($classes['field']['hiddenLabel'][0]) :
+				$this->hiddenLabel['field'] = filter_var($classes['field']['hiddenLabel'][0], FILTER_VALIDATE_BOOLEAN);
 				break;
 
 			default:
@@ -710,6 +706,7 @@ class FrameworkHelper
 		if ($fieldHiddenLabel || in_array($type, $this->hiddenLabelTypes))
 		{
 			$form->setFieldAttribute($fieldName, 'hiddenlabel', true);
+			$classes['field']['gridlabel'][] = 'jtfhp';
 		}
 
 		$this->gridGroup['field'] = !empty($classes['field']['gridgroup'])
