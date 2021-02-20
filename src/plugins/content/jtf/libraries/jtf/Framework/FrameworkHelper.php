@@ -660,7 +660,7 @@ class FrameworkHelper
 				$classes['frwk']['class'] = array_merge(
 					$this->getClassArray($frwkClasses['default']),
 					!empty($classes['frwk']['class'])
-						? $this->getClassArray($classes['frwk']['class'])
+						? $classes['frwk']['class']
 						: array()
 				);
 
