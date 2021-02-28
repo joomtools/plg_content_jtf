@@ -21,14 +21,15 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Profiler\Profiler;
 use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 use Jtf\Form\Form;
+use Jtf\Framework\FrameworkHelper;
 use Jtf\Input\Files;
+use Jtf\Layout\FileLayout;
 
 /**
  * @package      Joomla.Plugin
@@ -1048,7 +1049,7 @@ class PlgContentJtf extends CMSPlugin
 		$id            = $this->uParams['theme'];
 		$index         = self::$count;
 		$form          = $this->getForm();
-		$form          = Jtf\Framework\FrameworkHelper::setFrameworkClasses($form);
+		$form          = FrameworkHelper::setFrameworkClasses($form);
 		$formClass     = $form->getAttribute('class', '');
 		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
 			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'

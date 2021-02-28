@@ -657,7 +657,7 @@ class FrameworkHelper
 		{
 			if (!empty($frwkClasses['default']))
 			{
-				$classes['frwk']['class'] = array_merge(
+				$classes['frwk']['class'] = array_merge_recursive(
 					$this->getClassArray($frwkClasses['default']),
 					!empty($classes['frwk']['class'])
 						? $classes['frwk']['class']
@@ -674,7 +674,7 @@ class FrameworkHelper
 		{
 			$classes['frwk'] = array_merge_recursive(
 				$classes['frwk'],
-				$this->getClassArray($frwkClasses[$type])
+				$frwkClasses[$type]
 			);
 		}
 
@@ -703,8 +703,8 @@ class FrameworkHelper
 
 		$fieldHiddenLabel = $this->getFinalSetting('hiddenlabel');
 
-		echo "\nFieldHiddenLabel: $fieldName - $type";
-		var_dump($fieldHiddenLabel);
+//		echo "\nFieldHiddenLabel: $fieldName - $type";
+//		var_dump($fieldHiddenLabel);
 
 		if ($fieldHiddenLabel || in_array($type, $this->hiddenLabelTypes))
 		{
@@ -876,7 +876,7 @@ class FrameworkHelper
 
 		$fieldClass = array_merge(
 			!empty($classes['frwk']['class'])
-				? $this->getClassArray($classes['frwk']['class'])
+				? $classes['frwk']['class']
 				: array(),
 			!empty($classes['field']['class'])
 				? $classes['field']['class']
