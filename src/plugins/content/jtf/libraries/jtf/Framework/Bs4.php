@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
  **/
 class Bs4
 {
-	public static $name = 'Bootstrap v4 (Joomla 4 core)';
+	public static $name = 'Bootstrap v4';
 
 	private $classes;
 
@@ -53,9 +53,17 @@ class Bs4
 		$inline            = $orientation == 'inline';
 		$this->orientation = $orientation;
 
+		$classes['css'] = '.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A") no-repeat 100% 50%;padding-right:20px;}';
+
 		$classes['class']['form'][]           = 'form-validate';
 		$classes['class']['default'][]        = 'form-control';
 		$classes['class']['gridgroup'][]      = 'form-group';
+
+		if (!$inline)
+		{
+			$classes['class']['gridgroup'][]      = 'row';
+		}
+
 		$classes['class']['gridlabel'][]      = 'col-form-label';
 		$classes['class']['gridfield'][]      = '';
 		$classes['class']['descriptionclass'] = array('form-text', 'text-muted');
@@ -143,12 +151,54 @@ class Bs4
 		switch ($orientation)
 		{
 			case 'horizontal':
-				return 'uk-form-horizontal';
+				return 'form-row';
 
-			case 'stacked':
-				return 'uk-form-stacked';
+			default:
+				break;
 		}
 
 		return null;
+	}
+
+	public function getOrientationLabelsClasses($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return array(
+					'col-sm-3',
+				);
+
+			case 'stacked':
+				return array(
+					'col-sm-12',
+				);
+
+			default:
+				return array();
+		}
+	}
+
+	public function getOrientationFieldsClasses($orientation = null)
+	{
+		$orientation = $orientation ?: $this->orientation;
+
+		switch ($orientation)
+		{
+			case 'horizontal':
+				return array(
+					'col-sm-9',
+				);
+
+			case 'stacked':
+				return array(
+					'col-sm-12',
+				);
+
+			default:
+				return array();
+		}
 	}
 }

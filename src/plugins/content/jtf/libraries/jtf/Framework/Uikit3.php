@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
  **/
 class Uikit3
 {
-	public static $name = 'UIKit v3';
+	public static $name = 'UIKit v3 (Yootheme Pro)';
 
 	private $classes;
 

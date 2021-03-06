@@ -71,7 +71,7 @@ if ($required)
 	<?php echo $text; ?>
 	<?php if ($fieldMarkerPlace == 'label') : ?>
 		<?php if (($required && $fieldMarker == 'required') || (!$required && $fieldMarker == 'optional')) : ?>
-			<span class="marker">&#160;<?php echo Text::_('JTF_FIELD_MARKED_LABEL_' . strtoupper($fieldMarker)); ?></span>
+			<span class="star marker">&#160;<?php echo Text::_('JTF_FIELD_MARKED_LABEL_' . strtoupper($fieldMarker)); ?></span>
 		<?php endif; ?>
 	<?php endif; ?>
 </label>

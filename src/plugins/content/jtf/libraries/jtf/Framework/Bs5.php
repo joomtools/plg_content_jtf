@@ -13,7 +13,7 @@ namespace Jtf\Framework;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Class FrameworkUikit set basic css for used framework
+ * Class FrameworkBs4 set basic css for used framework
  *
  * Pattern for basic field classes
  *
@@ -39,9 +39,9 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since  3.0.0
  **/
-class Uikit
+class Bs5
 {
-	public static $name = 'UIKit v2 (Warp 7)';
+	public static $name = 'Bootstrap v5 (Joomla 4 core)';
 
 	private $classes;
 
@@ -53,91 +53,82 @@ class Uikit
 		$inline            = $orientation == 'inline';
 		$this->orientation = $orientation;
 
-		$classes['css'] = '.jtf .uk-form-icon:not(.uk-form-icon-flip)>select{padding-left:40px!important;}';
-//		$classes['css'] .= '.jtf .uk-form-stacked .uk-form-label{width:auto!important;float:none!important;}';
-		$classes['css'] .= '.jtf .uk-form-stacked .uk-form-controls{margin-left:0!important;}';
-		$classes['css'] .= '.jtf .uk-checkbox,.jtf .uk-radio{margin-left:6px!important;}';
-		$classes['css'] .= '.jtf .uk-radio{margin-top:4px!important;margin-right:4px!important;}';
-		$classes['css'] .= '.jtf .uk-button-group {font-size:100.01%!important}';
-		$classes['css'] .= '.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A") no-repeat 100% 50%!important;padding-right:20px!important;}';
+		$classes['css'] = '.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A") no-repeat 100% 50%;padding-right:20px;}';
 
-		$classes['class']['form']             = array('uk-form', 'form-validate');
-		$classes['class']['default'][]        = 'uk-input';
-		$classes['class']['gridgroup']        = array('fix-flexbox', 'uk-form-row');
-		$classes['class']['descriptionclass'] = array('uk-form-help-block');
+		$classes['class']['form'][]           = 'form-validate';
+		$classes['class']['default'][]        = 'form-control';
+		$classes['class']['gridgroup'][]      = 'form-group';
 
 		if (!$inline)
 		{
-			$classes['class']['gridlabel'][] = 'uk-form-label';
-			$classes['class']['gridfield'][] = 'uk-form-controls';
-			$classes['class']['gridgroup'][] = 'uk-width-1-1';
+			$classes['class']['gridgroup'][]      = 'row';
 		}
 
-		$classes['class']['fieldset'] = array(
-			'class'            => array(
-				'uk-fieldset',
-				'uk-margin-bottom',
-			),
-			'labelclass'       => array('uk-legend'),
-			'descriptionclass' => array('uk-fieldset-desc'),
-		);
+		$classes['class']['gridlabel'][]      = 'col-form-label';
+		$classes['class']['gridfield'][]      = '';
+		$classes['class']['descriptionclass'] = array('form-text', 'text-muted');
 
 		$classes['class']['note'] = array(
-			'buttonclass' => array(
-				'uk-alert-close',
-				'uk-close',
-			),
+			'buttonclass' => array('close'),
+			'buttonicon'  => array('&times;'),
 		);
 
+		if ($orientation == 'horizontal')
+		{
+			$classes['class']['note']['gridfield'][] = 'col-sm-12';
+		}
+
 		$classes['class']['calendar'] = array(
-			'buttonclass' => array('uk-button'),
-			'buttonicon'  => array('uk-icon-calendar'),
+			'buttonclass' => array('btn'),
+			'buttonicon'  => array('icon-calendar'),
+		);
+
+		$classes['class']['list'] = array(
+			'class'   => array('custom-select'),
 		);
 
 		$classes['class']['checkbox'] = array(
-			'gridfield' => array('uk-form-controls-text'),
-			'class'     => array('uk-checkbox'),
+			'class'   => array(),
 		);
 
 		$classes['class']['checkboxes'] = array(
-			'gridfield'   => array('uk-form-controls-text'),
+			'class'   => array('form-check'),
 			'options' => array(
-				'class' => array('uk-checkbox'),
+				'class'      => array('form-check-input'),
+				'labelclass' => array('form-check-label'),
 			),
 		);
 
 		$classes['class']['radio'] = array(
-			'gridfield'   => array('uk-form-controls-text'),
+			'class'   => array('form-check'),
 			'options' => array(
-				'class' => array('uk-radio'),
+				'class'      => array('form-check-input'),
+				'labelclass' => array('form-check-label'),
 			),
 		);
 
 		$classes['class']['textarea'] = array(
-			'class' => array('uk-textarea'),
-		);
-
-		$classes['class']['list'] = array(
-			'class' => array('uk-select'),
+			'class' => array('form-control'),
 		);
 
 		$classes['class']['file'] = array(
-			'uploadicon'  => array('uk-icon-upload'),
-			'buttonclass' => array('uk-button uk-button-success'),
-			'buttonicon'  => array('uk-icon-copy'),
+			'class'       => array('form-control-file'),
+			'uploadicon'  => array('icon-upload'),
+			'buttonclass' => array('btn btn-success'),
+			'buttonicon'  => array('icon-copy'),
 		);
 
 		$classes['class']['submit'] = array(
 			'buttonclass' => array(
-				'uk-button',
-				'uk-button-default'
+				'btn',
+				'btn-primary',
 			),
 		);
 
 		if ($inline)
 		{
-			$classes['class']['checkboxes']['class'][] = 'uk-display-inline';
-			$classes['class']['radio']['class'][]      = 'uk-display-inline';
+			$classes['class']['checkboxes']['class'][] = 'form-check-inline';
+			$classes['class']['radio']['class'][]      = 'form-check-inline';
 		}
 
 		$this->classes = $classes;
@@ -160,10 +151,10 @@ class Uikit
 		switch ($orientation)
 		{
 			case 'horizontal':
-				return 'uk-form-horizontal';
+				return 'form-row';
 
-			case 'stacked':
-				return 'uk-form-stacked';
+			default:
+				break;
 		}
 
 		return null;
@@ -177,12 +168,12 @@ class Uikit
 		{
 			case 'horizontal':
 				return array(
-					'uk-width-1-4',
+					'col-sm-3',
 				);
 
 			case 'stacked':
 				return array(
-					'uk-width-1-1',
+					'col-sm-12',
 				);
 
 			default:
@@ -198,12 +189,12 @@ class Uikit
 		{
 			case 'horizontal':
 				return array(
-					'uk-width-3-4',
+					'col-sm-9',
 				);
 
 			case 'stacked':
 				return array(
-					'uk-width-1-1',
+					'col-sm-12',
 				);
 
 			default:

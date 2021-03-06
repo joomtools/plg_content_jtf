@@ -342,13 +342,25 @@ trait FormFieldExtension
 			)
 		);
 
+		$hiddenLabelClass = 'jtfhp';
+
+		$framework = (array) $this->getForm()->framework;
+
+		foreach (array('bs5', 'bs4') as $fValue)
+		{
+			if (in_array($fValue , $framework, true))
+			{
+				$hiddenLabelClass = 'visually-hidden';
+			}
+		}
+
 		if ($issetHiddenLabel)
 		{
 			$this->fieldmarkerplace       = 'hint';
 			$this->showfielddescriptionas = 'text';
 			$this->labelclass             = !empty((string) $this->labelclass)
-				? 'jtfhp ' . (string) $this->labelclass
-				: 'jtfhp';
+				? $hiddenLabelClass . ' ' . (string) $this->labelclass
+				: $hiddenLabelClass;
 
 			if (!$issetHint && $issetLabel && !$isHintExcludedField)
 			{
@@ -421,17 +433,16 @@ trait FormFieldExtension
 	protected function getLayoutData(): array
 	{
 		$data = parent::getLayoutData();
-
-		return array_merge($data, array(
+		$data = array_merge($data, array(
 				'control'                => $this->control,
 				'buttonClass'            => $this->buttonclass,
 				'buttonIcon'             => $this->buttonicon,
 				'optionLabelClass'       => $this->optionlabelclass,
 				'optionClass'            => $this->optionclass,
 				'framework'              => $this->form->framework[0],
-				'fieldMarker'            => $this->fieldMarker,
-				'fieldMarkerPlace'       => $this->fieldMarkerPlace,
-				'showFieldDescriptionAs' => $this->showFieldDescriptionAs,
+				'fieldMarker'            => $this->fieldmarker,
+				'fieldMarkerPlace'       => $this->fieldmarkerplace,
+				'showFieldDescriptionAs' => $this->showfielddescriptionas,
 //				'gridGroup'        => $this->gridgroup,
 //				'gridLabel'        => $this->gridlabel,
 //				'gridField'        => $this->gridfield,
@@ -439,6 +450,8 @@ trait FormFieldExtension
 //				'descriptionclass' => $this->descriptionclass,
 			)
 		);
+
+		return $data;
 	}
 
 	/**

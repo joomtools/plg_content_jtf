@@ -201,7 +201,7 @@ class FrameworkHelper
 
 		if (version_compare(JVERSION, '4', 'ge'))
 		{
-			$framework = 'bs4';
+			$framework = 'bs5';
 		}
 
 		if (!empty($form->framework[0]) && $form->framework[0] != 'joomla')
