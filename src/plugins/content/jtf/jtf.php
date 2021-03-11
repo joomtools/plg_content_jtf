@@ -263,7 +263,7 @@ class PlgContentJtf extends CMSPlugin
 			}
 
 			// Get form submit task
-			$formSubmitted = $this->app->input->getCmd('task') == $formTheme . "_sendmail";
+			$formSubmitted = ($this->app->input->getCmd('formTask') == $formTheme . "_sendmail") ? true : false;
 
 			$this->setSubmit();
 
@@ -1052,7 +1052,7 @@ class PlgContentJtf extends CMSPlugin
 		$form          = FrameworkHelper::setFrameworkClasses($form);
 		$formClass     = $form->getAttribute('class', '');
 		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
-			. '<input type="hidden" name="task" value="' . $id . $index . '_sendmail" />'
+			. '<input type="hidden" name="formTask" value="' . $id . $index . '_sendmail" />'
 			. '<input type="hidden" name="view" value="' . $this->app->input->get('view') . '" />'
 			. '<input type="hidden" name="Itemid" value="' . $this->app->input->get('Itemid') . '" />'
 			. '<input type="hidden" name="id" value="' . $this->app->input->get('id') . '" />';
