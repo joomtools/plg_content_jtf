@@ -57,11 +57,11 @@ class Bs3
 		$classes['css'] .= '.jtf fieldset.radio :not(input){padding-top:0;}';
 		$classes['css'] .= '.jtf .radio label.radio:not(.radio-inline),.jtf .checkboxes label.checkbox:not(.checkbox-inline){display:block;margin-top:0;}';
 		$classes['css'] .= '.jtf .checkboxes label.checkbox:not(.checkbox-inline){padding-top:0;}';
-		$classes['css'] .= '.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A") no-repeat 100% 50%;padding-right:20px;}';
+		$classes['css'] .= '.jtf .minicolors-theme-bootstrap .hex{width:105%;height:auto;}';
 
 		$classes['class']['form'][] = 'form-validate';
 
-		if (!$inline)
+		if ($orientation == 'horizontal')
 		{
 				$classes['class']['gridgroup'][] = 'row';
 		}
@@ -92,12 +92,19 @@ class Bs3
 
 		$classes['class']['checkboxes'] = array(
 			'class' => array('checkbox'),
+			'inline' => array(
+				'class' => array('inline')
+			),
 			'options' => array(
-				'labelclass' => array('checkbox'),
+//				'labelclass' => array('checkbox'),
 			),
 		);
 
 		$classes['class']['radio'] = array(
+			'class' => array('radio'),
+			'inline' => array(
+				'class' => array('inline')
+			),
 			'options' => array(
 				'labelclass' => array('radio'),
 			),
@@ -133,10 +140,15 @@ class Bs3
 
 	public function getCss()
 	{
+		if (empty($this->classes['css']))
+		{
+			return '';
+		}
+
 		return $this->classes['css'];
 	}
 
-	public function getOrientationClass($orientation = null)
+	public function getOrientationGridGroupClasses($orientation = null)
 	{
 		$orientation = $orientation ?: $this->orientation;
 
@@ -155,7 +167,7 @@ class Bs3
 		return null;
 	}
 
-	public function getOrientationLabelsClasses($orientation = null)
+	public function getOrientationGridLabelClasses($orientation = null)
 	{
 		$orientation = $orientation ?: $this->orientation;
 
@@ -176,7 +188,7 @@ class Bs3
 		}
 	}
 
-	public function getOrientationFieldsClasses($orientation = null)
+	public function getOrientationGridFieldClasses($orientation = null)
 	{
 		$orientation = $orientation ?: $this->orientation;
 

@@ -49,7 +49,9 @@ extract($displayData);
 // Build the fieldset attributes array.
 $fieldsetAttributes          = array();
 $fieldsetAttributes['id']    = $id;
-$fieldsetAttributes['class'] = empty($class) ? 'checkboxes checkboxes-group' : 'checkboxes checkboxes-group ' . trim($class);;
+$fieldsetAttributes['class'] = 'checkboxes checkboxes-group';
+
+$fieldElementClass = empty(trim($class)) ? '' : ' class="' . trim($class) . '"';
 
 !$readonly  ? null : $fieldsetAttributes['readonly']  = 'readonly';
 !$disabled  ? null : $fieldsetAttributes['disabled']  = 'disabled';
@@ -93,15 +95,17 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 		$optionLabelAttributes = ArrayHelper::toString($optionLabelAttributes);
 		?>
 
-		<label <?php echo $optionLabelAttributes ?>
-			<?php if (!empty($option->optionattr)) :
-				HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
-				HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'));
-				echo $option->optionattr; ?>
-			<?php endif; ?>
-		>
-			<input <?php echo $optionAttributes; ?> />
-			<?php echo $option->text; ?>
-		</label>
+		<div<?php echo $fieldElementClass; ?>>
+			<label <?php echo $optionLabelAttributes ?>
+				<?php if (!empty($option->optionattr)) :
+					HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+					HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'));
+					echo $option->optionattr; ?>
+				<?php endif; ?>
+			>
+				<input <?php echo $optionAttributes; ?> />
+				<?php echo $option->text; ?>
+			</label>
+		</div>
 	<?php endforeach; ?>
 </fieldset>

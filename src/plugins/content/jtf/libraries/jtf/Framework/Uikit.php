@@ -54,12 +54,13 @@ class Uikit
 		$this->orientation = $orientation;
 
 		$classes['css'] = '.jtf .uk-form-icon:not(.uk-form-icon-flip)>select{padding-left:40px!important;}';
-//		$classes['css'] .= '.jtf .uk-form-stacked .uk-form-label{width:auto!important;float:none!important;}';
 		$classes['css'] .= '.jtf .uk-form-stacked .uk-form-controls{margin-left:0!important;}';
 		$classes['css'] .= '.jtf .uk-checkbox,.jtf .uk-radio{margin-left:6px!important;}';
 		$classes['css'] .= '.jtf .uk-radio{margin-top:4px!important;margin-right:4px!important;}';
-		$classes['css'] .= '.jtf .uk-button-group {font-size:100.01%!important}';
-		$classes['css'] .= '.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A") no-repeat 100% 50%!important;padding-right:20px!important;}';
+		$classes['css'] .= '.jtf .uk-button-group {font-size:100.01%!important;}';
+		$classes['css'] .= '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 30px !important;}';
+		$classes['css'] .= '.jtf .minicolors-theme-bootstrap .hex{max-width:105%!important;width:105%!important;height:auto;}';
+
 
 		$classes['class']['form']             = array('uk-form', 'form-validate');
 		$classes['class']['default'][]        = 'uk-input';
@@ -150,10 +151,15 @@ class Uikit
 
 	public function getCss()
 	{
+		if (empty($this->classes['css']))
+		{
+			return '';
+		}
+
 		return $this->classes['css'];
 	}
 
-	public function getOrientationClass($orientation = null)
+	public function getOrientationGridGroupClasses($orientation = null)
 	{
 		$orientation = $orientation ?: $this->orientation;
 
@@ -169,7 +175,7 @@ class Uikit
 		return null;
 	}
 
-	public function getOrientationLabelsClasses($orientation = null)
+	public function getOrientationGridLabelClasses($orientation = null)
 	{
 		$orientation = $orientation ?: $this->orientation;
 
@@ -190,7 +196,7 @@ class Uikit
 		}
 	}
 
-	public function getOrientationFieldsClasses($orientation = null)
+	public function getOrientationGridFieldClasses($orientation = null)
 	{
 		$orientation = $orientation ?: $this->orientation;
 

@@ -58,7 +58,9 @@ class Uikit3
 		$classes['css'] .= '.uk-form-stacked .uk-form-controls {width: 100% !important; margin-left: 0 !important;}';
 		$classes['css'] .= '.checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
 		$classes['css'] .= '.checkbox , .radio {padding-left: 0 !important;}';
-//		$classes['css'] .= 'input[type=checkbox]:not(:checked), input[type=radio]:not(:checked), .uk-input, .uk-textarea {background-color: white !important;}';
+		$classes['css'] .= '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}';
+		$classes['css'] .= '.jtf .minicolors-theme-bootstrap .hex{height:auto;}';
+
 
 		$classes['class']['form']             = array('uk-form', 'form-validate');
 		$classes['class']['legend'][]         = 'uk-legend';
@@ -151,10 +153,15 @@ class Uikit3
 
 	public function getCss()
 	{
+		if (empty($this->classes['css']))
+		{
+			return '';
+		}
+
 		return $this->classes['css'];
 	}
 
-	public function getOrientationClass($orientation = null)
+	public function getOrientationGridGroupClasses($orientation = null)
 	{
 		$orientation = $orientation ?: $this->orientation;
 
@@ -170,12 +177,12 @@ class Uikit3
 		return null;
 	}
 
-	public function getOrientationLabelsClasses($orientation = null)
+	public function getOrientationGridLabelClasses($orientation = null)
 	{
 		return array();
 	}
 
-	public function getOrientationFieldsClasses($orientation = null)
+	public function getOrientationGridFieldClasses($orientation = null)
 	{
 		return array();
 	}

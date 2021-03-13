@@ -3,6 +3,7 @@
 	<fieldset name="block1"
 	          gridlabel="col-sm-2"
 	          gridfield="col-sm-10"
+	          gridgroup="col-sm-12"
 	>
 		<field name="name"
 		       type="text"

@@ -13,6 +13,7 @@ namespace Jtf\Form;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Form\Form as JForm;
 
 /**
  * Form Class for the Joomla Platform.
@@ -23,7 +24,7 @@ use Joomla\Registry\Registry;
  *
  * @since  3.0.0
  */
-class Form extends \Joomla\CMS\Form\Form
+class Form extends JForm
 {
 	/**
 	 * Array of layoutPaths.

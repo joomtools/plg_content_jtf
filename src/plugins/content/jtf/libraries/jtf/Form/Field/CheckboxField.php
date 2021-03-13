@@ -29,5 +29,50 @@ if (version_compare(JVERSION, '4', 'lt'))
  */
 class CheckboxField extends \JFormFieldCheckbox
 {
-	use FormFieldExtension;
+	/**
+	 * Name of the layout being used to render the field
+	 *
+	 * @var   string
+	 *
+	 * @since  3.0.0
+	 */
+	protected $layout = 'joomla.form.field.checkbox';
+
+	use FormFieldExtension {
+		getLayoutData as traitGetLayoutData;
+	}
+
+	/**
+	 * Method to get the field input markup.
+	 * The checked element sets the field to selected.
+	 *
+	 * @return  string  The field input markup.
+	 *
+	 * @since   3.0.0
+	 */
+	protected function getInput()
+	{
+		if (empty($this->layout))
+		{
+			throw new \UnexpectedValueException(sprintf('%s has no layout assigned.', $this->name));
+		}
+
+		return $this->getRenderer($this->layout)->render($this->getLayoutData());
+	}
+
+	/**
+	 * Method to get the data to be passed to the layout for rendering.
+	 *
+	 * @return  array
+	 *
+	 * @since   3.0.0
+	 */
+	protected function getLayoutData()
+	{
+		$data            = $this->traitGetLayoutData();
+		$data['value']   = $this->default ?: '1';
+		$data['checked'] = $this->checked || $this->value;
+
+		return $data;
+	}
 }

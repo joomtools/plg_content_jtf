@@ -99,7 +99,9 @@ let jtfUploadFile = (elm, optionlist) => {
     label.classList.add('invalid');
     label.setAttribute('aria-invalid', true);
 
-    dragarea.classList.add('invalid');
+    if (dragarea !== null) {
+      dragarea.classList.add('invalid');
+    }
 
     fileInput.classList.add('invalid');
     fileInput.setAttribute('aria-invalid', true);
@@ -109,7 +111,9 @@ let jtfUploadFile = (elm, optionlist) => {
     label.classList.remove('invalid');
     label.setAttribute('aria-invalid', false);
 
-    dragarea.classList.remove('invalid');
+    if (dragarea !== null) {
+      dragarea.classList.remove('invalid');
+    }
 
     fileInput.classList.remove('invalid');
     fileInput.setAttribute('aria-invalid', false);

@@ -12,9 +12,9 @@ namespace Jtf\Form;
 
 defined('JPATH_PLATFORM') or die;
 
-use Jtf\Layout\FileLayout;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
+use Jtf\Layout\FileLayout;
 
 /**
  * Abstract Form Field class for the Joomla Platform.
@@ -169,6 +169,7 @@ trait FormFieldExtension
 			case 'gridlabel':
 			case 'gridfield':
 			case 'icon':
+			case 'inline':
 			case 'buttonclass':
 			case 'buttonicon':
 			case 'descriptionclass':
@@ -223,6 +224,7 @@ trait FormFieldExtension
 
 			case 'hiddenlabel':
 			case 'hiddenLabel':
+			case 'inline':
 				$value       = (string) $value;
 				$name = strtolower($name);
 				$this->$name = ($value === 'true' || $value === $name || $value === '1');
@@ -255,6 +257,7 @@ trait FormFieldExtension
 				'hiddenlabel',
 				'hiddenLabel',
 				'icon',
+				'inline',
 				'buttonclass',
 				'buttonicon',
 				'gridgroup',
@@ -268,32 +271,35 @@ trait FormFieldExtension
 				'fieldmarkerplace',
 			);
 
-			foreach ($attributes as $attributeName)
+			if ($this->form instanceof Form)
 			{
-				switch ($attributeName)
+				foreach ($attributes as $attributeName)
 				{
-					case 'showfielddescriptionas':
-					case 'fieldmarker':
-					case 'fieldmarkerplace':
-						$this->__set($attributeName, $this->form->$attributeName);
-						break;
+					switch ($attributeName)
+					{
+						case 'showfielddescriptionas':
+						case 'fieldmarker':
+						case 'fieldmarkerplace':
+							$this->__set($attributeName, $this->form->$attributeName);
+							break;
 
-					default:
-						$this->__set($attributeName, $element[$attributeName]);
-						break;
+						default:
+							$this->__set($attributeName, $element[$attributeName]);
+							break;
+					}
 				}
-			}
 
-			if ($this->readonly)
-			{
-				$element['required'] = 'false';
-				$this->__set('required', 'false');
-			}
+				if ($this->readonly)
+				{
+					$element['required'] = 'false';
+					$this->__set('required', 'false');
+				}
 
-			if ($this->disabled)
-			{
-				$element['required'] = 'false';
-				$this->__set('required', 'false');
+				if ($this->disabled)
+				{
+					$element['required'] = 'false';
+					$this->__set('required', 'false');
+				}
 			}
 
 			return true;
@@ -344,7 +350,8 @@ trait FormFieldExtension
 
 		$hiddenLabelClass = 'jtfhp';
 
-		$framework = (array) $this->getForm()->framework;
+		$framework    = (array) $this->getForm()->framework;
+		$usedFramwork = $framework[0];
 
 		foreach (array('bs5', 'bs4') as $fValue)
 		{
@@ -409,6 +416,7 @@ trait FormFieldExtension
 		$options['fieldMarkerPlace']       = $this->fieldmarkerplace;
 		$options['fieldMarkerDesc']        = $fieldMarkerDesc;
 		$options['showFieldDescriptionAs'] = $this->showfielddescriptionas;
+		$options['framework']              = $usedFramwork;
 
 		return parent::renderField($options);
 	}

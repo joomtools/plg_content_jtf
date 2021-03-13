@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form orientation="horizontal"
-      gridlabel="col-sm-3"
-      gridfield="col-sm-9"
+      gridlabel="col-sm-2 bs4"
+      gridfield="col-sm-10 bs4"
 >
 	<fieldset name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
@@ -41,12 +41,12 @@
 			<option value="JTF_OPTION3">JTF_OPTION3</option>
 		</field>
 
-		<field name="checkbox_inline"
+		<field name="checkboxes_inline"
 		       type="checkboxes"
 		       description="JTF_CHK_INLINE_DESC"
 		       label="JTF_CHK_INLINE_LABEL"
 		       validate="options"
-		       class="form-check-inline"
+		       inline="true"
 		       optionclass="optionclass"
 		       optionlabelclass="optionlabelclass"
 		>
@@ -72,7 +72,7 @@
 		       label="JTF_RADIO_INLINE_LABEL"
 		       default="JTF_OPTION2"
 		       validate="options"
-		       class="form-check-inline"
+		       inline="true"
 		       optionclass="optionclass"
 		       optionlabelclass="optionlabelclass"
 		>
@@ -94,7 +94,7 @@
 
 		<field name="showon_text"
 		       type="text"
-		       icon="icon-pencil-alt"
+		       icon="fa fa-pencil"
 		       maxlength="60"
 		       description="JTF_SHW_TXT_DESC"
 		       label="JTF_SHW_TXT_LABEL"
@@ -104,7 +104,7 @@
 
 		<field name="text"
 		       type="text"
-		       icon="fa fa-pencil-alt"
+		       icon="fa fa-pencil"
 		       maxlength="60"
 		       description="JTF_TXT_DESC"
 		       label="JTF_TXT_LABEL"
@@ -133,7 +133,7 @@
 
 		<field name="subject"
 		       type="text"
-		       icon="fa fa-pencil-alt"
+		       icon="fa fa-pencil"
 		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
@@ -222,7 +222,7 @@
 
 		<field name="color"
 		       type="color"
-		       default="#eee"
+		       default="#eeeeee"
 		       description="JTF_COLOR_DESC"
 		       label="JTF_COLOR_LABEL"
 		/>

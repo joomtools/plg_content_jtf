@@ -27,6 +27,14 @@
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
 
+		<field name="checkbox"
+		       type="checkbox"
+		       description="Checkbox Beschreibung"
+		       label="Checkbox"
+		       value="CheckboxTest"
+		       required="true"
+		/>
+
 		<field name="checkboxes"
 		       type="checkboxes"
 		       description="JTF_CHK_DESC"
@@ -40,12 +48,12 @@
 			<option value="JTF_OPTION3">JTF_OPTION3</option>
 		</field>
 
-		<field name="checkbox_inline"
+		<field name="checkboxes_inline"
 		       type="checkboxes"
 		       description="JTF_CHK_INLINE_DESC"
 		       label="JTF_CHK_INLINE_LABEL"
 		       validate="options"
-		       optionlabelclass="inline"
+		       inline="true"
 		       optionclass="optionClass"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
@@ -71,7 +79,7 @@
 		       label="JTF_RADIO_INLINE_LABEL"
 		       default="JTF_OPTION2"
 		       validate="options"
-		       optionlabelclass="inline"
+		       inline="true"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
