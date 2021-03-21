@@ -22,23 +22,32 @@ extract($displayData);
  * @var   string  $label        Label of the field.
  */
 
-$role       = '';
-$ariaLabel  = '';
-$buttonIcon = '&times;';
+$role        = '';
+$ariaLabel   = '';
+$buttonIcon  = '&times;';
+$close       = $close == 'true' ? 'alert' : $close;
+$dataDismiss = ' data-dismiss="' . $close . '"';
 
-if (in_array($this->getOptions()->get('suffixes')[0], array('bs3', 'bs4',)))
+if (in_array($this->getOptions()->get('suffixes')[0], array('bs3', 'bs4', 'bs5')))
 {
-	$role       = ' role="alert"';
-	$ariaLabel  = ' aria-label="Close"';
-	$buttonIcon = '<span aria-hidden="true">&times;</span>';
+	$role        = ' role="alert"';
+	$ariaLabel   = ' aria-label="Close"';
+	$buttonIcon  = '<span aria-hidden="true">&times;</span>';
+}
+
+if ($this->getOptions()->get('suffixes')[0] == 'bs5')
+{
+	$class       = !empty($class) ? $class . ' alert-dismissible fade show' : 'alert-dismissible fade show';
+	$buttonClass = 'btn-close';
+	$dataDismiss = ' data-bs-dismiss="' . $close . '"';
+	$buttonIcon  = '';
 }
 
 $class = !empty($class) ? ' class="' . $class . '"' : '';
-$close = $close == 'true' ? 'alert' : $close;
 
 if (!empty($close))
 {
-	$html[] = '<button type="button" class="' . $buttonClass . '" data-dismiss="' . $close . '"' . $ariaLabel . '>' . $buttonIcon . '</button>';
+	$html[] = '<button type="button" class="' . $buttonClass . '"' . $dataDismiss . $ariaLabel . '>' . $buttonIcon . '</button>';
 }
 
 $html[] = !empty($label) ? '<' . $heading . '>' . $label . '</' . $heading . '>' : '';

@@ -8,8 +8,7 @@
  * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
-var jtfDomIsReady = window.jtfDomIsReady || {};
-jtfDomIsReady(function () {
+document.addEventListener('DOMContentLoaded', function () {
   var systemMessageContainer = document.querySelector('#system-message-container');
   var errorMessageObserverConfig = {
     attributes: false,

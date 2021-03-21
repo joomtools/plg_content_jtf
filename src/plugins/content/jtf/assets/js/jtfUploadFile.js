@@ -228,9 +228,8 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
   }
 };
 
-var jtfDomIsReady = window.jtfDomIsReady || {};
 var jtfFrwk = window.jtfFrwk || 'BS2';
-jtfDomIsReady(function () {
+document.addEventListener('DOMContentLoaded', function () {
   var uploaderWrapper = document.querySelectorAll('.uploader-wrapper');
   console.log('uploaderWrapper', uploaderWrapper);
   Array.prototype.forEach.call(uploaderWrapper, function (elm) {

@@ -45,7 +45,7 @@ foreach ($forms as $k => $form)
 } ?>
 
 <?php if ($multiple) : ?>
-	<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section">
+	<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section hidden">
 		<?php $tmpl = FrameworkHelper::setFrameworkClasses($tmpl);
 		echo $this->sublayout('section',
 			array(
@@ -58,23 +58,24 @@ foreach ($forms as $k => $form)
 		); ?>
 	</template>
 <?php endif; ?>
+<?php if (version_compare(JVERSION, 4, 'lt')) : ?>
+	<script>
+		(function ($) {
+			$(document).on('subform-row-add', function (event, row) {
+			  document.formvalidator = new JFormValidator();
 
-<script>
-  (function ($) {
-    $(document).on('subform-row-add', function (event, row) {
-      document.formvalidator = new JFormValidator();
-
-      if (!!row.querySelector('.uploader-wrapper')) {
-        var jtfUploadFile = window.jtfUploadFile || {};
-        Array.prototype.forEach.call(row.querySelectorAll('.uploader-wrapper'), function (el) {
-          console.log('3 subform-row-add - el', el);
-          console.log('3 subform-row-add - el.querySelector', el.querySelector('input[type="file"].file-uplaoder'));
-          jtfUploadFile(el, {
-            id: el.querySelector('input[type="file"].file-uplaoder').getAttribute('id'),
-            uploadMaxSize: el.querySelector('input[type="hidden"].file-uplaoder').getAttribute('value')
-          });
-        });
-      }
-    });
-  })(jQuery);
-</script>
+			  if (!!row.querySelector('.uploader-wrapper')) {
+				var jtfUploadFile = window.jtfUploadFile || {};
+				Array.prototype.forEach.call(row.querySelectorAll('.uploader-wrapper'), function (el) {
+				  console.log('3 subform-row-add - el', el);
+				  console.log('3 subform-row-add - el.querySelector', el.querySelector('input[type="file"].file-uplaoder'));
+				  jtfUploadFile(el, {
+					id: el.querySelector('input[type="file"].file-uplaoder').getAttribute('id'),
+					uploadMaxSize: el.querySelector('input[type="hidden"].file-uplaoder').getAttribute('value')
+				  });
+				});
+			  }
+			});
+		})(jQuery);
+	</script>
+<?php endif; ?>

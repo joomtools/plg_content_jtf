@@ -229,15 +229,14 @@ let jtfUploadFile = (elm, optionlist) => {
   }
 };
 
-let jtfDomIsReady = window.jtfDomIsReady || {};
 let jtfFrwk = window.jtfFrwk || 'BS2';
 
-jtfDomIsReady(() => {
+document.addEventListener('DOMContentLoaded', () => {
   let uploaderWrapper = document.querySelectorAll('.uploader-wrapper');
 
   console.log('uploaderWrapper', uploaderWrapper);
 
-  Array.prototype.forEach.call(uploaderWrapper, function (elm) {
+  Array.prototype.forEach.call(uploaderWrapper, (elm) => {
     jtfUploadFile(elm, {
       id: elm.querySelector('input[type="file"].file-uplaoder').getAttribute('id'),
       uploadMaxSize: elm.querySelector('input[type="hidden"].file-uplaoder').getAttribute('value')

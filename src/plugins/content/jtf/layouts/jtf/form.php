@@ -30,16 +30,6 @@ extract($displayData);
  * @var   string  $fillouttime    Minimum time to wait before submit form.
  */
 
-// Including fallback code for HTML5 non supported browsers.
-// TODO Check if needed in joomla 4
-HTMLHelper::_('jquery.framework');
-HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
-
-HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfDomIsReady.min.js', array('version' => 'auto'));
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfScrollToError.min.js', array('version' => 'auto'));
-
 $role                         = '';
 $invalidColor                 = '#ff0000';
 $invalidBackgroundColor       = '#f2dede';
@@ -70,13 +60,10 @@ if ($fillouttime > 0)
 	$jsToAdd .= "jtfTtf." . $id . " = " . $fillouttime . ";";
 	$jsToAdd .= "jtfBadgeClass." . $id . " = '" . $jtfBadgeClass[$frwk] . "';";
 
-	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfTimeToFill.min.js', array('version' => 'auto'));
+	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfTimeToFill.min.js', array('version' => 'auto'), array('defer' => 'defer'));
 }
 
-Factory::getDocument()->addScriptDeclaration($jsToAdd);
-
-Factory::getDocument()->addStyleDeclaration("
-	.hidden{display:none;visibility:hidden;}
+$cssToAdd = ".hidden{display:none;visibility:hidden;}
 	.jtfhp{position:absolute;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0);border:0!important;float:none!important;}
 	.jtf .invalid:not(label):not(fieldset){border-color:" . $invalidColor . "!important;background-color:" . $invalidBackgroundColor . "!important;}
 	.jtf .invalid,.jtf .invalid::placeholder{color:" . $invalidColor . ";}
@@ -85,8 +72,25 @@ Factory::getDocument()->addStyleDeclaration("
 	.jtf .marker{font-weight:bold;}
 	.jtf [disabled]{pointer-events:none;}
 	.jtf .inline{display:inline-block!important;line-height:150%;}
-	.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:#fff url('data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A') no-repeat 100% 50% !important;padding-right:20px!important;}"
-);
+	.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:#fff url('data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A') no-repeat 100% 50% !important;padding-right:20px!important;}";
+
+// Including fallback code for HTML5 non supported browsers.
+if (version_compare(JVERSION, 4, 'lt'))
+{
+	Factory::getDocument()->addScriptDeclaration($jsToAdd);
+	Factory::getDocument()->addStyleDeclaration($cssToAdd);
+	HTMLHelper::_('jquery.framework');
+	HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
+}
+else
+{
+	Factory::getApplication()->getDocument()->getWebAssetManager()->addInline('script', $jsToAdd);
+	Factory::getApplication()->getDocument()->getWebAssetManager()->addInline('style', $cssToAdd);
+}
+
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfScrollToError.min.js', array('version' => 'auto'), array('defer' => 'defer'));
 
 ?>
 <div class="jtf contact-form">

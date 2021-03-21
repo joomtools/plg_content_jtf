@@ -8,8 +8,7 @@
  * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
-var jtfDomIsReady = window.jtfDomIsReady || {};
-jtfDomIsReady(function () {
+document.addEventListener('DOMContentLoaded', function () {
   document.formvalidator.setHandler('dateformat', function (value) {
     var dayformat = ['L', 'D.M.YY', 'D.M.YY hh:mm:ss', 'D-M-YY', 'D-M-YY hh:mm:ss', 'D/M/YY', 'D/M/YY hh:mm:ss', 'D.M.YYYY', 'D.M.YYYY hh:mm:ss', 'D-M-YYYY', 'D-M-YYYY hh:mm:ss', 'D/M/YYYY', 'D/M/YYYY hh:mm:ss', 'DD.MM.YY', 'DD.MM.YY hh:mm:ss', 'DD-MM-YY', 'DD-MM-YY hh:mm:ss', 'DD/MM/YY', 'DD/MM/YY hh:mm:ss', 'DD.MM.YYYY', 'DD.MM.YYYY hh:mm:ss', 'DD-MM-YYYY', 'DD-MM-YYYY hh:mm:ss', 'DD/MM/YYYY', 'DD/MM/YYYY hh:mm:ss'],
         moment = window.moment || {};

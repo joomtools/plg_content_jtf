@@ -7,9 +7,7 @@
  * @license      GNU General Public License version 3 or later
  */
 
-let jtfDomIsReady = window.jtfDomIsReady || {};
-
-jtfDomIsReady(() => {
+document.addEventListener('DOMContentLoaded', () => {
   document.formvalidator.setHandler('dateformat', (value) => {
     let dayformat = [
         'L',

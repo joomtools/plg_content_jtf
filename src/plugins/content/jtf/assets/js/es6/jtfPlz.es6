@@ -7,10 +7,8 @@
  * @license      GNU General Public License version 3 or later
  */
 
-let jtfDomIsReady = window.jtfDomIsReady || {};
-
-jtfDomIsReady(() => {
-  document.formvalidator.setHandler('plz', function (value) {
+document.addEventListener('DOMContentLoaded', () => {
+  document.formvalidator.setHandler('plz', (value) => {
     var regex = /^\d{5}$/;
     return regex.test(value);
   });

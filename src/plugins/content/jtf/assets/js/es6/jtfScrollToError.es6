@@ -7,17 +7,16 @@
  * @license      GNU General Public License version 3 or later
  */
 
-let jtfDomIsReady = window.jtfDomIsReady || {};
-
-jtfDomIsReady(() => {
-  const systemMessageContainer = document.querySelector('#system-message-container');
-  const errorMessageObserverConfig = {
+document.addEventListener('DOMContentLoaded', () => {
+  var systemMessageContainer = document.querySelector('#system-message-container');
+  var errorMessageObserverConfig = {
     attributes: false,
     childList: true,
     characterData: false
   };
-  const errorMessageObserver = new MutationObserver(() => {
-    const errorMessage = systemMessageContainer.querySelector('.alert-error');
+  var errorMessageObserver = new MutationObserver(() => {
+    var errorMessage = systemMessageContainer.querySelector('.alert-error');
+
     if (null !== errorMessage) {
       window.scrollTo({
         top: errorMessage.getBoundingClientRect().top - 100,
@@ -26,6 +25,5 @@ jtfDomIsReady(() => {
       });
     }
   });
-
   errorMessageObserver.observe(systemMessageContainer, errorMessageObserverConfig);
 });

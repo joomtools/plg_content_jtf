@@ -8,8 +8,7 @@
  * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
-var jtfDomIsReady = window.jtfDomIsReady || {};
-jtfDomIsReady(function () {
+document.addEventListener('DOMContentLoaded', function () {
   var forms = document.querySelectorAll('.jtf.contact-form form'),
       jtfTtf = window.jtfTtf || {},
       jtfBadgeClass = window.jtfBadgeClass || {};

@@ -10,6 +10,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 extract($displayData);
@@ -25,8 +26,16 @@ extract($displayData);
 
 if (!empty($options['showonEnabled']))
 {
-	HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
-	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'));
+	if (version_compare(JVERSION, 4, 'lt'))
+	{
+		HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+	}
+	else
+	{
+		Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
+	}
+
+	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'), array('defer' => 'defer'));
 }
 
 $required         = $options['required'];

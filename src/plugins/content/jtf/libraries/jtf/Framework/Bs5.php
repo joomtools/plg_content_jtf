@@ -91,6 +91,9 @@ class Bs5
 
 		$classes['class']['checkboxes'] = array(
 			'class'   => array('form-check'),
+			'inline' => array(
+				'class'      => array('form-check-inline'),
+			),
 			'options' => array(
 				'class'      => array('form-check-input'),
 				'labelclass' => array('form-check-label'),
@@ -99,6 +102,9 @@ class Bs5
 
 		$classes['class']['radio'] = array(
 			'class'   => array('form-check'),
+			'inline' => array(
+				'class'      => array('form-check-inline'),
+			),
 			'options' => array(
 				'class'      => array('form-check-input'),
 				'labelclass' => array('form-check-label'),
