@@ -17,7 +17,7 @@ use Jtf\Form\FormFieldExtension;
 /**
  * Supports a select grouped list of template styles
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class TemplatestyleField extends \Joomla\CMS\Form\Field\TemplatestyleField
 {

@@ -19,7 +19,7 @@ use Joomla\CMS\Language\Text;
 /**
  * Script file of Joomla CMS
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class PlgContentJtfInstallerScript
 {
@@ -28,7 +28,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public $minimumJoomla = '3.9';
 
@@ -37,7 +37,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public $minimumPhp = '7.3';
 
@@ -49,7 +49,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @return  boolean  True on success
 	 * @throws \Exception
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function preflight(string $action, Installer $installer): bool
 	{
@@ -124,7 +124,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @return  string
 	 *
-	 * @since   3.0.0
+	 * @since   __DEPLOY_VERSION__
 	 */
 	private function deleteOrphans(string $type, array $orphans): string
 	{

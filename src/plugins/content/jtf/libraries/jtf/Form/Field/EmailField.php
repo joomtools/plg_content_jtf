@@ -24,7 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Provides and input field for email addresses
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class EmailField extends \JFormFieldEMail
 {

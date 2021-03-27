@@ -18,7 +18,7 @@ use Jtf\Form\FormFieldExtension;
  * Form Field class for the Joomla Platform.
  * Supports a text field telephone numbers.
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class TelephoneField extends TelField
 {

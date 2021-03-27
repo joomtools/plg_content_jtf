@@ -17,7 +17,7 @@ JFormHelper::loadFieldClass('list');
  * Provides radio button inputs
  *
  * @link   http://www.w3.org/TR/html-markup/command.radio.html#command.radio
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class JFormFieldRadio extends JFormFieldList
 {
@@ -25,7 +25,7 @@ class JFormFieldRadio extends JFormFieldList
 	 * The form field type.
 	 *
 	 * @var    string
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $type = 'Radio';
 
@@ -33,7 +33,7 @@ class JFormFieldRadio extends JFormFieldList
 	 * Name of the core layout being used as fallback
 	 *
 	 * @var    string
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $defaultLayout = 'joomla.form.field.radio';
 
@@ -41,7 +41,7 @@ class JFormFieldRadio extends JFormFieldList
 	 * Name of the layout being used to render the field
 	 *
 	 * @var    string
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $layout;
 
@@ -50,7 +50,7 @@ class JFormFieldRadio extends JFormFieldList
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   3.0.0
+	 * @since   __DEPLOY_VERSION__
 	 */
 	protected function getInput()
 	{
@@ -84,7 +84,7 @@ class JFormFieldRadio extends JFormFieldList
 	 *
 	 * @return  array
 	 *
-	 * @since   3.0.0
+	 * @since   __DEPLOY_VERSION__
 	 */
 	protected function getLayoutData()
 	{

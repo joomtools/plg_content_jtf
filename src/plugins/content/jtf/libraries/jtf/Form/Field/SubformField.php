@@ -117,7 +117,7 @@ class SubformField extends \JFormFieldSubform
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getInput(): string
 	{
@@ -188,7 +188,7 @@ class SubformField extends \JFormFieldSubform
 	 * @throws  \InvalidArgumentException if no form provided.
 	 * @throws  \RuntimeException if the form could not be loaded.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function loadSubForm()
 	{
@@ -219,7 +219,7 @@ class SubformField extends \JFormFieldSubform
 	 *
 	 * @return  Form[]  Array of Form instances for the rows.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function loadSubFormData(Form &$subForm): array
 	{

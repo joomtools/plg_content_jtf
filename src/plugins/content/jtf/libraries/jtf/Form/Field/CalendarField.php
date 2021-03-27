@@ -28,7 +28,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Provides a pop up date picker linked to a button.
  * Optionally may be filtered to use user's or server's time zone.
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class CalendarField extends \JFormFieldCalendar
 {
@@ -39,7 +39,7 @@ class CalendarField extends \JFormFieldCalendar
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getInput(): string
 	{

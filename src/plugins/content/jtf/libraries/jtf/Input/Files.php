@@ -18,7 +18,7 @@ use Joomla\Utilities\ArrayHelper;
 /**
  * Extends Joomla! input files class
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class Files extends JoomlaInputFiles
 {
@@ -29,7 +29,7 @@ class Files extends JoomlaInputFiles
 	 *
 	 * @return  array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function decodeData(array $data): array
 	{

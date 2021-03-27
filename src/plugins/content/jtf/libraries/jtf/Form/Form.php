@@ -22,7 +22,7 @@ use Joomla\CMS\Form\Form as JForm;
  * It uses XML definitions to construct form fields and a variety of field and rule classes to
  * render and validate the form.
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class Form extends JForm
 {
@@ -31,7 +31,7 @@ class Form extends JForm
 	 *
 	 * @var   array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public $layoutPaths = array();
 
@@ -40,7 +40,7 @@ class Form extends JForm
 	 *
 	 * @var   array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public $framework = array();
 
@@ -49,7 +49,7 @@ class Form extends JForm
 	 *
 	 * @var   boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public $setEnctype = false;
 
@@ -58,7 +58,7 @@ class Form extends JForm
 	 *
 	 * @var   boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public $showRequiredFieldDescription = true;
 
@@ -67,7 +67,7 @@ class Form extends JForm
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public $showfielddescriptionas = 'text';
 
@@ -76,7 +76,7 @@ class Form extends JForm
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public $fieldmarker = 'optional';
 
@@ -85,7 +85,7 @@ class Form extends JForm
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public $fieldmarkerplace = 'field';
 
@@ -95,7 +95,7 @@ class Form extends JForm
 	 * @param   string  $name     The name of the form.
 	 * @param   array   $options  An array of form options.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function __construct(string $name, array $options = array())
 	{
@@ -114,7 +114,7 @@ class Form extends JForm
 	 *
 	 * @return  Form  Form instance.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 *
 	 * @throws  \InvalidArgumentException if no data provided.
 	 * @throws  \RuntimeException if the form could not be loaded.
@@ -165,7 +165,7 @@ class Form extends JForm
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function setAttribute(string $name, $value = null)
 	{
@@ -195,7 +195,7 @@ class Form extends JForm
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function resetData()
 	{
@@ -216,7 +216,7 @@ class Form extends JForm
 	 * @throws  \UnexpectedValueException
 	 * @throws  \RuntimeException
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function validateField(\SimpleXMLElement $element, $group = null, $value = null, Registry $input = null)
 	{
@@ -259,7 +259,7 @@ class Form extends JForm
 	 *
 	 * @return  boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function isFieldShown(string $showOn): bool
 	{
@@ -287,7 +287,7 @@ class Form extends JForm
 	 *
 	 * @return  boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function fieldIsShownValidation(array $values): bool
 	{

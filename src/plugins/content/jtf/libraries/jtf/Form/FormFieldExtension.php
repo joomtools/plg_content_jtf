@@ -19,7 +19,7 @@ use Jtf\Layout\FileLayout;
 /**
  * Abstract Form Field class for the Joomla Platform.
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 trait FormFieldExtension
 {
@@ -28,7 +28,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $control;
 
@@ -37,7 +37,7 @@ trait FormFieldExtension
 	 *
 	 * @var   boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $hiddenlabel = false;
 
@@ -46,7 +46,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $gridgroup;
 
@@ -55,7 +55,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $gridlabel;
 
@@ -64,7 +64,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $gridfield;
 
@@ -73,7 +73,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $optionlabelclass;
 
@@ -82,7 +82,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $optionclass;
 
@@ -91,7 +91,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $icon;
 
@@ -100,7 +100,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $buttonclass;
 
@@ -109,7 +109,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $buttonicon;
 
@@ -118,7 +118,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $descriptionclass;
 
@@ -127,7 +127,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $showfielddescriptionas = 'text';
 
@@ -136,7 +136,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $fieldmarker = 'optional';
 
@@ -145,7 +145,7 @@ trait FormFieldExtension
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $fieldmarkerplace = 'field';
 
@@ -156,7 +156,7 @@ trait FormFieldExtension
 	 *
 	 * @return  mixed  The property value or null.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function __get($name)
 	{
@@ -199,7 +199,7 @@ trait FormFieldExtension
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function __set($name, $value)
 	{
@@ -246,7 +246,7 @@ trait FormFieldExtension
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
 	{
@@ -315,7 +315,7 @@ trait FormFieldExtension
 	 *
 	 * @return  string  A string containing the html for the control group
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function renderField($options = array()): string
 	{
@@ -424,7 +424,7 @@ trait FormFieldExtension
 	/**
 	 * @return  Form
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function getForm(): Form
 	{
@@ -436,7 +436,7 @@ trait FormFieldExtension
 	 *
 	 * @return  array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getLayoutData(): array
 	{
@@ -467,7 +467,7 @@ trait FormFieldExtension
 	 *
 	 * @return  array  The field option objects.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getOptions(): array
 	{
@@ -503,7 +503,7 @@ trait FormFieldExtension
 	 *
 	 * @return  FileLayout
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getRenderer($layoutId = 'default'): FileLayout
 	{
@@ -541,7 +541,7 @@ trait FormFieldExtension
 	 *
 	 * @return  array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getLayoutPaths(): array
 	{
@@ -553,7 +553,7 @@ trait FormFieldExtension
 	 *
 	 * @return  boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function isDebugEnabled(): bool
 	{

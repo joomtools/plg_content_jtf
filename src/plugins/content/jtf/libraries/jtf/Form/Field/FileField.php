@@ -26,7 +26,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Provides an input field for files
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class FileField extends \JFormFieldFile
 {
@@ -35,7 +35,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @var   mixed
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $uploadicon = null;
 
@@ -44,7 +44,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @var   mixed
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $uploadmaxsize = null;
 
@@ -63,7 +63,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  mixed  The property value or null.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function __get($name)
 	{
@@ -86,7 +86,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function __set($name, $value)
 	{
@@ -114,7 +114,7 @@ class FileField extends \JFormFieldFile
 	 * @return  boolean  True on success.
 	 *
 	 * @see    JFormField::setup()
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
 	{
@@ -141,7 +141,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getInput(): string
 	{
@@ -157,7 +157,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getLayoutData(): array
 	{

@@ -25,7 +25,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Single checkbox field.
  * This is a boolean field with null for false and the specified option for true
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class CheckboxField extends \JFormFieldCheckbox
 {
@@ -34,7 +34,7 @@ class CheckboxField extends \JFormFieldCheckbox
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $layout = 'joomla.form.field.checkbox';
 
@@ -48,7 +48,7 @@ class CheckboxField extends \JFormFieldCheckbox
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   3.0.0
+	 * @since   __DEPLOY_VERSION__
 	 */
 	protected function getInput()
 	{
@@ -65,7 +65,7 @@ class CheckboxField extends \JFormFieldCheckbox
 	 *
 	 * @return  array
 	 *
-	 * @since   3.0.0
+	 * @since   __DEPLOY_VERSION__
 	 */
 	protected function getLayoutData()
 	{

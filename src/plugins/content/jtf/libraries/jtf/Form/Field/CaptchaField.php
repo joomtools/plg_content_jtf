@@ -19,7 +19,7 @@ use Jtf\Form\FormFieldExtension;
 /**
  * Captcha field.
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class CaptchaField extends \Joomla\CMS\Form\Field\CaptchaField
 {
@@ -39,7 +39,7 @@ class CaptchaField extends \Joomla\CMS\Form\Field\CaptchaField
 	 * @return  boolean     True on success.
 	 * @throws  \Exception
 
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
 	{

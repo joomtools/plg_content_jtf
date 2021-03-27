@@ -24,7 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Supports a one line text field.
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class NoteField extends \JFormFieldNote
 {
@@ -33,7 +33,7 @@ class NoteField extends \JFormFieldNote
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $layout = 'joomla.form.field.note';
 
@@ -47,7 +47,7 @@ class NoteField extends \JFormFieldNote
 	 *
 	 * @return  string  The field label markup.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getLabel(): string
 	{
@@ -59,7 +59,7 @@ class NoteField extends \JFormFieldNote
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getInput(): string
 	{
@@ -71,7 +71,7 @@ class NoteField extends \JFormFieldNote
 	 *
 	 * @return  array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getLayoutData(): array
 	{

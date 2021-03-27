@@ -19,7 +19,7 @@ use Jtf\Form\FormFieldExtension;
  * Form Field class for the Joomla Platform.
  * Supports a one line text field.
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class PlzField extends FormField
 {
@@ -28,7 +28,7 @@ class PlzField extends FormField
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $type = 'Plz';
 
@@ -37,7 +37,7 @@ class PlzField extends FormField
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $layout = 'joomla.form.field.plz';
 

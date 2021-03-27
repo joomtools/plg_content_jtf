@@ -24,7 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Supports a multi line area for entry of plain text
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class TextareaField extends \JFormFieldTextarea
 {

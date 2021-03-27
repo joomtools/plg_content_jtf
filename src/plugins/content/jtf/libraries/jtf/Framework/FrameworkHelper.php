@@ -20,35 +20,35 @@ use Jtf\Form\Form;
 /**
  * Helper for css framework
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class FrameworkHelper
 {
 	/**
 	 * @var   boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private static $flexboxCssFix = false;
 
 	/**
 	 * @var   boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private static $frameworkCssSet = false;
 
 	/**
 	 * @var   Form
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $form;
 
 	/**
 	 * @var   array[]
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $classes = array(
 		'frwk'     => array(),
@@ -60,7 +60,7 @@ class FrameworkHelper
 	/**
 	 * @var   string[]
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $fieldAttributes = array(
 		'gridgroup',
@@ -83,28 +83,28 @@ class FrameworkHelper
 	/**
 	 * @var   object
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $frwk;
 
 	/**
 	 * @var   array[]
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $frwkClasses = array();
 
 	/**
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $orientation;
 
 	/**
 	 * @var   array[]
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $hiddenLabel = array(
 		'form' => null,
@@ -115,7 +115,7 @@ class FrameworkHelper
 	/**
 	 * @var   array[]
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $gridGroup = array(
 		'default' => null,
@@ -127,7 +127,7 @@ class FrameworkHelper
 	/**
 	 * @var   array[]
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $gridLabel = array(
 		'default' => null,
@@ -139,7 +139,7 @@ class FrameworkHelper
 	/**
 	 * @var   array[]
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $gridField = array(
 		'default' => null,
@@ -151,7 +151,7 @@ class FrameworkHelper
 	/**
 	 * @var   string[]
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $hiddenLabelTypes = array(
 		'note',
@@ -165,7 +165,7 @@ class FrameworkHelper
 	 *
 	 * @return  Form
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public static function setFrameworkClasses(Form $form): Form
 	{
@@ -184,7 +184,7 @@ class FrameworkHelper
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function getFrameworkClass()
 	{
@@ -246,7 +246,7 @@ class FrameworkHelper
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function setFlexboxCssFix()
 	{
@@ -265,7 +265,7 @@ class FrameworkHelper
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function setFrameworkCss(string $css)
 	{
@@ -284,7 +284,7 @@ class FrameworkHelper
 	 *
 	 * @return  array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function getClassArray($classes, &$target = array()): array
 	{
@@ -326,7 +326,7 @@ class FrameworkHelper
 	 *
 	 * @return  boolean|string  Boolean if attribute is hiddenLabel, else css classes
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function getFinalSetting(string $attribute)
 	{
@@ -405,7 +405,7 @@ class FrameworkHelper
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function getFormAttributes()
 	{
@@ -456,7 +456,7 @@ class FrameworkHelper
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function getFieldsetAttributes()
 	{
@@ -624,7 +624,7 @@ class FrameworkHelper
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function setFieldClass(FormField $field)
 	{

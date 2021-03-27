@@ -24,7 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Supports a text field telephone numbers.
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class TelField extends \JFormFieldTel
 {
@@ -33,7 +33,7 @@ class TelField extends \JFormFieldTel
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $type = 'Tel';
 

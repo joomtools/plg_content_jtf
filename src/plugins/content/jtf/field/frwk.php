@@ -18,7 +18,7 @@ use Joomla\CMS\Filesystem\Folder;
 /**
  * List of supported frameworks
  *
- * @since   3.0.0
+ * @since   __DEPLOY_VERSION__
  */
 class JFormFieldFrwk extends JFormFieldList
 {
@@ -26,13 +26,13 @@ class JFormFieldFrwk extends JFormFieldList
 	 * The form field type.
 	 *
 	 * @var     string
-	 * @since   3.0.0
+	 * @since   __DEPLOY_VERSION__
 	 */
 	protected $type = 'Frwk';
 
 	/**
 	 * @var     array
-	 * @since   3.0.0
+	 * @since   __DEPLOY_VERSION__
 	 */
 	protected $exclude = array(
 		'FrameworkHelper'

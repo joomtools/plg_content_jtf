@@ -16,7 +16,7 @@ defined('JPATH_PLATFORM') or die;
  * Base class for rendering a display layout
  * loaded from a layout file
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class FileLayout extends \Joomla\CMS\Layout\FileLayout
 {
@@ -25,7 +25,7 @@ class FileLayout extends \Joomla\CMS\Layout\FileLayout
 	 *
 	 * @return  boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function checkLayoutExists(): bool
 	{

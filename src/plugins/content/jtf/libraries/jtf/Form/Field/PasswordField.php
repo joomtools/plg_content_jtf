@@ -25,7 +25,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Text field for passwords
  *
  * @note   Two password fields may be validated as matching using JFormRuleEquals
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class PasswordField extends \JFormFieldPassword
 {

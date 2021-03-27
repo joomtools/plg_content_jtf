@@ -35,7 +35,7 @@ use Jtf\Layout\FileLayout;
  * @package      Joomla.Plugin
  * @subpackage   Content.Jtf
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class PlgContentJtf extends CMSPlugin
 {
@@ -44,7 +44,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	const PLUGIN_REGEX1 = "@(<(\w+)[^>]*>\s?)?{jtf(\s.*)?/?}(?(1)\s?</\\2>|)@uU";
 
@@ -53,7 +53,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @var   integer
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private static $count = 0;
 
@@ -62,7 +62,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @var   boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $autoloadLanguage = true;
 
@@ -71,7 +71,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @var   CMSApplication
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $app;
 
@@ -80,7 +80,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @var   Form
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $form;
 
@@ -89,7 +89,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @var   array[]
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $uParams = array();
 
@@ -98,7 +98,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @var   array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $excludeOnExtensions = array(
 		'com_finder',
@@ -108,7 +108,7 @@ class PlgContentJtf extends CMSPlugin
 	/**
 	 * @var   boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $doNotLoad = false;
 
@@ -117,7 +117,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @var   string[]
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $uParamsAllowedOverride = array(
 		'fillouttime',
@@ -136,7 +136,7 @@ class PlgContentJtf extends CMSPlugin
 	/**
 	 * @var   boolean
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private $debug = false;
 
@@ -148,7 +148,7 @@ class PlgContentJtf extends CMSPlugin
 	 *                            Recognized key values include 'name', 'group', 'params', 'language'
 	 *                            (this list is not meant to be comprehensive).
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function __construct(object $subject, array $config = array())
 	{
@@ -179,7 +179,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 *
 	 * @throws  \Exception
 	 */
@@ -369,7 +369,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function init(string $userParams)
 	{
@@ -391,7 +391,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function resetUserParams()
 	{
@@ -490,7 +490,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function setUserParams(array $vars)
 	{
@@ -532,7 +532,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  boolean|string  False on error
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function getThemePath(string $filePath, $framework = false)
 	{
@@ -622,7 +622,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  Form
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function getForm(): Form
 	{
@@ -663,7 +663,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function setFieldValidates($form = null)
 	{
@@ -734,7 +734,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function cleanSubmittedFiles(array $submittedFiles, array $submittedValues): array
 	{
@@ -790,7 +790,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function saveFiles(array $validatedFile): array
 	{
@@ -834,7 +834,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function setErrors(array $errors)
 	{
@@ -857,7 +857,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @return  boolean|\RuntimeException  Boolean true if successful, boolean false if the `mailonline` configuration is set to 0,
 	 *                                     or a JException object if the mail function does not exist or sending the message fails.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 *
 	 * @throws  \RuntimeException
 	 */
@@ -921,7 +921,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function getValue(string $name): string
 	{
@@ -949,7 +949,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  array
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function getEmailCredentials(): array
 	{
@@ -1041,7 +1041,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function getTmpl(string $filename): string
 	{
@@ -1088,7 +1088,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 *
 	 * @throws  \Exception
 	 */
@@ -1138,7 +1138,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function setSubmit()
 	{
@@ -1176,7 +1176,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  false|string  False if the field is not set, else the field name
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function issetField(string $fieldType, $fieldsetName = null)
 	{
@@ -1203,7 +1203,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function setCaptcha($captcha)
 	{
@@ -1269,7 +1269,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function setSubmitButton($submit)
 	{
@@ -1310,7 +1310,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @return  void
 	 * @throws  \Exception
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function clearOldFiles()
 	{
@@ -1356,7 +1356,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function bugfixUploadFolder()
 	{
@@ -1399,7 +1399,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function removeCache(string $context)
 	{

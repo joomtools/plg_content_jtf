@@ -20,7 +20,7 @@ use Joomla\CMS\Language\Text;
  * Form Field class for the Joomla Platform.
  * Supports a submit button.
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class SubmitField extends FormField
 {
@@ -29,7 +29,7 @@ class SubmitField extends FormField
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $type = 'Submit';
 
@@ -38,7 +38,7 @@ class SubmitField extends FormField
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $layout = 'joomla.form.field.submit';
 
@@ -51,7 +51,7 @@ class SubmitField extends FormField
 	 *
 	 * @return  string  The field label markup.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getLabel(): string
 	{

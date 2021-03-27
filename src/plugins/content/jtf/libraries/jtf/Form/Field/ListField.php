@@ -24,7 +24,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Supports a generic list of options.
  *
- * @since  3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class ListField extends \JFormFieldList
 {
@@ -33,7 +33,7 @@ class ListField extends \JFormFieldList
 	 *
 	 * @var   string
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $layout = 'joomla.form.field.list';
 
@@ -45,7 +45,7 @@ class ListField extends \JFormFieldList
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since  3.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function getInput(): string
 	{
