@@ -9,7 +9,7 @@
 	>
 		<field name="list"
 		       type="list"
-		       icon="icon-list"
+		       icon="fa fa-list"
 		       description="JTF_LIST_DESC"
 		       label="JTF_LIST_LABEL"
 		       default=""
@@ -86,6 +86,7 @@
 		       label="JTF_SHW_SWITCH_LABEL"
 		       default="JNO"
 		       validate="options"
+		       inline="true"
 		       notmail="1"
 		>
 			<option value="JYES">JON</option>
@@ -94,7 +95,7 @@
 
 		<field name="showon_text"
 		       type="text"
-		       icon="icon-pencil-2"
+		       icon="fa fa-pencil-alt"
 		       maxlength="60"
 		       description="JTF_SHW_TXT_DESC"
 		       label="JTF_SHW_TXT_LABEL"
@@ -104,7 +105,7 @@
 
 		<field name="text"
 		       type="text"
-		       icon="icon-pencil-2"
+		       icon="fa fa-pencil-alt"
 		       maxlength="60"
 		       description="JTF_TXT_DESC"
 		       label="JTF_TXT_LABEL"
@@ -133,7 +134,7 @@
 
 		<field name="subject"
 		       type="text"
-		       icon="icon-pencil-2"
+		       icon="fa fa-pencil-alt"
 		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
@@ -178,6 +179,7 @@
 		       label="JTF_SUBFORM_SHOWON_LABEL"
 		       default="JNO"
 		       validate="options"
+		       inline="true"
 		       filter="string"
 		>
 			<option value="JYES">JYES</option>
@@ -186,7 +188,7 @@
 
 		<field name="subform"
 		       type="subform"
-		       formsource="plugins/content/jtf/tmpl/muster/subforms/subform.bs4.xml"
+		       formsource="plugins/content/jtf/tmpl/muster/subforms/subform.bs5.xml"
 		       multiple="true"
 		       description="JTF_SUBFORM_DESC"
 		       label="JTF_SUBFORM_LABEL"
@@ -252,6 +254,19 @@
 		       description="JTF_CATEGORY_DESC"
 		       label="JTF_CATEGORY_LABEL"
 		       icon="fa fa-th-list"
+		/>
+
+		<field name="file_simple"
+		       type="file"
+		       control="simple"
+		       description="JTF_FILE_SIMPLE_DESC"
+		       label="JTF_FILE_SIMPLE_LABEL"
+		       required="true"
+		       validate="file"
+		       accept=".zip,.pdf,image/*"
+		       multiple="multiple"
+		       uploadmaxsize="1"
+		       uploadinfoclass="alert alert-info"
 		/>
 
 		<field name="file"

@@ -249,6 +249,19 @@
 		       label="JTF_CATEGORY_LABEL"
 		/>
 
+		<field name="file_simple"
+		       type="file"
+		       control="simple"
+		       description="JTF_FILE_SIMPLE_DESC"
+		       label="JTF_FILE_SIMPLE_LABEL"
+		       required="true"
+		       validate="file"
+		       accept=".zip,.pdf,image/*"
+		       multiple="multiple"
+		       uploadmaxsize="1"
+		       uploadinfoclass="uk-alert uk-alert-info"
+		/>
+
 		<field name="file"
 		       type="file"
 		       description="JTF_FILE_DESC"

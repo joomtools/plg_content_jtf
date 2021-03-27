@@ -33,7 +33,7 @@ class FileField extends \JFormFieldFile
 	/**
 	 * The icon shown for upload.
 	 *
-	 * @var   mixed
+	 * @var   string
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
@@ -42,11 +42,20 @@ class FileField extends \JFormFieldFile
 	/**
 	 * The max upload size.
 	 *
-	 * @var   mixed
+	 * @var   string
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $uploadmaxsize = null;
+
+	/**
+	 * The class for the upload info box (only on simple layout).
+	 *
+	 * @var   string
+	 *
+	 * @since  __DEPLOY_VERSION__
+	 */
+	protected $uploadinfoclass = null;
 
 	use FormFieldExtension
 	{
@@ -71,6 +80,7 @@ class FileField extends \JFormFieldFile
 		{
 			case 'uploadicon':
 			case 'uploadmaxsize':
+			case 'uploadinfoclass':
 				return $this->{$name};
 
 			default:
@@ -94,6 +104,7 @@ class FileField extends \JFormFieldFile
 		{
 			case 'uploadicon':
 			case 'uploadmaxsize':
+			case 'uploadinfoclass':
 				$this->{$name} = (string) $value;
 				break;
 
@@ -126,6 +137,7 @@ class FileField extends \JFormFieldFile
 		$attributes = array(
 			'uploadicon',
 			'uploadmaxsize',
+			'uploadinfoclass',
 		);
 
 		foreach ($attributes as $attributeName)
@@ -188,6 +200,7 @@ class FileField extends \JFormFieldFile
 		$extraData         = array(
 			'uploadIcon'        => $this->uploadicon,
 			'uploadMaxSize'     => $uploadMaxSize,
+			'uploadInfoClass'   => $this->uploadinfoclass,
 			'uploadMaxSizeName' => $uploadMaxSizeName,
 		);
 

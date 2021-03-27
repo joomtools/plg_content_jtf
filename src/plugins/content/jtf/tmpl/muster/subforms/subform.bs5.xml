@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form orientation="stacked"
+      class="col-sm-6"
+>
+
+	<field name="list"
+	       type="list"
+	       icon="fa fa-list"
+	       description="JTF_LIST_DESC"
+	       label="JTF_LIST_LABEL"
+	       default=""
+	       validate="options"
+	       required="true"
+	>
+		<option value="">JTF_OPTION_NONE</option>
+		<option value="JTF_OPTION1">JTF_OPTION1</option>
+		<option value="JTF_OPTION2">JTF_OPTION2</option>
+	</field>
+
+	<field name="subform_text"
+	       type="text"
+	       icon="fa fa-pencil-alt"
+	       description="JTF_TXT_DESC"
+	       label="JTF_TXT_LABEL"
+	       maxlength="60"
+	       required="true"
+	/>
+
+	<field name="subform_cal"
+	       type="calendar"
+	       description="JTF_CAL_DESC"
+	       label="JTF_CAL_LABEL"
+	       size="8"
+	       format="%d.%m.%Y"
+	       filter="user_utc"
+	       required="true"
+	       showtime="false"
+	       todaybutton="false"
+	       translateformat="true"
+	/>
+
+	<field name="subform_checkbox_inline"
+	       type="checkboxes"
+	       class="form-check-inline"
+	       description="JTF_CHK_INLINE_DESC"
+	       label="JTF_CHK_INLINE_LABEL"
+	       validate="options"
+	       required="true"
+	>
+		<option value="JTF_OPTION1">JTF_OPTION1</option>
+		<option value="JTF_OPTION2">JTF_OPTION2</option>
+		<option value="JTF_OPTION3">JTF_OPTION3</option>
+	</field>
+
+</form>
