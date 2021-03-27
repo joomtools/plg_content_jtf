@@ -1,10 +1,11 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
  *
- * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;

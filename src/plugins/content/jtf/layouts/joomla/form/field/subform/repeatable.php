@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
+ * @copyright    (c) 2021 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -75,7 +75,7 @@ if ($multiple)
 			</div>
 		<?php endif; ?>
 	<?php else: ?>
-		<joomla-field-subform class="subform-repeatable" name="<?php echo $name; ?>"
+		<joomla-field-subform class="subform-repeatable row" name="<?php echo $name; ?>"
 							  button-add=".group-add"
 							  button-remove=".group-remove"
 							  button-move="<?php echo empty($buttons['move']) ? '' : '.group-move' ?>"

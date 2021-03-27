@@ -1,10 +1,11 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
  *
- * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
  */
 
 use Joomla\CMS\HTML\HTMLHelper;
@@ -66,10 +67,12 @@ HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/jtfUploadFile.min.cs
 
 ?>
 <div class="uploader-wrapper">
-	<p class="maxUploadSize">
-		<?php echo Text::sprintf('JGLOBAL_MAXIMUM_UPLOAD_SIZE_LIMIT', $maxSize); ?>
-	</p>
-	<p class="allowedExt"></p>
+	<div class="alert alert-info" role="alert">
+		<p class="maxUploadSize">
+			<?php echo Text::sprintf('JGLOBAL_MAXIMUM_UPLOAD_SIZE_LIMIT', $maxSize); ?>
+		</p>
+		<p class="allowedExt"></p>
+	</div>
 	<p>
 		<input type="hidden" class="file-uplaoder" name="<?php echo $uploadMaxSizeName; ?>"
 			   value="<?php echo $uploadMaxSize; ?>">

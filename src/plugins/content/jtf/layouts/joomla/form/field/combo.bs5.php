@@ -8,11 +8,11 @@
  * @license      GNU General Public License version 3 or later
  */
 
-defined('JPATH_BASE') or die;
-
-use Joomla\CMS\HTML\HTMLHelper;
+defined('_JEXEC') or die;
 
 extract($displayData);
+
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * Layout variables
@@ -40,39 +40,39 @@ extract($displayData);
  * @var   boolean  $spellcheck      Spellcheck state for the form field.
  * @var   string   $validate        Validation rules to apply.
  * @var   string   $value           Value attribute of the field.
- * @var   array    $checkedOptions  Options that will be set as checked.
- * @var   boolean  $hasValue        Has this field a value assigned?
  * @var   array    $options         Options available for this field.
- * @var   array    $inputType       Options available for this field.
+ * @var   string   $dataAttribute   Miscellaneous data attributes preprocessed for HTML output
+ * @var   array    $dataAttributes  Miscellaneous data attribute for eg, data-*.
  */
 
 HTMLHelper::_('behavior.combobox');
 
-$attr = !empty($class) ? ' class="combobox ' . $class . '"' : ' class="combobox"';
+$attr = '';
+
+// Initialize some field attributes.
+$attr .= !empty($class) ? ' class="awesomplete ' . $class . '"' : ' class="awesomplete"';
 $attr .= !empty($size) ? ' size="' . $size . '"' : '';
 $attr .= !empty($readonly) ? ' readonly' : '';
 $attr .= !empty($disabled) ? ' disabled' : '';
-$attr .= !empty($required) ? ' required aria-required="true"' : '';
+$attr .= !empty($required) ? ' required' : '';
+$attr .= !empty($description) ? ' aria-describedby="' . $name . '-desc"' : '';
 
 // Initialize JavaScript field attributes.
 $attr .= !empty($onchange) ? ' onchange="' . $onchange . '"' : '';
 
+$val  = [];
+
+foreach ($options as $option)
+{
+	$val[] = $option->text;
+}
 ?>
-<div class="combobox input-append">
-	<input type="text"
-		   name="<?php echo $name; ?>"
-		   id="<?php echo $id; ?>"
-		   value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-		<?php echo $attr; ?>
-		   autocomplete="off" />
-	<div class="btn-group">
-		<button type="button" class="btn btn-default dropdown-toggle">
-			<span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu">
-			<?php foreach ($options as $option) : ?>
-				<li><a href="#"><?php echo $option->text; ?></a></li>
-			<?php endforeach; ?>
-		</ul>
-	</div>
-</div>
+<input
+	type="text"
+	name="<?php echo $name; ?>"
+	id="<?php echo $id; ?>"
+	value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
+	<?php echo $attr; ?>
+	data-list="<?php echo implode(', ', $val); ?>"
+	<?php echo $dataAttribute; ?>
+/>
