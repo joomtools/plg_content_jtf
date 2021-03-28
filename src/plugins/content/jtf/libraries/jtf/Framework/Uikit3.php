@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
  * Pattern for basic field classes
  *
  * Define basic classes for field type 'muster'
- *              $classes['class']['muster'] = array(
+ *              $classes['muster'] = array(
  *
  *                  Set a default class for the field, addition to the manifest attribute 'class'.
  *                  For fields such as radio or checkboxes, the class is set to the enclosing tag.
@@ -43,39 +43,41 @@ class Uikit3
 {
 	public static $name = 'UIKit v3 (Yootheme Pro)';
 
-	private $classes;
+	private $_classes;
 
-	private $orientation;
+	private $_orientation;
 
 	public function __construct($orientation = null)
 	{
+		$this->init();
+		$this->setOrientation($orientation);
+	}
+
+	public function setOrientation($orientation)
+	{
+		$this->_orientation = $orientation;
+	}
+
+	private function init()
+	{
 		$classes           = array();
-		$inline            = $orientation == 'inline';
-		$this->orientation = $orientation;
 
-		$classes['css'] = '.field-calendar input {margin-right: 40px;padding-right: 40px;}';
-		$classes['css'] .= '.uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
-		$classes['css'] .= '.uk-form-stacked .uk-form-controls {width: 100% !important; margin-left: 0 !important;}';
-		$classes['css'] .= '.checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
-		$classes['css'] .= '.checkbox , .radio {padding-left: 0 !important;}';
-		$classes['css'] .= '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}';
-		$classes['css'] .= '.jtf .minicolors-theme-bootstrap .hex{height:auto;}';
+		$classes['form']             = array(
+			'uk-form',
+			'form-validate',
+			);
 
+		$classes['legend'][]         = 'uk-legend';
+		$classes['default'][]        = 'uk-input';
 
-		$classes['class']['form']             = array('uk-form', 'form-validate');
-		$classes['class']['legend'][]         = 'uk-legend';
-		$classes['class']['default'][]        = 'uk-input';
-		$classes['class']['gridgroup']        = array('uk-form-row', 'uk-margin');
-		$classes['class']['descriptionclass'] = array('uk-text-light');
+		$classes['gridgroup']        = array(
+			'uk-form-row',
+			'uk-margin',
+			);
 
-		if (!$inline)
-		{
-			$classes['class']['gridlabel'][] = 'uk-form-label';
-			$classes['class']['gridfield'][] = 'uk-form-controls';
-			$classes['class']['gridgroup'][] = 'uk-width-1-1';
-		}
+		$classes['descriptionclass'] = array('uk-text-light');
 
-		$classes['class']['fieldset'] = array(
+		$classes['fieldset'] = array(
 			'class'            => array(
 				'uk-fieldset',
 				'uk-margin-bottom',
@@ -84,8 +86,8 @@ class Uikit3
 			'descriptionclass' => array('uk-fieldset-desc'),
 		);
 
-		$classes['class']['calendar'] = array(
-			'class'       => array('uk-input'),
+		$classes['calendar'] = array(
+//			'class'       => array('uk-input'),
 			'buttonclass' => array(
 				'uk-form-icon',
 				'uk-form-icon-flip',
@@ -94,31 +96,37 @@ class Uikit3
 			'buttonicon'  => array('calendar'),
 		);
 
-		$classes['class']['checkboxes'] = array(
+		$classes['checkboxes'] = array(
+			'inline'    => array(
+				'class' => array('uk-display-inline'),
+			),
 			'options' => array(
 				'class' => array('uk-checkbox'),
 			),
 		);
 
-		$classes['class']['radio'] = array(
+		$classes['radio'] = array(
+			'inline'    => array(
+				'class' => array('uk-display-inline'),
+			),
 			'options' => array(
 				'class' => array('uk-radio'),
 			),
 		);
 
-		$classes['class']['textarea'] = array(
+		$classes['textarea'] = array(
 			'class' => array('uk-textarea'),
 		);
 
-		$classes['class']['list'] = array(
+		$classes['list'] = array(
 			'class' => array('uk-select'),
 		);
 
-		$classes['class']['category'] = array(
+		$classes['category'] = array(
 			'class' => array('uk-select'),
 		);
 
-		$classes['class']['file'] = array(
+		$classes['file'] = array(
 			'uploadicon'  => array('upload;ratio:2'),
 			'buttonclass' => array(
 				'uk-button',
@@ -127,7 +135,7 @@ class Uikit3
 			'buttonicon'  => array('copy'),
 		);
 
-		$classes['class']['submit'] = array(
+		$classes['submit'] = array(
 			'gridfield' => array(
 				'uk-margin-remove-left',
 			),
@@ -137,35 +145,48 @@ class Uikit3
 				),
 		);
 
-		if ($inline)
-		{
-			$classes['class']['checkboxes']['class'][] = 'uk-display-inline';
-			$classes['class']['radio']['class'][]      = 'uk-display-inline';
-		}
-
-		$this->classes = $classes;
+		$this->_classes = $classes;
 	}
 
-	public function getClasses()
+	public function getClasses($type)
 	{
-		return $this->classes['class'];
+		$classes     = $this->_classes;
+		$orientation = $this->_orientation;
+
+		if ($orientation != 'inline')
+		{
+			$classes['gridlabel'][] = 'uk-form-label';
+			$classes['gridfield'][] = 'uk-form-controls';
+			$classes['gridgroup'][] = 'uk-width-1-1';
+		}
+
+		$classes['fieldset']['class'][] = $this->getOrientationFieldsetClasses();
+
+		if (empty($classes[$type]))
+		{
+			return array();
+		}
+
+		return $classes[$type];
 	}
 
 	public function getCss()
 	{
-		if (empty($this->classes['css']))
-		{
-			return '';
-		}
+		$css = array();
+		$css[] = '.jtf .field-calendar input {margin-right: 40px;padding-right: 40px;}';
+		$css[] = '.jtf .uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
+		$css[] = '.jtf .uk-form-stacked .uk-form-controls {width: 100% !important; margin-left: 0 !important;}';
+		$css[] = '.jtf .checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
+		$css[] = '.jtf .checkbox , .radio {padding-left: 0 !important;}';
+		$css[] = '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}';
+		$css[] = '.jtf .minicolors-theme-bootstrap .hex{height:auto;}';
 
-		return $this->classes['css'];
+		return implode('', $css);
 	}
 
-	public function getOrientationGridGroupClasses($orientation = null)
+	public function getOrientationFieldsetClasses()
 	{
-		$orientation = $orientation ?: $this->orientation;
-
-		switch ($orientation)
+		switch ($this->_orientation)
 		{
 			case 'horizontal':
 				return 'uk-form-horizontal';
@@ -177,12 +198,17 @@ class Uikit3
 		return null;
 	}
 
-	public function getOrientationGridLabelClasses($orientation = null)
+	public function getOrientationGridGroupClasses()
 	{
 		return array();
 	}
 
-	public function getOrientationGridFieldClasses($orientation = null)
+	public function getOrientationGridLabelClasses()
+	{
+		return array();
+	}
+
+	public function getOrientationGridFieldClasses()
 	{
 		return array();
 	}

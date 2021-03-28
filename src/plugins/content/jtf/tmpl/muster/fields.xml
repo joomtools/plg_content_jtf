@@ -91,6 +91,7 @@
 		       label="JTF_SHW_SWITCH_LABEL"
 		       default="JNO"
 		       validate="options"
+		       inline="true"
 		       notmail="1"
 		>
 			<option value="JYES">JON</option>
@@ -186,6 +187,7 @@
 		       label="JTF_SUBFORM_SHOWON_LABEL"
 		       default="JNO"
 		       validate="options"
+		       inline="true"
 		       filter="string"
 		>
 			<option value="JYES">JYES</option>

@@ -39,6 +39,9 @@
 		       description="JTF_CHK_INLINE_DESC"
 		       label="JTF_CHK_INLINE_LABEL"
 		       validate="options"
+		       inline="true"
+		       optionclass="optionclass"
+		       optionlabelclass="optionlabelclass"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -63,6 +66,9 @@
 		       label="JTF_RADIO_INLINE_LABEL"
 		       default="JTF_OPTION2"
 		       validate="options"
+		       inline="true"
+		       optionclass="optionclass"
+		       optionlabelclass="optionlabelclass"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -74,6 +80,7 @@
 		       label="JTF_SHW_SWITCH_LABEL"
 		       default="0"
 		       validate="options"
+		       inline="true"
 		       notmail="1"
 		>
 			<option value="1">JON</option>
@@ -173,6 +180,7 @@
 		       label="JTF_SUBFORM_SHOWON_LABEL"
 		       default="JNO"
 		       validate="options"
+		       inline="true"
 		       filter="string"
 		>
 			<option value="JYES">JYES</option>

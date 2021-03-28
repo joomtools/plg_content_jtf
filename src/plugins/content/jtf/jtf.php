@@ -82,7 +82,7 @@ class PlgContentJtf extends CMSPlugin
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	private $form;
+	private $_form;
 
 	/**
 	 * Array with User params
@@ -396,7 +396,7 @@ class PlgContentJtf extends CMSPlugin
 	private function resetUserParams()
 	{
 		$this->uParams = array();
-		$this->form    = null;
+		$this->_form   = null;
 
 		// Set default minimum fill out time
 		$this->uParams['fillouttime'] = 0;
@@ -528,13 +528,12 @@ class PlgContentJtf extends CMSPlugin
 	 * Get absolute theme filepath
 	 *
 	 * @param   string   $filePath   Filepath relative from inside of the theme
-	 * @param   boolean  $framework  Search file with framework suffix
 	 *
 	 * @return  boolean|string  False on error
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	private function getThemePath(string $filePath, $framework = false)
+	private function getThemePath(string $filePath)
 	{
 		$error    = array();
 		$files    = array();
@@ -626,9 +625,9 @@ class PlgContentJtf extends CMSPlugin
 	 */
 	private function getForm(): Form
 	{
-		if (!empty($this->form))
+		if (!empty($this->_form))
 		{
-			return $this->form;
+			return $this->_form;
 		}
 
 		$template            = $this->app->getTemplate();
@@ -651,7 +650,7 @@ class PlgContentJtf extends CMSPlugin
 		$form->fieldmarker                  = $this->uParams['field_marker'];
 		$form->fieldmarkerplace             = $this->uParams['field_marker_place'];
 
-		$this->form = $form;
+		$this->_form = $form;
 
 		return $form;
 	}
@@ -771,12 +770,6 @@ class PlgContentJtf extends CMSPlugin
 
 					$validatedFiles[$key] = $this->cleanSubmittedFiles($submittedFiles[$key], $value);
 				}
-
-				continue;
-			}
-			else
-			{
-				continue;
 			}
 		}
 

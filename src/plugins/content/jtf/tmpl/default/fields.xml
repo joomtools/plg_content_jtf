@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="stacked">
+<form>
 	<fieldset name="block1"
 	          orientation="horizontal"
 	>
 		<field name="name"
 		       type="text"
+		       icon="icon-user"
 		       maxlength="60"
 		       description="JTF_NAME_DESC"
 		       label="JTF_NAME_LABEL"
@@ -13,6 +14,7 @@
 		/>
 		<field name="email"
 		       type="email"
+		       icon="icon-envelope"
 		       maxlength="60"
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
@@ -22,6 +24,7 @@
 		/>
 		<field name="subject"
 		       type="text"
+		       icon="icon-pencil-2"
 		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
@@ -43,13 +46,13 @@
 	>
 		<field name="privacy_policy"
 		       type="checkboxes"
+		       gridlabel="jtfhp"
 		       description=""
 		       label="JTF_PRIVACY_POLICY_LABEL"
 		       default=""
 		       validate="options"
 		       filter="string"
 		       required="true"
-		       hiddenLabel="true"
 		>
 			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
 		</field>

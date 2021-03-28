@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="horizontal"
-      gridlabel="col-sm-2 bs5"
-      gridfield="col-sm-10 bs5"
->
+<form orientation="horizontal">
 	<fieldset name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
 	          label="JTF_FIELDSET_DEFAULT_LABEL"

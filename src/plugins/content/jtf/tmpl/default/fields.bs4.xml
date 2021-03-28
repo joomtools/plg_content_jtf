@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="horizontal">
+<form>
 	<fieldset name="block1"
+	          orientation="horizontal"
 	          gridlabel="col-sm-2"
 	          gridfield="col-sm-10"
-	          gridgroup="col-sm-12"
 	>
 		<field name="name"
 		       type="text"
@@ -49,11 +49,13 @@
 	>
 		<field name="privacy_policy"
 		       type="checkboxes"
+		       gridlabel="jtfhp"
 		       description=""
 		       label="JTF_PRIVACY_POLICY_LABEL"
 		       default=""
+		       validate="options"
+		       filter="string"
 		       required="true"
-		       hiddenLabel="true"
 		>
 			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
 		</field>

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="stacked">
+<form>
 	<fieldset name="block1"
-	          class="form-horizontal"
-	          gridlabel="col-sm-3"
-	          gridfield="col-sm-9"
+	          orientation="horizontal"
 	>
 		<field name="name"
 		       type="text"
@@ -35,7 +33,6 @@
 		/>
 		<field name="message"
 		       type="textarea"
-		       icon="glyphicon glyphicon-pencil"
 		       cols="30"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
@@ -49,13 +46,13 @@
 	>
 		<field name="privacy_policy"
 		       type="checkboxes"
+		       gridlabel="jtfhp"
 		       description=""
 		       label="JTF_PRIVACY_POLICY_LABEL"
 		       default=""
 		       validate="options"
 		       filter="string"
 		       required="true"
-		       hiddenLabel="true"
 		>
 			<option value="JYES">JTF_PRIVACY_POLICY_OPTION_ACCEPT</option>
 		</field>

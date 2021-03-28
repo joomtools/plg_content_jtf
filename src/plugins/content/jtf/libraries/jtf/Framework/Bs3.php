@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
  * Pattern for basic field classes
  *
  * Define basic classes for field type 'muster'
- *              $classes['class']['muster'] = array(
+ *              $classes['muster'] = array(
  *
  *                  Set a default class for the field, addition to the manifest attribute 'class'.
  *                  For fields such as radio or checkboxes, the class is set to the enclosing tag.
@@ -43,116 +43,141 @@ class Bs3
 {
 	public static $name = 'Bootstrap v3';
 
-	private $classes;
+	private $_classes;
 
-	private $orientation;
+	private $_orientation;
 
 	public function __construct($orientation = null)
 	{
-		$classes           = array();
-		$inline            = $orientation == 'inline';
-		$this->orientation = $orientation;
+		$this->init();
+		$this->setOrientation($orientation);
+	}
 
-		$classes['css'] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label{text-align:left;}';
-		$classes['css'] .= '.jtf fieldset.radio :not(input){padding-top:0;}';
-		$classes['css'] .= '.jtf .radio label.radio:not(.radio-inline),.jtf .checkboxes label.checkbox:not(.checkbox-inline){display:block;margin-top:0;}';
-		$classes['css'] .= '.jtf .checkboxes label.checkbox:not(.checkbox-inline){padding-top:0;}';
-		$classes['css'] .= '.jtf .minicolors-theme-bootstrap .hex{width:105%;height:auto;}';
+	public function setOrientation($orientation)
+	{
+		$this->_orientation = $orientation;
+	}
 
-		$classes['class']['form'][] = 'form-validate';
+	private function init()
+	{
+		$classes     = array();
 
-		if ($orientation == 'horizontal')
-		{
-				$classes['class']['gridgroup'][] = 'row';
-		}
+		$classes['form'][] = 'form-validate';
 
-		$classes['class']['default'][]        = 'form-control';
-		$classes['class']['gridgroup'][]      = 'form-group';
-		$classes['class']['gridlabel'][]      = 'control-label';
-		$classes['class']['descriptionclass'] = array('form-text', 'text-muted');
+		$classes['default'][]        = 'form-control';
+		$classes['gridgroup'][]      = 'form-group';
+		$classes['gridlabel'][]      = 'control-label';
+		$classes['descriptionclass'] = array(
+			'form-text',
+			'text-muted',
+		);
 
-		$classes['class']['note'] = array(
+		$classes['note'] = array(
 			'buttonclass' => array('close'),
 			'buttonicon'  => array('&times;'),
 		);
 
-		if ($orientation == 'horizontal')
-		{
-			$classes['class']['note']['gridfield'][] = 'col-sm-12';
-		}
-
-		$classes['class']['calendar'] = array(
-			'buttonclass' => array('btn', 'btn-default'),
-			'buttonicon'  => array('glyphicon glyphicon-calendar'),
+		$classes['calendar'] = array(
+			'buttonclass' => array(
+				'btn',
+				'btn-default',
+			),
+			'buttonicon'  => array(
+				'glyphicon',
+				'glyphicon-calendar',
+			),
 		);
 
-		$classes['class']['checkbox'] = array(
+		$classes['checkbox'] = array(
 			'class' => array('checkbox'),
 		);
 
-		$classes['class']['checkboxes'] = array(
+		$classes['checkboxes'] = array(
 			'class' => array('checkbox'),
 			'inline' => array(
-				'class' => array('inline')
-			),
-			'options' => array(
-//				'labelclass' => array('checkbox'),
+				'class' => array('inline'),
 			),
 		);
 
-		$classes['class']['radio'] = array(
+		$classes['radio'] = array(
 			'class' => array('radio'),
 			'inline' => array(
-				'class' => array('inline')
+				'class' => array('inline'),
 			),
 			'options' => array(
 				'labelclass' => array('radio'),
 			),
 		);
 
-		$classes['class']['textarea'] = array(
+		$classes['textarea'] = array(
 			'class' => array('form-control'),
 		);
 
-		$classes['class']['file'] = array(
-			'uploadicon'  => array('glyphicon glyphicon-upload'),
+		$classes['file'] = array(
+			'uploadicon'  => array(
+				'glyphicon',
+				'glyphicon-upload',
+			),
 			'buttonclass' => array('btn btn-success'),
-			'buttonicon'  => array('glyphicon glyphicon-copy'),
+			'buttonicon'  => array(
+				'glyphicon',
+				'glyphicon-copy',
+			),
 		);
 
-		$classes['class']['submit'] = array(
-			'buttonclass' => array('btn', 'btn-default'),
+		$classes['submit'] = array(
+			'buttonclass' => array(
+				'btn',
+				'btn-default',
+			),
 		);
 
-		if ($inline)
-		{
-			$classes['class']['checkboxes']['class'] = array('checkbox-inline');
-			$classes['class']['radio']['class']      = array('radio-inline');
-		}
-
-		$this->classes = $classes;
+		$this->_classes = $classes;
 	}
 
-	public function getClasses()
+	public function getClasses($type)
 	{
-		return $this->classes['class'];
+		$classes     = $this->_classes;
+		$orientation = $this->_orientation;
+
+		if ($orientation == 'horizontal')
+		{
+			$classes['gridgroup'][]         = 'row';
+			$classes['note']['gridfield'][] = 'col-sm-12';
+		}
+
+		if ($orientation == 'inline')
+		{
+			$classes['checkboxes']['class'][] = 'checkbox-inline';
+			$classes['radio']['class'][]      = 'radio-inline';
+		}
+
+		$classes['fieldset']['class'][] = $this->getOrientationFieldsetClasses();
+
+		if (empty($classes[$type]))
+		{
+			return array();
+		}
+
+		return $classes[$type];
 	}
 
 	public function getCss()
 	{
-		if (empty($this->classes['css']))
-		{
-			return '';
-		}
+		$css = array();
+		$css[] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label{text-align:left;}';
+		$css[] = '.jtf fieldset.radio :not(input){padding-top:0;}';
+		$css[] = '.jtf .radio label.radio:not(.radio-inline),.jtf .checkboxes label.checkbox:not(.checkbox-inline){display:block;margin-top:0;}';
+		$css[] = '.jtf .checkboxes label.checkbox:not(.checkbox-inline){padding-top:0;}';
+		$css[] = '.jtf .minicolors-theme-bootstrap .hex{width:105%;height:auto;}';
 
-		return $this->classes['css'];
+
+		return implode('', $css);
 	}
 
-	public function getOrientationGridGroupClasses($orientation = null)
+	private function getOrientationFieldsetClasses()
 	{
-		$orientation = $orientation ?: $this->orientation;
-
-		switch ($orientation)
+		switch ($this->_orientation)
 		{
 			case 'horizontal':
 				return 'form-horizontal';
@@ -167,11 +192,14 @@ class Bs3
 		return null;
 	}
 
-	public function getOrientationGridLabelClasses($orientation = null)
+	public function getOrientationGridGroupClasses()
 	{
-		$orientation = $orientation ?: $this->orientation;
+		return array();
+	}
 
-		switch ($orientation)
+	public function getOrientationGridLabelClasses()
+	{
+		switch ($this->_orientation)
 		{
 			case 'horizontal':
 				return array(
@@ -188,11 +216,9 @@ class Bs3
 		}
 	}
 
-	public function getOrientationGridFieldClasses($orientation = null)
+	public function getOrientationGridFieldClasses()
 	{
-		$orientation = $orientation ?: $this->orientation;
-
-		switch ($orientation)
+		switch ($this->_orientation)
 		{
 			case 'horizontal':
 				return array(
