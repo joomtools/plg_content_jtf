@@ -152,7 +152,10 @@ class Bs3
 			$classes['radio']['class'][]      = 'radio-inline';
 		}
 
-		$classes['fieldset']['class'][] = $this->getOrientationFieldsetClasses();
+		if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses()))
+		{
+			$classes['fieldset']['class'][] = $orientationFieldsetClasses;
+		}
 
 		if (empty($classes[$type]))
 		{

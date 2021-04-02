@@ -402,7 +402,7 @@ class FrameworkHelper
 		$frwk           = $this->_frwk;
 		$formClassArray = $frwk->getClasses('form');
 
-		if (!empty($formClass = $form->getAttribute('class', '')));
+		if (!empty($formClass = $form->getAttribute('class', '')))
 		{
 			$formClassArray = ArrayHelper::arrayUnique(
 				array_merge(
@@ -551,8 +551,6 @@ class FrameworkHelper
 					{
 						$classValue          = ArrayHelper::arrayUnique($classValue);
 						$fieldset[$classKey] = implode(' ', $classValue);
-
-						$form->setFieldAttribute($fieldsetName, $classKey, $fieldset[$classKey]);
 					}
 				}
 
@@ -563,7 +561,7 @@ class FrameworkHelper
 					// Recursion on subform field
 					if (strtolower($field->type) == 'subform')
 					{
-						self::setFrameworkClasses($field->loadSubForm());
+						//$subform = self::setFrameworkClasses($field->loadSubForm());
 
 						if ($field->loadSubForm()->setEnctype)
 						{
@@ -763,23 +761,33 @@ class FrameworkHelper
 
 		if (in_array($type, $buttonWithIconFields))
 		{
-			$uploadIcon  = null;
-			$buttonIcon  = null;
-			$buttonClass = null;
+			$uploadIcon  = array();
+			$buttonIcon  = array();
+			$buttonClass = array();
 
 			if (!empty($classes['frwk']['uploadicon']))
 			{
-				$uploadIcon  = $this->getClassArray($classes['frwk']['uploadicon']);
+				$uploadIcon  = $classes['frwk']['uploadicon'];
+			}
+
+			if (!empty($classes['field']['uploadicon']))
+			{
+				$uploadIcon = $classes['field']['uploadicon'];
 			}
 
 			if (!empty($classes['frwk']['buttonicon']))
 			{
-				$buttonIcon  = $this->getClassArray($classes['frwk']['buttonicon']);
+				$buttonIcon  = $classes['frwk']['buttonicon'];
+			}
+
+			if (!empty($classes['field']['buttonicon']))
+			{
+				$buttonIcon = $classes['field']['buttonicon'];
 			}
 
 			if (!empty($classes['frwk']['buttonclass']))
 			{
-				$buttonClass = $this->getClassArray($classes['frwk']['buttonclass']);
+				$buttonClass = $classes['frwk']['buttonclass'];
 			}
 
 			if (!empty($classes['field']['icon']))
@@ -794,25 +802,11 @@ class FrameworkHelper
 				}
 			}
 
-			if (!empty($classes['field']['uploadicon']))
-			{
-				$uploadIcon = $classes['field']['uploadicon'];
-			}
-
-			if (!empty($classes['field']['buttonicon']))
-			{
-				$buttonIcon = $classes['field']['buttonicon'];
-			}
-
 			if (!empty($classes['field']['buttonclass']))
 			{
 				$buttonClass = array_merge(
-					!empty($buttonClass)
-						? $buttonClass
-						: array(),
-					!empty($classes['field']['buttonclass'])
-						? $classes['field']['buttonclass']
-						: array()
+					$buttonClass,
+					$classes['field']['buttonclass']
 				);
 
 				$buttonClass = ArrayHelper::arrayUnique($buttonClass);

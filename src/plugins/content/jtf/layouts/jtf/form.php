@@ -104,7 +104,7 @@ HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfScrollToError.min.js',
 	>
 		<?php if ($showRequiredFieldDescription) : ?>
 			<p>
-				<strong><?php echo $test = Text::sprintf('JTF_REQUIRED_FIELDS_LABEL', Text::_('JTF_FIELD_MARKED_LABEL_REQUIRED')); ?></strong>
+				<strong><?php echo Text::sprintf('JTF_REQUIRED_FIELDS_LABEL', Text::_('JTF_FIELD_MARKED_LABEL_REQUIRED')); ?></strong>
 			</p>
 		<?php endif; ?>
 

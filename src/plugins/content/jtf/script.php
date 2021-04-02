@@ -15,6 +15,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
 
 /**
  * Script file of Joomla CMS
@@ -40,6 +41,28 @@ class PlgContentJtfInstallerScript
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public $minimumPhp = '7.3';
+
+	/**
+	 * Default params for the plugin to merge
+	 * befor save in DB on update
+	 *
+	 * @var   string  Formated as JSON
+	 *
+	 * @since  __DEPLOY_VERSION__
+	 */
+	private $pluginDefaultParams = array(
+		'captcha'                         => '1',
+		'show_field_description_as'       => 'tooltip',
+		'field_marker'                    => 'required',
+		'field_marker_place'              => 'label',
+		'show_required_field_description' => '1',
+		'filloutTime_onoff'               => '1',
+		'filloutTime'                     => 10,
+		'file_path'                       => 'uploads',
+		'file_clear'                      => 60,
+		'framework'                       => 'bs2',
+		'debug'                           => '0',
+	);
 
 	/**
 	 * Function to act prior the installation process begins
@@ -186,7 +209,7 @@ class PlgContentJtfInstallerScript
 
 		if ($result->framework == 'joomla')
 		{
-			$result->framework = 'bs4';
+			$result->framework = 'bs5';
 
 			if (version_compare(JVERSION, '4', 'lt'))
 			{
@@ -205,9 +228,15 @@ class PlgContentJtfInstallerScript
 
 		unset($result->component_exclusions);
 
+		$newPluginParams = new Registry($this->pluginDefaultParams);
+
+		$newPluginParams->merge($result);
+
+		$newPluginParams = $newPluginParams->toString();
+
 		$query = $db->getQuery(true)
 			->update($db->quoteName('#__extensions'))
-			->set($db->quoteName('params') . ' = ' . $db->quote(json_encode($result)))
+			->set($db->quoteName('params') . ' = ' . $db->quote($newPluginParams))
 			->where($where);
 
 		$db->setQuery($query)->execute();

@@ -146,6 +146,11 @@ class Bs4
 			$classes['note']['gridfield'][] = 'col-sm-12';
 		}
 
+		if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses()))
+		{
+			$classes['fieldset']['class'][] = $orientationFieldsetClasses;
+		}
+
 		if (empty($classes[$type]))
 		{
 			return array();
@@ -164,7 +169,10 @@ class Bs4
 		return implode('', $css);
 	}
 
-	private function getOrientationFieldsetClasses(){}
+	private function getOrientationFieldsetClasses()
+	{
+		return '';
+	}
 
 	public function getOrientationGridGroupClasses()
 	{

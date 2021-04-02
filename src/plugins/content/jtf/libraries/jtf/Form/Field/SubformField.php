@@ -192,9 +192,6 @@ class SubformField extends \JFormFieldSubform
 	 */
 	public function loadSubForm()
 	{
-		$layoutPaths   = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
-		$framework     = !empty($this->form->framework) ? $this->form->framework : array();
-		$rendererDebug = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
 		$control       = $this->name;
 
 		if ($this->multiple)
@@ -203,11 +200,15 @@ class SubformField extends \JFormFieldSubform
 		}
 
 		// Prepare the form template
-		$formname          = $this->form->getName() . '.subform.' . ($this->group ? $this->group . '.' : '') . $this->fieldname;
-		$tmpl              = Form::getInstance($formname, $this->formsource, array('control' => $control));
-		$tmpl->layoutPaths = $layoutPaths;
-		$tmpl->framework   = $framework;
-		$tmpl->renderDebug = $rendererDebug;
+		$formname                           = $this->form->getName() . '.subform.' . ($this->group ? $this->group . '.' : '') . $this->fieldname;
+		$tmpl                               = Form::getInstance($formname, $this->formsource, array('control' => $control));
+		$tmpl->layoutPaths                  = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
+		$tmpl->framework                    = !empty($this->form->framework) ? $this->form->framework : array();
+		$tmpl->renderDebug                  = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
+		$tmpl->fieldmarker                  = $this->form->fieldmarker;
+		$tmpl->fieldmarkerplace             = $this->form->fieldmarkerplace;
+		$tmpl->showfielddescriptionas       = $this->form->showfielddescriptionas;
+		$tmpl->showRequiredFieldDescription = $this->form->showRequiredFieldDescription;
 
 		return $tmpl;
 	}
@@ -223,9 +224,6 @@ class SubformField extends \JFormFieldSubform
 	 */
 	private function loadSubFormData(Form &$subForm): array
 	{
-		$layoutPaths   = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
-		$framework     = !empty($this->form->framework) ? $this->form->framework : array();
-		$rendererDebug = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
 		$value         = $this->value ? (array) $this->value : array();
 
 		// Simple form, just bind the data and return one row.
@@ -245,11 +243,15 @@ class SubformField extends \JFormFieldSubform
 
 		for ($i = 0; $i < $c; $i++)
 		{
-			$control               = $this->name . '[' . $this->fieldname . $i . ']';
-			$itemForm              = Form::getInstance($subForm->getName() . $i, $this->formsource, array('control' => $control));
-			$itemForm->layoutPaths = $layoutPaths;
-			$itemForm->framework   = $framework;
-			$itemForm->renderDebug = $rendererDebug;
+			$control                                = $this->name . '[' . $this->fieldname . $i . ']';
+			$itemForm                               = Form::getInstance($subForm->getName() . $i, $this->formsource, array('control' => $control));
+			$itemForm->layoutPaths                  = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
+			$itemForm->framework                    = !empty($this->form->framework) ? $this->form->framework : array();
+			$itemForm->renderDebug                  = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
+			$itemForm->fieldmarker                  = $this->form->fieldmarker;
+			$itemForm->fieldmarkerplace             = $this->form->fieldmarkerplace;
+			$itemForm->showfielddescriptionas       = $this->form->showfielddescriptionas;
+			$itemForm->showRequiredFieldDescription = $this->form->showRequiredFieldDescription;
 
 			if (!empty($value[$i]))
 			{

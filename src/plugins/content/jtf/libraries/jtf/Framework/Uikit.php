@@ -160,7 +160,10 @@ class Uikit
 			$classes['gridgroup'][] = 'uk-width-1-1';
 		}
 
-		$classes['fieldset']['class'][] = $this->getOrientationFieldsetClasses();
+		if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses()))
+		{
+			$classes['fieldset']['class'][] = $orientationFieldsetClasses;
+		}
 
 		if (empty($classes[$type]))
 		{

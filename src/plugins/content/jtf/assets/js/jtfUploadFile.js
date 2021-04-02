@@ -155,8 +155,8 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
 
     for (var _i2 = 0, c = 1, f; _i2 < files.length; _i2++, c++) {
       f = files[_i2];
-      var filename = '<strong>' + c + '. ' + f.name + '</strong> ';
-      output.push(filename + '(' + humanReadableSize(f.size) + ')');
+      var filename = '<strong>' + f.name + '</strong> ';
+      output.push('<li>' + filename + '(' + humanReadableSize(f.size) + ')</li>');
 
       if (!allowedFile(f.type)) {
         uploadError.push(filename + '- ' + errorFileType);
@@ -164,14 +164,14 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
     }
 
     if (uploadsize > maxsize) {
-      uploadError.push('<strong>' + humanReadableSize(uploadsize) + '</strong> - ' + errorFileSize);
+      uploadError.push('<li><strong>' + humanReadableSize(uploadsize) + '</strong> - ' + errorFileSize + '</li>');
     }
 
     console.log('output', output);
     console.log('uploadError', uploadError);
 
     if (output.length > 0) {
-      uploadListWrapper = Joomla.Text._('JTF_JS_UPLOAD_LIST_WRAPPER_' + jtfFrwk, '').replace('%s', '<p>' + output.join('<br />') + '</p>');
+      uploadListWrapper = Joomla.Text._('JTF_JS_UPLOAD_LIST_WRAPPER_' + jtfFrwk, '').replace('%s', '<ol>' + output.join('') + '</ol>');
       unsetInvalid();
       document.formvalidator.setHandler('file', function () {
         return true;
@@ -179,7 +179,7 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
     }
 
     if (uploadError.length > 0) {
-      errorWrapper = Joomla.Text._('JTF_JS_ERROR_WRAPPER_' + jtfFrwk, '').replace('%s', '<p>' + uploadError.join('<br />') + '</p>');
+      errorWrapper = Joomla.Text._('JTF_JS_ERROR_WRAPPER_' + jtfFrwk, '').replace('%s', uploadError.join('<br />'));
       setInvalid();
       document.formvalidator.setHandler('file', function () {
         return false;

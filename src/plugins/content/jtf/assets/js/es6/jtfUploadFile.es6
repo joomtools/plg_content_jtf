@@ -158,8 +158,8 @@ let jtfUploadFile = (elm, optionlist) => {
 
     for (let i = 0, c = 1, f; i < files.length; i++, c++) {
       f = files[i];
-      let filename = '<strong>' + c + '. ' + f.name + '</strong> ';
-      output.push(filename + '(' + humanReadableSize(f.size) + ')');
+      let filename = '<strong>' + f.name + '</strong> ';
+      output.push('<li>' + filename + '(' + humanReadableSize(f.size) + ')</li>');
 
       if (!allowedFile(f.type)) {
         uploadError.push(filename + '- ' + errorFileType);
@@ -167,14 +167,14 @@ let jtfUploadFile = (elm, optionlist) => {
     }
 
     if (uploadsize > maxsize) {
-      uploadError.push('<strong>' + humanReadableSize(uploadsize) + '</strong> - ' + errorFileSize);
+      uploadError.push('<li><strong>' + humanReadableSize(uploadsize) + '</strong> - ' + errorFileSize + '</li>');
     }
 
     console.log('output', output);
     console.log('uploadError', uploadError);
 
     if (output.length > 0) {
-      uploadListWrapper = Joomla.Text._('JTF_JS_UPLOAD_LIST_WRAPPER_' + jtfFrwk, '').replace('%s', '<p>' + output.join('<br />') + '</p>');
+      uploadListWrapper = Joomla.Text._('JTF_JS_UPLOAD_LIST_WRAPPER_' + jtfFrwk, '').replace('%s', '<ol>' + output.join('') + '</ol>');
       unsetInvalid();
       document.formvalidator.setHandler('file', () => {
         return true;
@@ -182,7 +182,7 @@ let jtfUploadFile = (elm, optionlist) => {
     }
 
     if (uploadError.length > 0) {
-      errorWrapper = Joomla.Text._('JTF_JS_ERROR_WRAPPER_' + jtfFrwk, '').replace('%s', '<p>' + uploadError.join('<br />') + '</p>');
+      errorWrapper = Joomla.Text._('JTF_JS_ERROR_WRAPPER_' + jtfFrwk, '').replace('%s', uploadError.join('<br />'));
       setInvalid();
       document.formvalidator.setHandler('file', () => {
         return false;
