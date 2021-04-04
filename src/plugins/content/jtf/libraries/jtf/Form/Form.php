@@ -12,8 +12,9 @@ namespace Jtf\Form;
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\Registry\Registry;
 use Joomla\CMS\Form\Form as JForm;
+use Joomla\Registry\Registry;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Form Class for the Joomla Platform.
@@ -26,6 +27,15 @@ use Joomla\CMS\Form\Form as JForm;
  */
 class Form extends JForm
 {
+	/**
+	 * The form object errors array.
+	 *
+	 * @var   array
+	 *
+	 * @since  __DEPLOY_VERSION__
+	 */
+	protected $subFormErrors = array();
+
 	/**
 	 * Array of layoutPaths.
 	 *
@@ -203,6 +213,76 @@ class Form extends JForm
 	}
 
 	/**
+	 * Method to validate form data.
+	 *
+	 * Validation warnings will be pushed into JForm::errors and should be
+	 * retrieved with JForm::getErrors() when validate returns boolean false.
+	 *
+	 * @param   array   $data   An array of field values to validate.
+	 * @param   string  $group  The optional dot-separated form group path on which to filter the
+	 *                          fields to be validated.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since  __DEPLOY_VERSION__
+	 */
+	public function validate($data, $group = null)
+	{
+		// Make sure there is a valid JForm XML document.
+		if (!($this->xml instanceof \SimpleXMLElement))
+		{
+			return false;
+		}
+
+		$return = true;
+
+		// Create an input registry object from the data to validate.
+		$input = new Registry($data);
+
+		// Get the fields for which to validate the data.
+		$fields = $this->findFieldsByGroup($group);
+
+		if (!$fields)
+		{
+			// PANIC!
+			return false;
+		}
+
+		// Validate the fields.
+		foreach ($fields as $field)
+		{
+			$value = null;
+			$name  = (string) $field['name'];
+
+			// Get the group names as strings for ancestor fields elements.
+			$attrs  = $field->xpath('ancestor::fields[@name]/@name');
+			$groups = array_map('strval', $attrs ? $attrs : array());
+			$group  = implode('.', $groups);
+
+			// Get the value from the input data.
+			if ($group)
+			{
+				$value = $input->get($group . '.' . $name);
+			}
+			else
+			{
+				$value = $input->get($name);
+			}
+
+			// Validate the field.
+			$valid = $this->validateField($field, $group, $value, $input);
+
+			// Check for an error.
+			if ($valid !== true)
+			{
+				$this->setErrors($valid);
+				$return = false;
+			}
+		}
+
+		return $return;
+	}
+	/**
 	 * Method to validate a JFormField object based on field data.
 	 *
 	 * @param   \SimpleXMLElement  $element  The XML element object representation of the form field.
@@ -220,6 +300,8 @@ class Form extends JForm
 	 */
 	protected function validateField(\SimpleXMLElement $element, $group = null, $value = null, Registry $input = null)
 	{
+		$name = (string) $element['name'];
+
 		if (!empty($showOn = (string) $element['showon']))
 		{
 			$isShown = $this->isFieldShown($showOn);
@@ -228,28 +310,42 @@ class Form extends JForm
 			if (!$isShown)
 			{
 				$element['required'] = 'false';
+				$element['disabled'] = 'true';
 
 				if ($input)
 				{
-					$fieldExistsInRequestData = $input->exists((string) $element['name']) || $input->exists($group . '.' . (string) $element['name']);
+					$fieldExistsInRequestData = $input->exists($name) || $input->exists($group . '.' . $name);
 
 					if ($fieldExistsInRequestData)
 					{
-						if ($input->exists((string) $element['name']))
+						if ($input->exists($name))
 						{
-							$input->set((string) $element['name'], '');
+							$input->set($name, '');
 						}
 
-						if ($input->exists($group . '.' . (string) $element['name']))
+						if ($input->exists($group . '.' . $name))
 						{
-							$input->set($group . '.' . (string) $element['name'], '');
+							$input->set($group . '.' . $name, '');
 						}
 					}
 				}
 			}
 		}
 
-		return parent::validateField($element, $group, $value, $input);
+		$valid = parent::validateField($element, $group, $value, $input);
+
+		if ($valid instanceof \Exception && (string) $element['type'] === 'subform')
+		{
+			// Get the subform errors.
+			$errors = $this->getErrors($name);
+			$errors = array_unique($errors, SORT_STRING);
+
+			// Merge the errors.
+			$valid = array($valid);
+			$valid = array_merge($valid, $errors);
+		}
+
+		return $valid;
 	}
 
 	/**
@@ -355,5 +451,59 @@ class Form extends JForm
 		}
 
 		return $isShown;
+	}
+
+	/**
+	 * Return all errors, if any.
+	 *
+	 * @param   string|null  $subForm  The unique Id of the Subform to add the errors in $subFormErrors
+	 *
+	 * @return  array  Array of error messages or RuntimeException objects.
+	 *
+	 * @since   1.7.0
+	 */
+	public function getErrors($subFormId = null)
+	{
+		if (!is_null($subFormId))
+		{
+			return $this->subFormErrors[$subFormId];
+		}
+
+		return $this->errors;
+	}
+
+	/**
+	 * Add instanceof Exception to the errors array
+	 *
+	 * @param   \Exception|\Exception[]  $errors   Single Exception or array of Exceptions
+	 * @param   string|null              $subForm  The unique Id of the Subform to add the errors in $subFormErrors
+	 *
+	 * @return   void
+	 *
+	 * @since  __DEPLOY_VERSION__
+	 */
+	public function setErrors($errors, $subFormId = null)
+	{
+		if (is_array($errors))
+		{
+			foreach ($errors as $error)
+			{
+				$this->setErrors($error, $subFormId);
+			}
+
+			return;
+		}
+
+		if ($errors instanceof \Exception)
+		{
+			if (!is_null($subFormId))
+			{
+				$this->subFormErrors[$subFormId][] = $errors;
+
+				return;
+			}
+
+			$this->errors[] = $errors;
+		}
 	}
 }

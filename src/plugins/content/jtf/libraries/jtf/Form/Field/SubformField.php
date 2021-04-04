@@ -47,7 +47,7 @@ class SubformField extends \JFormFieldSubform
 	 *
 	 * @return  void
 	 *
-	 * @since  3.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function __set($name, $value)
 	{
@@ -71,7 +71,7 @@ class SubformField extends \JFormFieldSubform
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @since  3.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
 	{

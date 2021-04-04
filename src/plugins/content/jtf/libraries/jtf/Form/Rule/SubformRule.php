@@ -49,12 +49,15 @@ class SubformRule extends FormRule
 			return true;
 		}
 
+		$return = true;
+		$name   = (string) $element['name'];
+
 		// Get the form field object.
-		$field = $form->getField($element['name'], $group);
+		$field = $form->getField($name, $group);
 
 		if (!($field instanceof SubformField))
 		{
-			throw new \UnexpectedValueException(sprintf('%s is no subform field.', $element['name']));
+			throw new \UnexpectedValueException(sprintf('%s is no subform field.', $name));
 		}
 
 		$subForm = $field->loadSubForm();
@@ -67,14 +70,9 @@ class SubformRule extends FormRule
 				if ($subForm->validate($row) === false)
 				{
 					// Pass the first error that occurred on the subform validation.
-					$errors = $subForm->getErrors();
+					$form->setErrors($subForm->getErrors(), $name);
 
-					if (!empty($errors[0]))
-					{
-						return $errors[0];
-					}
-
-					return false;
+					$return = false;
 				}
 			}
 		}
@@ -84,17 +82,12 @@ class SubformRule extends FormRule
 			if ($subForm->validate($value) === false)
 			{
 				// Pass the first error that occurred on the subform validation.
-				$errors = $subForm->getErrors();
+				$form->setErrors($subForm->getErrors(), $name);
 
-				if (!empty($errors[0]))
-				{
-					return $errors[0];
-				}
-
-				return false;
+				$return = false;
 			}
 		}
 
-		return true;
+		return $return;
 	}
 }
