@@ -12,15 +12,15 @@ namespace Jtf\Form\Rule;
 
 defined('JPATH_PLATFORM') or die;
 
-use Jtf\Form\Field\SubformField;
 use Joomla\CMS\Form\FormRule;
 use Joomla\Registry\Registry;
+use Jtf\Form\Field\SubformField;
 use Jtf\Form\Form;
 
 /**
  * Form rule to validate subforms field-wise.
  *
- * @since  JTF 3.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class SubformRule extends FormRule
 {
@@ -39,7 +39,7 @@ class SubformRule extends FormRule
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function test(\SimpleXMLElement $element, $value, $group = null, Registry $input = null, Form $form = null): bool
+	public function test(\SimpleXMLElement $element, $value, $group = null, $input = null, $form = null)
 	{
 		// Get the form field object.
 		$field = $form->getField($element['name'], $group);

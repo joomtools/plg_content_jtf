@@ -47,7 +47,7 @@ class PlzRule extends FormRule
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function test(\SimpleXMLElement $element, $value, $group = null, Registry $input = null, Form $form = null): bool
+	public function test(\SimpleXMLElement $element, $value, $group = null, $input = null, $form = null): bool
 	{
 		// If the field is empty and not required, the field is valid.
 		$required = ((string) $element['required'] == 'true' || (string) $element['required'] == 'required');
