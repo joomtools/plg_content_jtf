@@ -41,6 +41,14 @@ class SubformRule extends FormRule
 	 */
 	public function test(\SimpleXMLElement $element, $value, $group = null, $input = null, $form = null)
 	{
+		// If the field is empty and not required, the field is valid.
+		$disabled = ((string) $element['disabled'] == 'true' || (string) $element['disabled'] == 'disabled' || (string) $element['disabled'] == '1');
+
+		if ($disabled)
+		{
+			return true;
+		}
+
 		// Get the form field object.
 		$field = $form->getField($element['name'], $group);
 
