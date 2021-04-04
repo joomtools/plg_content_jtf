@@ -54,6 +54,14 @@ class CalendarRule extends FormRule
 			return true;
 		}
 
+		// If value is nulldate ('0000-00-00 00:00:00'), blank it as it would result in 1970-01-01.
+		if ($value == Factory::getDbo()->getNullDate() || strtotime($value) === false)
+		{
+			$form->bind(array((string) $element['name'] => ''));
+
+			return false;
+		}
+
 		try
 		{
 			$date = Factory::getDate($value, 'UTC');
@@ -83,20 +91,13 @@ class CalendarRule extends FormRule
 		// Transform the date string.
 		$controlValue = $date->format('Y-m-d H:i:s', true, false);
 
+		// Define the date format.
 		$format = !empty((string) $element['format']) ? (string) $element['format'] : '%Y-%m-%d';
 
-		// Format value when not nulldate ('0000-00-00 00:00:00'), otherwise blank it as it would result in 1970-01-01.
-		if ($controlValue != Factory::getDbo()->getNullDate() && strtotime($controlValue) !== false)
-		{
-			$tz = date_default_timezone_get();
-			date_default_timezone_set('UTC');
-			$controlValue = strftime($format, strtotime($controlValue));
-			date_default_timezone_set($tz);
-		}
-		else
-		{
-			return false;
-		}
+		$tz = date_default_timezone_get();
+		date_default_timezone_set('UTC');
+		$controlValue = strftime($format, strtotime($controlValue));
+		date_default_timezone_set($tz);
 
 		if ($value != $controlValue)
 		{
