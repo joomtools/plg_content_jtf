@@ -72,17 +72,16 @@ class CalendarRule extends FormRule
 			case 'SERVER_UTC':
 				$date->setTimezone(new \DateTimeZone($config->get('offset')));
 
-				// Transform the date string.
-				$controlValue = $date->format('Y-m-d H:i:s', true, false);
 				break;
 
 			case 'USER_UTC':
 				$date->setTimezone($user->getTimezone());
 
-				// Transform the date string.
-				$controlValue = $date->format('Y-m-d H:i:s', true, false);
 				break;
 		}
+
+		// Transform the date string.
+		$controlValue = $date->format('Y-m-d H:i:s', true, false);
 
 		$format = !empty((string) $element['format']) ? (string) $element['format'] : '%Y-%m-%d';
 
