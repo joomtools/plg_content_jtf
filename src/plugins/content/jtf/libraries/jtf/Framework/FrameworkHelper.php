@@ -39,6 +39,13 @@ class FrameworkHelper
 	private static $frameworkCssSet = false;
 
 	/**
+	 * @var   boolean
+	 *
+	 * @since  __DEPLOY_VERSION__
+	 */
+	private $isSubform = false;
+
+	/**
 	 * @var   Form
 	 *
 	 * @since  __DEPLOY_VERSION__
@@ -154,16 +161,18 @@ class FrameworkHelper
 	/**
 	 * Set framework specific css classes
 	 *
-	 * @param   Form  $form  Form to manipulate
+	 * @param   Form     $form       Form to manipulate
+	 * @param   boolean  $isSubform
 	 *
 	 * @return  Form
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public static function setFrameworkClasses(Form $form): Form
+	public static function setFrameworkClasses(Form $form, $isSubform = false): Form
 	{
-		$self        = new static;
-		$self->_form = $form;
+		$self            = new static;
+		$self->_form     = $form;
+		$self->isSubform = $isSubform;
 
 		$self->getFramework();
 		$self->setFormAttributes();
@@ -401,6 +410,17 @@ class FrameworkHelper
 		$form           =& $this->_form;
 		$frwk           = $this->_frwk;
 		$formClassArray = $frwk->getClasses('form');
+
+		if ($this->isSubform)
+		{
+			$formClass = $frwk->getClasses('fieldset')['class'];
+			$formClass[] = $form->getAttribute('class', '');
+
+			if (!empty($formClass = ArrayHelper::arrayUnique($formClass)))
+			{
+				$form->setAttribute('class', implode(' ', $formClass));
+			}
+		}
 
 		if (!empty($formClass = $form->getAttribute('class', '')))
 		{

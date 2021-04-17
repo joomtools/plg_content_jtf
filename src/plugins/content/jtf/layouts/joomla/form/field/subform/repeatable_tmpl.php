@@ -32,7 +32,7 @@ extract($displayData);
 
 foreach ($forms as $k => $form)
 {
-	$form = FrameworkHelper::setFrameworkClasses($form);
+	$form = FrameworkHelper::setFrameworkClasses($form, true);
 	echo $this->sublayout('section',
 		array(
 			'form'              => $form,
@@ -46,7 +46,7 @@ foreach ($forms as $k => $form)
 
 <?php if ($multiple) : ?>
 	<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section hidden">
-		<?php $tmpl = FrameworkHelper::setFrameworkClasses($tmpl);
+		<?php $tmpl = FrameworkHelper::setFrameworkClasses($tmpl, true);
 		echo $this->sublayout('section',
 			array(
 				'form'              => $tmpl,
