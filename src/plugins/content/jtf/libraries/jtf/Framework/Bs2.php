@@ -126,7 +126,7 @@ class Bs2
 
 		if ($orientation == 'horizontal')
 		{
-			$classes['note']['gridfield'][] = 'col-sm-12';
+			$classes['note']['gridfield'][] = 'span12';
 		}
 
 		if ($orientation == 'inline')
@@ -162,7 +162,9 @@ class Bs2
 		$css = array();
 		$css[] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label{width:auto;float:none;text-align:left;}';
 //		$css[] = '.jtf fieldset:not(.form-horizontal) .controls{margin-left:0;}';
-		$css[] = '.jtf .form-stacked fieldset:not(.form-horizontal) .controls{margin-left:0;}';
+//		$css[] = '.jtf .form-stacked fieldset:not(.form-horizontal) .controls{margin-left:0;}';
+		$css[] = '.jtf .form-horizontal .form-stacked .control-label{text-align:left;}';
+		$css[] = '.jtf .form-horizontal .form-stacked .controls{margin-left:0;}';
 		$css[] = '.jtf .field-calendar .input-append .btn{padding:7px 3px 0 7px;}';
 		$css[] = '.jtf .combobox.input-append .btn{padding:4px 8px 3px;}';
 		$css[] = '.jtf form .row{margin-left:0;}';
@@ -183,10 +185,8 @@ class Bs2
 				return 'form-inline';
 
 			default:
-				break;
+				return 'form-stacked';
 		}
-
-		return null;
 	}
 
 	public function getOrientationGridGroupClasses()
