@@ -232,7 +232,7 @@ class PlgContentJtf extends CMSPlugin
 
 		$jtfHp      = $this->app->getUserState('plugins.content.jtf.hp', null);
 		$startTime  = $this->app->getUserState('plugins.content.jtf.start');
-		$checkToken = Session::checkToken();
+		$checkToken = $this->checkToken();
 
 		Factory::getSession()->getToken(true);
 
@@ -1429,5 +1429,40 @@ class PlgContentJtf extends CMSPlugin
 			$cache->cache->remove($key);
 			$cache->cache->setCaching(false);
 		}
+	}
+
+	/**
+	 * Checks for a form token in the request.
+	 *
+	 * Use in conjunction with \JHtml::_('form.token') or Session::getFormToken.
+	 *
+	 * @param   string  $method  The request method in which to look for the token key.
+	 *
+	 * @return  boolean  True if found and valid, false otherwise.
+	 *
+	 * @since  __DEPLOAY_VERSION__
+	 */
+	private function checkToken($method = 'post')
+	{
+		$token = Session::getFormToken();
+
+		// Check from header first
+		if ($token === $this->app->input->server->get('HTTP_X_CSRF_TOKEN', '', 'alnum'))
+		{
+			return true;
+		}
+
+		// Then fallback to HTTP query
+		if (!$this->app->input->$method->get($token, '', 'alnum'))
+		{
+			if (Factory::getSession()->isNew())
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		return true;
 	}
 }
