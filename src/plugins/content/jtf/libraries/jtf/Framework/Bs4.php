@@ -146,6 +146,8 @@ class Bs4
 			$classes['note']['gridfield'][] = 'col-sm-12';
 		}
 
+		$classes['fieldset']['class'] = array();
+
 		if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses()))
 		{
 			$classes['fieldset']['class'][] = $orientationFieldsetClasses;

@@ -144,6 +144,8 @@ class Bs5
 			$classes['radio']['class'][]      = 'form-check-inline';
 		}
 
+		$classes['fieldset']['class'] = array();
+
 		if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses()))
 		{
 			$classes['gridgroup'][] = $orientationFieldsetClasses;

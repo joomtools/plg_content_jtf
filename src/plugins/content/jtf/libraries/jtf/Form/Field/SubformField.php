@@ -30,7 +30,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * 		layout="joomla.form.field.subform.repeatable-table" groupByFieldset="false" component="com_example" client="site"
  * 		label="Field Label" description="Field Description" />
  *
- * @since  3.0
+ * @since  __DEPLOY_VERSION__
  */
 class SubformField extends \JFormFieldSubform
 {
@@ -123,7 +123,6 @@ class SubformField extends \JFormFieldSubform
 	{
 		// Prepare data for renderer
 		$data    = $this->getLayoutData();
-		$tmpl    = null;
 		$control = $this->name;
 
 		try
@@ -156,7 +155,7 @@ class SubformField extends \JFormFieldSubform
 		// Prepare renderer
 		$renderer = $this->getRenderer($this->layout);
 
-		// Allow to define some JLayout options as attribute of the element
+		// Allow to define some Layout options as attribute of the element
 		if ($this->element['component'])
 		{
 			$renderer->setComponent((string) $this->element['component']);
@@ -174,7 +173,7 @@ class SubformField extends \JFormFieldSubform
 		// for allow to submit an empty value
 		if ($this->multiple)
 		{
-			$html = '<input name="' . $this->name . '" type="hidden" value="" />' . $html;
+			$html = '<input name="' . $this->name . '" type="hidden" value="">' . $html;
 		}
 
 		return $html;
@@ -192,7 +191,7 @@ class SubformField extends \JFormFieldSubform
 	 */
 	public function loadSubForm()
 	{
-		$control       = $this->name;
+		$control = $this->name;
 
 		if ($this->multiple)
 		{
@@ -216,7 +215,7 @@ class SubformField extends \JFormFieldSubform
 	/**
 	 * Binds given data to the subform and its elements.
 	 *
-	 * @param   Form  $subForm  Form instance of the subform.
+	 * @param   Form  &$subForm  Form instance of the subform.
 	 *
 	 * @return  Form[]  Array of Form instances for the rows.
 	 *
@@ -224,7 +223,7 @@ class SubformField extends \JFormFieldSubform
 	 */
 	private function loadSubFormData(Form &$subForm): array
 	{
-		$value         = $this->value ? (array) $this->value : array();
+		$value = $this->value ? (array) $this->value : array();
 
 		// Simple form, just bind the data and return one row.
 		if (!$this->multiple)

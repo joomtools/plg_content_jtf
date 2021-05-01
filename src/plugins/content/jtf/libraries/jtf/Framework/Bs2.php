@@ -143,6 +143,8 @@ class Bs2
 			$classes['gridfield'][] = 'controls';
 		}
 
+		$classes['fieldset']['class'] = array();
+
 		if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses()))
 		{
 			$classes['fieldset']['class'][] = $orientationFieldsetClasses;
