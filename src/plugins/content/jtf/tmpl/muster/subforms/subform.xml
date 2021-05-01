@@ -28,11 +28,12 @@
 
 	<field name="subform_checkbox_inline"
 	       type="checkboxes"
-	       class="span12"
 	       description="JTF_CHK_INLINE_DESC"
 	       label="JTF_CHK_INLINE_LABEL"
+	       inline="true"
 	       validate="options"
-	       optionlabelclass="inline"
+	       optionlabelclass="optionLabelClass"
+	       optionclass="optionClass"
 	       required="true"
 	>
 		<option value="JTF_OPTION1">JTF_OPTION1</option>

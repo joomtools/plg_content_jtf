@@ -16,6 +16,11 @@
 			<option value="">JTF_OPTION_NONE</option>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
+			<option value="&lt;OPTGROUP&gt;">Group1</option>
+			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
+			<option value="&lt;OPTGROUP&gt;">Group2</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
 
 		<field name="checkbox"
@@ -31,6 +36,8 @@
 		       description="JTF_CHK_DESC"
 		       label="JTF_CHK_LABEL"
 		       required="true"
+		       optionlabelclass="optionLabelClass"
+		       optionclass="optionClass"
 		       validate="options"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
@@ -44,8 +51,8 @@
 		       label="JTF_CHK_INLINE_LABEL"
 		       validate="options"
 		       inline="true"
-		       optionclass="optionclass"
-		       optionlabelclass="optionlabelclass"
+		       optionlabelclass="optionLabelClass"
+		       optionclass="optionClass"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -57,6 +64,8 @@
 		       description="JTF_RADIO_DESC"
 		       label="JTF_RADIO_LABEL"
 		       default="JTF_OPTION1"
+		       optionlabelclass="optionLabelClass"
+		       optionclass="optionClass"
 		       validate="options"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
@@ -70,8 +79,8 @@
 		       default="JTF_OPTION2"
 		       validate="options"
 		       inline="true"
-		       optionclass="optionclass"
-		       optionlabelclass="optionlabelclass"
+		       optionlabelclass="optionLabelClass"
+		       optionclass="optionClass"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -86,8 +95,8 @@
 		       inline="true"
 		       notmail="1"
 		>
-			<option value="JYES">JON</option>
-			<option value="JNO">JOFF</option>
+			<option value="JON">JON</option>
+			<option value="JOFF">JOFF</option>
 		</field>
 
 		<field name="showon_text"
@@ -97,7 +106,7 @@
 		       description="JTF_SHW_TXT_DESC"
 		       label="JTF_SHW_TXT_LABEL"
 		       required="true"
-		       showon="showon_switch:JYES"
+		       showon="showon_switch:JON"
 		/>
 
 		<field name="text"

@@ -20,6 +20,11 @@
 			<option value="">JTF_OPTION_NONE</option>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
+			<option value="&lt;OPTGROUP&gt;">Group1</option>
+			<option value="JTF_OPTION1">JTF_OPTION1</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
+			<option value="&lt;OPTGROUP&gt;">Group2</option>
+			<option value="JTF_OPTION2">JTF_OPTION2</option>
 		</field>
 
 		<field name="checkboxes"
@@ -27,7 +32,8 @@
 		       description="JTF_CHK_DESC"
 		       label="JTF_CHK_LABEL"
 		       validate="options"
-		       optionlabelclass="uk-display-block"
+		       optionlabelclass="optionLabelClass"
+		       optionclass="optionClass"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -40,8 +46,8 @@
 		       label="JTF_CHK_INLINE_LABEL"
 		       validate="options"
 		       inline="true"
-		       optionclass="optionclass"
-		       optionlabelclass="optionlabelclass"
+		       optionlabelclass="optionLabelClass"
+		       optionclass="optionClass"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -54,7 +60,8 @@
 		       label="JTF_RADIO_LABEL"
 		       default="JTF_OPTION1"
 		       validate="options"
-		       optionlabelclass="uk-display-block"
+		       optionlabelclass="optionLabelClass"
+		       optionclass="optionClass"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -67,8 +74,8 @@
 		       default="JTF_OPTION2"
 		       validate="options"
 		       inline="true"
-		       optionclass="optionclass"
-		       optionlabelclass="optionlabelclass"
+		       optionlabelclass="optionLabelClass"
+		       optionclass="optionClass"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>

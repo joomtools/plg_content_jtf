@@ -31,6 +31,8 @@
 	       description="JTF_CHK_INLINE_DESC"
 	       label="JTF_CHK_INLINE_LABEL"
 	       validate="options"
+	       optionlabelclass="optionLabelClass"
+	       optionclass="optionClass"
 	       required="true"
 	>
 		<option value="JTF_OPTION1">JTF_OPTION1</option>
