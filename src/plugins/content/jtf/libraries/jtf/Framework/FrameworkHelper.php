@@ -752,7 +752,7 @@ class FrameworkHelper
 			$form->setFieldAttribute($fieldName, 'icon', null);
 		}
 
-		if (in_array($type, $frwkClassesOptionsFields))
+		if (in_array($type, $frwkClassesOptionsFields, true))
 		{
 			$optionClass = array_merge(
 				!empty($classes['frwk']['options']['class'])

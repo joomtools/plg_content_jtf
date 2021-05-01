@@ -171,6 +171,8 @@ class Bs3
 	{
 		$css = array();
 		$css[] = '.jtf .form-stacked fieldset:not(.form-horizontal) .control-label{text-align:left;}';
+		$css[] = '.jtf .form-horizontal .form-stacked .control-label{text-align:left;}';
+		$css[] = '.jtf .form-horizontal .form-stacked .controls{margin-left:0;}';
 		$css[] = '.jtf fieldset.radio :not(input){padding-top:0;}';
 		$css[] = '.jtf .radio label.radio:not(.radio-inline),.jtf .checkboxes label.checkbox:not(.checkbox-inline){display:block;margin-top:0;}';
 		$css[] = '.jtf .checkboxes label.checkbox:not(.checkbox-inline){padding-top:0;}';
@@ -191,10 +193,8 @@ class Bs3
 				return 'form-inline';
 
 			default:
-				break;
+				return 'form-stacked';
 		}
-
-		return null;
 	}
 
 	public function getOrientationGridGroupClasses()
