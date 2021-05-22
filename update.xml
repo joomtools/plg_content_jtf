@@ -9,9 +9,33 @@
         <client>site</client>
         <version>3.0.0-rc32</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/3.0.0-rc32/plg_content_jtf-3.0.0-rc32.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/3.0.0-rc49/plg_content_jtf-3.0.0-rc49.zip</downloadurl>
         </downloads>
+        <tags>
+            <tag>stable</tag>
+        </tags>
         <maintainer>Guido De Gobbis</maintainer>
-        <targetplatform name="joomla" version="3.[1234567890]"/>
+        <targetplatform name="joomla" version="3.(9|10)"/>
+        <php_minimum>7.3</php_minimum>
+    </update>
+    <update>
+        <name>JT - Formulator</name>
+        <description></description>
+        <element>jtf</element>
+        <type>plugin</type>
+        <folder>content</folder>
+        <client>site</client>
+        <version>4.0.0-rc1</version>
+        <downloads>
+            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/4.0.0-rc1/plg_content_jtf-4.0.0-rc1.zip</downloadurl>
+        </downloads>
+        <tags>
+            <tag>alpha</tag>
+            <tag>beta</tag>
+            <tag>rc</tag>
+        </tags>
+        <maintainer>Guido De Gobbis</maintainer>
+        <targetplatform name="joomla" version="4.[1234567890]"/>
+        <php_minimum>7.3</php_minimum>
     </update>
 </updates>
