@@ -37,11 +37,11 @@ let jtfUploadFile = (elm, optionlist) => {
 
   // Set list of mimetype and file extension
   for (let i = 0, sep = ''; i < accept.length; ++i) {
-    let mimeType = mimelite.getType(accept[i].replace('.', '')),
-      fileExt = mimelite.getExtension(accept[i].replace('.', ''));
+    let mimeType = mimelite.getType(accept[i]),
+      fileExt = mimelite.getExtension(accept[i]);
 
     if (mimeType === null) {
-      mimeType = mimelite.getTypes(accept[i].replace('.', ''));
+      mimeType = mimelite.getTypes(accept[i]);
     }
 
     console.log('mimeType', mimeType);
@@ -67,7 +67,7 @@ let jtfUploadFile = (elm, optionlist) => {
     }
   }
 
-  acceptedExt = '.' + acceptedExt.replace(/,/g, ' .');
+  acceptedExt = acceptedExt.replace(/,/g, ' .');
   acceptedType = acceptedType.replace(/,/g, ' ');
 
   allowedExt.innerHTML = msgAllowedExt + acceptedExt;

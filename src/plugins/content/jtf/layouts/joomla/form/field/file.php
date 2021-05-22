@@ -65,7 +65,7 @@ Text::script('JTF_JS_UPLOAD_ALLOWED_FILES_EXT', true);
 Text::script('JTF_JS_UPLOAD_LIST_WRAPPER_' . strtoupper($framework));
 Text::script('JTF_JS_ERROR_WRAPPER_' . strtoupper($framework));
 
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfLite.min.js', array('version' => 'auto'));
+HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfLite2.min.js', array('version' => 'auto'));
 HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfUploadFile.min.js', array('version' => 'auto'));
 HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/jtfUploadFile.min.css', array('version' => 'auto'));
 
@@ -89,7 +89,7 @@ JFormFieldCategory::class
 				</button>
 			</p>
 			<p class="maxUploadSize">
-				<?php echo Text::sprintf('JGLOBAL_MAXIMUM_UPLOAD_SIZE_LIMIT', $maxSize); ?>
+				<?php echo Text::sprintf('JTF_MAXIMUM_UPLOAD_SIZE_LIMIT', $maxSize); ?>
 			</p>
 			<p class="allowedExt"></p>
 		</div>

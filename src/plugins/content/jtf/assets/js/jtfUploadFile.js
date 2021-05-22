@@ -36,11 +36,11 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
   console.log('maxsize', maxsize); // Set list of mimetype and file extension
 
   for (var i = 0, sep = ''; i < accept.length; ++i) {
-    var mimeType = mimelite.getType(accept[i].replace('.', '')),
-        fileExt = mimelite.getExtension(accept[i].replace('.', ''));
+    var mimeType = mimelite.getType(accept[i]),
+        fileExt = mimelite.getExtension(accept[i]);
 
     if (mimeType === null) {
-      mimeType = mimelite.getTypes(accept[i].replace('.', ''));
+      mimeType = mimelite.getTypes(accept[i]);
     }
 
     console.log('mimeType', mimeType);
@@ -66,7 +66,7 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
     }
   }
 
-  acceptedExt = '.' + acceptedExt.replace(/,/g, ' .');
+  acceptedExt = acceptedExt.replace(/,/g, ' .');
   acceptedType = acceptedType.replace(/,/g, ' ');
   allowedExt.innerHTML = msgAllowedExt + acceptedExt;
 

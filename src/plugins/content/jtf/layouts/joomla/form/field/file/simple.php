@@ -8,10 +8,10 @@
  * @license      GNU General Public License version 3 or later
  */
 
+defined('_JEXEC') or die;
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 extract($displayData);
 
@@ -63,7 +63,7 @@ Text::script('JTF_JS_UPLOAD_ALLOWED_FILES_EXT', true);
 Text::script('JTF_JS_UPLOAD_LIST_WRAPPER_' . strtoupper($framework));
 Text::script('JTF_JS_ERROR_WRAPPER_' . strtoupper($framework));
 
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfLite.min.js', array('version' => 'auto'));
+HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfLite2.min.js', array('version' => 'auto'));
 HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfUploadFile.min.js', array('version' => 'auto'));
 HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/jtfUploadFile.min.css', array('version' => 'auto'));
 
@@ -71,7 +71,7 @@ HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/jtfUploadFile.min.cs
 <div class="uploader-wrapper">
 	<div class="upload-info<?php echo $uploadInfoClass; ?>" role="alert">
 		<p class="maxUploadSize">
-			<?php echo Text::sprintf('JGLOBAL_MAXIMUM_UPLOAD_SIZE_LIMIT', $maxSize); ?>
+			<?php echo Text::sprintf('JTF_MAXIMUM_UPLOAD_SIZE_LIMIT', $maxSize); ?>
 		</p>
 		<p class="allowedExt"></p>
 	</div>
