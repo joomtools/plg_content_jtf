@@ -159,7 +159,7 @@ class Form extends JForm
 			{
 				if ($forms[$name]->loadFile($data, $replace, $xpath) == false)
 				{
-					throw new \RuntimeException(sprintf('%s() could not load file', __METHOD__));
+					throw new \RuntimeException(sprintf('%s() could not load file %s', __METHOD__, str_replace(JPATH_ROOT, '', $data)));
 				}
 			}
 		}
