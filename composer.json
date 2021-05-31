@@ -19,5 +19,11 @@
     "joomla-projects/selenium-server-standalone": "v2.52.0",
     "fzaninotto/faker": "^1.5",
     "joomla-projects/jorobo": "dev-gdg-dev"
+  },
+  "scripts": {
+    "build": "composer exec robo build",
+    "bump": "composer exec robo bump",
+    "headers": "composer exec robo headers",
+    "map": "composer exec robo map"
   }
 }
