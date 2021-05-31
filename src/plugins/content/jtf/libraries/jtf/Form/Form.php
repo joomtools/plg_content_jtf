@@ -13,8 +13,8 @@ namespace Jtf\Form;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Form\Form as JForm;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
-use Joomla\Utilities\ArrayHelper;
 
 /**
  * Form Class for the Joomla Platform.
@@ -235,6 +235,7 @@ class Form extends JForm
 		}
 
 		$return = true;
+		$valid = true;
 
 		// Create an input registry object from the data to validate.
 		$input = new Registry($data);
@@ -251,31 +252,38 @@ class Form extends JForm
 		// Validate the fields.
 		foreach ($fields as $field)
 		{
-			$value = null;
 			$name  = (string) $field['name'];
 
 			// Get the group names as strings for ancestor fields elements.
 			$attrs  = $field->xpath('ancestor::fields[@name]/@name');
 			$groups = array_map('strval', $attrs ? $attrs : array());
-			$group  = implode('.', $groups);
+			$attrGroup = implode('.', $groups);
 
-			// Get the value from the input data.
-			if ($group)
+			$key = $attrGroup ? $attrGroup . '.' . $name : $name;
+
+			$fieldObj = $this->loadField($field, $attrGroup);
+
+			if ($fieldObj)
 			{
-				$value = $input->get($group . '.' . $name);
+				$valid = $fieldObj->validate($input->get($key), $attrGroup, $input);
+
+				if (version_compare(JVERSION, '4', 'lt'))
+				{
+					$valid = $this->validateField($field, $attrGroup, $input->get($key), $input);
+				}
+
+				// Check for an error.
+				if ($valid !== true)
+				{
+					$this->setErrors($valid);
+					$return = false;
+				}
 			}
-			else
+			elseif (!$fieldObj && $input->exists($key))
 			{
-				$value = $input->get($name);
-			}
-
-			// Validate the field.
-			$valid = $this->validateField($field, $group, $value, $input);
-
-			// Check for an error.
-			if ($valid !== true)
-			{
-				$this->setErrors($valid);
+				// The field returned false from setup and shouldn't be included in the page body - yet we received
+				// a value for it. This is probably some sort of injection attack and should be rejected
+				$this->errors[] = new \RuntimeException(Text::sprintf('JLIB_FORM_VALIDATE_FIELD_INVALID', $key));
 				$return = false;
 			}
 		}
@@ -283,7 +291,7 @@ class Form extends JForm
 		return $return;
 	}
 	/**
-	 * Method to validate a JFormField object based on field data.
+	 * Method to validate a FormField object based on field data.
 	 *
 	 * @param   \SimpleXMLElement  $element  The XML element object representation of the form field.
 	 * @param   string             $group    The optional dot-separated form group path on which to find the field.
@@ -292,52 +300,22 @@ class Form extends JForm
 	 *                                       against the entire form.
 	 *
 	 * @return  boolean|\Exception  Boolean true if field value is valid, Exception on failure.
-	 * @throws  \InvalidArgumentException
-	 * @throws  \UnexpectedValueException
-	 * @throws  \RuntimeException
 	 *
 	 * @since  __DEPLOY_VERSION__
+	 *
+	 * @deprecated  4.0  Use $field->validate() directly
 	 */
 	protected function validateField(\SimpleXMLElement $element, $group = null, $value = null, Registry $input = null)
 	{
 		$name = (string) $element['name'];
-
-		if (!empty($showOn = (string) $element['showon']))
-		{
-			$isShown = $this->isFieldShown($showOn);
-
-			// Remove required flag before the validation, if field is not shown
-			if (!$isShown)
-			{
-				$element['required'] = 'false';
-				$element['disabled'] = 'true';
-
-				if ($input)
-				{
-					$fieldExistsInRequestData = $input->exists($name) || $input->exists($group . '.' . $name);
-
-					if ($fieldExistsInRequestData)
-					{
-						if ($input->exists($name))
-						{
-							$input->set($name, '');
-						}
-
-						if ($input->exists($group . '.' . $name))
-						{
-							$input->set($group . '.' . $name, '');
-						}
-					}
-				}
-			}
-		}
+		$key  = $group ? $group . '.' . $name : $name;
 
 		$valid = parent::validateField($element, $group, $value, $input);
 
 		if ($valid instanceof \Exception && (string) $element['type'] === 'subform')
 		{
 			// Get the subform errors.
-			$errors = $this->getErrors($name);
+			$errors = $this->getErrors($key);
 			$errors = array_unique($errors, SORT_STRING);
 
 			// Merge the errors.
@@ -349,118 +327,13 @@ class Form extends JForm
 	}
 
 	/**
-	 * Evaluates whether the field was displayed
-	 *
-	 * @param   string  $showOn  The value of the show on attribute.
-	 *
-	 * @return  boolean
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	private function isFieldShown(string $showOn): bool
-	{
-		$regex = array(
-			'search' => array(
-				'[AND]',
-				'[OR]',
-			),
-			'replace' => array(
-				' [AND]',
-				' [OR]',
-			),
-		);
-
-		$showOn       = str_replace($regex['search'], $regex['replace'], $showOn);
-		$showOnValues = explode(' ', $showOn);
-
-		return $this->fieldIsShownValidation($showOnValues);
-	}
-
-	/**
-	 * Evaluate showon values
-	 *
-	 * @param   string[]  $values  Array of strings with show on name:value pair
-	 *
-	 * @return  boolean
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	private function fieldIsShownValidation(array $values): bool
-	{
-		$valuesSum      = count($values) - 1;
-		$conditionValid = array();
-		$values         = (array) $values;
-		$isShown        = false;
-
-		if (empty($values))
-		{
-			return false;
-		}
-
-		foreach ($values as $key => $value)
-		{
-			$not       = false;
-			$glue      = '';
-			$separator = ':';
-
-			if (strpos($value, '[OR]') !== false)
-			{
-				$glue      = 'or';
-				$value = strtr($value, array('[OR]' => ''));
-			}
-
-			if (strpos($value, '[AND]') !== false)
-			{
-				$glue = 'and';
-				$value = strtr($value, array('[AND]' => ''));
-			}
-
-			if (strpos($value, '!') !== false)
-			{
-				$not       = true;
-				$separator = '!:';
-			}
-
-			list($fieldName, $expectedValue) = explode($separator, $value);
-
-			$fieldValue      = (array) $this->getValue($fieldName);
-			$valueValidation = (($not === false && in_array($expectedValue, $fieldValue))
-				|| ($not === true && !in_array($expectedValue, $fieldValue)));
-
-			if ($glue === '')
-			{
-				if ((int) $key === (int) $valuesSum)
-				{
-					return $valueValidation;
-				}
-
-				$conditionValid[$key] = $valueValidation;
-			}
-
-			if ($glue == 'and')
-			{
-				$isShown              = $conditionValid[$key - 1] && $valueValidation;
-				$conditionValid[$key] = $isShown;
-			}
-
-			if ($glue == 'or')
-			{
-				$isShown              = $conditionValid[$key - 1] || $valueValidation;
-				$conditionValid[$key] = $isShown;
-			}
-		}
-
-		return $isShown;
-	}
-
-	/**
 	 * Return all errors, if any.
 	 *
-	 * @param   string|null  $subForm  The unique Id of the Subform to add the errors in $subFormErrors
+	 * @param   string  $subFormId  The unique Id of the Subform to add the errors in $subFormErrors
 	 *
 	 * @return  array  Array of error messages or RuntimeException objects.
 	 *
-	 * @since   1.7.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	public function getErrors($subFormId = null)
 	{
@@ -475,8 +348,8 @@ class Form extends JForm
 	/**
 	 * Add instanceof Exception to the errors array
 	 *
-	 * @param   \Exception|\Exception[]  $errors   Single Exception or array of Exceptions
-	 * @param   string|null              $subForm  The unique Id of the Subform to add the errors in $subFormErrors
+	 * @param   \Exception|\Exception[]  $errors     Single Exception or array of Exceptions
+	 * @param   string                   $subFormId  The unique Id of the Subform to add the errors in $subFormErrors
 	 *
 	 * @return   void
 	 *

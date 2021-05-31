@@ -13,6 +13,7 @@ namespace Jtf\Form;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use Jtf\Layout\FileLayout;
 
@@ -558,5 +559,175 @@ trait FormFieldExtension
 	protected function isDebugEnabled(): bool
 	{
 		return ($this->getAttribute('debug', 'false') === 'true' || !empty($this->form->rendererDebug));
+	}
+
+	/**
+	 * Method to validate a FormField object based on field data.
+	 *
+	 * @param   mixed              $value    The optional value to use as the default for the field.
+	 * @param   string             $group    The optional dot-separated form group path on which to find the field.
+	 * @param   Registry|null      $input    An optional Registry object with the entire data set to validate
+	 *                                       against the entire form.
+	 *
+	 * @return  boolean|\Exception  Boolean true if field value is valid, Exception on failure.
+	 * @throws  \UnexpectedValueException
+	 *
+	 * @since  __DEPLOY_VERSION__
+	 */
+	public function validate($value = null, $group = null, Registry $input = null)
+	{
+		// Make sure there is a valid SimpleXMLElement.
+		if (!($this->element instanceof \SimpleXMLElement))
+		{
+			throw new \UnexpectedValueException(sprintf('%s::validate `element` is not an instance of SimpleXMLElement', \get_class($this)));
+		}
+
+		$fieldName = (string) $this->element['name'];
+		$key       = $group ? $group . '.' . $fieldName : $fieldName;
+
+		// Check if the field is shown.
+		if (!empty($showOn = (string) $this->element['showon']))
+		{
+			$isShown = $this->isFieldShown($showOn);
+
+			// Remove required flag before the validation, if field is not shown
+			if (!$isShown)
+			{
+				$this->element['required'] = 'false';
+				$this->element['disabled'] = 'true';
+
+				// Field exists in request data
+				if ($input->exists($key))
+				{
+					$input->set($key, '');
+				}
+			}
+		}
+
+		if (version_compare(JVERSION, '4', 'lt'))
+		{
+			// If it is Joomla 3 the field validation is make in Form and we return true at this point.
+			return true;
+		}
+
+		$valid = parent::validate($value, $group, $input);
+
+		if ($valid instanceof \Exception && (string) $this->element['type'] === 'subform')
+		{
+			// Get the subform errors.
+			$errors = $this->form->getErrors($key);
+			$errors = array_unique($errors, SORT_STRING);
+
+			// Merge the errors.
+			$valid = array($valid);
+			$valid = array_merge($valid, $errors);
+		}
+
+		return $valid;
+	}
+
+	/**
+	 * Evaluates whether the field was displayed
+	 *
+	 * @param   string  $showOn  The value of the show on attribute.
+	 *
+	 * @return  boolean
+	 *
+	 * @since  __DEPLOY_VERSION__
+	 */
+	private function isFieldShown(string $showOn): bool
+	{
+		$regex = array(
+			'search' => array(
+				'[AND]',
+				'[OR]',
+			),
+			'replace' => array(
+				' [AND]',
+				' [OR]',
+			),
+		);
+
+		$showOn       = str_replace($regex['search'], $regex['replace'], $showOn);
+		$showOnValues = explode(' ', $showOn);
+
+		return $this->fieldIsShownValidation($showOnValues);
+	}
+
+	/**
+	 * Evaluate showon values
+	 *
+	 * @param   string[]  $values  Array of strings with show on name:value pair
+	 *
+	 * @return  boolean
+	 *
+	 * @since  __DEPLOY_VERSION__
+	 */
+	private function fieldIsShownValidation(array $values): bool
+	{
+		$valuesSum      = count($values) - 1;
+		$conditionValid = array();
+		$values         = (array) $values;
+		$isShown        = false;
+
+		if (empty($values))
+		{
+			return false;
+		}
+
+		foreach ($values as $key => $value)
+		{
+			$not       = false;
+			$glue      = '';
+			$separator = ':';
+
+			if (strpos($value, '[OR]') !== false)
+			{
+				$glue      = 'or';
+				$value = strtr($value, array('[OR]' => ''));
+			}
+
+			if (strpos($value, '[AND]') !== false)
+			{
+				$glue = 'and';
+				$value = strtr($value, array('[AND]' => ''));
+			}
+
+			if (strpos($value, '!') !== false)
+			{
+				$not       = true;
+				$separator = '!:';
+			}
+
+			list($fieldName, $expectedValue) = explode($separator, $value);
+
+			$fieldValue      = (array) $this->form->getValue($fieldName);
+			$valueValidation = (($not === false && in_array($expectedValue, $fieldValue))
+				|| ($not === true && !in_array($expectedValue, $fieldValue)));
+
+			if ($glue === '')
+			{
+				if ((int) $key === (int) $valuesSum)
+				{
+					return $valueValidation;
+				}
+
+				$conditionValid[$key] = $valueValidation;
+			}
+
+			if ($glue == 'and')
+			{
+				$isShown              = $conditionValid[$key - 1] && $valueValidation;
+				$conditionValid[$key] = $isShown;
+			}
+
+			if ($glue == 'or')
+			{
+				$isShown              = $conditionValid[$key - 1] || $valueValidation;
+				$conditionValid[$key] = $isShown;
+			}
+		}
+
+		return $isShown;
 	}
 }

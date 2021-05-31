@@ -51,6 +51,7 @@ class SubformRule extends FormRule
 
 		$return = true;
 		$name   = (string) $element['name'];
+		$key    = $group ? $group . '.' . $name : $name;
 
 		// Get the form field object.
 		$field = $form->getField($name, $group);
@@ -70,7 +71,7 @@ class SubformRule extends FormRule
 				if ($subForm->validate($row) === false)
 				{
 					// Pass the first error that occurred on the subform validation.
-					$form->setErrors($subForm->getErrors(), $name);
+					$form->setErrors($subForm->getErrors(), $key);
 
 					$return = false;
 				}
@@ -82,7 +83,7 @@ class SubformRule extends FormRule
 			if ($subForm->validate($value) === false)
 			{
 				// Pass the first error that occurred on the subform validation.
-				$form->setErrors($subForm->getErrors(), $name);
+				$form->setErrors($subForm->getErrors(), $key);
 
 				$return = false;
 			}
