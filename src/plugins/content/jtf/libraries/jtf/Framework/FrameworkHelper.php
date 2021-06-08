@@ -107,9 +107,9 @@ class FrameworkHelper
 	 * @since  __DEPLOY_VERSION__
 	 */
 	private $hiddenLabel = array(
-		'form' => null,
+		'form'     => null,
 		'fieldset' => null,
-		'field' => null,
+		'field'    => null,
 	);
 
 	/**
@@ -502,8 +502,6 @@ class FrameworkHelper
 				$orientation = !empty((string) $fieldset['orientation'])
 					? (string) $fieldset['orientation']
 					: $this->_orientation;
-
-				$this->_orientation = $orientation;
 
 				$frwk->setOrientation($orientation);
 
