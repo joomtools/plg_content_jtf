@@ -74,7 +74,7 @@ class PlgContentJtfInstallerScript
 	 * @throws \Exception
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function preflight(string $action, Installer $installer): bool
+	public function preflight(string $action, $installer): bool
 	{
 		$notDeleted = '';
 		$app        = Factory::getApplication();
