@@ -56,13 +56,16 @@ class CalendarField extends \JFormFieldCalendar
 			$lang  = Factory::getLanguage();
 			$debug = $lang->setDebug(false);
 
-			if ($showTime && $showTime != 'false')
+			if (empty($this->format))
 			{
-				$this->format = Text::_('DATE_FORMAT_CALENDAR_DATETIME');
-			}
-			else
-			{
-				$this->format = Text::_('DATE_FORMAT_CALENDAR_DATE');
+				if ($showTime && $showTime != 'false')
+				{
+					$this->format = Text::_('DATE_FORMAT_CALENDAR_DATETIME');
+				}
+				else
+				{
+					$this->format = Text::_('DATE_FORMAT_CALENDAR_DATE');
+				}
 			}
 
 			$lang->setDebug($debug);
@@ -104,23 +107,18 @@ class CalendarField extends \JFormFieldCalendar
 					$date->setTimezone($user->getTimezone());
 				}
 				break;
+		}
 
-			default:
-				// Transform the date string.
-				if ($issetValue)
-				{
-					$this->value = $date->format('Y-m-d H:i:s', true, false);
-				}
-				break;
+		// Transform the date string.
+		if ($issetValue)
+		{
+			$this->value = $date->format('Y-m-d H:i:s', true, false);
 		}
 
 		// Format value when not nulldate ('0000-00-00 00:00:00'), otherwise blank it as it would result in 1970-01-01.
 		if ($issetValue && strtotime($this->value) !== false)
 		{
-			$tz = date_default_timezone_get();
-			date_default_timezone_set('UTC');
 			$this->value = strftime($this->format, strtotime($this->value));
-			date_default_timezone_set($tz);
 		}
 		else
 		{
