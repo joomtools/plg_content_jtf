@@ -43,14 +43,23 @@ class FileRule extends FormRule
 		$return      = true;
 		$required    = ((string) $element['required'] == 'true' || (string) $element['required'] == 'required');
 		$value       = (array) $value;
-		$maxFileSize = $value['max_file_size'];
 		$sumSize     = 0;
 
-		unset($value['max_file_size']);
+		if (isset($value['max_file_size']))
+		{
+			$maxFileSize = $value['max_file_size'];
+
+			unset($value['max_file_size']);
+		}
 
 		if (!$required && empty($value))
 		{
 			return true;
+		}
+
+		if ($required && empty($value))
+		{
+			return false;
 		}
 
 		$accept = (string) $element['accept'];

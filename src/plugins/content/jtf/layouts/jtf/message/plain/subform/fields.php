@@ -37,7 +37,7 @@ foreach ($subFormFields as $subFormField)
 	$subFormType  = $subFormField->getAttribute('type');
 	$subFormLabel = $subFormField->getAttribute('label');
 	$subFormName  = $subFormField->getAttribute('name');
-	$subFormValue = $values[$subFormName];
+	$subFormValue = !empty($values[$subFormName]) ? $values[$subFormName] :'';
 
 	if (!empty($subFormField->getAttribute('notmail')))
 	{
