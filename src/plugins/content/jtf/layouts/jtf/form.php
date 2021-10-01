@@ -52,6 +52,7 @@ if ($fillouttime > 0)
 	$jtfBadgeClass           = array();
 	$jtfBadgeClass['uikit3'] = 'uk-badge';
 	$jtfBadgeClass['uikit']  = 'uk-badge uk-badge-notification';
+	$jtfBadgeClass['bs5']    = 'label label-dark';
 	$jtfBadgeClass['bs4']    = 'label label-dark';
 	$jtfBadgeClass['bs3']    = 'badge';
 	$jtfBadgeClass['bs2']    = 'label label-inverse';
