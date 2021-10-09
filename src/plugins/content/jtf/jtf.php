@@ -921,17 +921,19 @@ class PlgContentJtf extends CMSPlugin
 		$data  = $this->getForm()->getData()->toArray();
 		$value = (string) $this->uParams[$name];
 
+		if (!empty($data[$name]))
+		{
+			return $data[$name];
+		}
+
 		if (!empty($value))
 		{
 			if (!empty($data[$value]))
 			{
 				return $data[$value];
 			}
-		}
 
-		if (!empty($data[$name]))
-		{
-			return $data[$name];
+			return $value;
 		}
 
 		return '';
