@@ -249,7 +249,7 @@ trait FormFieldExtension
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
+	public function setup(\SimpleXMLElement $element, $value, $group = null)
 	{
 		if (parent::setup($element, $value, $group))
 		{
@@ -318,7 +318,7 @@ trait FormFieldExtension
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function renderField($options = array()): string
+	public function renderField($options = array())
 	{
 		$type                = strtolower($this->type);
 		$fieldMarker         = $this->fieldmarker;
@@ -427,7 +427,7 @@ trait FormFieldExtension
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function getForm(): Form
+	public function getForm()
 	{
 		return $this->form;
 	}
@@ -439,7 +439,7 @@ trait FormFieldExtension
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getLayoutData(): array
+	protected function getLayoutData()
 	{
 		$data = parent::getLayoutData();
 		$data = array_merge($data, array(
@@ -470,7 +470,7 @@ trait FormFieldExtension
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getOptions(): array
+	protected function getOptions()
 	{
 		$options = parent::getOptions();
 
@@ -506,7 +506,7 @@ trait FormFieldExtension
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getRenderer($layoutId = 'default'): FileLayout
+	protected function getRenderer($layoutId = 'default')
 	{
 		$renderer = new FileLayout($layoutId);
 
@@ -544,7 +544,7 @@ trait FormFieldExtension
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getLayoutPaths(): array
+	protected function getLayoutPaths()
 	{
 		return !empty($this->form->layoutPaths) ? $this->form->layoutPaths : parent::getLayoutPaths();
 	}
@@ -556,7 +556,7 @@ trait FormFieldExtension
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function isDebugEnabled(): bool
+	protected function isDebugEnabled()
 	{
 		return ($this->getAttribute('debug', 'false') === 'true' || !empty($this->form->rendererDebug));
 	}
@@ -635,7 +635,7 @@ trait FormFieldExtension
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	private function isFieldShown(string $showOn): bool
+	private function isFieldShown(string $showOn)
 	{
 		$regex = array(
 			'search' => array(
@@ -663,7 +663,7 @@ trait FormFieldExtension
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	private function fieldIsShownValidation(array $values): bool
+	private function fieldIsShownValidation(array $values)
 	{
 		$valuesSum      = count($values) - 1;
 		$conditionValid = array();

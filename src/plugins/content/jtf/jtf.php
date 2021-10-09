@@ -641,6 +641,7 @@ class PlgContentJtf extends CMSPlugin
 			JPATH_THEMES . '/' . $template . '/html/layouts/plugin/content/jtf',
 			JPATH_THEMES . '/' . $template . '/html/layouts',
 			JPATH_PLUGINS . '/content/jtf/layouts/jtf',
+			JPATH_PLUGINS . '/content/jtf/layouts/joomla' . Version::MAJOR_VERSION,
 			JPATH_PLUGINS . '/content/jtf/layouts',
 			JPATH_SITE . '/layouts',
 		);

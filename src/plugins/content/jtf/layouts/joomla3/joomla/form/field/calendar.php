@@ -8,7 +8,7 @@
  * @license      GNU General Public License version 3 or later
  */
 
-defined('JPATH_BASE') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
