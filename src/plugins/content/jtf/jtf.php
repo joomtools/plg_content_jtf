@@ -921,7 +921,12 @@ class PlgContentJtf extends CMSPlugin
 		$data  = $this->getForm()->getData()->toArray();
 		$value = null;
 
-		if (!empty($this->uParams[$name]))
+		if (!empty($data[$name]))
+		{
+			return $data[$name];
+		}
+
+		if (!empty($value))
 		{
 			$value = $this->uParams[$name];
 
@@ -929,10 +934,8 @@ class PlgContentJtf extends CMSPlugin
 			{
 				$value = $data[$value];
 			}
-		}
-		else if (!empty($data[$name]))
-		{
-			$value = $data[$name];
+
+			return $value;
 		}
 
 		return $value;
