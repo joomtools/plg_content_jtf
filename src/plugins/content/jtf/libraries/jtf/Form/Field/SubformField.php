@@ -73,12 +73,14 @@ class SubformField extends \JFormFieldSubform
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
+	public function setup(\SimpleXMLElement $element, $value, $group = null)
 	{
 		if (!$this->traitSetup($element, $value, $group))
 		{
 			return false;
 		}
+
+		$this->__set('fieldname', $element['name']);
 
 		$attributes = array(
 			'formsource',
@@ -119,7 +121,7 @@ class SubformField extends \JFormFieldSubform
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getInput(): string
+	protected function getInput()
 	{
 		// Prepare data for renderer
 		$data    = $this->getLayoutData();
@@ -142,6 +144,7 @@ class SubformField extends \JFormFieldSubform
 		$data['control']         = $control;
 		$data['buttons']         = $this->buttons;
 		$data['fieldname']       = $this->fieldname;
+		$data['fieldId']         = $this->id;
 		$data['groupByFieldset'] = $this->groupByFieldset;
 
 		/**
@@ -215,14 +218,16 @@ class SubformField extends \JFormFieldSubform
 	/**
 	 * Binds given data to the subform and its elements.
 	 *
-	 * @param   Form  &$subForm  Form instance of the subform.
+	 * @param   Form  $subForm  Form instance of the subform.
 	 *
 	 * @return  Form[]  Array of Form instances for the rows.
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	private function loadSubFormData(Form &$subForm): array
+	protected function loadSubFormData($subForm)
 	{
+		assert($subForm instanceof Form);
+
 		$value = $this->value ? (array) $this->value : array();
 
 		// Simple form, just bind the data and return one row.
