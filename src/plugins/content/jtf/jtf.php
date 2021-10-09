@@ -60,6 +60,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @since   3.0.0
 	 */
 	const PLUGIN_REGEX = "@(<(\w+)[^>]*>)?{jtf(\s.*)?}(</\\2>)?@";
+
 	/**
 	 * Set counter
 	 *
@@ -67,6 +68,15 @@ class PlgContentJtf extends CMSPlugin
 	 * @since   3.0.0
 	 */
 	private static $count;
+
+	/**
+	 * The context being passed to the plugin.
+	 *
+	 * @var     string
+	 * @since   3.0.0
+	 */
+	protected $context;
+
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
@@ -164,7 +174,14 @@ class PlgContentJtf extends CMSPlugin
 	];
 
 	/**
-	 * Debug
+	 * @var   array
+	 *
+	 * @since  3.0.0
+	 */
+	private $tokens = array();
+
+	/**
+	 * @var   boolean
 	 *
 	 * @var     boolean
 	 * @since   3.0.0
@@ -174,15 +191,15 @@ class PlgContentJtf extends CMSPlugin
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An optional associative array of configuration settings.
-	 *                             Recognized key values include 'name', 'group', 'params', 'language'
-	 *                             (this list is not meant to be comprehensive).
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An optional associative array of configuration settings.
+	 *                            Recognized key values include 'name', 'group', 'params', 'language'
+	 *                            (this list is not meant to be comprehensive).
 	 *
 	 * @return   void
 	 * @since    3.0.0
 	 */
-	public function __construct($subject, array $config = array())
+	public function __construct(&$subject, $config = array())
 	{
 		parent::__construct($subject, $config);
 
@@ -240,8 +257,6 @@ class PlgContentJtf extends CMSPlugin
 			|| $this->doNotLoad->extension == 'com_config'
 			|| $this->app->input->getCmd('layout') == 'edit')
 		{
-			$this->app->setUserState('plugins.content.jtf.start', null);
-
 			return;
 		}
 
@@ -249,7 +264,6 @@ class PlgContentJtf extends CMSPlugin
 		if ($this->doNotLoad->active)
 		{
 			$this->app->enqueueMessage(Text::sprintf('JTF_CAN_NOT_LOAD', $this->doNotLoad->extension), 'notice');
-			$this->app->setUserState('plugins.content.jtf.start', null);
 
 			return;
 		}
@@ -257,9 +271,22 @@ class PlgContentJtf extends CMSPlugin
 		// Get all matches or return
 		if (!preg_match_all(self::PLUGIN_REGEX, $article->text, $matches))
 		{
-			$this->app->setUserState('plugins.content.jtf.start', null);
-
 			return;
+		}
+
+		$this->context = $context;
+
+
+		switch (true)
+		{
+			case !is_object($this->app->getUserState('plugins.content.jtf.' . $context)):
+				$this->app->setUserState('plugins.content.jtf.' . $context, null);
+			case !is_object($this->app->getUserState('plugins.content.jtf.hp')):
+				$this->app->setUserState('plugins.content.jtf.hp', null);
+			case !is_object($this->app->getUserState('plugins.content.jtf.start')):
+				$this->app->setUserState('plugins.content.jtf.start', null);
+			default:
+				break;
 		}
 
 		// Get language tag
@@ -284,6 +311,11 @@ class PlgContentJtf extends CMSPlugin
 			);
 		}
 
+		if ($this->app->getUserState('plugins.content.jtf.' . $context))
+		{
+			$this->tokens[$context] = clone $this->app->getUserState('plugins.content.jtf.' . $context);
+		}
+
 		$pluginReplacements = $matches[0];
 		$userParams         = $matches[3];
 
@@ -304,6 +336,13 @@ class PlgContentJtf extends CMSPlugin
 
 			$formTheme = $this->uParams['theme'] . (int) self::$count;
 			$formLang  = $this->getThemePath('language/' . $langTag . '/' . $langTag . '.jtf_theme.ini');
+			$jtfHp     = $this->app->getUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme);
+			$startTime = $this->app->getUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme);
+
+
+			$token  = Joomla\CMS\Session\Session::getFormToken(true);
+			$this->app->setUserState('plugins.content.jtf.' . $context . '.' . $formTheme, $token);
+
 
 			if (!empty($formLang))
 			{
@@ -315,49 +354,49 @@ class PlgContentJtf extends CMSPlugin
 
 			if ($formSubmitted)
 			{
-				$token          = JSession::checkToken();
-				$submitedValues = $this->app->input->get($formTheme, array(), 'post', 'array');
-				$honeypot       = $submitedValues['jtf_captcha_math'];
-				$startTime      = $this->app->getUserState('plugins.content.jtf.start');
-				$fillOutTime    = $this->debug || JDEBUG || $this->uParams['fillouttime'] == 0
+				$checkToken      = $this->checkToken($formTheme);
+				$submittedValues = $this->app->input->get($formTheme, array(), 'post', 'array');
+				$honeypot        = $submittedValues[$jtfHp];
+				$fillOutTime     = $this->debug || JDEBUG || $this->uParams['fillouttime'] == 0
 					? 100000
 					: microtime(1) - $startTime;
-				$notSpamBot     = $fillOutTime > $this->uParams['fillouttime'] ? true : false;
+				$notSpamBot     = $fillOutTime > $this->uParams['fillouttime'];
 
-				if ($honeypot != '' || !$notSpamBot || !$token)
+				if ($honeypot != '' || !$notSpamBot || !$checkToken)
 				{
-					$this->app->setUserState('plugins.content.jtf.start', null);
+					$this->app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, null);
+					$this->app->setUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme, null);
 					$this->app->redirect(JRoute::_('index.php', false));
 				}
 
 				if (!empty($_FILES))
 				{
 					$jinput         = new \Jtf\Input\Files;
-					$submitedFiles  = $jinput->get($formTheme);
-					$submitedValues = array_merge_recursive($submitedValues, $submitedFiles);
+					$submittedFiles  = $jinput->get($formTheme);
+					$submittedValues = array_merge_recursive($submittedValues, $submittedFiles);
 				}
 
-				$this->getForm()->bind($submitedValues);
+				$this->getForm()->bind($submittedValues);
 				$this->setFieldValidates();
 
-				$valid = $this->getForm()->validate($submitedValues);
+				$valid = $this->getForm()->validate($submittedValues);
 
 				// Validate captcha
 				if ($valid && !empty($this->uParams['captcha']))
 				{
 					$captchaRule  = new CaptchaRule();
 					$element      = new SimpleXMLElement('<element></element>');
-					$captchaValue = !empty($submitedValues['captcha']) ? $submitedValues['captcha'] : '';
+					$captchaValue = !empty($submittedValues['captcha']) ? $submittedValues['captcha'] : '';
 
 					$valid = $captchaRule->test($element, $captchaValue, null, null, $this->getForm());
 				}
 
 				if ($valid)
 				{
-					if (!empty($submitedFiles))
+					if (!empty($submittedFiles))
 					{
 						$validatedValues = $this->getForm()->getData()->toArray();
-						$validatedFiles  = $this->cleanSubmittedFiles($submitedFiles, $validatedValues);
+						$validatedFiles  = $this->cleanSubmittedFiles($submittedFiles, $validatedValues);
 						$newBind         = array_merge($validatedValues, $validatedFiles);
 
 						$this->getForm()->resetData();
@@ -386,14 +425,16 @@ class PlgContentJtf extends CMSPlugin
 
 						if ($this->uParams['redirect_menuid'] === null)
 						{
-							$this->app->setUserState('plugins.content.jtf.start', null);
+							$this->app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, null);
+							$this->app->setUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme, null);
 							$this->app->enqueueMessage($text, 'message');
 							$this->app->redirect(JRoute::_('index.php', false));
 						}
 						else
 						{
-							$this->app->setUserState('plugins.content.jtf.start', null);
-							$this->app->redirect(JRoute::_('index.php?Itemid=' . (int)$this->uParams['redirect_menuid'], false));
+							$this->app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, null);
+							$this->app->setUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme, null);
+							$this->app->redirect(JRoute::_('index.php?Itemid=' . (int) $this->uParams['redirect_menuid'], false));
 						}
 					}
 				}
@@ -412,7 +453,7 @@ class PlgContentJtf extends CMSPlugin
 			self::$count++;
 
 			$this->clearOldFiles();
-			$this->app->setUserState('plugins.content.jtf.start', microtime(1));
+			$this->app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, microtime(1));
 		}
 
 		$this->removeCache($context);
@@ -421,6 +462,15 @@ class PlgContentJtf extends CMSPlugin
 		JDEBUG ? Profiler::getInstance('Application')->mark('plgContentJtf') : null;
 	}
 
+	/**
+	 * Initialize user parameters
+	 *
+	 * @param   string  $userParams  String with user defined parameters
+	 *
+	 * @return  void
+	 *
+	 * @since  3.0.0
+	 */
 	private function init($userParams)
 	{
 		$this->resetUserParams();
@@ -648,6 +698,13 @@ class PlgContentJtf extends CMSPlugin
 		return false;
 	}
 
+	/**
+	 * Define form object, if not defined
+	 *
+	 * @return  Form
+	 *
+	 * @since  3.0.0
+	 */
 	private function getForm()
 	{
 		if (!empty($this->form))
@@ -744,7 +801,7 @@ class PlgContentJtf extends CMSPlugin
 	 * @return   array
 	 * @since    3.0.0
 	 */
-	private function cleanSubmittedFiles($submitedFiles, $submitedValues)
+	private function cleanSubmittedFiles($submittedFiles, $submittedValues)
 	{
 		$validatedFiles = array();
 
@@ -941,7 +998,14 @@ class PlgContentJtf extends CMSPlugin
 		return $value;
 	}
 
-	private function getEmailCredentials()
+	/**
+	 * Get e-mail recipient credentials
+	 *
+	 * @return  array
+	 *
+	 * @since  3.0.0
+	 */
+	private function getEmailCredentials(): array
 	{
 		$recipients = array();
 
@@ -1024,6 +1088,15 @@ class PlgContentJtf extends CMSPlugin
 		return $recipients;
 	}
 
+	/**
+	 * Get the HTML layout for the form
+	 *
+	 * @param   string  $filename  Filename of the HTML layout template
+	 *
+	 * @return  string
+	 *
+	 * @since  3.0.0
+	 */
 	private function getTmpl($filename)
 	{
 		$enctype       = '';
@@ -1067,6 +1140,13 @@ class PlgContentJtf extends CMSPlugin
 		return $renderer->render($displayData);
 	}
 
+	/**
+	 * Set fieldset named 'submit' for the form, containing captcha and submit button
+	 *
+	 * @return  void
+	 *
+	 * @since  3.0.0
+	 */
 	private function setSubmit()
 	{
 		$form           = $this->getForm();
@@ -1097,16 +1177,24 @@ class PlgContentJtf extends CMSPlugin
 		$this->setSubmitButton($button);
 	}
 
-	private function issetField($fieldtype, $fieldsetname = null)
+	/**
+	 * @param   string  $fieldType     Field type to search for
+	 * @param   string  $fieldsetName  Name of the fieldset to search into
+	 *
+	 * @return  false|string  False if the field is not set, else the field name
+	 *
+	 * @since  3.0.0
+	 */
+	private function issetField($fieldType, $fieldsetName = null)
 	{
 		$form   = $this->getForm();
-		$fields = $form->getFieldset($fieldsetname);
+		$fields = $form->getFieldset($fieldsetName);
 
 		foreach ($fields as $field)
 		{
 			$type = (string) $field->getAttribute('type');
 
-			if ($type == $fieldtype)
+			if ($type == $fieldType)
 			{
 				return (string) $field->getAttribute('name');
 			}
@@ -1126,9 +1214,8 @@ class PlgContentJtf extends CMSPlugin
 	private function setCaptcha($captcha)
 	{
 		$form   = $this->getForm();
-		$hField = new SimpleXMLElement('<field name="jtf_captcha_math" label="JTF_CAPTCHA_MATH" hint="12+5" type="text" gridgroup="jtfhp" notmail="1"></field>');
+		$jtfHp = md5('jtfhp' . Factory::getSession()->getToken());
 
-		$form->setField($hField, null, true, 'submit');
 		Factory::getDocument()->addStyleDeclaration('.hidden{display:none;visibility:hidden;}.jtfhp{position:absolute;top:-999em;left:-999em;height:0;width:0;}');
 
 		// Set captcha to submit fieldset
@@ -1167,6 +1254,19 @@ class PlgContentJtf extends CMSPlugin
 			$form->removeField($captcha);
 		}
 
+		$operators = array('-', '+', '*');
+		$operator  = $operators[rand(0, 2)];
+		$number    = rand(1, 10);
+		$hint      = $number . ' ' . $operator . ' ' . rand(1, $number);
+		$hField    = new SimpleXMLElement(
+			'<field name="' . $jtfHp . '" type="text" label="JTF_CAPTCHA_MATH" size="10" hint="' . $hint . '" gridgroup="jtfhp" notmail="1"></field>'
+		);
+
+		$form->setField($hField, null, true, 'submit');
+
+		$formTheme = $form->getName();
+
+		$this->app->setUserState('plugins.content.jtf.hp.' . $this->context . '.' . $formTheme, $jtfHp);
 		$this->issetCaptcha = $captcha;
 	}
 
@@ -1566,5 +1666,31 @@ class PlgContentJtf extends CMSPlugin
 			$cache->cache->remove($key);
 			$cache->cache->setCaching(false);
 		}
+	}
+
+	/**
+	 * Checks for a form token in the request.
+	 *
+	 * Use in conjunction with \JHtml::_('form.token') or Session::getFormToken.
+	 *
+	 * @param   string  $formTheme  The theme name of the form.
+	 *
+	 * @return  boolean  True if found and valid, false otherwise.
+	 *
+	 * @since  __DEPLOAY_VERSION__
+	 */
+	private function checkToken($formTheme)
+	{
+		$token = !empty($this->tokens[$this->context]->$formTheme)
+			? $this->tokens[$this->context]->$formTheme
+			: false;
+
+
+		if ($token && $this->app->input->get($token, null, 'alnum'))
+		{
+			return true;
+		}
+
+		return false;
 	}
 }
