@@ -474,7 +474,7 @@ class PlgContentJtf extends CMSPlugin
 		{
 			if (version_compare(JVERSION, '4', 'ge'))
 			{
-				$this->uParams['framework'] = array('bs4');
+				$this->uParams['framework'] = array('bs5');
 			}
 			else
 			{
