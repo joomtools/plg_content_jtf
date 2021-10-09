@@ -62,20 +62,37 @@ foreach ($forms as $k => $form)
 	<script>
 		(function ($) {
 			$(document).on('subform-row-add', function (event, row) {
-			  document.formvalidator = new JFormValidator();
+				document.formvalidator = new JFormValidator();
 
-			  if (!!row.querySelector('.uploader-wrapper')) {
-				var jtfUploadFile = window.jtfUploadFile || {};
-				Array.prototype.forEach.call(row.querySelectorAll('.uploader-wrapper'), function (el) {
-				  console.log('3 subform-row-add - el', el);
-				  console.log('3 subform-row-add - el.querySelector', el.querySelector('input[type="file"].file-uplaoder'));
-				  jtfUploadFile(el, {
-					id: el.querySelector('input[type="file"].file-uplaoder').getAttribute('id'),
-					uploadMaxSize: el.querySelector('input[type="hidden"].file-uplaoder').getAttribute('value')
-				  });
-				});
-			  }
+				if (!!row.querySelector('.uploader-wrapper')) {
+					var jtfUploadFile = window.jtfUploadFile || {};
+					Array.prototype.forEach.call(row.querySelectorAll('.uploader-wrapper'), function (el) {
+						jtfUploadFile(el, {
+							id: el.querySelector('input[type="file"].file-uplaoder').getAttribute('id'),
+							uploadMaxSize: el.querySelector('input[type="hidden"].file-uplaoder').getAttribute('value')
+						});
+					});
+				}
 			});
 		})(jQuery);
+	</script>
+<?php else: ?>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.addEventListener('subform-row-add', function (event) {
+				var row = event.target;
+				document.formvalidator = new JFormValidator();
+
+				if (!!row.querySelector('.uploader-wrapper')) {
+					var jtfUploadFile = window.jtfUploadFile || {};
+					Array.prototype.forEach.call(row.querySelectorAll('.uploader-wrapper'), function (el) {
+						jtfUploadFile(el, {
+							id: el.querySelector('input[type="file"].file-uplaoder').getAttribute('id'),
+							uploadMaxSize: el.querySelector('input[type="hidden"].file-uplaoder').getAttribute('value')
+						});
+					});
+				}
+			});
+		});
 	</script>
 <?php endif; ?>
