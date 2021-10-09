@@ -7,16 +7,16 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>3.0.0-rc49</version>
+        <version>3.0.0-rc51</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/3.0.0-rc49/plg_content_jtf-3.0.0-rc49.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/3.0.0-rc51/plg_content_jtf-3.0.0-rc51.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>
         </tags>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="3.(9|10)"/>
-        <php_minimum>7.3</php_minimum>
+        <php_minimum>7.2</php_minimum>
     </update>
     <update>
         <name>JT - Formulator</name>
@@ -25,9 +25,9 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>4.0.0-rc3</version>
+        <version>4.0.0-rc4</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/4.0.0-rc3/plg_content_jtf-4.0.0-rc3.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/4.0.0-rc4/plg_content_jtf-4.0.0-rc4.zip</downloadurl>
         </downloads>
         <tags>
             <tag>alpha</tag>
@@ -35,9 +35,12 @@
             <tag>rc</tag>
             <tag>stable</tag>
         </tags>
+        <sha256sum>5b5af6d746e64bf7b716cfda45b464160b0a45458a7839077d8d77a04f833701</sha256sum>
+        <sha384sum>01b8733747d03e9a82b97ba32d9412cf5ce39f515524f117b9938f1624b7863cd7c9e02d6e791efe27c5abb290cb7a0d</sha384sum>
+        <sha512sum>983c81781b5b399717c4757e4dfdcf6ddc9487fb3f19f43b511171a442624ddf870a4545b931390e1f08753992b8801589eb6f1bef5db3c69f4573a560fef5bf</sha512sum>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="3.(9|10)"/>
-        <php_minimum>7.3</php_minimum>
+        <php_minimum>7.2</php_minimum>
     </update>
     <update>
         <name>JT - Formulator</name>
@@ -46,17 +49,21 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>4.0.0-rc3</version>
+        <version>4.0.0-rc4</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/4.0.0-rc3/plg_content_jtf-4.0.0-rc3.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/4.0.0-rc4/plg_content_jtf-4.0.0-rc4.zip</downloadurl>
         </downloads>
         <tags>
             <tag>alpha</tag>
             <tag>beta</tag>
             <tag>rc</tag>
+            <tag>stable</tag>
         </tags>
+        <sha256sum>5b5af6d746e64bf7b716cfda45b464160b0a45458a7839077d8d77a04f833701</sha256sum>
+        <sha384sum>01b8733747d03e9a82b97ba32d9412cf5ce39f515524f117b9938f1624b7863cd7c9e02d6e791efe27c5abb290cb7a0d</sha384sum>
+        <sha512sum>983c81781b5b399717c4757e4dfdcf6ddc9487fb3f19f43b511171a442624ddf870a4545b931390e1f08753992b8801589eb6f1bef5db3c69f4573a560fef5bf</sha512sum>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="4.[1234567890]"/>
-        <php_minimum>7.3</php_minimum>
+        <php_minimum>7.2</php_minimum>
     </update>
 </updates>
