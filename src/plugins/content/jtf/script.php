@@ -228,6 +228,7 @@ class PlgContentJtfInstallerScript
 
 		unset($result->component_exclusions);
 
+		$result          = new Registry($result);
 		$newPluginParams = new Registry($this->pluginDefaultParams);
 
 		$newPluginParams->merge($result);
