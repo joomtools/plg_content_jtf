@@ -209,11 +209,11 @@ class PlgContentJtfInstallerScript
 
 		if ($result->framework == 'joomla')
 		{
-			$result->framework = 'bs5';
+			$result->framework = 'bs2';
 
-			if (version_compare(JVERSION, '4', 'lt'))
+			if (version_compare(JVERSION, '4', 'ge'))
 			{
-				$result->framework = 'bs2';
+				$result->framework = 'bs5';
 			}
 		}
 
