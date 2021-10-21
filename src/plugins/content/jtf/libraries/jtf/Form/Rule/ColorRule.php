@@ -38,7 +38,7 @@ class ColorRule extends FormRule
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function test(\SimpleXMLElement $element, $value, $group = null, $input = null, $form = null): bool
+	public function test(\SimpleXMLElement $element, $value, $group = null, $input = null, $form = null)
 	{
 		$value = trim($value);
 

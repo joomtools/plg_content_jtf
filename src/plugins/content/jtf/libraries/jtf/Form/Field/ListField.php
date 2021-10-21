@@ -47,7 +47,7 @@ class ListField extends \JFormFieldList
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getInput(): string
+	protected function getInput()
 	{
 		$data = $this->getLayoutData();
 

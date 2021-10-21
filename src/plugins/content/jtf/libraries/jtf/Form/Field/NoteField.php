@@ -49,7 +49,7 @@ class NoteField extends \JFormFieldNote
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getLabel(): string
+	protected function getLabel()
 	{
 		return '';
 	}
@@ -61,7 +61,7 @@ class NoteField extends \JFormFieldNote
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getInput(): string
+	protected function getInput()
 	{
 		return $this->getRenderer($this->layout)->render($this->getLayoutData());
 	}
@@ -73,7 +73,7 @@ class NoteField extends \JFormFieldNote
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getLayoutData(): array
+	protected function getLayoutData()
 	{
 		$data = $this->traitGetLayoutData();
 

@@ -53,7 +53,7 @@ class SubmitField extends FormField
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getLabel(): string
+	protected function getLabel()
 	{
 		$data = $this->traitGetLayoutData();
 

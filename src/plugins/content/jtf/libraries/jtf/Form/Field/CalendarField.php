@@ -41,7 +41,7 @@ class CalendarField extends \JFormFieldCalendar
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function getInput(): string
+	protected function getInput()
 	{
 		$config = Factory::getConfig();
 		$user   = Factory::getUser();

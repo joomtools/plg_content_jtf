@@ -31,7 +31,7 @@ class Files extends JoomlaInputFiles
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	protected function decodeData(array $data): array
+	protected function decodeData(array $data)
 	{
 		$result = array();
 

@@ -41,7 +41,7 @@ class CaptchaField extends \Joomla\CMS\Form\Field\CaptchaField
 
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
+	public function setup(\SimpleXMLElement $element, $value, $group = null)
 	{
 		$app = Factory::getApplication();
 

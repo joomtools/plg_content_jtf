@@ -39,7 +39,7 @@ class FileRule extends FormRule
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function test(\SimpleXMLElement $element, $value, $group = null, $input = null, $form = null): bool
+	public function test(\SimpleXMLElement $element, $value, $group = null, $input = null, $form = null)
 	{
 		$return      = true;
 		$required    = ((string) $element['required'] == 'true' || (string) $element['required'] == 'required');

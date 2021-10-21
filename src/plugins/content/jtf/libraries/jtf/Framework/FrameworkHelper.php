@@ -168,7 +168,7 @@ class FrameworkHelper
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public static function setFrameworkClasses(Form $form, $isSubform = false): Form
+	public static function setFrameworkClasses(Form $form, $isSubform = false)
 	{
 		$self            = new static;
 		$self->_form     = $form;
@@ -284,7 +284,7 @@ class FrameworkHelper
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	private function getClassArray($classes, &$target = array()): array
+	private function getClassArray($classes, &$target = array())
 	{
 		if (empty($classes))
 		{

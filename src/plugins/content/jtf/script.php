@@ -31,7 +31,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public $minimumJoomla = '3.9';
+	public $minimumJoomla = '3.10';
 
 	/**
 	 * Minimum PHP version to install
@@ -40,7 +40,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public $minimumPhp = '7.3';
+	public $minimumPhp = '5.6';
 
 	/**
 	 * Default params for the plugin to merge
@@ -71,7 +71,8 @@ class PlgContentJtfInstallerScript
 	 * @param   Installer  $installer  The class calling this method
 	 *
 	 * @return  boolean  True on success
-	 * @throws \Exception
+	 * @throws  \Exception
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function preflight(string $action, $installer): bool
@@ -147,7 +148,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @return  string
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since  __DEPLOY_VERSION__
 	 */
 	private function deleteOrphans(string $type, array $orphans): string
 	{
@@ -186,7 +187,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @return  void
 	 *
-	 * @since  4.0.0
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected function updatePlgConfig()
 	{

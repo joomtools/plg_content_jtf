@@ -188,8 +188,6 @@ trait FormFieldExtension
 			default:
 				return parent::__get($name);
 		}
-
-		return;
 	}
 
 	/**

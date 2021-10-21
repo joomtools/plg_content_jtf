@@ -27,7 +27,7 @@ class FileLayout extends \Joomla\CMS\Layout\FileLayout
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function checkLayoutExists(): bool
+	public function checkLayoutExists()
 	{
 		$layoutPath = parent::getPath();
 
