@@ -224,10 +224,10 @@ class PlgContentJtf extends CMSPlugin
 		{
 			case !is_object($this->app->getUserState('plugins.content.jtf.' . $context)):
 				$this->app->setUserState('plugins.content.jtf.' . $context, null);
-			case !is_object($this->app->getUserState('plugins.content.jtf.hp.' . $context)):
-				$this->app->setUserState('plugins.content.jtf.hp.' . $context, null);
-			case !is_object($this->app->getUserState('plugins.content.jtf.start.' . $context)):
-				$this->app->setUserState('plugins.content.jtf.start.' . $context, null);
+			case !is_object($this->app->getUserState('plugins.content.jtf.hp')):
+				$this->app->setUserState('plugins.content.jtf.hp', null);
+			case !is_object($this->app->getUserState('plugins.content.jtf.start')):
+				$this->app->setUserState('plugins.content.jtf.start', null);
 			default:
 				break;
 		}
