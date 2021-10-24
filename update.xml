@@ -13,7 +13,7 @@
         </downloads>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="3.(9|10)"/>
-        <php_minimum>7.2</php_minimum>
+        <php_minimum>5.6</php_minimum>
     </update>
     <update>
         <name>JT - Formulator</name>
@@ -22,21 +22,15 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>4.0.0-rc4</version>
+        <version>4.0.0-rc5</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/4.0.0-rc4/plg_content_jtf-4.0.0-rc4.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/4.0.0-rc5/plg_content_jtf-4.0.0-rc5.zip</downloadurl>
         </downloads>
-        <tags>
-            <tag>alpha</tag>
-            <tag>beta</tag>
-            <tag>rc</tag>
-        </tags>
-        <sha256sum>5b5af6d746e64bf7b716cfda45b464160b0a45458a7839077d8d77a04f833701</sha256sum>
-        <sha384sum>01b8733747d03e9a82b97ba32d9412cf5ce39f515524f117b9938f1624b7863cd7c9e02d6e791efe27c5abb290cb7a0d</sha384sum>
-        <sha512sum>983c81781b5b399717c4757e4dfdcf6ddc9487fb3f19f43b511171a442624ddf870a4545b931390e1f08753992b8801589eb6f1bef5db3c69f4573a560fef5bf</sha512sum>
+        <sha256sum>b0277b3bb24a6931518fef8c9119b8f72551ff6391c2f0073bf1a8ef4d983fe5</sha256sum>
+        <sha512sum>b0e06072593408f820158d8143e7531f4672a15a978fbb2ba1e268885723f0911f3376811bb47933623ead5af90d6f7a2496d9377e3dd15b498fa9e4814f0c91</sha512sum>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="3.11"/>
-        <php_minimum>7.2</php_minimum>
+        <php_minimum>5.6</php_minimum>
     </update>
     <update>
         <name>JT - Formulator</name>
@@ -45,13 +39,12 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>4.0.0-rc4</version>
+        <version>4.0.0-rc5</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/4.0.0-rc4/plg_content_jtf-4.0.0-rc4.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/JoomTools/plg_content_jtf/releases/download/4.0.0-rc5/plg_content_jtf-4.0.0-rc5.zip</downloadurl>
         </downloads>
-        <sha256sum>5b5af6d746e64bf7b716cfda45b464160b0a45458a7839077d8d77a04f833701</sha256sum>
-        <sha384sum>01b8733747d03e9a82b97ba32d9412cf5ce39f515524f117b9938f1624b7863cd7c9e02d6e791efe27c5abb290cb7a0d</sha384sum>
-        <sha512sum>983c81781b5b399717c4757e4dfdcf6ddc9487fb3f19f43b511171a442624ddf870a4545b931390e1f08753992b8801589eb6f1bef5db3c69f4573a560fef5bf</sha512sum>
+        <sha256sum>b0277b3bb24a6931518fef8c9119b8f72551ff6391c2f0073bf1a8ef4d983fe5</sha256sum>
+        <sha512sum>b0e06072593408f820158d8143e7531f4672a15a978fbb2ba1e268885723f0911f3376811bb47933623ead5af90d6f7a2496d9377e3dd15b498fa9e4814f0c91</sha512sum>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="4.[1234567890]"/>
         <php_minimum>7.2</php_minimum>
