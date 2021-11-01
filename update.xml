@@ -36,6 +36,7 @@
             <tag>stable</tag>
         </tags>
         <sha256sum>b0277b3bb24a6931518fef8c9119b8f72551ff6391c2f0073bf1a8ef4d983fe5</sha256sum>
+        <sha384sum>7907eaee173689fb2754148d5e3f745537714a8848a5246d56472af28e6fe11a3b9fd567855664df3bfbde26ed81b5d4</sha384sum>
         <sha512sum>b0e06072593408f820158d8143e7531f4672a15a978fbb2ba1e268885723f0911f3376811bb47933623ead5af90d6f7a2496d9377e3dd15b498fa9e4814f0c91</sha512sum>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="3.(9|10)"/>
@@ -59,6 +60,7 @@
             <tag>stable</tag>
         </tags>
         <sha256sum>b0277b3bb24a6931518fef8c9119b8f72551ff6391c2f0073bf1a8ef4d983fe5</sha256sum>
+        <sha384sum>7907eaee173689fb2754148d5e3f745537714a8848a5246d56472af28e6fe11a3b9fd567855664df3bfbde26ed81b5d4</sha384sum>
         <sha512sum>b0e06072593408f820158d8143e7531f4672a15a978fbb2ba1e268885723f0911f3376811bb47933623ead5af90d6f7a2496d9377e3dd15b498fa9e4814f0c91</sha512sum>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="4.[1234567890]"/>
