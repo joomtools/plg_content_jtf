@@ -795,8 +795,8 @@ class PlgContentJtf extends CMSPlugin
 	/**
 	 * Get submitted Files
 	 *
-	 * @param   array  $submitedFiles   Dot separated field path to find submitted file for the field
-	 * @param   array  $submitedValues  Dot separated field path to find submitted file for the field
+	 * @param   array  $submittedFiles   Dot separated field path to find submitted file for the field
+	 * @param   array  $submittedValues  Dot separated field path to find submitted file for the field
 	 *
 	 * @return   array
 	 * @since    3.0.0
@@ -805,9 +805,9 @@ class PlgContentJtf extends CMSPlugin
 	{
 		$validatedFiles = array();
 
-		foreach ($submitedFiles as $key => $value)
+		foreach ($submittedFiles as $key => $value)
 		{
-			if (isset($submitedValues[$key]))
+			if (isset($submittedValues[$key]))
 			{
 				if (empty($value))
 				{
@@ -832,7 +832,7 @@ class PlgContentJtf extends CMSPlugin
 						}
 					}
 
-					$validatedFiles[$key] = $this->cleanSubmittedFiles($submitedFiles[$key], $value);
+					$validatedFiles[$key] = $this->cleanSubmittedFiles($submittedFiles[$key], $value);
 				}
 				continue;
 			}
