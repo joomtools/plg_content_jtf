@@ -7,10 +7,13 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>3.0.0-rc51</version>
+        <version>3.0.0-rc52</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/3.0.0-rc51/plg_content_jtf-3.0.0-rc51.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/3.0.0-rc52/plg_content_jtf-3.0.0-rc52.zip</downloadurl>
         </downloads>
+        <sha256>8f1f22f00324c601db2e8e706093af965cc8e695628eb7e7244b1388eed95b06</sha256>
+        <sha384>c6b210b04c3291395e679569ef527c2cbe059a1861a26e5aca83e25c961b6970e2274f77201a2f3927e7a635be3d9c5f</sha384>
+        <sha512>53d1bfa7ad77ae9ae2f8d484f7f47d6ed111d42b8ee79fbb9570b7088173eaa6999ee8e84ef628c469fd80657fb2cd996cf388b72ac137d1a996f4428bcebd81</sha512>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="3.(9|10)"/>
         <php_minimum>5.6</php_minimum>
