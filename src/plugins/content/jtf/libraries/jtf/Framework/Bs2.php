@@ -139,8 +139,8 @@ class Bs2
 		if ($orientation != 'inline')
 		{
 			$classes['gridgroup'][] = 'row';
-			$classes['gridlabel'][] = 'control-label';
-			$classes['gridfield'][] = 'controls';
+			$classes['gridlabel'][] = 'control-label row';
+			$classes['gridfield'][] = 'controls row';
 		}
 
 		$classes['fieldset']['class'] = array();
