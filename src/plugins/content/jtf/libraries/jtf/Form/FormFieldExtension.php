@@ -164,6 +164,8 @@ trait FormFieldExtension
 		switch ($name)
 		{
 			case 'control':
+			case 'hiddenLabel':
+			case 'hiddenlabel':
 			case 'optionclass':
 			case 'optionlabelclass':
 			case 'gridgroup':
@@ -179,10 +181,6 @@ trait FormFieldExtension
 			case 'fieldmarkerplace':
 				$name = strtolower($name);
 
-				return $this->$name;
-
-			case 'hiddenlabel':
-			case 'hiddenLabel':
 				return $this->$name;
 
 			default:
@@ -221,8 +219,8 @@ trait FormFieldExtension
 				$this->$name = (string) $value;
 				break;
 
-			case 'hiddenlabel':
 			case 'hiddenLabel':
+			case 'hiddenlabel':
 			case 'inline':
 				$value       = (string) $value;
 				$name = strtolower($name);
@@ -253,8 +251,8 @@ trait FormFieldExtension
 		{
 			$attributes = array(
 				'control',
-				'hiddenlabel',
 				'hiddenLabel',
+				'hiddenlabel',
 				'icon',
 				'inline',
 				'buttonclass',
@@ -276,6 +274,13 @@ trait FormFieldExtension
 				{
 					switch ($attributeName)
 					{
+						case 'hiddenLabel':
+							if (!empty($element[$attributeName]))
+							{
+								$this->__set("hiddenlabel", $element[$attributeName]);
+							}
+							break;
+
 						case 'showfielddescriptionas':
 						case 'fieldmarker':
 						case 'fieldmarkerplace':
@@ -363,7 +368,7 @@ trait FormFieldExtension
 		if ($issetHiddenLabel)
 		{
 			$this->fieldmarkerplace       = 'hint';
-			$this->showfielddescriptionas = 'text';
+			$this->showfielddescriptionas = !empty($this->showfielddescriptionas) ? 'text' : false;
 			$this->labelclass             = !empty((string) $this->labelclass)
 				? $hiddenLabelClass . ' ' . (string) $this->labelclass
 				: $hiddenLabelClass;
@@ -390,6 +395,10 @@ trait FormFieldExtension
 		)
 		{
 			$newHint[]  = Text::_('JTF_FIELD_MARKED_HINT_' . strtoupper($fieldMarker));
+		}
+
+		if (!empty($newHint))
+		{
 			$this->hint = implode(' ', $newHint);
 		}
 
@@ -450,11 +459,6 @@ trait FormFieldExtension
 				'fieldMarker'            => $this->fieldmarker,
 				'fieldMarkerPlace'       => $this->fieldmarkerplace,
 				'showFieldDescriptionAs' => $this->showfielddescriptionas,
-//				'gridGroup'        => $this->gridgroup,
-//				'gridLabel'        => $this->gridlabel,
-//				'gridField'        => $this->gridfield,
-//				'icon'             => $this->icon,
-//				'descriptionclass' => $this->descriptionclass,
 			)
 		);
 

@@ -613,7 +613,7 @@ class FrameworkHelper
 	 */
 	private function setFieldClass(FormField $field)
 	{
-		$form      =& $this->_form;
+		$form      = $this->_form;
 		$frwk      = $this->_frwk;
 		$classes   = $this->classes;
 		$type      = $field->getAttribute('type');
@@ -704,7 +704,7 @@ class FrameworkHelper
 
 		if ($fieldHiddenLabel || in_array($type, $this->hiddenLabelTypes, true))
 		{
-			$form->setFieldAttribute($fieldName, 'hiddenlabel', true);
+			$form->setFieldAttribute($fieldName, 'hiddenlabel', "true");
 			$classes['field']['labelclass'][] = 'jtfhp';
 		}
 

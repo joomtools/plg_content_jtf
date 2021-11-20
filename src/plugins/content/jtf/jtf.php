@@ -261,6 +261,8 @@ class PlgContentJtf extends CMSPlugin
 		if ($this->app->getUserState('plugins.content.jtf.' . $context))
 		{
 			$this->tokens[$context] = clone $this->app->getUserState('plugins.content.jtf.' . $context);
+
+			$this->app->setUserState('plugins.content.jtf.' . $context, null);
 		}
 
 		$pluginReplacements = $matches[0];
@@ -283,8 +285,12 @@ class PlgContentJtf extends CMSPlugin
 
 			$formTheme = $this->uParams['theme'] . (int) self::$count;
 			$formLang  = $this->getThemePath('language/' . $langTag . '/' . $langTag . '.jtf_theme.ini');
+
 			$jtfHp     = $this->app->getUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme);
+			$this->app->setUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme, null);
+
 			$startTime = $this->app->getUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme);
+			$this->app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, null);
 
 
 			$token  = Joomla\CMS\Session\Session::getFormToken(true);
@@ -313,8 +319,6 @@ class PlgContentJtf extends CMSPlugin
 
 				if ($honeypot !== '' || !$notSpamBot || !$checkToken)
 				{
-					$this->app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, null);
-					$this->app->setUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme, null);
 					$this->app->redirect(JRoute::_('index.php', false));
 				}
 

@@ -129,7 +129,7 @@ class Form extends JForm
 	 * @throws  \InvalidArgumentException if no data provided.
 	 * @throws  \RuntimeException if the form could not be loaded.
 	 */
-	public static function getInstance($name, $data = null, $options = array(), $replace = true, $xpath = false): Form
+	public static function getInstance($name, $data = null, $options = array(), $replace = true, $xpath = false)
 	{
 		// Reference to array with form instances
 		$forms = &self::$forms;
