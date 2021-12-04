@@ -57,12 +57,6 @@ $fieldElementClass = empty(trim($class)) ? '' : ' class="' . trim($class) . '"';
 !$disabled  ? null : $fieldsetAttributes['disabled']  = 'disabled';
 !$autofocus ? null : $fieldsetAttributes['autofocus'] = 'autofocus';
 
-if ($required)
-{
-	$fieldsetAttributes['required']      = 'required';
-	$fieldsetAttributes['aria-required'] = 'true';
-}
-
 $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 ?>
 <fieldset <?php echo $fieldsetAttributes; ?>>
@@ -111,7 +105,7 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 				<?php endif; ?>
 			>
 				<input <?php echo $optionAttributes; ?> />
-				<?php echo $option->text; ?>
+				<span><?php echo $option->text; ?></span>
 			</label>
 		</div>
 	<?php endforeach; ?>

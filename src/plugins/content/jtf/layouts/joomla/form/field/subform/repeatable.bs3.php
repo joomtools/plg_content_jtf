@@ -13,17 +13,13 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Language\Text;
 
+/* @var array $displayData */
+
 $layout = new FileLayout('joomla.form.field.subform.repeatable_tmpl');
 $layout->setSuffixes($displayData['tmpl']->framework);
 $layout->addIncludePaths($displayData['tmpl']->layoutPaths);
 $layout->setDebug($displayData['tmpl']->renderDebug);
-
-// Add script
-if ($displayData['multiple'])
-{
-	JHtml::_('jquery.ui', array('core', 'sortable'));
-	JHtml::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
-} ?>
+?>
 
 <div class="row">
 	<div class="subform-repeatable-wrapper subform-layout">

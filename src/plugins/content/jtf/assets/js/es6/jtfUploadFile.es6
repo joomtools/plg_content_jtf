@@ -8,8 +8,8 @@
  */
 
 let jtfUploadFile = (elm, optionlist) => {
-  console.log('elm', elm);
-  console.log('optionlist', optionlist);
+  // console.log('elm', elm);
+  // console.log('optionlist', optionlist);
 
   let Joomla = window.Joomla || {},
     mimelite = window.mimelite || {},
@@ -27,13 +27,13 @@ let jtfUploadFile = (elm, optionlist) => {
     errorFileSize = Joomla.Text._('JTF_JS_UPLOAD_ERROR_MESSAGE_SIZE', ''),
     errorFileType = Joomla.Text._('JTF_JS_UPLOAD_ERROR_FILE_NOT_ALLOWED', '');
 
-  console.log('allowedExt', allowedExt);
-  console.log('dragarea', dragarea);
-  console.log('fileInput', fileInput);
-  console.log('uploadList', uploadList);
-  console.log('label', label);
-  console.log('accept', accept);
-  console.log('maxsize', maxsize);
+  // console.log('allowedExt', allowedExt);
+  // console.log('dragarea', dragarea);
+  // console.log('fileInput', fileInput);
+  // console.log('uploadList', uploadList);
+  // console.log('label', label);
+  // console.log('accept', accept);
+  // console.log('maxsize', maxsize);
 
   // Set list of mimetype and file extension
   for (let i = 0, sep = ''; i < accept.length; ++i) {
@@ -44,13 +44,13 @@ let jtfUploadFile = (elm, optionlist) => {
       mimeType = mimelite.getTypes(accept[i]);
     }
 
-    console.log('mimeType', mimeType);
+    // console.log('mimeType', mimeType);
 
     if (fileExt === null) {
       fileExt = accept[i].replace('.', '');
     }
 
-    console.log('fileExt', fileExt);
+    // console.log('fileExt', fileExt);
 
     if (fileExt !== null) {
       sep = acceptedExt ? ',' : '';
@@ -150,11 +150,11 @@ let jtfUploadFile = (elm, optionlist) => {
       files = elm.target.files;
     }
 
-    console.log('dateiauswahl -> files', files);
+    // console.log('dateiauswahl -> files', files);
 
     let uploadsize = getTotalFilesSize(files);
 
-    console.log('dateiauswahl -> uploadsize', uploadsize);
+    // console.log('dateiauswahl -> uploadsize', uploadsize);
 
     for (let i = 0, c = 1, f; i < files.length; i++, c++) {
       f = files[i];
@@ -170,8 +170,8 @@ let jtfUploadFile = (elm, optionlist) => {
       uploadError.push('<li><strong>' + humanReadableSize(uploadsize) + '</strong> - ' + errorFileSize + '</li>');
     }
 
-    console.log('output', output);
-    console.log('uploadError', uploadError);
+    // console.log('output', output);
+    // console.log('uploadError', uploadError);
 
     if (output.length > 0) {
       uploadListWrapper = Joomla.Text._('JTF_JS_UPLOAD_LIST_WRAPPER_' + jtfFrwk, '').replace('%s', '<ol>' + output.join('') + '</ol>');
@@ -189,14 +189,14 @@ let jtfUploadFile = (elm, optionlist) => {
       });
     }
 
-    console.log('errorWrapper', errorWrapper);
-    console.log('uploadListWrapper', uploadListWrapper);
+    // console.log('errorWrapper', errorWrapper);
+    // console.log('uploadListWrapper', uploadListWrapper);
 
     uploadList.innerHTML = errorWrapper + uploadListWrapper;
   };
 
   if (label && dragarea) {
-    console.info('label Eventhandler aufgerufen.');
+    // console.info('label Eventhandler aufgerufen.');
     let prevClassState = label.classList.contains('invalid'),
       labelClassObserver = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
@@ -205,10 +205,10 @@ let jtfUploadFile = (elm, optionlist) => {
             if (prevClassState !== currentClassState) {
               prevClassState = currentClassState;
               if (currentClassState) {
-                console.log("class added!");
+                // console.log("class added!");
                 setInvalid();
               } else {
-                console.log("class removed!");
+                // console.log("class removed!");
                 unsetInvalid();
               }
             }
@@ -220,7 +220,7 @@ let jtfUploadFile = (elm, optionlist) => {
   }
 
   if (typeof fileInput !== 'undefined') {
-    console.info('fileInput Eventhandler aufgerufen.');
+    // console.info('fileInput Eventhandler aufgerufen.');
     fileInput.addEventListener('change', (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -234,7 +234,7 @@ let jtfFrwk = window.jtfFrwk || 'BS2';
 document.addEventListener('DOMContentLoaded', () => {
   let uploaderWrapper = document.querySelectorAll('.uploader-wrapper');
 
-  console.log('uploaderWrapper', uploaderWrapper);
+  // console.log('uploaderWrapper', uploaderWrapper);
 
   Array.prototype.forEach.call(uploaderWrapper, (elm) => {
     jtfUploadFile(elm, {

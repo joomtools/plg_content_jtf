@@ -25,7 +25,6 @@ extract($displayData);
  * @var   string   $class             Classes for the input.
  * @var   string   $description       Description of the field.
  * @var   boolean  $disabled          Is this field disabled?
- * @var   string   $framework         CSS framework like uikit, uikit3, bs2, bs3, bs4 or bs5.
  * @var   string   $group             Group the field belongs to. <fields> section in form XML.
  * @var   boolean  $hidden            Is this field hidden in the form?
  * @var   string   $hint              Placeholder for the field.
@@ -50,20 +49,19 @@ extract($displayData);
 // Build the fieldset attributes array.
 $fieldsetAttributes          = array();
 $fieldsetAttributes['id']    = $id;
-$fieldsetAttributes['class'] = array('radio', 'radio-group');
-
-if (in_array($framework, array('uikit', 'uikit3')))
-{
-	$fieldsetAttributes['class'][] = 'uk-fieldset';
-}
-
-$fieldsetAttributes['class'] = implode(' ', $fieldsetAttributes['class']);
+$fieldsetAttributes['class'] = 'radio radio-group';
 
 $fieldElementClass = empty(trim($class)) ? '' : ' class="' . trim($class) . '"';
 
 !$readonly  ? null : $fieldsetAttributes['readonly']  = 'readonly';
 !$disabled  ? null : $fieldsetAttributes['disabled']  = 'disabled';
 !$autofocus ? null : $fieldsetAttributes['autofocus'] = 'autofocus';
+
+if ($required)
+{
+	$fieldsetAttributes['required']      = 'required';
+	$fieldsetAttributes['aria-required'] = 'true';
+}
 
 $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 ?>
@@ -96,6 +94,7 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 		?>
 
 		<div<?php echo $fieldElementClass; ?>>
+			<input <?php echo $optionAttributes; ?> />
 			<label <?php echo $optionLabelAttributes ?>
 				<?php if (!empty($option->optionattr)) :
 					if (version_compare(JVERSION, 4, 'lt'))
@@ -112,7 +111,6 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 					echo $option->optionattr; ?>
 				<?php endif; ?>
 			>
-				<input <?php echo $optionAttributes; ?> />
 				<?php echo $option->text; ?>
 			</label>
 		</div>

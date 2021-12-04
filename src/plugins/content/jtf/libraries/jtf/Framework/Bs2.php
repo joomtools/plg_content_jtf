@@ -169,9 +169,10 @@ class Bs2
 		$css[] = '.jtf .form-horizontal .form-stacked .controls{margin-left:0;}';
 		$css[] = '.jtf .field-calendar .input-append .btn{padding:7px 3px 0 7px;}';
 		$css[] = '.jtf .combobox.input-append .btn{padding:4px 8px 3px;}';
-		$css[] = '.jtf form .row{margin-left:0;}';
+		//$css[] = '.jtf form .row{margin-left:0;}';
 		$css[] = '.jtf .control-label label{font-weight:bold;}';
 		$css[] = '.jtf .radio-group{padding-left:0;}';
+		$css[] = '.jtf .checkboxes-group input[type="checkbox"], .jtf .radio-group input[type="radio"]{margin-top:0;}';
 
 
 		return implode('', $css);
@@ -201,9 +202,7 @@ class Bs2
 		switch ($this->_orientation)
 		{
 			case 'horizontal':
-				return array(
-					'span3',
-				);
+				return array();
 
 			case 'inline':
 				return array();
@@ -220,9 +219,7 @@ class Bs2
 		switch ($this->_orientation)
 		{
 			case 'horizontal':
-				return array(
-					'span9',
-				);
+				return array();
 
 			case 'inline':
 				return array();

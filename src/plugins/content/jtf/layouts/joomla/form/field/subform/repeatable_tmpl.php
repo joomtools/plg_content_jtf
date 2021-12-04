@@ -10,6 +10,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Jtf\Framework\FrameworkHelper;
 
 extract($displayData);
@@ -29,6 +30,21 @@ extract($displayData);
  * @var   array  $buttons           Array of the buttons that will be rendered
  * @var   int    $unique_subform_id Whether group the subform fields by it`s fieldset
  */
+
+// Add script
+if ($multiple)
+{
+	if (version_compare(JVERSION, 4, 'lt'))
+	{
+		JHtml::_('jquery.ui', array('core', 'sortable'));
+		JHtml::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
+	}
+	else
+	{
+		Factory::getDocument()->getWebAssetManager()
+			->useScript('webcomponent.field-subform');
+	}
+}
 
 foreach ($forms as $k => $form)
 {

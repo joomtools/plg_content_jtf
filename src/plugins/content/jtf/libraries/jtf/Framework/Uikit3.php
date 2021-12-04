@@ -160,7 +160,7 @@ class Uikit3
 			$classes['gridgroup'][] = 'uk-width-1-1';
 		}
 
-		$classes['fieldset']['class'] = array();
+		// $classes['fieldset']['class'] = array();
 
 		if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses()))
 		{
@@ -182,7 +182,7 @@ class Uikit3
 		$css[] = '.jtf .uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
 		$css[] = '.jtf .uk-form-stacked .uk-form-controls {width: 100% !important; margin-left: 0 !important;}';
 		$css[] = '.jtf .checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
-		$css[] = '.jtf .checkbox , .radio {padding-left: 0 !important;}';
+		$css[] = '.jtf .checkbox, .radio {padding-left: 0 !important;}';
 		$css[] = '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}';
 		$css[] = '.jtf .minicolors-theme-bootstrap .hex{height:auto;}';
 

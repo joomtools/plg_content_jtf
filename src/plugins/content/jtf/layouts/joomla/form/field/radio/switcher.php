@@ -11,6 +11,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
 
 extract($displayData);
 
@@ -63,16 +64,27 @@ Factory::getApplication()->getDocument()->getWebAssetManager()->useStyle('switch
  */
 $input = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s>';
 
-$attr = 'id="' . $id . '"';
-$attr .= $onchange ? ' onchange="' . $onchange . '"' : '';
-$attr .= $dataAttribute;
+// Build the fieldset attributes array.
+$fieldsetAttributes          = array();
+$fieldsetAttributes['id']    = $id;
+$fieldsetAttributes['class'] = array('switcher', 'switcher-group');
 
+$readonly || $disabled ? $fieldsetAttributes['class'][] = 'disabled' : null;
+in_array($framework, array('uikit', 'uikit3')) ? $fieldsetAttributes['class'][] = 'uk-fieldset' : null;
+
+$fieldsetAttributes['class'] = implode(' ', $fieldsetAttributes['class']);
+
+$onchange ? $fieldsetAttributes['onchange'] = $onchange : null;
+$readonly ? $fieldsetAttributes['readonly'] = 'readonly' : null;
+$disabled ? $fieldsetAttributes['disabled'] = 'disabled' : null;
+$autofocus ? $fieldsetAttributes['autofocus'] = 'autofocus' : null;
+
+$fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 ?>
-<fieldset <?php echo $attr; ?>>
-	<legend class="visually-hidden">
+<fieldset <?php echo $fieldsetAttributes; ?>>
+	<legend class="jtfhp">
 		<?php echo $label; ?>
 	</legend>
-	<div class="switcher<?php echo ($readonly || $disabled ? ' disabled' : ''); ?>">
 	<?php foreach ($options as $i => $option) : ?>
 		<?php
 		// False value casting as string returns an empty string so assign it 0
@@ -91,5 +103,4 @@ $attr .= $dataAttribute;
 		<?php echo '<label for="' . $optionId . '">' . $option->text . '</label>'; ?>
 	<?php endforeach; ?>
 	<span class="toggle-outside"><span class="toggle-inside"></span></span>
-	</div>
 </fieldset>

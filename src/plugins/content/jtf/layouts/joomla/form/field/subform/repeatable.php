@@ -38,21 +38,7 @@ $layout = new FileLayout('joomla.form.field.subform.repeatable_tmpl');
 $layout->setSuffixes($tmpl->framework);
 $layout->addIncludePaths($tmpl->layoutPaths);
 $layout->setDebug($tmpl->renderDebug);
-
-// Add script
-if ($multiple)
-{
-	if (version_compare(JVERSION, 4, 'lt'))
-	{
-		JHtml::_('jquery.ui', array('core', 'sortable'));
-		JHtml::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
-	}
-	else
-	{
-		Factory::getDocument()->getWebAssetManager()
-			->useScript('webcomponent.field-subform');
-	}
-} ?>
+?>
 
 <div class="row-fluid">
 	<div class="subform-repeatable-wrapper subform-layout">

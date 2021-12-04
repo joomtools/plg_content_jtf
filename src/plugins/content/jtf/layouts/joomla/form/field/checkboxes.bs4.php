@@ -50,14 +50,6 @@ extract($displayData);
 $fieldsetAttributes          = array();
 $fieldsetAttributes['id']    = $id;
 $fieldsetAttributes['class'] = 'checkboxes checkboxes-group';
-$fieldsetAttributes['class'] = array('checkboxes', 'checkboxes-group');
-
-if (in_array($framework, array('uikit', 'uikit3')))
-{
-	$fieldsetAttributes['class'][] = 'uk-fieldset';
-}
-
-$fieldsetAttributes['class'] = implode(' ', $fieldsetAttributes['class']);
 
 $fieldElementClass = empty(trim($class)) ? '' : ' class="' . trim($class) . '"';
 
@@ -104,6 +96,7 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 		?>
 
 		<div<?php echo $fieldElementClass; ?>>
+			<input <?php echo $optionAttributes; ?> />
 			<label <?php echo $optionLabelAttributes ?>
 				<?php if (!empty($option->optionattr)) :
 					HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
@@ -111,8 +104,7 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 					echo $option->optionattr; ?>
 				<?php endif; ?>
 			>
-				<input <?php echo $optionAttributes; ?> />
-				<span><?php echo $option->text; ?></span>
+				<?php echo $option->text; ?>
 			</label>
 		</div>
 	<?php endforeach; ?>
