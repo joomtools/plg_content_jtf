@@ -484,16 +484,29 @@ trait FormFieldExtension
 			? array()
 			: explode(' ', trim((string) $this->optionlabelclass));
 
-		foreach ($options as &$option)
+		foreach ($this->element->xpath('option') as $optionKey => $option)
 		{
-			$optonClass      = empty((string) $this->optionclass)
-				? array()
-				: explode(' ', trim((string) $this->optionclass));
-			$optonClass      = ArrayHelper::arrayUnique(array_merge($globalOptonClass, $optonClass));
-			$optonLabelClass = ArrayHelper::arrayUnique($globalOptonLabelClass);
+			// Merge option class with the globally set one
+			$optionClass      = array();
 
-			$option->class = implode(' ', $optonClass);
-			$option->labelclass = implode(' ', $optonLabelClass);
+			if (!empty($option['class']))
+			{
+				$optionClass = explode(' ', trim((string) $option['class']));
+			}
+
+			$optionClass   = ArrayHelper::arrayUnique(array_merge($globalOptonClass, $optionClass));
+			$options[$optionKey]->class = implode(' ', $optionClass);
+
+			// Merge option labelclass with the globally set one
+			$optionLabelClass = array();
+
+			if (!empty($option['labelclass']))
+			{
+				$optionLabelClass = explode(' ', trim((string) $option['labelclass']));
+			}
+
+			$optionLabelClass   = ArrayHelper::arrayUnique(array_merge($globalOptonLabelClass, $optionLabelClass));
+			$options[$optionKey]->labelclass = implode(' ', $optionLabelClass);
 		}
 
 		return $options;
