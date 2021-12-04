@@ -25,13 +25,13 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>4.0.0-rc6</version>
+        <version>4.0.0-rc7</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc6/plg_content_jtf-4.0.0-rc6.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc7/plg_content_jtf-4.0.0-rc7.zip</downloadurl>
         </downloads>
-        <sha256>ce648c8afd17269f9e1b11fc0596bd40f8a6ac2afb5d47cdc78f16d729adec72</sha256>
-        <sha384>2b2b43e2ba29bd78c45326501ebe7e864f3b4138d21950b3fd0c19d2796ef11d89c1d1b3e6b61addd2f6277ba2e2a4b1</sha384>
-        <sha512>fa83b3b9147eb8fb31ef9dc1087863841917bb96dfba093771887ff5f7ef0886b525ba06fdf0ab78d2910941295d0c1d3aea0b741f883b18afe66cfcd0b1b367</sha512>
+        <sha256>28728c200fd17e2c69d9e21f3953328432e9a27c8e133cbc448b2972bf541d2c</sha256>
+        <sha384>cca7e97ff41d46404bd4815a7eaf97b0f65ca44ea7e7c685601b70d3651de032aa094cb03c89f9903e5b654607d06a0f</sha384>
+        <sha512>0405c37ff9059026d6647aaac8d02b8da1623ff965a99d2150caff270afa60d853c949778cbc39f3fc875e5ec7d5271a17d55813df09aa1100cb97aae19cfc16</sha512>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="3.11"/>
         <php_minimum>5.6</php_minimum>
@@ -43,13 +43,13 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>4.0.0-rc6</version>
+        <version>4.0.0-rc7</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc6/plg_content_jtf-4.0.0-rc6.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc7/plg_content_jtf-4.0.0-rc7.zip</downloadurl>
         </downloads>
-        <sha256>ce648c8afd17269f9e1b11fc0596bd40f8a6ac2afb5d47cdc78f16d729adec72</sha256>
-        <sha384>2b2b43e2ba29bd78c45326501ebe7e864f3b4138d21950b3fd0c19d2796ef11d89c1d1b3e6b61addd2f6277ba2e2a4b1</sha384>
-        <sha512>fa83b3b9147eb8fb31ef9dc1087863841917bb96dfba093771887ff5f7ef0886b525ba06fdf0ab78d2910941295d0c1d3aea0b741f883b18afe66cfcd0b1b367</sha512>
+        <sha256>28728c200fd17e2c69d9e21f3953328432e9a27c8e133cbc448b2972bf541d2c</sha256>
+        <sha384>cca7e97ff41d46404bd4815a7eaf97b0f65ca44ea7e7c685601b70d3651de032aa094cb03c89f9903e5b654607d06a0f</sha384>
+        <sha512>0405c37ff9059026d6647aaac8d02b8da1623ff965a99d2150caff270afa60d853c949778cbc39f3fc875e5ec7d5271a17d55813df09aa1100cb97aae19cfc16</sha512>
         <targetplatform name="joomla" version="4.[1234567890]"/>
         <php_minimum>7.2</php_minimum>
     </update>
