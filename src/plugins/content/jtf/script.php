@@ -110,6 +110,8 @@ class PlgContentJtfInstallerScript
 				$pluginPath . '/assets/rules',
 				$pluginPath . '/assets/js/system',
 				$pluginPath . '/libraries/frameworks',
+				// Since 4.0.0-rc7
+				$pluginPath . '/layouts/joomla3',
 			);
 
 			$deletes['file'] = array(
