@@ -1238,7 +1238,7 @@ class PlgContentJtf extends CMSPlugin
 			else
 			{
 				$captcha = 'captcha';
-				$cField  = new SimpleXMLElement('<field name="captcha" type="captcha" validate="captcha" description="JTF_CAPTCHA_DESC" label="JTF_CAPTCHA_LABEL" required="true"></field>');
+				$cField  = new SimpleXMLElement('<field name="captcha" type="captcha" validate="captcha" description="JTF_CAPTCHA_DESC" label="JTF_CAPTCHA_LABEL" required="false"></field>');
 
 				$form->setField($cField, null, true, 'submit');
 			}
