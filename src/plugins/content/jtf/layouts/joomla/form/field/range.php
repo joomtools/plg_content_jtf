@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 
 extract($displayData);
@@ -44,15 +46,22 @@ extract($displayData);
  * @var   array    $options         Options available for this field.
  * @var   array    $inputType       Options available for this field.
  * @var   string   $accept          File types that are accepted.
+ * @var   string   $dataAttribute   Miscellaneous data attributes preprocessed for HTML output
+ * @var   array    $dataAttributes  Miscellaneous data attribute for eg, data-*.
  */
 
-// Including fallback code for HTML5 non supported browsers.
-JHtml::_('jquery.framework');
-JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
+HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/jtfRange.min.css', array('version' => 'auto'));
+
+if (version_compare(JVERSION, '4', 'lt'))
+{
+	// Including fallback code for HTML5 non supported browsers.
+	HTMLHelper::_('jquery.framework');
+	HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
+}
 
 // Initialize some field attributes.
 $attributes = array();
-$class ? $attributes['class'] = $class : null;
+$attributes['class'] = $class ? 'form-range ' . $class : 'form-range';
 $disabled ? $attributes['disabled'] = 'disabled' : null;
 $readonly ? $attributes['readonly'] = 'readonly' : null;
 $autofocus ? $attributes['autofocus'] = 'autofocus' : null;
@@ -62,12 +71,16 @@ $autofocus ? $attributes['autofocus'] = 'autofocus' : null;
 !empty($min) ? $attributes['min'] = $min : null;
 $value = is_numeric($value) ? (float) $value : $min;
 ?>
-<input type="range"
-	   name="<?php echo $name; ?>"
-	   id="<?php echo $id; ?>"
-	   value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-	   oninput="this.nextElementSibling.value = this.value"
+<input
+	type="range"
+	name="<?php echo $name; ?>"
+	id="<?php echo $id; ?>"
+	oninput="this.nextElementSibling.value=this.value"
+	value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
 	<?php echo ArrayHelper::toString($attributes); ?>
-	    />
-<output><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></output><?php
-echo $description ? ' ' . htmlspecialchars($description, ENT_COMPAT, 'UTF-8') : null; ?>
+	<?php if (version_compare(JVERSION, '4', 'ge')) : ?>
+		<?php echo $dataAttribute; ?>
+	<?php endif; ?>
+/>
+<output class="range-desc"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></output>
+<?php echo $description ? ' <span class="range-desc">' . htmlspecialchars($description, ENT_COMPAT, 'UTF-8') . '</span>' : null; ?>
