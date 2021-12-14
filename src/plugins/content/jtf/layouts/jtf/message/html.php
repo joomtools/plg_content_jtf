@@ -40,7 +40,7 @@ foreach ($fieldsets->fieldset as $fieldset)
 			<h1><?php echo $legend; ?></h1>
 		<?php endif; ?>
 
-		<table cellpadding="2" border="1">
+		<table cellpadding="2" border="0">
 			<tbody>
 			<?php foreach ($fieldset->field as $field) :
 				$label = trim(JText::_((string) $field['label']));
