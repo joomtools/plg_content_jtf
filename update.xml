@@ -25,9 +25,9 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>4.0.0-rc8</version>
+        <version>4.0.0-rc9</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc8/plg_content_jtf-4.0.0-rc8.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc9/plg_content_jtf-4.0.0-rc9.zip</downloadurl>
         </downloads>
         <tags>
             <tag>alpha</tag>
@@ -35,9 +35,9 @@
             <tag>rc</tag>
             <tag>stable</tag>
         </tags>
-        <sha256>5c596b817d92e4dfa94f1f2990dad2ecd47ffc5bc05223c2ff90432e28054378</sha256>
-        <sha384>2c6165b48cfcd7e54df2d4cd5c1ae2575dd801296a6eef53fed77530789044660f408fee82c8d9785c798ba960530b10</sha384>
-        <sha512>bb81e77570f99494f832edc23143ce7d43cc023e0feebfd8ae3181d36a2007c1d48f94d5a8b1204e8dd39561dfffa70000ce73c0e8656e14d6e5fe9592afad26</sha512>
+        <sha256>8f4bafc21a414b362b5dc5ac00293b815daaa14fffc3461ef4af413ef91ed55b</sha256>
+        <sha384>f88fd77b4de29fce135f1271549c9efc8a7ac66b66a308dccd1c1fc61d136cf9031e11221ac945cabf44193eb75174a7</sha384>
+        <sha512>ea1a4bb084c0ec20407ad8bf6a2588f8ea4f9d7d79c84631c45c37f26411d4b492d066356ac95bdd9daf77a77d2544f650dc47e0d84e14ef108e4849194ad8ba</sha512>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="3.(9|10)"/>
         <php_minimum>5.6</php_minimum>
@@ -49,9 +49,9 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>4.0.0-rc8</version>
+        <version>4.0.0-rc9</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc8/plg_content_jtf-4.0.0-rc8.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc9/plg_content_jtf-4.0.0-rc9.zip</downloadurl>
         </downloads>
         <tags>
             <tag>alpha</tag>
@@ -59,9 +59,9 @@
             <tag>rc</tag>
             <tag>stable</tag>
         </tags>
-        <sha256>5c596b817d92e4dfa94f1f2990dad2ecd47ffc5bc05223c2ff90432e28054378</sha256>
-        <sha384>2c6165b48cfcd7e54df2d4cd5c1ae2575dd801296a6eef53fed77530789044660f408fee82c8d9785c798ba960530b10</sha384>
-        <sha512>bb81e77570f99494f832edc23143ce7d43cc023e0feebfd8ae3181d36a2007c1d48f94d5a8b1204e8dd39561dfffa70000ce73c0e8656e14d6e5fe9592afad26</sha512>
+        <sha256>8f4bafc21a414b362b5dc5ac00293b815daaa14fffc3461ef4af413ef91ed55b</sha256>
+        <sha384>f88fd77b4de29fce135f1271549c9efc8a7ac66b66a308dccd1c1fc61d136cf9031e11221ac945cabf44193eb75174a7</sha384>
+        <sha512>ea1a4bb084c0ec20407ad8bf6a2588f8ea4f9d7d79c84631c45c37f26411d4b492d066356ac95bdd9daf77a77d2544f650dc47e0d84e14ef108e4849194ad8ba</sha512>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="4.[1234567890]"/>
         <php_minimum>7.2</php_minimum>
