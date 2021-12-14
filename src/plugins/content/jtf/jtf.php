@@ -261,8 +261,6 @@ class PlgContentJtf extends CMSPlugin
 		if ($this->app->getUserState('plugins.content.jtf.' . $context))
 		{
 			$this->tokens[$context] = clone $this->app->getUserState('plugins.content.jtf.' . $context);
-
-			$this->app->setUserState('plugins.content.jtf.' . $context, null);
 		}
 
 		$pluginReplacements = $matches[0];
