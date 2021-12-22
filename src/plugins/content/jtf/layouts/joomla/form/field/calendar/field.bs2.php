@@ -15,18 +15,22 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
- * @var   array   $fieldAttributes   Attributes for the field.
- * @var   array   $buttonAttributes  Attributes for the button.
+ * @var   string  $fieldAttributes   Attributes for the field.
+ * @var   string  $buttonAttributes  Attributes for the button.
+ * @var   string  $dataAttribute     Additional data-attributes for the field.
  * @var   string  $buttonIcon        Icon classfor the button.
  */
 
 ?>
 <div class="field-calendar">
-	<div class="input-group">
-		<input type="text" <?php echo $fieldAttributes; ?> />
-		<div class="input-group-btn">
+	<div class="input-append">
+		<input type="text"
+			<?php echo $fieldAttributes; ?>
+			<?php echo $dataAttribute; ?>
+		/>
+		<div class="btn-group">
 			<button type="button" <?php echo $buttonAttributes; ?>>
-				<span class="<?php echo $buttonIcon; ?>"></span>
+				<span class="<?php echo $buttonIcon; ?>" aria-hidden="true"></span>
 			</button>
 		</div>
 	</div>

@@ -77,7 +77,10 @@ class Bs5
 		);
 
 		$classes['calendar'] = array(
-			'buttonclass' => array('btn'),
+			'buttonclass' => array(
+				'btn',
+				'btn-primary',
+			),
 			'buttonicon'  => array('icon-calendar'),
 		);
 
