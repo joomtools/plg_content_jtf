@@ -346,7 +346,7 @@ class PlgContentJtf extends CMSPlugin
 
 					$sendmail = $this->sendMail();
 
-					if ($sendmail)
+					if ($sendmail === true)
 					{
 						if ($this->uParams['redirect_menuid'] !== null)
 						{
