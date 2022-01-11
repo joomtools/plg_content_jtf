@@ -942,6 +942,24 @@ class PlgContentJtf extends CMSPlugin
 		$mailer->setBody($hBody);
 		$mailer->AltBody = $pBody;
 
+		/** TODO: Schleife für alle E-Mail-Adressen um sie als Empfänger einzutragen
+		 * Multiple TO, CC und BCC muss vorher aber noch auf einem Liveserver getestet werden.
+		 */
+
+		/* foreach ...
+		$return = $mailer->Send();
+
+		if($return !== true)
+		{
+			return $return;
+		}
+
+		$mailer->clearAddresses();
+		$mailer->clearCCs();
+		$mailer->clearBCCs();
+		$mailer->addRecipient($bcc);
+		*/
+
 		return $mailer->Send();
 	}
 
