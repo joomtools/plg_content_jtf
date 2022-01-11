@@ -957,14 +957,13 @@ class PlgContentJtf extends CMSPlugin
 	private function getValue($name)
 	{
 		$data  = $this->getForm()->getData()->toArray();
-		$value = (string) $this->uParams[$name];
 
 		if (!empty($data[$name]))
 		{
 			return $data[$name];
 		}
 
-		if (!empty($value))
+		if (!empty($value = (string) $this->uParams[$name]))
 		{
 			if (!empty($data[$value]))
 			{
@@ -1016,6 +1015,11 @@ class PlgContentJtf extends CMSPlugin
 
 			foreach ($items as $item)
 			{
+				if (empty($item))
+				{
+					continue;
+				}
+
 				$value = null;
 
 				if (strpos($item, '@') !== false)
