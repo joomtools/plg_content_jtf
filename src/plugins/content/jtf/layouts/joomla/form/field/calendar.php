@@ -197,7 +197,13 @@ $buttonAttributes = array(
 $fieldData = array(
 	'fieldAttributes'  => ArrayHelper::toString($fieldAttributes),
 	'buttonAttributes' => ArrayHelper::toString($buttonAttributes),
+	'dataAttribute'    => null,
 	'buttonIcon'       => $buttonIcon,
 );
+
+if (version_compare(JVERSION, '4', 'ge'))
+{
+	$fieldData['dataAttribute'] = $dataAttribute;
+}
 
 echo $this->sublayout('field', $fieldData);
