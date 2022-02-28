@@ -71,11 +71,10 @@ class PlgContentJtfInstallerScript
 	 * @param   Installer  $installer  The class calling this method
 	 *
 	 * @return  boolean  True on success
-	 * @throws  \Exception
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	public function preflight(string $action, $installer): bool
+	public function preflight($action, $installer)
 	{
 		$notDeleted = '';
 		$app        = Factory::getApplication();
@@ -137,13 +136,38 @@ class PlgContentJtfInstallerScript
 			{
 				$app->enqueueMessage($notDeleted, 'error');
 			}
-
-			$this->updatePlgConfig();
 		}
 
 		return true;
 	}
 
+	/**
+	 * Called after any type of action
+	 *
+	 * @param   string     $action     Which action is happening (install|uninstall|discover_install|update)
+	 * @param   Installer  $installer  The class calling this method
+	 *
+	 * @return  void
+	 *
+	 * @since   3.7.0
+	 */
+	public function postflight($action, $installer)
+	{
+		if ($action === 'update')
+		{
+			$app         = Factory::getApplication();
+			$extensionId = $this->updatePlgConfig();
+
+			if (false === $extensionId)
+			{
+				$app->enqueueMessage(Text::_('PLG_CONTENT_JTF_CFG_NOT_CHANGED'), 'warning');
+
+				return;
+			}
+
+			$installer->refreshManifestCache($extensionId);
+		}
+	}
 	/**
 	 * @param   string  $type     Which type are orphans of (file or folder)
 	 * @param   array   $orphans  Array of files or folders to delete
@@ -152,7 +176,7 @@ class PlgContentJtfInstallerScript
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
-	private function deleteOrphans(string $type, array $orphans): string
+	private function deleteOrphans($type, array $orphans)
 	{
 		$notDeleted = '';
 
@@ -187,7 +211,7 @@ class PlgContentJtfInstallerScript
 	/**
 	 * Update plugin configuration
 	 *
-	 * @return  void
+	 * @return  int|boolean  Extension id on success or false
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
@@ -200,49 +224,71 @@ class PlgContentJtfInstallerScript
 			$db->quoteName('folder') . ' = ' . $db->quote('content'),
 			$db->quoteName('element') . ' = ' . $db->quote('jtf'),
 		);
+		$select =  array(
+			$db->quoteName('extension_id'),
+			$db->quoteName('params'),
+		);
 
-		$query = $db->getQuery(true)
-			->select($db->quoteName('params'))
-			->from($db->quoteName('#__extensions'))
-			->where($where);
-
-		$db->setQuery($query);
-
-		$result = json_decode($db->loadResult());
-
-		if ($result->framework == 'joomla')
+		try
 		{
-			$result->framework = 'bs2';
+			$result = $db->setQuery(
+				$db->getQuery(true)
+					->select($select)
+					->from($db->quoteName('#__extensions'))
+					->where($where)
+			)->loadObject();
+		}
+		catch (Exception $e)
+		{
+			return false;
+		}
+
+		$params = json_decode($result->params);
+
+		if ($params->framework == 'joomla')
+		{
+			$params->framework = 'bs2';
 
 			if (version_compare(JVERSION, '4', 'ge'))
 			{
-				$result->framework = 'bs5';
+				$params->framework = 'bs5';
 			}
 		}
 
 		$captcha = '0';
 
-		if (!empty($result->captcha))
+		if (!empty($params->captcha))
 		{
 			$captcha = '1';
 		}
 
-		$result->captcha = $captcha;
+		$params->captcha = $captcha;
 
-		unset($result->component_exclusions);
+		unset($params->component_exclusions);
 
-		$result          = new Registry($result);
+		$params          = new Registry($params);
 		$newPluginParams = new Registry($this->pluginDefaultParams);
 
-		$newPluginParams->merge($result);
+		$newPluginParams->merge($params);
 
 		$newPluginParams = $newPluginParams->toString();
 
-		$query = $db->getQuery(true)
-			->update($db->quoteName('#__extensions'))
-			->set($db->quoteName('params') . ' = ' . $db->quote($newPluginParams))
-			->where($where);
+		try
+		{
+			$db->setQuery(
+				$db->getQuery(true)
+					->update($db->quoteName('#__extensions'))
+					->set($db->quoteName('params') . ' = ' . $db->quote($newPluginParams))
+					->where(
+						$db->quoteName('extension_id') . '=' . $db->quote((int) $result->extension_id)
+					)
+			)->execute();
+		}
+		catch (Exception $e)
+		{
+			return false;
+		}
 
-		$db->setQuery($query)->execute();
+		return (int) $result->extension_id;
 	}
 }
