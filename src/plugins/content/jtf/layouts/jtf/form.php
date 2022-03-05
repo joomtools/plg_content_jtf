@@ -66,7 +66,7 @@ if ($fillouttime > 0)
 
 $cssToAdd = ".hidden{display:none;visibility:hidden;}
 	.jtfhp{position:absolute;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0);border:0!important;float:none!important;}
-	.jtf .invalid:not(label):not(fieldset){border-color:" . $invalidColor . "!important;background-color:" . $invalidBackgroundColor . "!important;}
+	.jtf .invalid:not(label):not(fieldset):not(.marker){border-color:" . $invalidColor . "!important;background-color:" . $invalidBackgroundColor . "!important;}
 	.jtf .invalid,.jtf .invalid::placeholder{color:" . $invalidColor . ";}
 	.jtf .invalid:-ms-input-placeholder{color:" . $invalidColor . ";}
 	.jtf .invalid::-ms-input-placeholder{color:" . $invalidColor . ";}
@@ -93,6 +93,7 @@ else
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfScrollToError.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfInvalidMarker.min.js', array('version' => 'auto'), array('defer' => 'defer'));
 
 ?>
 <div class="jtf contact-form">
