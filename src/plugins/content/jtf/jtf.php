@@ -24,6 +24,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Version;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Utilities\ArrayHelper;
@@ -291,7 +292,7 @@ class PlgContentJtf extends CMSPlugin
 			$this->app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, null);
 
 
-			$token  = Joomla\CMS\Session\Session::getFormToken(true);
+			$token  = UserHelper::genRandomPassword(32);
 			$this->app->setUserState('plugins.content.jtf.' . $context . '.' . $formTheme, $token);
 
 
@@ -308,6 +309,7 @@ class PlgContentJtf extends CMSPlugin
 			if ($formSubmitted)
 			{
 				$checkToken      = $this->checkToken($formTheme);
+				$checkFormToken  = Joomla\CMS\Session\Session::checkToken();
 				$submittedValues = $this->app->input->get($formTheme, array(), 'post', 'array');
 				$honeypot        = $submittedValues[$jtfHp];
 				$fillOutTime     = $this->debug || JDEBUG || $this->uParams['fillouttime'] == 0
@@ -315,7 +317,7 @@ class PlgContentJtf extends CMSPlugin
 					: microtime(1) - $startTime;
 				$notSpamBot      = $fillOutTime > $this->uParams['fillouttime'];
 
-				if ($honeypot !== '' || !$notSpamBot || !$checkToken)
+				if ($honeypot !== '' || !$notSpamBot || !$checkToken || !$checkFormToken)
 				{
 					$this->app->redirect(JRoute::_('index.php', false));
 				}
@@ -537,7 +539,14 @@ class PlgContentJtf extends CMSPlugin
 		{
 			foreach ($vars as $var)
 			{
-				list($key, $value) = explode('=', trim($var));
+				$var = trim($var);
+
+				if (empty($var))
+				{
+					continue;
+				}
+
+				list($key, $value) = explode('=', $var);
 
 				$key   = trim(strtolower($key));
 				$value = trim($value, '\/');
@@ -1100,17 +1109,22 @@ class PlgContentJtf extends CMSPlugin
 	 */
 	private function getTmpl($filename)
 	{
-		$enctype       = '';
-		$id            = $this->uParams['theme'];
-		$index         = self::$count;
-		$form          = $this->getForm();
-		$form          = FrameworkHelper::setFrameworkClasses($form);
-		$formClass     = $form->getAttribute('class', '');
-		$controlFields = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />'
-			. '<input type="hidden" name="formTask" value="' . $id . $index . '_sendmail" />'
-			. '<input type="hidden" name="view" value="' . $this->app->input->get('view') . '" />'
-			. '<input type="hidden" name="Itemid" value="' . $this->app->input->get('Itemid') . '" />'
-			. '<input type="hidden" name="id" value="' . $this->app->input->get('id') . '" />';
+		$enctype   = '';
+		$id        = $this->uParams['theme'];
+		$index     = self::$count;
+		$form      = $this->getForm();
+		$form      = FrameworkHelper::setFrameworkClasses($form);
+		$formClass = $form->getAttribute('class', '');
+		$token     = $this->app->getUserState('plugins.content.jtf.' . $this->context);
+		$formName  = $id . $index;
+
+		$controlFields = array();
+		$controlFields[] = '<input type="hidden" name="option" value="' . $this->app->input->get('option') . '" />';
+		$controlFields[] = '<input type="hidden" name="formTask" value="' . $formName . '_sendmail" />';
+		$controlFields[] = '<input type="hidden" name="view" value="' . $this->app->input->get('view') . '" />';
+		$controlFields[] = '<input type="hidden" name="Itemid" value="' . $this->app->input->get('Itemid') . '" />';
+		$controlFields[] = '<input type="hidden" name="id" value="' . $this->app->input->get('id') . '" />';
+		$controlFields[] = '<input type="hidden" name="' . $token->$formName . '" value="1" />';
 
 		if ($form->setEnctype)
 		{
@@ -1118,12 +1132,12 @@ class PlgContentJtf extends CMSPlugin
 		}
 
 		$displayData = array(
-			'id'            => $id . (int) $index . '_form',
+			'id'            => $formName . '_form',
 			'fileClear'     => $this->params->get('file_clear'),
 			'form'          => $form,
 			'formClass'     => $formClass,
 			'enctype'       => $enctype,
-			'controlFields' => $controlFields,
+			'controlFields' => implode('', $controlFields),
 			'fillouttime'   => $this->uParams['fillouttime'],
 		);
 
