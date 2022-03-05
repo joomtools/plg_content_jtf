@@ -172,11 +172,6 @@ class PlgContentJtf extends CMSPlugin
 	{
 		parent::__construct($subject, $config);
 
-		if ($this->app->isClient('administrator'))
-		{
-			return null;
-		}
-
 		$this->debug = (boolean) $this->params->get('debug', 0);
 		$option      = $this->app->input->getCmd('option');
 		$isEdit      = $this->app->input->getCmd('layout') == 'edit';
