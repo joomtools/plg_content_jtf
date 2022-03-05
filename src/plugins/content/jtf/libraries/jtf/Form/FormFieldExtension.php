@@ -381,7 +381,7 @@ trait FormFieldExtension
 
 		if ($issetHint && !$isHintExcludedField)
 		{
-			$newHint[] = $hint;
+			$newHint[] = Text::_($hint);
 		}
 
 		if ($isHintExcludedField && $this->fieldmarkerplace == 'hint')
