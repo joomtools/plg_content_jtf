@@ -61,11 +61,13 @@ class Bs2
 
 	private function init()
 	{
-		$classes           = array();
-		
-		$classes['form'][] = 'form-validate';
+		$classes = array();
+
+		$classes['form'][]           = 'form-validate';
 		$classes['default'][]        = 'input';
 		$classes['gridgroup'][]      = 'control-group';
+		$classes['gridlabel'][]      = 'control-label';
+		$classes['gridfield'][]      = 'controls';
 		$classes['descriptionclass'] = array('help-block');
 
 		$classes['note'] = array(
@@ -136,12 +138,14 @@ class Bs2
 			$classes['radio']['class'][]      = 'inline';
 		}
 
+		/* Probably not needed
 		if ($orientation != 'inline')
 		{
 			$classes['gridgroup'][] = 'row';
-			$classes['gridlabel'][] = 'control-label row';
-			$classes['gridfield'][] = 'controls row';
+			$classes['gridlabel'][] = 'row';
+			$classes['gridfield'][] = 'row';
 		}
+		*/
 
 		$classes['fieldset']['class'] = array();
 
@@ -173,6 +177,8 @@ class Bs2
 		$css[] = '.jtf .control-label label{font-weight:bold;}';
 		$css[] = '.jtf .radio-group{padding-left:0;}';
 		$css[] = '.jtf .checkboxes-group input[type="checkbox"], .jtf .radio-group input[type="radio"]{margin-top:0;}';
+		$css[] = '.jtf .control-group.inline{margin-left:0;min-height:50px}';
+		$css[] = '.jtf .inline .marker{margin-bottom:-1%;}';
 
 
 		return implode('', $css);
