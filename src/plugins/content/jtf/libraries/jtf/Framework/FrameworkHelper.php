@@ -705,7 +705,6 @@ class FrameworkHelper
 		if ($fieldHiddenLabel || in_array($type, $this->hiddenLabelTypes, true))
 		{
 			$form->setFieldAttribute($fieldName, 'hiddenlabel', "true");
-			$classes['field']['labelclass'][] = 'jtfhp';
 		}
 
 		$this->gridGroup['field'] = !empty($classes['field']['gridgroup'])
