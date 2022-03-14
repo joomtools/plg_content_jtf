@@ -214,7 +214,7 @@ class Uikit
 		{
 			case 'horizontal':
 				return array(
-					'uk-width-1-4',
+					// 'uk-width-1-4',
 				);
 
 			case 'stacked':
@@ -233,7 +233,7 @@ class Uikit
 		{
 			case 'horizontal':
 				return array(
-					'uk-width-3-4',
+					// 'uk-width-3-4',
 				);
 
 			case 'stacked':
