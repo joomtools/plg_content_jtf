@@ -15,6 +15,7 @@ extract($displayData);
 /**
  * Layout variables
  * ---------------------
+ *
  * @var   JForm   $form
  * @var   mixed   $value
  * @var   string  $type
@@ -25,38 +26,29 @@ extract($displayData);
  * @var   string  $type
  */
 
-if (!empty($value))
-{
-	$displayData['value'] = array_values($value);
+if (!empty($value)) {
+    echo "\n====\n";
 
-	echo "\n====\n";
+    if ($fieldMultiple) {
+        $displayData['value'] = array_values($value);
+        $counter              = count($value) - 1;
 
-	if ($fieldMultiple)
-	{
-		$counter = count($value) - 1;
+        for ($i = 0; $i <= $counter; $i++) {
+            $displayData['i'] = $i;
 
-		for ($i = 0; $i <= $counter; $i++)
-		{
-			$displayData['i'] = $i;
+            echo $this->sublayout('fields', $displayData);
 
-			echo $this->sublayout('fields', $displayData);
+            if ($i < $counter) {
+                echo "\n";
+            }
+        }
+    } else {
+        $displayData['i'] = '';
 
-			if ($i < $counter)
-			{
-				echo "\n";
-			}
-		}
-	}
-	else
-	{
-		$displayData['i'] = '';
+        echo $this->sublayout('fields', $displayData);
+    }
 
-		echo $this->sublayout('fields', $displayData);
-	}
-
-	echo "====\n";
-}
-else
-{
-	echo "--\n";
+    echo "====\n";
+} else {
+    echo "--\n";
 }
