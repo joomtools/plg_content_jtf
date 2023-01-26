@@ -12,6 +12,11 @@ defined('JPATH_PLATFORM') or die;
 
 JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
 
+if (version_compare(JVERSION, 4, 'lt'))
+{
+	JFormHelper::loadFieldClass('list');
+}
+
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 

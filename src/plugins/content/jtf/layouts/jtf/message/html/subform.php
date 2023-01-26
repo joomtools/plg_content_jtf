@@ -1,11 +1,11 @@
 <?php
 /**
- * @package      Joomla.Plugin
- * @subpackage   Content.Jtf
+ * @package          Joomla.Plugin
+ * @subpackage       Content.Jtf
  *
- * @author       Guido De Gobbis <support@joomtools.de>
+ * @author           Guido De Gobbis <support@joomtools.de>
  * @copyright    (c) 2021 JoomTools.de - All rights reserved.
- * @license      GNU General Public License version 3 or later
+ * @license          GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
@@ -15,6 +15,7 @@ extract($displayData);
 /**
  * Layout variables
  * ---------------------
+ *
  * @var   JForm   $form
  * @var   mixed   $value
  * @var   string  $type
@@ -24,43 +25,35 @@ extract($displayData);
  * @var   bool    $fieldMultiple
  */
 
-if (!empty($value))
-{
-	$displayData['value'] = array_values($value);
-	?>
+if (!empty($value)) {
+    ?>
 	<table cellpadding="2" border="1">
 		<tbody>
-		<?php if ($fieldMultiple)
-		{
-			$counter = count($value) - 1;
+        <?php if ($fieldMultiple) {
+            $displayData['value'] = array_values($value);
+            $counter              = count($value) - 1;
 
-			for ($i = 0; $i <= $counter; $i++)
-			{
-				$displayData['i'] = $i;
+            for ($i = 0; $i <= $counter; $i++) {
+                $displayData['i'] = $i;
 
-				echo $this->sublayout('fields', $displayData);
+                echo $this->sublayout('fields', $displayData);
 
-				if ($i < $counter)
-				{
-					?>
+                if ($i < $counter) {
+                    ?>
 					<tr>
 						<td colspan="2">&nbsp;</td>
 					</tr>
-					<?php
-				}
-			}
-		}
-		else
-		{
-			$displayData['i'] = '';
+                    <?php
+                }
+            }
+        } else {
+            $displayData['i'] = '';
 
-			echo $this->sublayout('fields', $displayData);
-		} ?>
+            echo $this->sublayout('fields', $displayData);
+        } ?>
 		</tbody>
 	</table>
-	<?php
-}
-else
-{
-	echo '--';
+    <?php
+} else {
+    echo '--';
 }
