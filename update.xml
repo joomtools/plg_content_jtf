@@ -7,9 +7,9 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>3.0.0-rc54</version>
+        <version>3.0.0-rc55</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/3.0.0-rc54/plg_content_jtf-3.0.0-rc54.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/3.0.0-rc55/plg_content_jtf-3.0.0-rc55.zip</downloadurl>
         </downloads>
         <tags>
             <tag>stable</tag>
@@ -25,9 +25,9 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>4.0.0-rc10</version>
+        <version>4.0.0-rc11</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc10/plg_content_jtf-4.0.0-rc10.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc11/plg_content_jtf-4.0.0-rc11.zip</downloadurl>
         </downloads>
         <tags>
             <tag>alpha</tag>
@@ -35,9 +35,9 @@
             <tag>rc</tag>
             <tag>stable</tag>
         </tags>
-        <sha256>6aef213e78cec9a8430ca4bd7a1bbf6b32d9bec55becb34d061e2ee584ec3574</sha256>
-        <sha384>4f86af0d8924e7aa6238fb5a30d3768491e212bd55b3db7d0edb1ba2d911076e63ea0c3e60593ad853d5452f79732201</sha384>
-        <sha512>25289cfa5db0551677bc407eca88ba3903190ced5277bc68880c500bcdaf33ac18bfe0420f08bc29db772caa984ada39b44854bf44fd507fcfa7a39dce9324d0</sha512>
+        <sha256>8042335486460388440d20201449b44d2bc0cb96223c9fcd73e73ec8015a5a3b</sha256>
+        <sha384>28db0438c6a4d086bcf76607df990a6a6ed705ce150616a682b686f2b31d5411c1105d612002d5bbf4d33f060c78226a</sha384>
+        <sha512>1e49cc9f81e05291810430dcacd8ff10a56be9ac4024f8f19531fd1838e1ecf9fbfdb7563b46e51a4cf7fb1e9e0d1bd1705c63e6ea1936c70c06bff7a384ee1e</sha512>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="3.(9|10)"/>
         <php_minimum>5.6</php_minimum>
@@ -49,9 +49,9 @@
         <type>plugin</type>
         <folder>content</folder>
         <client>site</client>
-        <version>4.0.0-rc10</version>
+        <version>4.0.0-rc11</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc10/plg_content_jtf-4.0.0-rc10.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/4.0.0-rc11/plg_content_jtf-4.0.0-rc11.zip</downloadurl>
         </downloads>
         <tags>
             <tag>alpha</tag>
@@ -59,9 +59,9 @@
             <tag>rc</tag>
             <tag>stable</tag>
         </tags>
-        <sha256>6aef213e78cec9a8430ca4bd7a1bbf6b32d9bec55becb34d061e2ee584ec3574</sha256>
-        <sha384>4f86af0d8924e7aa6238fb5a30d3768491e212bd55b3db7d0edb1ba2d911076e63ea0c3e60593ad853d5452f79732201</sha384>
-        <sha512>25289cfa5db0551677bc407eca88ba3903190ced5277bc68880c500bcdaf33ac18bfe0420f08bc29db772caa984ada39b44854bf44fd507fcfa7a39dce9324d0</sha512>
+        <sha256>8042335486460388440d20201449b44d2bc0cb96223c9fcd73e73ec8015a5a3b</sha256>
+        <sha384>28db0438c6a4d086bcf76607df990a6a6ed705ce150616a682b686f2b31d5411c1105d612002d5bbf4d33f060c78226a</sha384>
+        <sha512>1e49cc9f81e05291810430dcacd8ff10a56be9ac4024f8f19531fd1838e1ecf9fbfdb7563b46e51a4cf7fb1e9e0d1bd1705c63e6ea1936c70c06bff7a384ee1e</sha512>
         <maintainer>Guido De Gobbis</maintainer>
         <targetplatform name="joomla" version="4.[1234567890]"/>
         <php_minimum>7.2</php_minimum>
