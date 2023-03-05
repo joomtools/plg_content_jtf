@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -25,7 +25,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Single checkbox field.
  * This is a boolean field with null for false and the specified option for true
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  */
 class CheckboxField extends \JFormFieldCheckbox
 {
@@ -34,7 +34,7 @@ class CheckboxField extends \JFormFieldCheckbox
 	 *
 	 * @var   string
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	protected $layout = 'joomla.form.field.checkbox';
 
@@ -48,7 +48,7 @@ class CheckboxField extends \JFormFieldCheckbox
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   4.0.0
 	 */
 	protected function getInput()
 	{
@@ -65,7 +65,7 @@ class CheckboxField extends \JFormFieldCheckbox
 	 *
 	 * @return  array
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   4.0.0
 	 */
 	protected function getLayoutData()
 	{

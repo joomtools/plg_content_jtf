@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -37,184 +37,180 @@ defined('_JEXEC') or die('Restricted access');
  *                   ),
  *              );
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  **/
 class Uikit3
 {
-	public static $name = 'UIKit v3 (Yootheme Pro)';
+    public static $name = 'UIKit v3 (Yootheme Pro)';
 
-	private $_classes;
+    private $_classes;
 
-	private $_orientation;
+    private $_orientation;
 
-	public function __construct($orientation = null)
-	{
-		$this->init();
-		$this->setOrientation($orientation);
-	}
+    public function __construct($orientation = null)
+    {
+        $this->init();
+        $this->setOrientation($orientation);
+    }
 
-	public function setOrientation($orientation)
-	{
-		$this->_orientation = $orientation;
-	}
+    public function setOrientation($orientation)
+    {
+        $this->_orientation = $orientation;
+    }
 
-	private function init()
-	{
-		$classes           = array();
+    private function init()
+    {
+        $classes = array();
 
-		$classes['form']             = array(
-			'uk-form',
-			'form-validate',
-			);
+        $classes['form'] = array(
+            'uk-form',
+            'form-validate',
+        );
 
-		$classes['legend'][]         = 'uk-legend';
-		$classes['default'][]        = 'uk-input';
+        $classes['legend'][]  = 'uk-legend';
+        $classes['default'][] = 'uk-input';
 
-		$classes['gridgroup']        = array(
-			'uk-form-row',
-			'uk-margin',
-			);
+        $classes['gridgroup'] = array(
+            'uk-form-row',
+            'uk-margin',
+        );
 
-		$classes['descriptionclass'] = array('uk-text-light');
+        $classes['descriptionclass'] = array('uk-text-light');
 
-		$classes['fieldset'] = array(
-			'class'            => array(
-				'uk-fieldset',
-				'uk-margin-bottom',
-			),
-			'labelclass'       => array('uk-legend'),
-			'descriptionclass' => array('uk-fieldset-desc'),
-		);
+        $classes['fieldset'] = array(
+            'class'            => array(
+                'uk-fieldset',
+                'uk-margin-bottom',
+            ),
+            'labelclass'       => array('uk-legend'),
+            'descriptionclass' => array('uk-fieldset-desc'),
+        );
 
-		$classes['calendar'] = array(
-//			'class'       => array('uk-input'),
-			'buttonclass' => array(
-				'uk-form-icon',
-				'uk-form-icon-flip',
-				'uk-button-default',
-				),
-			'buttonicon'  => array('calendar'),
-		);
+        $classes['calendar'] = array(
+            //			'class'       => array('uk-input'),
+            'buttonclass' => array(
+                'uk-form-icon',
+                'uk-form-icon-flip',
+                'uk-button-default',
+            ),
+            'buttonicon'  => array('calendar'),
+        );
 
-		$classes['checkboxes'] = array(
-			'inline'    => array(
-				'class' => array('uk-display-inline'),
-			),
-			'options' => array(
-				'class' => array('uk-checkbox'),
-			),
-		);
+        $classes['checkboxes'] = array(
+            'inline'  => array(
+                'class' => array('uk-display-inline'),
+            ),
+            'options' => array(
+                'class' => array('uk-checkbox'),
+            ),
+        );
 
-		$classes['radio'] = array(
-			'inline'    => array(
-				'class' => array('uk-display-inline'),
-			),
-			'options' => array(
-				'class' => array('uk-radio'),
-			),
-		);
+        $classes['radio'] = array(
+            'inline'  => array(
+                'class' => array('uk-display-inline'),
+            ),
+            'options' => array(
+                'class' => array('uk-radio'),
+            ),
+        );
 
-		$classes['textarea'] = array(
-			'class' => array('uk-textarea'),
-		);
+        $classes['textarea'] = array(
+            'class' => array('uk-textarea'),
+        );
 
-		$classes['list'] = array(
-			'class' => array('uk-select'),
-		);
+        $classes['list'] = array(
+            'class' => array('uk-select'),
+        );
 
-		$classes['category'] = array(
-			'class' => array('uk-select'),
-		);
+        $classes['category'] = array(
+            'class' => array('uk-select'),
+        );
 
-		$classes['file'] = array(
-			'uploadicon'  => array('upload;ratio:2'),
-			'buttonclass' => array(
-				'uk-button',
-				'uk-button-success',
-				),
-			'buttonicon'  => array('copy'),
-		);
+        $classes['file'] = array(
+            'uploadicon'  => array('upload;ratio:2'),
+            'buttonclass' => array(
+                'uk-button',
+                'uk-button-success',
+            ),
+            'buttonicon'  => array('copy'),
+        );
 
-		$classes['submit'] = array(
-			'gridfield' => array(
-				'uk-margin-remove-left',
-			),
-			'buttonclass' => array(
-				'uk-button',
-				'uk-button-default',
-				),
-		);
+        $classes['submit'] = array(
+            'gridfield'   => array(
+                'uk-margin-remove-left',
+            ),
+            'buttonclass' => array(
+                'uk-button',
+                'uk-button-default',
+            ),
+        );
 
-		$this->_classes = $classes;
-	}
+        $this->_classes = $classes;
+    }
 
-	public function getClasses($type)
-	{
-		$classes     = $this->_classes;
-		$orientation = $this->_orientation;
+    public function getClasses($type)
+    {
+        $classes     = $this->_classes;
+        $orientation = $this->_orientation;
 
-		if ($orientation != 'inline')
-		{
-			$classes['gridlabel'][] = 'uk-form-label';
-			$classes['gridfield'][] = 'uk-form-controls';
-			$classes['gridgroup'][] = 'uk-width-1-1';
-		}
+        if ($orientation != 'inline') {
+            $classes['gridlabel'][] = 'uk-form-label';
+            $classes['gridfield'][] = 'uk-form-controls';
+            $classes['gridgroup'][] = 'uk-width-1-1';
+        }
 
-		// $classes['fieldset']['class'] = array();
+        // $classes['fieldset']['class'] = array();
 
-		if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses()))
-		{
-			$classes['fieldset']['class'][] = $orientationFieldsetClasses;
-		}
+        if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses())) {
+            $classes['fieldset']['class'][] = $orientationFieldsetClasses;
+        }
 
-		if (empty($classes[$type]))
-		{
-			return array();
-		}
+        if (empty($classes[$type])) {
+            return array();
+        }
 
-		return $classes[$type];
-	}
+        return $classes[$type];
+    }
 
-	public function getCss()
-	{
-		$css = array();
-		$css[] = '.jtf .field-calendar input {margin-right: 40px;padding-right: 40px;}';
-		$css[] = '.jtf .uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
-		$css[] = '.jtf .uk-form-stacked .uk-form-controls {width: 100% !important; margin-left: 0 !important;}';
-		$css[] = '.jtf .checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
-		$css[] = '.jtf .checkbox, .radio {padding-left: 0 !important;}';
-		$css[] = '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}';
-		$css[] = '.jtf .minicolors-theme-bootstrap .hex{height:auto;}';
+    public function getCss()
+    {
+        $css   = array();
+        $css[] = '.jtf .field-calendar input {margin-right: 40px;padding-right: 40px;}';
+        $css[] = '.jtf .uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
+        $css[] = '.jtf .uk-form-stacked .uk-form-controls {width: 100% !important; margin-left: 0 !important;}';
+        $css[] = '.jtf .checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
+        $css[] = '.jtf .checkbox, .radio {padding-left: 0 !important;}';
+        $css[] = '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}';
+        $css[] = '.jtf .minicolors-theme-bootstrap .hex{height:auto;}';
 
-		return implode('', $css);
-	}
+        return implode('', $css);
+    }
 
-	public function getOrientationFieldsetClasses()
-	{
-		switch ($this->_orientation)
-		{
-			case 'horizontal':
-				return 'uk-form-horizontal';
+    public function getOrientationFieldsetClasses()
+    {
+        switch ($this->_orientation) {
+            case 'horizontal':
+                return 'uk-form-horizontal';
 
-			case 'stacked':
-				return 'uk-form-stacked';
-		}
+            case 'stacked':
+                return 'uk-form-stacked';
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public function getOrientationGridGroupClasses()
-	{
-		return array();
-	}
+    public function getOrientationGridGroupClasses()
+    {
+        return array();
+    }
 
-	public function getOrientationGridLabelClasses()
-	{
-		return array();
-	}
+    public function getOrientationGridLabelClasses()
+    {
+        return array();
+    }
 
-	public function getOrientationGridFieldClasses()
-	{
-		return array();
-	}
+    public function getOrientationGridFieldClasses()
+    {
+        return array();
+    }
 }

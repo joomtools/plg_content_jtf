@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -25,7 +25,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Displays options as a list of checkboxes.
  * Multiselect may be forced to be true.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  */
 class CheckboxesField extends \JFormFieldCheckboxes
 {

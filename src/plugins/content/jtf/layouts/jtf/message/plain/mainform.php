@@ -4,18 +4,22 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
+use Jtf\Form\Form;
 
 extract($displayData);
 
 /**
  * Layout variables
  * ---------------------
- * @var   JForm   $form
+ *
+ * @var   Form    $form
  * @var   mixed   $value
  * @var   string  $type
  * @var   string  $fieldName
@@ -24,32 +28,25 @@ extract($displayData);
  * @var   bool    $fieldMultiple
  */
 
-if (is_array($value))
-{
-	foreach ($value as $_key => $_value)
-	{
-		if ($type == 'file')
-		{
-			$values[] = $_key . ': ' . $_value . ' *';
-		}
-		else
-		{
-			$values[] = strip_tags(trim(JText::_($_value)));
-		}
-	}
+if (is_array($value)) {
+    foreach ($value as $_key => $_value) {
+        if ($type == 'file') {
+            $values[] = $_key . ': ' . $_value . ' *';
+        } else {
+            $values[] = strip_tags(trim(Text::_($_value)));
+        }
+    }
 
-	if (empty($values))
-	{
-		$values = array();
-	}
+    if (empty($values)) {
+        $values = array();
+    }
 
-	$value = implode(", ", $values);
-	unset($values);
-
+    $value = implode(", ", $values);
+    unset($values);
 }
 
 echo !empty($value)
-	? strip_tags(JText::_($value))
-	: '--';
+    ? strip_tags(Text::_($value))
+    : '--';
 echo "\n";
 

@@ -4,13 +4,14 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Jtf\Form\Form;
 use Jtf\Framework\FrameworkHelper;
 
 extract($displayData);
@@ -18,60 +19,55 @@ extract($displayData);
 /**
  * Make thing clear
  *
- * @var   JForm  $tmpl              The Empty form for template
- * @var   array  $forms             Array of JForm instances for render the rows
- * @var   bool   $multiple          The multiple state for the form field
- * @var   int    $min               Count of minimum repeating in multiple mode
- * @var   int    $max               Count of maximum repeating in multiple mode
- * @var   string $fieldname         The field name
- * @var   string $control           The forms control
- * @var   string $label             The field label
- * @var   string $description       The field description
- * @var   array  $buttons           Array of the buttons that will be rendered
- * @var   int    $unique_subform_id Whether group the subform fields by it`s fieldset
+ * @var   Form    $tmpl               The Empty form for template
+ * @var   array   $forms              Array of JForm instances for render the rows
+ * @var   bool    $multiple           The multiple state for the form field
+ * @var   int     $min                Count of minimum repeating in multiple mode
+ * @var   int     $max                Count of maximum repeating in multiple mode
+ * @var   string  $fieldname          The field name
+ * @var   string  $control            The forms control
+ * @var   string  $label              The field label
+ * @var   string  $description        The field description
+ * @var   array   $buttons            Array of the buttons that will be rendered
+ * @var   int     $unique_subform_id  Whether group the subform fields by it`s fieldset
  */
 
 // Add script
-if ($multiple)
-{
-	if (version_compare(JVERSION, 4, 'lt'))
-	{
-		JHtml::_('jquery.ui', array('core', 'sortable'));
-		JHtml::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
-	}
-	else
-	{
-		Factory::getDocument()->getWebAssetManager()
-			->useScript('webcomponent.field-subform');
-	}
+if ($multiple) {
+    if (version_compare(JVERSION, 4, 'lt')) {
+        JHtml::_('jquery.ui', array('core', 'sortable'));
+        JHtml::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
+    } else {
+        Factory::getDocument()->getWebAssetManager()
+            ->useScript('webcomponent.field-subform');
+    }
 }
 
-foreach ($forms as $k => $form)
-{
-	$form = FrameworkHelper::setFrameworkClasses($form, true);
-	echo $this->sublayout('section',
-		array(
-			'form'              => $form,
-			'basegroup'         => $fieldname,
-			'group'             => $fieldname . $k,
-			'buttons'           => $buttons,
-			'unique_subform_id' => $unique_subform_id,
-		)
-	);
+foreach ($forms as $k => $form) {
+    $form = FrameworkHelper::setFrameworkClasses($form, true);
+    echo $this->sublayout('section',
+                          array(
+                              'form'              => $form,
+                              'basegroup'         => $fieldname,
+                              'group'             => $fieldname . $k,
+                              'buttons'           => $buttons,
+                              'unique_subform_id' => $unique_subform_id,
+                          )
+    );
 } ?>
 
 <?php if ($multiple) : ?>
 	<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section hidden">
-		<?php $tmpl = FrameworkHelper::setFrameworkClasses($tmpl, true);
-		echo $this->sublayout('section',
-			array(
-				'form'              => $tmpl,
-				'basegroup'         => $fieldname,
-				'group'             => $fieldname . 'X',
-				'buttons'           => $buttons,
-				'unique_subform_id' => $unique_subform_id,
-			)
-		); ?>
+        <?php $tmpl = FrameworkHelper::setFrameworkClasses($tmpl, true);
+        echo $this->sublayout('section',
+                              array(
+                                  'form'              => $tmpl,
+                                  'basegroup'         => $fieldname,
+                                  'group'             => $fieldname . 'X',
+                                  'buttons'           => $buttons,
+                                  'unique_subform_id' => $unique_subform_id,
+                              )
+        ); ?>
 	</template>
 <?php endif; ?>
 <?php if (version_compare(JVERSION, 4, 'lt')) : ?>
@@ -79,6 +75,14 @@ foreach ($forms as $k => $form)
 		(function ($) {
 			$(document).on('subform-row-add', function (event, row) {
 				document.formvalidator = new JFormValidator();
+
+				var el = row;
+				var selector = '[data-showon]';
+				while ((el = el.parentNode) && el !== document) {
+					if (!selector || el.matches(selector)) {
+						jtfInitShowon(el);
+					}
+				}
 
 				if (!!row.querySelector('.uploader-wrapper')) {
 					var jtfUploadFile = window.jtfUploadFile || {};
@@ -98,6 +102,14 @@ foreach ($forms as $k => $form)
 			document.addEventListener('subform-row-add', function (event) {
 				var row = event.target;
 				document.formvalidator = new JFormValidator();
+
+				var el = row;
+				var selector = '[data-showon]';
+				while ((el = el.parentNode) && el !== document) {
+					if (!selector || el.matches(selector)) {
+						jtfInitShowon(el);
+					}
+				}
 
 				if (!!row.querySelector('.uploader-wrapper')) {
 					var jtfUploadFile = window.jtfUploadFile || {};

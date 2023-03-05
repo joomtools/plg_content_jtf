@@ -1,3 +1,11 @@
+/**
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
+ *
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    2023 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
+ */
 !function (i) {
 	if ("object" == typeof exports && "undefined" != typeof module) module.exports = i(); else if ("function" == typeof define && define.amd) define([], i); else {
 		("undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : this).mimelite = i()

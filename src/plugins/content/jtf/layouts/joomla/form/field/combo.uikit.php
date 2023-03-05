@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -17,6 +17,7 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
+ *
  * @var   string   $autocomplete    Autocomplete attribute for the field.
  * @var   boolean  $autofocus       Is autofocus enabled?
  * @var   string   $class           Classes for the input.
@@ -63,7 +64,7 @@ $attr .= !empty($onchange) ? ' onchange="' . $onchange . '"' : '';
 		   name="<?php echo $name; ?>"
 		   id="<?php echo $id; ?>"
 		   value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-		<?php echo $attr; ?>
+        <?php echo $attr; ?>
 		   autocomplete="off"/>
 	<div class="uk-button-group uk-display-inline-block">
 		<button type="button" class="uk-button">
@@ -71,9 +72,9 @@ $attr .= !empty($onchange) ? ' onchange="' . $onchange . '"' : '';
 		</button>
 		<div class="uk-dropdown uk-dropdown-bottom">
 			<ul class="uk-nav uk-nav-dropdown uk-display-inline-block">
-				<?php foreach ($options as $option) : ?>
+                <?php foreach ($options as $option) : ?>
 					<li><a href="#"><?php echo $option->text; ?></a></li>
-				<?php endforeach; ?>
+                <?php endforeach; ?>
 			</ul>
 		</div>
 	</div>

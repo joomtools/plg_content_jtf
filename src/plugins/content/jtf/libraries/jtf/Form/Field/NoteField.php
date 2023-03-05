@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -15,81 +15,78 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Form\FormHelper;
 use Jtf\Form\FormFieldExtension;
 
-if (version_compare(JVERSION, '4', 'lt'))
-{
-	FormHelper::loadFieldClass('note');
+if (version_compare(JVERSION, '4', 'lt')) {
+    FormHelper::loadFieldClass('note');
 }
 
 /**
  * Form Field class for the Joomla Platform.
  * Supports a one line text field.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  */
 class NoteField extends \JFormFieldNote
 {
-	/**
-	 * Name of the layout being used to render the field
-	 *
-	 * @var   string
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected $layout = 'joomla.form.field.note';
+    /**
+     * Name of the layout being used to render the field
+     *
+     * @var   string
+     *
+     * @since  4.0.0
+     */
+    protected $layout = 'joomla.form.field.note';
 
-	use FormFieldExtension
-	{
-		getLayoutData as traitGetLayoutData;
-	}
+    use FormFieldExtension {
+        getLayoutData as traitGetLayoutData;
+    }
 
-	/**
-	 * Method to get the field label markup.
-	 *
-	 * @return  string  The field label markup.
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected function getLabel()
-	{
-		return '';
-	}
+    /**
+     * Method to get the field label markup.
+     *
+     * @return  string  The field label markup.
+     *
+     * @since  4.0.0
+     */
+    protected function getLabel()
+    {
+        return '';
+    }
 
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected function getInput()
-	{
-		return $this->getRenderer($this->layout)->render($this->getLayoutData());
-	}
+    /**
+     * Method to get the field input markup.
+     *
+     * @return  string  The field input markup.
+     *
+     * @since  4.0.0
+     */
+    protected function getInput()
+    {
+        return $this->getRenderer($this->layout)->render($this->getLayoutData());
+    }
 
-	/**
-	 * Method to get the data to be passed to the layout for rendering.
-	 *
-	 * @return  array
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected function getLayoutData()
-	{
-		$data = $this->traitGetLayoutData();
+    /**
+     * Method to get the data to be passed to the layout for rendering.
+     *
+     * @return  array
+     *
+     * @since  4.0.0
+     */
+    protected function getLayoutData()
+    {
+        $data = $this->traitGetLayoutData();
 
-		if (empty($data['label']) && empty($data['description']))
-		{
-			return array();
-		}
+        if (empty($data['label']) && empty($data['description'])) {
+            return array();
+        }
 
-		$heading = $this->element['heading'] ? (string) $this->element['heading'] : 'h4';
-		$close   = (string) $this->element['close'];
+        $heading = $this->element['heading'] ? (string) $this->element['heading'] : 'h4';
+        $close   = (string) $this->element['close'];
 
-		$extraData = array(
-			'heading' => $heading,
-			'close'   => $close,
-		);
+        $extraData = array(
+            'heading' => $heading,
+            'close'   => $close,
+        );
 
-		return array_merge($data, $extraData);
-	}
+        return array_merge($data, $extraData);
+    }
 }

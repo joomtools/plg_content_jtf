@@ -1,14 +1,16 @@
 <?php
 /**
- * @package          Joomla.Plugin
- * @subpackage       Content.Jtf
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
  *
- * @author           Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
- * @license          GNU General Public License version 3 or later
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    2023 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
+
+use Jtf\Form\Form;
 
 extract($displayData);
 
@@ -16,13 +18,13 @@ extract($displayData);
  * Layout variables
  * ---------------------
  *
- * @var   JForm  $form
- * @var   mixed  $value
- * @var   string $type
- * @var   string $fieldName
- * @var   string $fileClear
- * @var   string $fileTimeOut
- * @var   bool   $fieldMultiple
+ * @var   Form    $form
+ * @var   mixed   $value
+ * @var   string  $type
+ * @var   string  $fieldName
+ * @var   string  $fileClear
+ * @var   string  $fileTimeOut
+ * @var   bool    $fieldMultiple
  */
 
 if (!empty($value)) {

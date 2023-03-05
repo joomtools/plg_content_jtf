@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -19,7 +19,7 @@ use Jtf\Form\FormFieldExtension;
 /**
  * Captcha field.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  */
 class CaptchaField extends \Joomla\CMS\Form\Field\CaptchaField
 {
@@ -39,7 +39,7 @@ class CaptchaField extends \Joomla\CMS\Form\Field\CaptchaField
 	 * @return  boolean     True on success.
 	 * @throws  \Exception
 
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null)
 	{

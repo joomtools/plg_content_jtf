@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -18,6 +18,7 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
+ *
  * @var   string   $autocomplete    Autocomplete attribute for the field.
  * @var   boolean  $autofocus       Is autofocus enabled?
  * @var   string   $class           Classes for the input.
@@ -47,9 +48,8 @@ extract($displayData);
  */
 
 // If there are no options don't render anything
-if (empty($options))
-{
-	return '';
+if (empty($options)) {
+    return '';
 }
 
 // Load the css files
@@ -83,24 +83,23 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 ?>
 <fieldset <?php echo $fieldsetAttributes; ?>>
 	<legend class="jtfhp">
-		<?php echo $label; ?>
+        <?php echo $label; ?>
 	</legend>
-	<?php foreach ($options as $i => $option) : ?>
-		<?php
-		// False value casting as string returns an empty string so assign it 0
-		if (empty($value) && $option->value == '0')
-		{
-			$value = '0';
-		}
+    <?php foreach ($options as $i => $option) : ?>
+        <?php
+        // False value casting as string returns an empty string so assign it 0
+        if (empty($value) && $option->value == '0') {
+            $value = '0';
+        }
 
-		// Initialize some option attributes.
-		$optionValue = (string) $option->value;
-		$optionId    = $id . $i;
-		$attributes  = $optionValue == $value ? 'checked class="active"' : '';
-		$attributes  .= $optionValue != $value && $readonly || $disabled ? ' disabled' : '';
-		?>
-		<?php echo sprintf($input, $optionId, $name, $this->escape($optionValue), $attributes); ?>
-		<?php echo '<label for="' . $optionId . '">' . $option->text . '</label>'; ?>
-	<?php endforeach; ?>
+        // Initialize some option attributes.
+        $optionValue = (string) $option->value;
+        $optionId    = $id . $i;
+        $attributes  = $optionValue == $value ? 'checked class="active"' : '';
+        $attributes  .= $optionValue != $value && $readonly || $disabled ? ' disabled' : '';
+        ?>
+        <?php echo sprintf($input, $optionId, $name, $this->escape($optionValue), $attributes); ?>
+        <?php echo '<label for="' . $optionId . '">' . $option->text . '</label>'; ?>
+    <?php endforeach; ?>
 	<span class="toggle-outside"><span class="toggle-inside"></span></span>
 </fieldset>

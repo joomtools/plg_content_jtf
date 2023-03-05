@@ -4,16 +4,16 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
 
-/* @var array $displayData */
+/* @var   array  $displayData */
 
 $layout = new FileLayout('joomla.form.field.subform.repeatable_tmpl');
 $layout->setSuffixes($displayData['tmpl']->framework);
@@ -30,7 +30,7 @@ $layout->setDebug($displayData['tmpl']->renderDebug);
 			 data-minimum="<?php echo $displayData['min']; ?>"
 			 data-maximum="<?php echo $displayData['max']; ?>">
 
-			<?php if (!empty($displayData['buttons']['add'])) : ?>
+            <?php if (!empty($displayData['buttons']['add'])) : ?>
 				<div class="btn-toolbar" role="toolbar">
 					<div class="btn-group btn-group-sm">
 						<a class="btn btn-mini button btn-success group-add-<?php echo $displayData['unique_subform_id']; ?>"
@@ -39,9 +39,9 @@ $layout->setDebug($displayData['tmpl']->renderDebug);
 						</a>
 					</div>
 				</div>
-			<?php endif; ?>
+            <?php endif; ?>
 
-			<?php echo $layout->render( $displayData); ?>
+            <?php echo $layout->render($displayData); ?>
 		</div>
 	</div>
 </div>

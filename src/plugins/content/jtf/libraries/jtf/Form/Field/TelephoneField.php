@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -18,9 +18,9 @@ use Jtf\Form\FormFieldExtension;
  * Form Field class for the Joomla Platform.
  * Supports a text field telephone numbers.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  */
 class TelephoneField extends TelField
 {
-	use FormFieldExtension;
+    use FormFieldExtension;
 }

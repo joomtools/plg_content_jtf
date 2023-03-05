@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -37,186 +37,179 @@ defined('_JEXEC') or die('Restricted access');
  *                   ),
  *              );
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  **/
 class Bs5
 {
-	public static $name = 'Bootstrap v5 (Joomla 4 core)';
+    public static $name = 'Bootstrap v5 (Joomla 4 core)';
 
-	private $_classes;
+    private $_classes;
 
-	private $_orientation;
+    private $_orientation;
 
-	public function __construct($orientation = null)
-	{
-		$this->init();
-		$this->setOrientation($orientation);
-	}
+    public function __construct($orientation = null)
+    {
+        $this->init();
+        $this->setOrientation($orientation);
+    }
 
-	public function setOrientation($orientation)
-	{
-		$this->_orientation = $orientation;
-	}
+    public function setOrientation($orientation)
+    {
+        $this->_orientation = $orientation;
+    }
 
-	private function init()
-	{
-		$classes = array();
+    private function init()
+    {
+        $classes = array();
 
-		$classes['form'][]           = 'form-validate';
-		$classes['default'][]        = 'form-control';
-		$classes['gridgroup'][]      = 'form-group';
-		$classes['gridlabel'][]      = 'col-form-label';
-		$classes['descriptionclass'] = array(
-			'form-text',
-			'text-muted',
-		);
+        $classes['form'][]           = 'form-validate';
+        $classes['default'][]        = 'form-control';
+        $classes['gridgroup'][]      = 'form-group';
+        $classes['gridlabel'][]      = 'col-form-label';
+        $classes['descriptionclass'] = array(
+            'form-text',
+            'text-muted',
+        );
 
-		$classes['note'] = array(
-			'buttonclass' => array('close'),
-			'buttonicon'  => array('&times;'),
-		);
+        $classes['note'] = array(
+            'buttonclass' => array('close'),
+            'buttonicon'  => array('&times;'),
+        );
 
-		$classes['calendar'] = array(
-			'buttonclass' => array(
-				'btn',
-				'btn-primary',
-			),
-			'buttonicon'  => array('icon-calendar'),
-		);
+        $classes['calendar'] = array(
+            'buttonclass' => array(
+                'btn',
+                'btn-primary',
+            ),
+            'buttonicon'  => array('icon-calendar'),
+        );
 
-		$classes['list'] = array(
-			'class'   => array('custom-select'),
-		);
+        $classes['list'] = array(
+            'class' => array('custom-select'),
+        );
 
-		$classes['checkboxes'] = array(
-			'class'   => array('form-check'),
-			'inline' => array(
-				'class'      => array('form-check-inline'),
-			),
-			'options' => array(
-				'class'      => array('form-check-input'),
-				'labelclass' => array('form-check-label'),
-			),
-		);
+        $classes['checkboxes'] = array(
+            'class'   => array('form-check'),
+            'inline'  => array(
+                'class' => array('form-check-inline'),
+            ),
+            'options' => array(
+                'class'      => array('form-check-input'),
+                'labelclass' => array('form-check-label'),
+            ),
+        );
 
-		$classes['radio'] = array(
-			'class'   => array('form-check'),
-			'inline' => array(
-				'class'      => array('form-check-inline'),
-			),
-			'options' => array(
-				'class'      => array('form-check-input'),
-				'labelclass' => array('form-check-label'),
-			),
-		);
+        $classes['radio'] = array(
+            'class'   => array('form-check'),
+            'inline'  => array(
+                'class' => array('form-check-inline'),
+            ),
+            'options' => array(
+                'class'      => array('form-check-input'),
+                'labelclass' => array('form-check-label'),
+            ),
+        );
 
-		$classes['textarea'] = array(
-			'class' => array('form-control'),
-		);
+        $classes['textarea'] = array(
+            'class' => array('form-control'),
+        );
 
-		$classes['file'] = array(
-			'class'       => array('form-control-file'),
-			'uploadicon'  => array('icon-upload'),
-			'buttonclass' => array('btn btn-success'),
-			'buttonicon'  => array('icon-copy'),
-		);
+        $classes['file'] = array(
+            'class'       => array('form-control-file'),
+            'uploadicon'  => array('icon-upload'),
+            'buttonclass' => array('btn btn-success'),
+            'buttonicon'  => array('icon-copy'),
+        );
 
-		$classes['submit'] = array(
-			'buttonclass' => array(
-				'btn',
-				'btn-primary',
-			),
-		);
+        $classes['submit'] = array(
+            'buttonclass' => array(
+                'btn',
+                'btn-primary',
+            ),
+        );
 
-		$this->_classes = $classes;
-	}
+        $this->_classes = $classes;
+    }
 
-	public function getClasses($type)
-	{
-		$classes     = $this->_classes;
-		$orientation = $this->_orientation;
+    public function getClasses($type)
+    {
+        $classes     = $this->_classes;
+        $orientation = $this->_orientation;
 
-		if ($orientation == 'horizontal')
-		{
-			$classes['note']['gridfield'][] = 'col-sm-12';
-		}
+        if ($orientation == 'horizontal') {
+            $classes['note']['gridfield'][] = 'col-sm-12';
+        }
 
-		if ($orientation == 'inline')
-		{
-			$classes['checkboxes']['class'][] = 'form-check-inline';
-			$classes['radio']['class'][]      = 'form-check-inline';
-		}
+        if ($orientation == 'inline') {
+            $classes['checkboxes']['class'][] = 'form-check-inline';
+            $classes['radio']['class'][]      = 'form-check-inline';
+        }
 
-		$classes['fieldset']['class'] = array();
+        $classes['fieldset']['class'] = array();
 
-		if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses()))
-		{
-			$classes['gridgroup'][] = $orientationFieldsetClasses;
-		}
+        if (!empty($orientationFieldsetClasses = $this->getOrientationFieldsetClasses())) {
+            $classes['gridgroup'][] = $orientationFieldsetClasses;
+        }
 
-		if (empty($classes[$type]))
-		{
-			return array();
-		}
+        if (empty($classes[$type])) {
+            return array();
+        }
 
-		return $classes[$type];
-	}
+        return $classes[$type];
+    }
 
-	public function getCss()
-	{
-		return '';
-	}
+    public function getCss()
+    {
+        return '';
+    }
 
-	private function getOrientationFieldsetClasses()
-	{
-		if ($this->_orientation == 'horizontal')
-		{
-			return 'row';
-		}
+    private function getOrientationFieldsetClasses()
+    {
+        if ($this->_orientation == 'horizontal') {
+            return 'row';
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public function getOrientationGridGroupClasses()
-	{
-		return array();
-	}
+    public function getOrientationGridGroupClasses()
+    {
+        return array();
+    }
 
-	public function getOrientationGridLabelClasses()
-	{
-		switch ($this->_orientation)
-		{
-			case 'horizontal':
-				return array(
-					'col-sm-3',
-				);
+    public function getOrientationGridLabelClasses()
+    {
+        switch ($this->_orientation) {
+            case 'horizontal':
+                return array(
+                    'col-sm-3',
+                );
 
-			case 'stacked':
-				return array(
-					'col-sm-12',
-				);
+            case 'stacked':
+                return array(
+                    'col-sm-12',
+                );
 
-			default:
-				return array();
-		}
-	}
+            default:
+                return array();
+        }
+    }
 
-	public function getOrientationGridFieldClasses()
-	{
-		switch ($this->_orientation)
-		{
-			case 'horizontal':
-				return array(
-					'col-sm-9',
-				);
+    public function getOrientationGridFieldClasses()
+    {
+        switch ($this->_orientation) {
+            case 'horizontal':
+                return array(
+                    'col-sm-9',
+                );
 
-			case 'stacked':
-				return array(
-					'col-sm-12',
-				);
+            case 'stacked':
+                return array(
+                    'col-sm-12',
+                );
 
-			default:
-				return array();
-		}
-	}
+            default:
+                return array();
+        }
+    }
 }

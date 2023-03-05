@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -15,6 +15,7 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
+ *
  * @var   string   $autocomplete    Autocomplete attribute for the field.
  * @var   boolean  $autofocus       Is autofocus enabled?
  * @var   string   $class           Classes for the input.
@@ -50,17 +51,17 @@ $autocomplete = !$autocomplete ? ' autocomplete="off"' : ' autocomplete="' . $au
 $autocomplete = $autocomplete == ' autocomplete="on"' ? '' : $autocomplete;
 
 $attributes = array(
-	!empty($size) ? 'size="' . $size . '"' : '',
-	$disabled ? 'disabled' : '',
-	$readonly ? 'readonly' : '',
-	strlen($hint) ? 'placeholder="' . $hint . '"' : '',
-	$autocomplete,
-	$autofocus ? ' autofocus' : '',
-	$spellcheck ? '' : 'spellcheck="false"',
-	$onchange ? ' onchange="' . $onchange . '"' : '',
-	!empty($maxLength) ? $maxLength : '',
-	!empty($pattern) ? ' pattern="' . $pattern . '"' : ' pattern="[0-9\-\(\)\/\+\s]*"',
-	$required ? 'required aria-required="true"' : '',
+    !empty($size) ? 'size="' . $size . '"' : '',
+    $disabled ? 'disabled' : '',
+    $readonly ? 'readonly' : '',
+    strlen($hint) ? 'placeholder="' . $hint . '"' : '',
+    $autocomplete,
+    $autofocus ? ' autofocus' : '',
+    $spellcheck ? '' : 'spellcheck="false"',
+    $onchange ? ' onchange="' . $onchange . '"' : '',
+    !empty($maxLength) ? $maxLength : '',
+    !empty($pattern) ? ' pattern="' . $pattern . '"' : ' pattern="[0-9\-\(\)\/\+\s]*"',
+    $required ? 'required aria-required="true"' : '',
 );
 ?>
 <input type="tel" name="<?php

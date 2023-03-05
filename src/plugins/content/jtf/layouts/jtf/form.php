@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Jtf\Form\Form;
 
 extract($displayData);
 
@@ -22,7 +23,7 @@ extract($displayData);
  * -----------------
  *
  * @var   string  $id             Form attribute id and name.
- * @var   \JForm  $form           JForm object instance.
+ * @var   Form    $form           Form object instance.
  * @var   string  $enctype        Set form attribute enctype, if file field is set.
  * @var   string  $formClass      Classes for the form.
  * @var   string  $frwkCss        Css styles needed for selected css-framework.
@@ -36,9 +37,8 @@ $invalidBackgroundColor       = '#f2dede';
 $frwk                         = $form->framework[0];
 $showRequiredFieldDescription = $form->showRequiredFieldDescription;
 
-if ($frwk == 'bs3')
-{
-	$role = ' role="form"';
+if ($frwk == 'bs3') {
+    $role = ' role="form"';
 }
 
 $jsToAdd = "var jtfFrwk = '" . strtoupper($frwk) . "';";
@@ -47,21 +47,20 @@ $jsToAdd .= "	var jtfTtf = {},";
 $jsToAdd .= "		jtfBadgeClass = {};";
 $jsToAdd .= "}";
 
-if ($fillouttime > 0)
-{
-	$jtfBadgeClass           = array();
-	$jtfBadgeClass['uikit3'] = 'uk-badge';
-	$jtfBadgeClass['uikit']  = 'uk-badge uk-badge-notification';
-	$jtfBadgeClass['bs5']    = 'label label-dark';
-	$jtfBadgeClass['bs4']    = 'label label-dark';
-	$jtfBadgeClass['bs3']    = 'badge';
-	$jtfBadgeClass['bs2']    = 'label label-inverse';
-	$jtfBadgeClass['joomla'] = 'label label-inverse';
+if ($fillouttime > 0) {
+    $jtfBadgeClass           = array();
+    $jtfBadgeClass['uikit3'] = 'uk-badge';
+    $jtfBadgeClass['uikit']  = 'uk-badge uk-badge-notification';
+    $jtfBadgeClass['bs5']    = 'label label-dark';
+    $jtfBadgeClass['bs4']    = 'label label-dark';
+    $jtfBadgeClass['bs3']    = 'badge';
+    $jtfBadgeClass['bs2']    = 'label label-inverse';
+    $jtfBadgeClass['joomla'] = 'label label-inverse';
 
-	$jsToAdd .= "jtfTtf." . $id . " = " . $fillouttime . ";";
-	$jsToAdd .= "jtfBadgeClass." . $id . " = '" . $jtfBadgeClass[$frwk] . "';";
+    $jsToAdd .= "jtfTtf." . $id . " = " . $fillouttime . ";";
+    $jsToAdd .= "jtfBadgeClass." . $id . " = '" . $jtfBadgeClass[$frwk] . "';";
 
-	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfTimeToFill.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+    HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfTimeToFill.min.js', array('version' => 'auto'), array('defer' => 'defer'));
 }
 
 $cssToAdd = ".hidden{display:none;visibility:hidden;}
@@ -77,17 +76,14 @@ $cssToAdd = ".hidden{display:none;visibility:hidden;}
 	.jtf .uk-form-icon > [class*=\"uk-icon-\"]{z-index:1;}";
 
 // Including fallback code for HTML5 non supported browsers.
-if (version_compare(JVERSION, 4, 'lt'))
-{
-	Factory::getDocument()->addScriptDeclaration($jsToAdd);
-	Factory::getDocument()->addStyleDeclaration($cssToAdd);
-	HTMLHelper::_('jquery.framework');
-	HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
-}
-else
-{
-	Factory::getApplication()->getDocument()->getWebAssetManager()->addInline('script', $jsToAdd);
-	Factory::getApplication()->getDocument()->getWebAssetManager()->addInline('style', $cssToAdd);
+if (version_compare(JVERSION, 4, 'lt')) {
+    Factory::getDocument()->addScriptDeclaration($jsToAdd);
+    Factory::getDocument()->addStyleDeclaration($cssToAdd);
+    HTMLHelper::_('jquery.framework');
+    HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
+} else {
+    Factory::getApplication()->getDocument()->getWebAssetManager()->addInline('script', $jsToAdd);
+    Factory::getApplication()->getDocument()->getWebAssetManager()->addInline('style', $cssToAdd);
 }
 
 HTMLHelper::_('behavior.keepalive');
@@ -102,56 +98,55 @@ HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfInvalidMarker.min.js',
 		  action="<?php echo Route::_("index.php"); ?>"
 		  method="post"
 		  class="<?php echo $formClass; ?>"
-		<?php echo $role ?>
-		<?php echo $enctype ?>
+        <?php echo $role ?>
+        <?php echo $enctype ?>
 	>
-		<?php if ($showRequiredFieldDescription) : ?>
+        <?php if ($showRequiredFieldDescription) : ?>
 			<p>
 				<strong><?php echo Text::sprintf('JTF_REQUIRED_FIELDS_LABEL', Text::_('JTF_FIELD_MARKED_LABEL_REQUIRED')); ?></strong>
 			</p>
-		<?php endif; ?>
+        <?php endif; ?>
 
-		<?php foreach ($form->getFieldsets() as $fieldset) :
-			$fieldsetClass = !empty($fieldset->class)
-				? ' class="' . $fieldset->class . '"' : '';
-			$fieldsetLabelClass = !empty($fieldset->labelclass)
-				? ' class="' . $fieldset->labelclass . '"' : '';
-			$fieldsetDescClass = !empty($fieldset->descriptionclass)
-				? ' class="' . $fieldset->descriptionclass . '"' : ''; ?>
+        <?php foreach ($form->getFieldsets() as $fieldset) :
+            $fieldsetClass = !empty($fieldset->class)
+                ? ' class="' . $fieldset->class . '"' : '';
+            $fieldsetLabelClass = !empty($fieldset->labelclass)
+                ? ' class="' . $fieldset->labelclass . '"' : '';
+            $fieldsetDescClass = !empty($fieldset->descriptionclass)
+                ? ' class="' . $fieldset->descriptionclass . '"' : ''; ?>
 
 			<fieldset<?php echo $fieldsetClass; ?>>
 
-				<?php if (!empty($fieldset->label)
-					&& strlen($legend = trim(Text::_($fieldset->label)))
-				) : ?>
+                <?php if (!empty($fieldset->label)
+                    && strlen($legend = trim(Text::_($fieldset->label)))
+                ) : ?>
 					<legend<?php echo $fieldsetLabelClass; ?>><?php echo $legend; ?></legend>
-				<?php endif; ?>
+                <?php endif; ?>
 
-				<?php if (!empty($fieldset->description)
-					&& strlen($desc = trim(Text::_($fieldset->description)))
-				) : ?>
+                <?php if (!empty($fieldset->description)
+                    && strlen($desc = trim(Text::_($fieldset->description)))
+                ) : ?>
 					<p<?php echo $fieldsetDescClass; ?>><?php echo $desc; ?></p>
-				<?php endif; ?>
+                <?php endif; ?>
 
-				<?php if (in_array($form->framework[0], array('uikit', 'uikit3'))) : ?>
+                <?php if (in_array($form->framework[0], array('uikit', 'uikit3'))) : ?>
 				<div class="uk-grid" data-uk-grid-margin>
-					<?php endif; ?>
-					<?php foreach ($form->getFieldset($fieldset->name) as $field)
-					{
-						echo $field->renderField();
-					}
-					?>
-					<?php if (in_array($form->framework[0], array('uikit', 'uikit3'))) : ?>
+                    <?php endif; ?>
+                    <?php foreach ($form->getFieldset($fieldset->name) as $field) {
+                        echo $field->renderField();
+                    }
+                    ?>
+                    <?php if (in_array($form->framework[0], array('uikit', 'uikit3'))) : ?>
 				</div>
-			<?php endif; ?>
+            <?php endif; ?>
 
 			</fieldset>
-		<?php endforeach;
+        <?php endforeach;
 
-		// Set control fields to evaluate Form
-		echo $controlFields;
-		echo HTMLHelper::_('form.token');
-		?>
+        // Set control fields to evaluate Form
+        echo $controlFields;
+        echo HTMLHelper::_('form.token');
+        ?>
 
 	</form>
 </div>

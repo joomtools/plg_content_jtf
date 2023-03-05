@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -28,7 +28,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Provides a pop up date picker linked to a button.
  * Optionally may be filtered to use user's or server's time zone.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  */
 class CalendarField extends \JFormFieldCalendar
 {
@@ -39,7 +39,7 @@ class CalendarField extends \JFormFieldCalendar
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	protected function getInput()
 	{

@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -15,6 +15,7 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
+ *
  * @var   string  $buttonClass  Classes special for the button.
  * @var   string  $buttonIcon   Classes special for the button to set an icon.
  * @var   string  $class        Classes for the input.
@@ -25,9 +26,8 @@ extract($displayData);
 
 $class = !empty($class) ? ' class="' . $class . '"' : '';
 
-if (!empty($close))
-{
-	$html[] = '<button type="button" class="' . $buttonClass . '"></button>';
+if (!empty($close)) {
+    $html[] = '<button type="button" class="' . $buttonClass . '"></button>';
 }
 
 $html[] = !empty($label) ? '<' . $heading . '>' . $label . '</' . $heading . '>' : '';
@@ -35,5 +35,5 @@ $html[] = !empty($description) ? $description : '';
 
 ?>
 <div<?php echo $class; ?> data-uk-alert>
-	<?php echo implode('', $html); ?>
+    <?php echo implode('', $html); ?>
 </div>

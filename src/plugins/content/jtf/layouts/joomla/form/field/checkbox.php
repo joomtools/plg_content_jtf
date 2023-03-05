@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -17,6 +17,7 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
+ *
  * @var   string         $autocomplete    Autocomplete attribute for the field.
  * @var   boolean        $autofocus       Is autofocus enabled?
  * @var   string         $class           Classes for the input.
@@ -56,11 +57,10 @@ $checked   = $checked ? ' checked' : '';
 $onclick  = $onclick ? ' onclick="' . $onclick . '"' : '';
 $onchange = $onchange ? ' onchange="' . $onchange . '"' : '';
 
-if (version_compare(JVERSION, '4', 'lt'))
-{
-	// Including fallback code for HTML5 non supported browsers.
-	JHtml::_('jquery.framework');
-	JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
+if (version_compare(JVERSION, '4', 'lt')) {
+    // Including fallback code for HTML5 non supported browsers.
+    JHtml::_('jquery.framework');
+    JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
 }
 
 ?>
@@ -71,6 +71,6 @@ if (version_compare(JVERSION, '4', 'lt'))
 		id="<?php echo $id; ?>"
 		class="form-check-input<?php echo $class; ?>"
 		value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>"
-		<?php echo $checked . $disabled . $onclick . $onchange . $required . $autofocus; ?>
+        <?php echo $checked . $disabled . $onclick . $onchange . $required . $autofocus; ?>
 	>
 </div>

@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -52,69 +52,65 @@ $fieldsetAttributes          = array();
 $fieldsetAttributes['id']    = $id;
 $fieldsetAttributes['class'] = array('radio', 'radio-group');
 
-if (in_array($framework, array('uikit', 'uikit3')))
-{
-	$fieldsetAttributes['class'][] = 'uk-fieldset';
+if (in_array($framework, array('uikit', 'uikit3'))) {
+    $fieldsetAttributes['class'][] = 'uk-fieldset';
 }
 
 $fieldsetAttributes['class'] = implode(' ', $fieldsetAttributes['class']);
 
 $fieldElementClass = empty(trim($class)) ? '' : ' class="' . trim($class) . '"';
 
-!$readonly  ? null : $fieldsetAttributes['readonly']  = 'readonly';
-!$disabled  ? null : $fieldsetAttributes['disabled']  = 'disabled';
+!$readonly ? null : $fieldsetAttributes['readonly'] = 'readonly';
+!$disabled ? null : $fieldsetAttributes['disabled'] = 'disabled';
 !$autofocus ? null : $fieldsetAttributes['autofocus'] = 'autofocus';
 
 $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 ?>
 <fieldset <?php echo $fieldsetAttributes; ?>>
-	<?php foreach ($options as $i => $option) :
-		$optionId = $id . $i;
+    <?php foreach ($options as $i => $option) :
+        $optionId = $id . $i;
 
-		// Build the label attributes array.
-		$optionLabelAttributes        = array();
-		$optionLabelAttributes['for'] = $optionId;
+        // Build the label attributes array.
+        $optionLabelAttributes        = array();
+        $optionLabelAttributes['for'] = $optionId;
 
-		empty($option->labelclass) ? null : $optionLabelAttributes['class']    = $option->labelclass;
-		empty($option->disable)    ? null : $optionLabelAttributes['disabled'] = 'disabled';
+        empty($option->labelclass) ? null : $optionLabelAttributes['class'] = $option->labelclass;
+        empty($option->disable) ? null : $optionLabelAttributes['disabled'] = 'disabled';
 
-		// Build the option attributes array.
-		$optionAttributes          = array();
-		$optionAttributes['type']  = 'radio';
-		$optionAttributes['id']    = $optionId;
-		$optionAttributes['name']  = $name;
-		$optionAttributes['value'] = empty($option->value) ? '' : htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
+        // Build the option attributes array.
+        $optionAttributes          = array();
+        $optionAttributes['type']  = 'radio';
+        $optionAttributes['id']    = $optionId;
+        $optionAttributes['name']  = $name;
+        $optionAttributes['value'] = empty($option->value) ? '' : htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
 
-		empty($option->class)        ? null : $optionAttributes['class']    = $option->class;
-		empty($option->onclick)      ? null : $optionAttributes['onclick']  = $option->onclick;
-		empty($option->onchange)     ? null : $optionAttributes['onchange'] = $option->onchange;
-		empty($option->disable)      ? null : $optionAttributes['disabled'] = 'disabled';
-		!($option->value === $value) ? null : $optionAttributes['checked']  = 'checked';
+        empty($option->class) ? null : $optionAttributes['class'] = $option->class;
+        empty($option->onclick) ? null : $optionAttributes['onclick'] = $option->onclick;
+        empty($option->onchange) ? null : $optionAttributes['onchange'] = $option->onchange;
+        empty($option->disable) ? null : $optionAttributes['disabled'] = 'disabled';
+        !($option->value === $value) ? null : $optionAttributes['checked'] = 'checked';
 
-		$optionAttributes      = ArrayHelper::toString($optionAttributes);
-		$optionLabelAttributes = ArrayHelper::toString($optionLabelAttributes);
-		?>
+        $optionAttributes      = ArrayHelper::toString($optionAttributes);
+        $optionLabelAttributes = ArrayHelper::toString($optionLabelAttributes);
+        ?>
 
 		<div<?php echo $fieldElementClass; ?>>
 			<label <?php echo $optionLabelAttributes ?>
-				<?php if (!empty($option->optionattr)) :
-					if (version_compare(JVERSION, 4, 'lt'))
-					{
-						HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
-					}
-					else
-					{
-						Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
-					}
+                <?php if (!empty($option->optionattr)) :
+                    if (version_compare(JVERSION, 4, 'lt')) {
+                        HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+                    } else {
+                        Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
+                    }
 
-					HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+                    HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'), array('defer' => 'defer'));
 
-					echo $option->optionattr; ?>
-				<?php endif; ?>
+                    echo $option->optionattr; ?>
+                <?php endif; ?>
 			>
 				<input <?php echo $optionAttributes; ?> />
-				<?php echo $option->text; ?>
+                <?php echo $option->text; ?>
 			</label>
 		</div>
-	<?php endforeach; ?>
+    <?php endforeach; ?>
 </fieldset>

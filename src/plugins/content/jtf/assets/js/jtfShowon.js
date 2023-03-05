@@ -5,32 +5,65 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    Copyright 2020 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
-document.addEventListener('DOMContentLoaded', function () {
-  var setNovalidate = function setNovalidate(field) {
-    if (!field.classList.contains('novalidate')) {
-      field.classList.add('novalidate');
-      field.setAttribute('disabled', 'disabled');
-    }
-  },
-      removeNovalidate = function removeNovalidate(field) {
-    if (field.classList.contains('novalidate')) {
-      field.classList.remove('novalidate');
-      field.removeAttribute('disabled');
-    }
-  },
-      toggleNovalidate = function toggleNovalidate(field, isActive) {
-    if (isActive) {
-      removeNovalidate(field);
-    } else {
-      setNovalidate(field);
-    }
-  };
+var jtfSetNovalidate = function jtfSetNovalidate(field) {
+  if (!field.classList.contains('novalidate')) {
+    field.classList.add('novalidate');
+    field.setAttribute('disabled', 'disabled');
 
-  var showonElements = document.querySelectorAll('[data-showon]');
-  Array.prototype.forEach.call(showonElements, function (parent) {
+    if (field.classList.contains('required')) {
+      field.removeAttribute('required');
+      field.removeAttribute('aria-required');
+    }
+
+    if (field.classList.contains('invalid')) {
+      field.removeAttribute('aria-invalid');
+    }
+  }
+},
+    jtfRemoveNovalidate = function jtfRemoveNovalidate(field) {
+  if (field.classList.contains('novalidate')) {
+    field.classList.remove('novalidate');
+    field.removeAttribute('disabled');
+
+    if (field.classList.contains('required')) {
+      field.setAttribute('required', 'required');
+      field.setAttribute('aria-required', 'true');
+    }
+
+    if (field.classList.contains('invalid')) {
+      field.setAttribute('aria-invalid', 'true');
+    }
+  }
+},
+    jtfToggleNovalidate = function jtfToggleNovalidate(field, isActive) {
+  if (isActive) {
+    jtfRemoveNovalidate(field);
+  } else {
+    jtfSetNovalidate(field);
+  }
+},
+    jtfInitShowon = function initShowon(parent) {
+  var showonObserverConfig = {
+    attributes: true,
+    childList: false,
+    characterData: false
+  },
+      formFields = parent.querySelectorAll('input, select, textarea, fieldset'),
+      showonObserver = new MutationObserver(function () {
+    var isActive = parent.style.display !== 'none' && !parent.classList.contains('hidden');
+    Array.prototype.forEach.call(formFields, function (field) {
+      jtfToggleNovalidate(field, isActive);
+    });
+  });
+  showonObserver.observe(parent, showonObserverConfig);
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+  var jtfShowonElements = document.querySelectorAll('[data-showon]');
+  Array.prototype.forEach.call(jtfShowonElements, function (parent) {
     var isActive = parent.style.display !== 'none' && !parent.classList.contains('hidden'),
         formFields = parent.querySelectorAll('input, select, textarea, fieldset');
 
@@ -39,19 +72,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     Array.prototype.forEach.call(formFields, function (field) {
-      toggleNovalidate(field, isActive);
+      jtfToggleNovalidate(field, isActive);
     });
-    var showonObserverConfig = {
-      attributes: true,
-      childList: false,
-      characterData: false
-    },
-        showonObserver = new MutationObserver(function () {
-      isActive = parent.style.display !== 'none' && !parent.classList.contains('hidden');
-      Array.prototype.forEach.call(formFields, function (field) {
-        toggleNovalidate(field, isActive);
-      });
-    });
-    showonObserver.observe(parent, showonObserverConfig);
+    jtfInitShowon(parent);
   });
 });

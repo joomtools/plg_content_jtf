@@ -1,3 +1,11 @@
+/**
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
+ *
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    2023 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
+ */
 ;(function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 		typeof define === 'function' && define.amd ? define(factory) :

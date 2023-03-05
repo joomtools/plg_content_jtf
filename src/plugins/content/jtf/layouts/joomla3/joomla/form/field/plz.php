@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -18,6 +18,7 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
+ *
  * @var   string   $autocomplete    Autocomplete attribute for the field.
  * @var   boolean  $autofocus       Is autofocus enabled?
  * @var   string   $class           Classes for the input.
@@ -48,23 +49,23 @@ $autocomplete = $autocomplete === 'autocomplete="on"' ? '' : $autocomplete;
 $hint = Text::_($hint);
 
 $attributes = array(
-	!empty($class) ? 'class="validate-plz ' . $class . '"' : 'class="validate-plz"',
-	!empty($size) ? 'size="' . $size . '"' : '',
-	'maxlength="5"',
-	$disabled ? 'disabled' : '',
-	$readonly ? 'readonly' : '',
-	strlen($hint) ? 'placeholder="' . htmlspecialchars($hint, ENT_COMPAT, 'UTF-8') . '"' : '',
-	$onchange ? 'onchange="' . $onchange . '"' : '',
-	$required ? 'required aria-required="true"' : '',
-	$autocomplete,
-	$autofocus ? 'autofocus' : '',
-	'spellcheck="false"',
-	!empty($pattern) ? 'pattern="' . $pattern . '"' : '',
+    !empty($class) ? 'class="validate-plz ' . $class . '"' : 'class="validate-plz"',
+    !empty($size) ? 'size="' . $size . '"' : '',
+    'maxlength="5"',
+    $disabled ? 'disabled' : '',
+    $readonly ? 'readonly' : '',
+    strlen($hint) ? 'placeholder="' . htmlspecialchars($hint, ENT_COMPAT, 'UTF-8') . '"' : '',
+    $onchange ? 'onchange="' . $onchange . '"' : '',
+    $required ? 'required aria-required="true"' : '',
+    $autocomplete,
+    $autofocus ? 'autofocus' : '',
+    'spellcheck="false"',
+    !empty($pattern) ? 'pattern="' . $pattern . '"' : '',
 );
 ?>
 <input type="text"
 	   name="<?php echo $name; ?>"
 	   id="<?php echo $id; ?>"
 	   value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-	<?php echo implode(' ', $attributes); ?>
+    <?php echo implode(' ', $attributes); ?>
 />

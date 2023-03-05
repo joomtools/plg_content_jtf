@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -15,44 +15,43 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Form\FormHelper;
 use Jtf\Form\FormFieldExtension;
 
-if (version_compare(JVERSION, '4', 'lt'))
-{
-	FormHelper::loadFieldClass('list');
+if (version_compare(JVERSION, '4', 'lt')) {
+    FormHelper::loadFieldClass('list');
 }
 
 /**
  * Form Field class for the Joomla Platform.
  * Supports a generic list of options.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  */
 class ListField extends \JFormFieldList
 {
-	/**
-	 * Name of the layout being used to render the field
-	 *
-	 * @var   string
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected $layout = 'joomla.form.field.list';
+    /**
+     * Name of the layout being used to render the field
+     *
+     * @var   string
+     *
+     * @since  4.0.0
+     */
+    protected $layout = 'joomla.form.field.list';
 
-	use FormFieldExtension;
+    use FormFieldExtension;
 
-	/**
-	 * Method to get the field input markup for a generic list.
-	 * Use the multiple attribute to enable multiselect.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected function getInput()
-	{
-		$data = $this->getLayoutData();
+    /**
+     * Method to get the field input markup for a generic list.
+     * Use the multiple attribute to enable multiselect.
+     *
+     * @return  string  The field input markup.
+     *
+     * @since  4.0.0
+     */
+    protected function getInput()
+    {
+        $data = $this->getLayoutData();
 
-		$data['options'] = (array) $this->getOptions();
+        $data['options'] = (array) $this->getOptions();
 
-		return $this->getRenderer($this->layout)->render($data);
-	}
+        return $this->getRenderer($this->layout)->render($data);
+    }
 }

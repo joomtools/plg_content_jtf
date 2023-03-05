@@ -1,10 +1,11 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
  *
- * @copyright   (C) 2016 Open Source Matters, Inc. <https://www.joomla.org>
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    2023 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
@@ -18,6 +19,7 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
+ *
  * @var   string   $autocomplete    Autocomplete attribute for the field.
  * @var   boolean  $autofocus       Is autofocus enabled?
  * @var   string   $class           Classes for the input.
@@ -52,15 +54,14 @@ extract($displayData);
 
 HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/jtfRange.min.css', array('version' => 'auto'));
 
-if (version_compare(JVERSION, '4', 'lt'))
-{
-	// Including fallback code for HTML5 non supported browsers.
-	HTMLHelper::_('jquery.framework');
-	HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
+if (version_compare(JVERSION, '4', 'lt')) {
+    // Including fallback code for HTML5 non supported browsers.
+    HTMLHelper::_('jquery.framework');
+    HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
 }
 
 // Initialize some field attributes.
-$attributes = array();
+$attributes          = array();
 $attributes['class'] = $class ? 'form-range ' . $class : 'form-range';
 $disabled ? $attributes['disabled'] = 'disabled' : null;
 $readonly ? $attributes['readonly'] = 'readonly' : null;
@@ -71,16 +72,16 @@ $autofocus ? $attributes['autofocus'] = 'autofocus' : null;
 !empty($min) ? $attributes['min'] = $min : null;
 $value = is_numeric($value) ? (float) $value : $min;
 ?>
-<input
-	type="range"
-	name="<?php echo $name; ?>"
-	id="<?php echo $id; ?>"
-	oninput="this.nextElementSibling.value=this.value"
-	value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-	<?php echo ArrayHelper::toString($attributes); ?>
-	<?php if (version_compare(JVERSION, '4', 'ge')) : ?>
-		<?php echo $dataAttribute; ?>
-	<?php endif; ?>
-/>
-<output class="range-desc"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></output>
+	<input
+		type="range"
+		name="<?php echo $name; ?>"
+		id="<?php echo $id; ?>"
+		oninput="this.nextElementSibling.value=this.value"
+		value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
+        <?php echo ArrayHelper::toString($attributes); ?>
+        <?php if (version_compare(JVERSION, '4', 'ge')) : ?>
+            <?php echo $dataAttribute; ?>
+        <?php endif; ?>
+	/>
+	<output class="range-desc"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></output>
 <?php echo $description ? ' <span class="range-desc">' . htmlspecialchars($description, ENT_COMPAT, 'UTF-8') . '</span>' : null; ?>

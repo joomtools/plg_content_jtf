@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -17,6 +17,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 /**
  * Layout variables
  * -----------------
+ *
  * @var   string   $autocomplete    Autocomplete attribute for the field.
  * @var   boolean  $autofocus       Is autofocus enabled?
  * @var   string   $class           Classes for the input.
@@ -60,11 +61,10 @@ $attr .= !empty($description) ? ' aria-describedby="' . $name . '-desc"' : '';
 // Initialize JavaScript field attributes.
 $attr .= !empty($onchange) ? ' onchange="' . $onchange . '"' : '';
 
-$val  = [];
+$val = [];
 
-foreach ($options as $option)
-{
-	$val[] = $option->text;
+foreach ($options as $option) {
+    $val[] = $option->text;
 }
 ?>
 <input
@@ -72,7 +72,7 @@ foreach ($options as $option)
 	name="<?php echo $name; ?>"
 	id="<?php echo $id; ?>"
 	value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-	<?php echo $attr; ?>
+    <?php echo $attr; ?>
 	data-list="<?php echo implode(', ', $val); ?>"
-	<?php echo $dataAttribute; ?>
+    <?php echo $dataAttribute; ?>
 />

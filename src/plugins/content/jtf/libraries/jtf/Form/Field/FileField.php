@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -26,7 +26,7 @@ if (version_compare(JVERSION, '4', 'lt'))
  * Form Field class for the Joomla Platform.
  * Provides an input field for files
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  */
 class FileField extends \JFormFieldFile
 {
@@ -35,7 +35,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @var   string
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	protected $uploadicon = null;
 
@@ -44,7 +44,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @var   string
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	protected $uploadmaxsize = null;
 
@@ -53,7 +53,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @var   string
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	protected $uploadinfoclass = null;
 
@@ -72,7 +72,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  mixed  The property value or null.
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	public function __get($name)
 	{
@@ -96,7 +96,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  void
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	public function __set($name, $value)
 	{
@@ -125,7 +125,7 @@ class FileField extends \JFormFieldFile
 	 * @return  boolean  True on success.
 	 *
 	 * @see    JFormField::setup()
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null): bool
 	{
@@ -153,7 +153,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	protected function getInput(): string
 	{
@@ -169,7 +169,7 @@ class FileField extends \JFormFieldFile
 	 *
 	 * @return  array
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  4.0.0
 	 */
 	protected function getLayoutData(): array
 	{

@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -15,6 +15,7 @@ extract($displayData);
 /**
  * Layout variables
  * ---------------------
+ *
  * @var   string  $icon   Icon class.
  * @var   string  $input  The input field html code.
  */
@@ -24,5 +25,5 @@ extract($displayData);
 	<div class="input-group-text">
 		<span class="<?php echo $icon; ?>"></span>
 	</div>
-	<?php echo $input; ?>
+    <?php echo $input; ?>
 </div>

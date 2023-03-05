@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    (c) 2021 JoomTools.de - All rights reserved.
+ * @copyright    2023 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -19,27 +19,27 @@ use Jtf\Form\FormFieldExtension;
  * Form Field class for the Joomla Platform.
  * Supports a one line text field.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  4.0.0
  */
 class PlzField extends FormField
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var   string
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected $type = 'Plz';
+    /**
+     * The form field type.
+     *
+     * @var   string
+     *
+     * @since  4.0.0
+     */
+    protected $type = 'Plz';
 
-	/**
-	 * Name of the layout being used to render the field
-	 *
-	 * @var   string
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected $layout = 'joomla.form.field.plz';
+    /**
+     * Name of the layout being used to render the field
+     *
+     * @var   string
+     *
+     * @since  4.0.0
+     */
+    protected $layout = 'joomla.form.field.plz';
 
-	use FormFieldExtension;
+    use FormFieldExtension;
 }
