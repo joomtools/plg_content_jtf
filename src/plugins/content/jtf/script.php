@@ -121,9 +121,15 @@ class PlgContentJtfInstallerScript
         }
 
         if ($action === 'update') {
-            if (!empty($installer->get('currentExtensionId'))) {
+            if (version_compare(JVERSION, '4', 'lt')) {
+                $extensionId = $installer->get('currentExtensionId');
+            } else {
+                $extensionId = $installer->currentExtensionId;
+            }
+
+            if (!empty($extensionId)) {
                 // Get the version we are updating from
-                $this->extensionId = $installer->get('currentExtensionId');
+                $this->extensionId = $extensionId;
 
                 $this->getPluginDatas();
             }

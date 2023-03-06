@@ -118,10 +118,10 @@ class FrameworkHelper
      * @since  4.0.0
      */
     private $gridGroup = array(
-        'default'  => null,
-        'form'     => null,
-        'fieldset' => null,
-        'field'    => null,
+        'default'  => array(),
+        'form'     => array(),
+        'fieldset' => array(),
+        'field'    => array(),
     );
 
     /**
@@ -130,10 +130,10 @@ class FrameworkHelper
      * @since  4.0.0
      */
     private $gridLabel = array(
-        'default'  => null,
-        'form'     => null,
-        'fieldset' => null,
-        'field'    => null,
+        'default'  => array(),
+        'form'     => array(),
+        'fieldset' => array(),
+        'field'    => array(),
     );
 
     /**
@@ -142,10 +142,10 @@ class FrameworkHelper
      * @since  4.0.0
      */
     private $gridField = array(
-        'default'  => null,
-        'form'     => null,
-        'fieldset' => null,
-        'field'    => null,
+        'default'  => array(),
+        'form'     => array(),
+        'fieldset' => array(),
+        'field'    => array(),
     );
 
     /**
@@ -671,21 +671,21 @@ class FrameworkHelper
             $this->gridGroup['default'],
             $classes['frwk']['gridgroup']
         )
-            : null;
+            : array();
 
         !empty($classes['frwk']['gridlabel'])
             ? $this->gridLabel['default'] = array_merge(
             $this->gridLabel['default'],
             $classes['frwk']['gridlabel']
         )
-            : null;
+            : array();
 
         !empty($classes['frwk']['gridfield'])
             ? $this->gridField['default'] = array_merge(
             $this->gridField['default'],
             $classes['frwk']['gridfield']
         )
-            : null;
+            : array();
 
         $classes['field']['gridgroup'] = $this->getClassArray($this->getFinalSetting('gridgroup'));
         $classes['field']['gridlabel'] = $this->getClassArray($this->getFinalSetting('gridlabel'));
