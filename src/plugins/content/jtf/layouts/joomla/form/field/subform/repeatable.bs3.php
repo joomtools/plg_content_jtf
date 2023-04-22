@@ -18,7 +18,7 @@ use Joomla\CMS\Layout\FileLayout;
 $layout = new FileLayout('joomla.form.field.subform.repeatable_tmpl');
 $layout->setSuffixes($displayData['tmpl']->framework);
 $layout->addIncludePaths($displayData['tmpl']->layoutPaths);
-$layout->setDebug($displayData['tmpl']->renderDebug);
+$layout->setDebug($displayData['tmpl']->rendererDebug);
 ?>
 
 <div class="row">

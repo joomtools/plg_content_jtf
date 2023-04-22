@@ -194,7 +194,7 @@ class SubformField extends \JFormFieldSubform
         $tmpl                               = Form::getInstance($formname, $this->formsource, array('control' => $control));
         $tmpl->layoutPaths                  = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
         $tmpl->framework                    = !empty($this->form->framework) ? $this->form->framework : array();
-        $tmpl->renderDebug                  = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
+        $tmpl->rendererDebug                = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
         $tmpl->fieldmarker                  = $this->form->fieldmarker;
         $tmpl->fieldmarkerplace             = $this->form->fieldmarkerplace;
         $tmpl->showfielddescriptionas       = $this->form->showfielddescriptionas;
@@ -237,7 +237,7 @@ class SubformField extends \JFormFieldSubform
             $itemForm                               = Form::getInstance($subForm->getName() . $i, $this->formsource, array('control' => $control));
             $itemForm->layoutPaths                  = !empty($this->form->layoutPaths) ? $this->form->layoutPaths : array();
             $itemForm->framework                    = !empty($this->form->framework) ? $this->form->framework : array();
-            $itemForm->renderDebug                  = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
+            $itemForm->rendererDebug                = !empty($this->form->rendererDebug) ? $this->form->rendererDebug : false;
             $itemForm->fieldmarker                  = $this->form->fieldmarker;
             $itemForm->fieldmarkerplace             = $this->form->fieldmarkerplace;
             $itemForm->showfielddescriptionas       = $this->form->showfielddescriptionas;

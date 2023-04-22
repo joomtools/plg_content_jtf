@@ -43,6 +43,15 @@ trait FormFieldExtension
     protected $hiddenlabel = false;
 
     /**
+     * The hidden state for the form field label.
+     *
+     * @var   boolean
+     *
+     * @since  4.0.0
+     */
+    protected $inline = false;
+
+    /**
      * The value of the gridgruop attribute.
      *
      * @var   string

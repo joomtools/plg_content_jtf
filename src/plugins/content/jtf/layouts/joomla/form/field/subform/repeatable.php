@@ -37,7 +37,7 @@ extract($displayData);
 $layout = new FileLayout('joomla.form.field.subform.repeatable_tmpl');
 $layout->setSuffixes($tmpl->framework);
 $layout->addIncludePaths($tmpl->layoutPaths);
-$layout->setDebug($tmpl->renderDebug);
+$layout->setDebug($tmpl->rendererDebug);
 ?>
 
 <div class="row-fluid">

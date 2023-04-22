@@ -198,7 +198,8 @@ class PlgContentJtf extends CMSPlugin
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
         // Don't run in administration Panel or when the content is being indexed
-        if (strpos($article->text, '{jtf') === false
+        if (empty($article->text)
+            || strpos($article->text, '{jtf') === false
             || ($context == 'com_content.category' && $this->app->input->getCmd('layout') != 'blog')
             || $context == 'com_finder.indexer'
             || $this->doNotLoad

@@ -64,6 +64,15 @@ class Form extends JForm
     public $setEnctype = false;
 
     /**
+     * Set enctype.
+     *
+     * @var   boolean
+     *
+     * @since  4.0.0
+     */
+    public $rendererDebug = false;
+
+    /**
      * Set the option to display the required field description.
      *
      * @var   boolean
