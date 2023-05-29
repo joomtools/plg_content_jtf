@@ -490,21 +490,21 @@ class FrameworkHelper
 
                 if (!empty($class = (string) $fieldset['class'])) {
                     $frwkFieldsetClasses['class'] = array_merge(
-                        $frwkFieldsetClasses['class'],
+                        $this->getClassArray($frwkFieldsetClasses['class']),
                         $this->getClassArray($class)
                     );
                 }
 
                 if (!empty($labelClass = (string) $fieldset['labelclass'])) {
                     $frwkFieldsetClasses['labelclass'] = array_merge(
-                        $frwkFieldsetClasses['labelclass'],
+                        $this->getClassArray($frwkFieldsetClasses['labelclass']),
                         $this->getClassArray($labelClass)
                     );
                 }
 
                 if (!empty($labelClass = (string) $fieldset['labelClass'])) {
                     $frwkFieldsetClasses['labelclass'] = array_merge(
-                        $frwkFieldsetClasses['labelclass'],
+                        $this->getClassArray($frwkFieldsetClasses['labelclass']),
                         $this->getClassArray($labelClass)
                     );
 
@@ -513,14 +513,14 @@ class FrameworkHelper
 
                 if (!empty($descriptionClass = (string) $fieldset['descriptionclass'])) {
                     $frwkFieldsetClasses['descriptionclass'] = array_merge(
-                        $frwkFieldsetClasses['descriptionclass'],
+                        $this->getClassArray($frwkFieldsetClasses['descriptionclass']),
                         $this->getClassArray($descriptionClass)
                     );
                 }
 
                 if (!empty($descriptionClass = (string) $fieldset['descClass'])) {
                     $frwkFieldsetClasses['descriptionclass'] = array_merge(
-                        $frwkFieldsetClasses['descriptionclass'],
+                        $this->getClassArray($frwkFieldsetClasses['descriptionclass']),
                         $this->getClassArray($descriptionClass)
                     );
 
