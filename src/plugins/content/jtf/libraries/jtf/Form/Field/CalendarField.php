@@ -104,11 +104,16 @@ class CalendarField extends \JFormFieldCalendar
         }
 
         // Format value when not nulldate ('0000-00-00 00:00:00'), otherwise blank it as it would result in 1970-01-01.
-        if ($this->filterFormat && $issetValue && strtotime($this->value) !== false) {
+        if ($issetValue && strtotime($this->value) !== false) {
+            $format = $this->format;
+
+            if ($this->filterFormat) {
+                $format = $this->filterFormat;
+            }
+
             $date        = \DateTimeImmutable::createFromFormat('U', strtotime($this->value));
-            $this->value = $date->format($this->filterFormat);
-        } else if ($issetValue && strtotime($this->value) !== false) {
-            $this->value = strftime($this->format, strtotime($this->value));
+            $this->value = $date->format($format);
+            // $this->value = strftime($this->format, strtotime($this->value));
         } else {
             $this->value = '';
         }
