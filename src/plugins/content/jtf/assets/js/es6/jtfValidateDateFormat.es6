@@ -50,6 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			],
 			moment = window.moment || {};
 
-		return moment(value, dayformat, 'de', true).isValid();
+		return moment(value, dayformat, 'de', false).isValid();
 	});
 });
