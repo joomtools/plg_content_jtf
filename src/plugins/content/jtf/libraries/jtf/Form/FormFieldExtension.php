@@ -438,7 +438,7 @@ trait FormFieldExtension
      *
      * @since  4.0.0
      */
-    protected function getLayoutData()
+    public function getLayoutData()
     {
         $data = parent::getLayoutData();
         $data = array_merge($data, array(
