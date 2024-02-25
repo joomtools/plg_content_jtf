@@ -21,9 +21,12 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Version;
 use Joomla\Event\DispatcherInterface;
@@ -291,7 +294,7 @@ class PlgContentJtf extends CMSPlugin
 
             if ($formSubmitted) {
                 $checkToken      = $this->checkToken($formTheme);
-                $checkFormToken  = Joomla\CMS\Session\Session::checkToken();
+                $checkFormToken  = Session::checkToken();
                 $submittedValues = $this->app->input->get($formTheme, array(), 'post', 'array');
                 $honeypot        = $submittedValues[$jtfHp];
                 $fillOutTime     = $this->debug || JDEBUG || $this->uParams['fillouttime'] == 0
@@ -300,7 +303,7 @@ class PlgContentJtf extends CMSPlugin
                 $notSpamBot      = $fillOutTime > $this->uParams['fillouttime'];
 
                 if ($honeypot !== '' || !$notSpamBot || !$checkToken || !$checkFormToken) {
-                    $this->app->redirect(JRoute::_('index.php', false));
+                    $this->app->redirect(Route::_('index.php', false));
                 }
 
                 if (!empty($_FILES)) {
@@ -341,11 +344,11 @@ class PlgContentJtf extends CMSPlugin
                             $this->app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, null);
                             $this->app->setUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme, null);
                             $this->app->enqueueMessage($text, 'message');
-                            $this->app->redirect(JRoute::_('index.php', false));
+                            $this->app->redirect(Route::_('index.php', false));
                         } else {
                             $this->app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, null);
                             $this->app->setUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme, null);
-                            $this->app->redirect(JRoute::_('index.php?Itemid=' . (int) $this->uParams['redirect_menuid'], false));
+                            $this->app->redirect(Route::_('index.php?Itemid=' . (int) $this->uParams['redirect_menuid'], false));
                         }
                     }
                 }
@@ -829,7 +832,11 @@ class PlgContentJtf extends CMSPlugin
      */
     private function sendMail()
     {
-        $mailer = Factory::getMailer();
+        if (version_compare(JVERSION, 4, 'lt')) {
+            $mailer = Factory::getMailer();
+        } else {
+            $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+        }
 
         $subject = $this->getValue('subject');
         $subject = !empty($subject) ? $subject : Text::sprintf('JTF_EMAIL_SUBJECT', $this->app->get('sitename'));
