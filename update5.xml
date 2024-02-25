@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+    <update>
+        <name>JT - Formulator</name>
+        <description>Latest version with support for Joomla 4 and Joomla 5</description>
+        <element>jtf</element>
+        <type>plugin</type>
+        <folder>content</folder>
+        <client>site</client>
+        <version>5.0.0</version>
+        <downloads>
+            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/5.0.0/plg_content_jtf-5.0.0.zip</downloadurl>
+        </downloads>
+        <tags>
+            <tag>stable</tag>
+        </tags>
+        <sha256>998238e831884dcf720608646bfda41ea6713a4c86c6869806aedcba4600087a</sha256>
+        <sha512>284b947911654dc48a66d1699bf0d03c4af03c598d5186267629e6deb5f6b5823c66e55d82cc8e7ee430ae114341abc5cd2c0c1cc9281ac2097c9be0284a1eb7</sha512>
+        <maintainer>Guido De Gobbis</maintainer>
+        <targetplatform name="joomla" version="[45].[1234567890]"/>
+        <php_minimum>7.2</php_minimum>
+    </update>
+</updates>
