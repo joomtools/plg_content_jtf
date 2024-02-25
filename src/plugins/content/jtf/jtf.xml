@@ -131,8 +131,6 @@
 	</config>
 
 	<updateservers>
-		<server type="extension" priority="1" name="JTF_XML_NAME">
-			https://raw.githubusercontent.com/joomtools/plg_content_jtf/release/joomla4/update.xml
-		</server>
+		<server type="extension" priority="1" name="JTF_XML_NAME">https://raw.githubusercontent.com/joomtools/plg_content_jtf/master/update4.xml</server>
 	</updateservers>
 </extension>
