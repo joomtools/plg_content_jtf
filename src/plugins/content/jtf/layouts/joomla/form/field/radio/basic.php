@@ -10,6 +10,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 
@@ -42,19 +43,15 @@ extract($displayData);
  * @var   boolean  $spellcheck      Spellcheck state for the form field.
  * @var   string   $validate        Validation rules to apply.
  * @var   string   $value           Value attribute of the field.
- * @var   array    $checkedOptions  Options that will be set as checked.
- * @var   boolean  $hasValue        Has this field a value assigned?
  * @var   array    $options         Options available for this field.
  * @var   string   $dataAttribute   Miscellaneous data attributes preprocessed for HTML output
- * @var   array    $dataAttributes  Miscellaneous data attributes for eg, data-*.
+ * @var   array    $dataAttributes  Miscellaneous data attribute for eg, data-*.
  */
 
 // Build the fieldset attributes array.
 $fieldsetAttributes          = array();
 $fieldsetAttributes['id']    = $id;
-$fieldsetAttributes['class'] = 'checkboxes checkboxes-group';
-
-$fieldElementClass = empty(trim($class)) ? '' : ' class="' . trim($class) . '"';
+$fieldsetAttributes['class'] = 'radio radio-group mb-0';
 
 !$readonly ? null : $fieldsetAttributes['readonly'] = 'readonly';
 !$disabled ? null : $fieldsetAttributes['disabled'] = 'disabled';
@@ -67,11 +64,9 @@ if ($required) {
 
 $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 ?>
-<fieldset <?php echo $fieldsetAttributes; ?>>
+<fieldset <?php echo $fieldsetAttributes; ?><?php echo $dataAttribute ? ' ' . $dataAttribute : ''; ?>>
     <?php foreach ($options as $i => $option) :
         $optionId = $id . $i;
-        $isChecked = in_array((string) $option->value, $checkedOptions, true);
-        $isChecked = (!$hasValue && $option->checked) ? true : $isChecked;
 
         // Build the label attributes array.
         $optionLabelAttributes        = array();
@@ -82,7 +77,7 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 
         // Build the option attributes array.
         $optionAttributes          = array();
-        $optionAttributes['type']  = 'checkbox';
+        $optionAttributes['type']  = 'radio';
         $optionAttributes['id']    = $optionId;
         $optionAttributes['name']  = $name;
         $optionAttributes['value'] = empty($option->value) ? '' : htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
@@ -91,18 +86,21 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
         empty($option->onclick) ? null : $optionAttributes['onclick'] = $option->onclick;
         empty($option->onchange) ? null : $optionAttributes['onchange'] = $option->onchange;
         empty($option->disable) ? null : $optionAttributes['disabled'] = 'disabled';
-        !$isChecked ? null : $optionAttributes['checked'] = 'checked';
+        !($option->value === $value) ? null : $optionAttributes['checked'] = 'checked';
 
         $optionAttributes      = ArrayHelper::toString($optionAttributes);
         $optionLabelAttributes = ArrayHelper::toString($optionLabelAttributes);
+
+        $optionGroupElement = empty(trim($class)) ? '' : ' class="' . trim($class) . '"';
         ?>
 
-		<div<?php echo $fieldElementClass; ?>>
+		<div<?php echo $optionGroupElement; ?>>
 			<input <?php echo $optionAttributes; ?> />
 			<label <?php echo $optionLabelAttributes ?>
                 <?php if (!empty($option->optionattr)) :
                     Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
-                    HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'));
+                    HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+
                     echo $option->optionattr; ?>
                 <?php endif; ?>
 			>

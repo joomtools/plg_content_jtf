@@ -53,12 +53,11 @@ if (empty($options)) {
     return '';
 }
 
-// Load the css files
-Factory::getApplication()->getDocument()->getWebAssetManager()->useStyle('switcher');
+$isBtnYesNo  = strpos(trim($class), 'btn-group-yesno') !== false;
 
 // Build the fieldset attributes array.
 $fieldsetAttributes          = [];
-$fieldsetAttributes['class'] = ['switcher switcher-group mb-0'];
+$fieldsetAttributes['class'] = ['radio radio-group mb-0'];
 $fieldsetAttributes['id']    = $id;
 
 // Add the fieldset class on UIKit framework
@@ -82,51 +81,66 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 	<legend class="visually-hidden">
         <?php echo $label; ?>
 	</legend>
-    <?php
-    $switchGroupElement            = [];
-    $switchGroupElement['class'][] = 'switcher switcher-group';
-    $switchGroupElement['class'][] = trim($class);
-    $switchGroupElement['class']   = implode(' ', $switchGroupElement['class']);
+	<?php
+    $btnGroupElement            = [];
+    $btnGroupElement['class'][] = 'btn-group mb-0';
+    $btnGroupElement['class'][] = trim($class);
+    $btnGroupElement['class']   = implode(' ', $btnGroupElement['class']);
 
-    $switchGroupElement = ArrayHelper::toString($switchGroupElement);
+    $btnGroupElement = ArrayHelper::toString($btnGroupElement);
 
     ?>
-	<div <?php echo $switchGroupElement; ?>>
-        <?php foreach ($options as $i => $option) :
-			if ($i > 1) {
-				continue;
-			}
-
-            $optionId = $id . $i;
+	<div <?php echo $btnGroupElement; ?>>
+		<?php foreach ($options as $i => $option) :
+			$optionId = $id . $i;
 
             // Build the label attributes array.
             $optionLabelAttributes          = [];
             $optionLabelAttributes['class'] = [];
             $optionLabelAttributes['for']   = $optionId;
 
-            !($option->value === $value) ? null : $optionLabelAttributes['class'][] = 'active';
+            empty($option->labelclass) ? null : $hasBtnOutline  = strpos(trim($option->labelclass), 'btn-outline-') !== false;
+
+//			!($option->value === $value) ? null : $optionLabelAttributes['class'][] = 'active';
             empty($option->labelclass) ? null : $optionLabelAttributes['class'][] = $option->labelclass;
+
+            // Initialize some option attributes.
+            if ($isBtnYesNo) {
+                // Set the button classes for the yes/no group
+                switch ($option->value) {
+                    case '0':
+                        $hasBtnOutline ? null : $optionLabelAttributes['class'][] = 'btn-outline-danger';
+                        break;
+                    case '1':
+                        $hasBtnOutline ? null : $optionLabelAttributes['class'][] = 'btn-outline-success';
+                        break;
+                    default:
+                        $hasBtnOutline ? null : $optionLabelAttributes['class'][] = 'btn-outline-secondary';
+                        break;
+                }
+            } else {
+                $hasBtnOutline ? null : $optionLabelAttributes['class'][] = 'btn-outline-secondary';
+			}
 
             $optionLabelAttributes['class'] = implode(' ', $optionLabelAttributes['class']);
 
             empty($option->disable) ? null : $optionLabelAttributes['disabled'] = 'disabled';
 
             if ($disabled || $readonly){
-                $optionLabelAttributes['style'] = 'pointer-events: none';
+				$optionLabelAttributes['style'] = 'pointer-events: none';
             }
 
             // Build the option attributes array.
-            $optionAttributes          = [];
+			$optionAttributes          = [];
             $optionAttributes['class'] = [];
-            $optionAttributes['type']  = 'radio';
-            $optionAttributes['role']  = 'switch';
-            $optionAttributes['id']    = $optionId;
-            $optionAttributes['name']  = $name;
+			$optionAttributes['type']  = 'radio';
+			$optionAttributes['id']    = $optionId;
+			$optionAttributes['name']  = $name;
             $optionAttributes['value'] = $option->value;
 
-            if (!is_numeric($option->value) && !empty($option->value)) {
+			if (!is_numeric($option->value) && !empty($option->value)) {
                 $optionAttributes['value'] = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
-            }
+			}
 
             empty($option->class) ? null : $optionAttributes['class'][] = $option->class;
             !($option->value === $value) ? null : $optionAttributes['class'][] = 'active';
@@ -138,22 +152,21 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
             empty($option->disable) ? null : $optionAttributes['disabled'] = 'disabled';
             !($option->value === $value) ? null : $optionAttributes['checked'] = 'checked';
 
-            $optionAttributes      = ArrayHelper::toString($optionAttributes);
-            $optionLabelAttributes = ArrayHelper::toString($optionLabelAttributes);
-            ?>
+			$optionAttributes      = ArrayHelper::toString($optionAttributes);
+			$optionLabelAttributes = ArrayHelper::toString($optionLabelAttributes);
+			?>
 
 			<input <?php echo $optionAttributes; ?> />
 			<label <?php echo $optionLabelAttributes ?>
-                <?php if (!empty($option->optionattr)) :
-                    Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
-                    HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+				<?php if (!empty($option->optionattr)) :
+					Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
+					HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'), array('defer' => 'defer'));
 
-                    echo $option->optionattr; ?>
-                <?php endif; ?>
+					echo $option->optionattr; ?>
+				<?php endif; ?>
 			>
-                <?php echo $option->text; ?>
+				<?php echo $option->text; ?>
 			</label>
-        <?php endforeach; ?>
-		<span class="toggle-outside"><span class="toggle-inside"></span></span>
+		<?php endforeach; ?>
 	</div>
 </fieldset>

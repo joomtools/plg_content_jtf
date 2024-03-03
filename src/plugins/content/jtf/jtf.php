@@ -10,8 +10,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
-
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
@@ -832,11 +830,8 @@ class PlgContentJtf extends CMSPlugin
      */
     private function sendMail()
     {
-        if (version_compare(JVERSION, 4, 'lt')) {
-            $mailer = Factory::getMailer();
-        } else {
-            $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
-        }
+        $config = clone $this->app->getConfig();
+        $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer($config);
 
         $subject = $this->getValue('subject');
         $subject = !empty($subject) ? $subject : Text::sprintf('JTF_EMAIL_SUBJECT', $this->app->get('sitename'));
@@ -862,6 +857,7 @@ class PlgContentJtf extends CMSPlugin
         $hBody = $this->getTmpl('message.html');
         $pBody = $this->getTmpl('message.plain');
 
+        $mailer->setSender($this->app->get('mailfrom'), $replayToName);
         $mailer->addReplyTo($replayToEmail, $replayToName);
         $mailer->addRecipient($recipient);
 

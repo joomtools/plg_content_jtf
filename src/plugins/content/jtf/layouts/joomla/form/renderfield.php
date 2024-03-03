@@ -25,12 +25,7 @@ extract($displayData);
  */
 
 if (!empty($options['showonEnabled'])) {
-    if (version_compare(JVERSION, 4, 'lt')) {
-        HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
-    } else {
-        Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
-    }
-
+    Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
     HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'), array('defer' => 'defer'));
 }
 
@@ -100,13 +95,13 @@ if (!empty($options['gridField'])) {
 
         <?php if ($showfieldMarkerDesc) : ?>
 			<div id="<?php echo $options['id'] . '-marker'; ?>" class="marker <?php echo $descriptionClass; ?>">
-				<small><?php echo $fieldMarkerDesc; ?></small><br/>
+				<?php echo $fieldMarkerDesc; ?>
 			</div>
         <?php endif; ?>
 
         <?php if ($showFieldDescription) : ?>
-			<div id="<?php echo $options['id'] . '-desc'; ?>" class="description <?php echo $descriptionClass; ?>">
-				<small><?php echo $description; ?></small>
+			<div id="<?php echo $options['id'] . '-desc'; ?>" class="field-description <?php echo $descriptionClass; ?>">
+				<?php echo $description; ?>
 			</div>
         <?php endif; ?>
         <?php if (!empty($gridField)) : ?>
