@@ -9,10 +9,13 @@
 	<authorUrl>https://github.com/joomtools/plg_content_jtf</authorUrl>
 	<version>##VERSION##</version>
 	<description>JTF_XML_DESC</description>
-	<namespace path="src">Jtf</namespace>
+	<namespace path="src">JoomTools\Plugin\Content\Jtf</namespace>
 	<files>
 		##FILES##
 	</files>
+	<media destination="plg_content_jtf" folder="media/plg_content_jtf">
+		##MEDIA_FILES##
+	</media>
 	<scriptfile>script.php</scriptfile>
 	<config>
 		<fields name="params">

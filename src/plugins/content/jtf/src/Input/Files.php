@@ -8,7 +8,7 @@
  * @license      GNU General Public License version 3 or later
  */
 
-namespace Jtf\Input;
+namespace JoomTools\Plugin\Content\Jtf\Input;
 
 defined('JPATH_PLATFORM') or die;
 

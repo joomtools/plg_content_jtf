@@ -8,14 +8,14 @@
  * @license      GNU General Public License version 3 or later
  */
 
-namespace Jtf\Framework;
+namespace JoomTools\Plugin\Content\Jtf\Framework;
 
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\Utilities\ArrayHelper;
-use Jtf\Form\Form;
+use JoomTools\Plugin\Content\Jtf\Form\Form;
 
 /**
  * Helper for css framework
@@ -209,7 +209,7 @@ class FrameworkHelper
             $this->setFlexboxCssFix();
         }
 
-        $frwkClassName = 'Jtf\\Framework\\' . ucfirst($framework);
+        $frwkClassName = 'JoomTools\\Plugin\\Content\\Jtf\\Framework\\' . ucfirst($framework);
         $frwk          = new $frwkClassName($orientation);
         $this->_frwk   = $frwk;
 
@@ -649,14 +649,11 @@ class FrameworkHelper
                 $classes['frwk']['class'] = array();
             }
 
-            //			$fieldInline = filter_var($classes['field']['inline'][0], FILTER_VALIDATE_BOOLEAN);
+            //$fieldInline = filter_var($classes['field']['inline'][0], FILTER_VALIDATE_BOOLEAN);
             $classes['frwk']['class'] = array_merge($classes['frwk']['class'], $classes['frwk']['inline']['class']);
 
             unset($classes['frwk']['inline']['class']);
         }
-
-        //		echo "\nFieldHiddenLabel: $fieldName - $type";
-        //		var_dump($fieldHiddenLabel);
 
         if ($fieldHiddenLabel || in_array($type, $this->hiddenLabelTypes, true)) {
             $form->setFieldAttribute($fieldName, 'hiddenlabel', "true");

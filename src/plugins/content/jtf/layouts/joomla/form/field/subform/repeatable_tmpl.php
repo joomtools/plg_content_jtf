@@ -11,8 +11,8 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Jtf\Form\Form;
-use Jtf\Framework\FrameworkHelper;
+use JoomTools\Plugin\Content\Jtf\Form\Form;
+use JoomTools\Plugin\Content\Jtf\Framework\FrameworkHelper;
 
 extract($displayData);
 

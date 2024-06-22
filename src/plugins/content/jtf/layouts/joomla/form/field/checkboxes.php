@@ -18,7 +18,6 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
- *
  * @var   string   $autocomplete    Autocomplete attribute for the field.
  * @var   boolean  $autofocus       Is autofocus enabled?
  * @var   string   $class           Classes for the input.
@@ -50,7 +49,7 @@ extract($displayData);
  */
 
 // Build the fieldset attributes array.
-$fieldsetAttributes          = array();
+$fieldsetAttributes          = [];
 $fieldsetAttributes['id']    = $id;
 $fieldsetAttributes['class'] = 'checkboxes checkboxes-group';
 
@@ -68,20 +67,21 @@ if ($required) {
 $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 ?>
 <fieldset <?php echo $fieldsetAttributes; ?>>
+	<legend class="visually-hidden"><?php echo $label; ?></legend>
     <?php foreach ($options as $i => $option) :
         $optionId = $id . $i;
         $isChecked = in_array((string) $option->value, $checkedOptions, true);
         $isChecked = (!$hasValue && $option->checked) ? true : $isChecked;
 
         // Build the label attributes array.
-        $optionLabelAttributes        = array();
+        $optionLabelAttributes        = [];
         $optionLabelAttributes['for'] = $optionId;
 
         empty($option->labelclass) ? null : $optionLabelAttributes['class'] = $option->labelclass;
         empty($option->disable) ? null : $optionLabelAttributes['disabled'] = 'disabled';
 
         // Build the option attributes array.
-        $optionAttributes          = array();
+        $optionAttributes          = [];
         $optionAttributes['type']  = 'checkbox';
         $optionAttributes['id']    = $optionId;
         $optionAttributes['name']  = $name;
@@ -90,7 +90,7 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
         empty($option->class) ? null : $optionAttributes['class'] = $option->class;
         empty($option->onclick) ? null : $optionAttributes['onclick'] = $option->onclick;
         empty($option->onchange) ? null : $optionAttributes['onchange'] = $option->onchange;
-        empty($option->disable) ? null : $optionAttributes['disabled'] = 'disabled';
+        empty($option->disable) || !$disabled ? null : $optionAttributes['disabled'] = 'disabled';
         !$isChecked ? null : $optionAttributes['checked'] = 'checked';
 
         $optionAttributes      = ArrayHelper::toString($optionAttributes);
@@ -102,7 +102,7 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 			<label <?php echo $optionLabelAttributes ?>
                 <?php if (!empty($option->optionattr)) :
                     Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
-                    HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'));
+                    HTMLHelper::_('script', 'plg_content_jtf/jtfShowon.min.js', array('version' => 'auto'));
                     echo $option->optionattr; ?>
                 <?php endif; ?>
 			>

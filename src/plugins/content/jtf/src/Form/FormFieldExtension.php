@@ -8,14 +8,14 @@
  * @license      GNU General Public License version 3 or later
  */
 
-namespace Jtf\Form;
+namespace JoomTools\Plugin\Content\Jtf\Form;
 
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
-use Jtf\Layout\FileLayout;
+use JoomTools\Plugin\Content\Jtf\Layout\FileLayout;
 
 /**
  * Abstract Form Field class for the Joomla Platform.

@@ -21,9 +21,9 @@ extract($displayData);
  */
 
 ?>
-<div class="input-prepend">
-	<span class="add-on">
+<div class="input-group">
+	<div class="input-group-text">
 		<span class="<?php echo $icon; ?>"></span>
-	</span>
+	</div>
     <?php echo $input; ?>
 </div>

@@ -15,7 +15,7 @@ namespace Form\Field;
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Form\Field\RadiobasicField as JoomlaRadiobasicField;
-use Jtf\Form\FormFieldExtension;
+use JoomTools\Plugin\Content\Jtf\Form\FormFieldExtension;
 
 /**
  * Form Field class for the Joomla Platform.

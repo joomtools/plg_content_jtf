@@ -8,7 +8,7 @@
  * @license      GNU General Public License version 3 or later
  */
 
-namespace Jtf\Framework;
+namespace JoomTools\Plugin\Content\Jtf\Framework;
 
 defined('_JEXEC') or die('Restricted access');
 

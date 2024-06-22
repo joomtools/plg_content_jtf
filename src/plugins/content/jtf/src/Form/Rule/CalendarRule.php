@@ -8,7 +8,7 @@
  * @license      GNU General Public License version 3 or later
  */
 
-namespace Jtf\Form\Rule;
+namespace JoomTools\Plugin\Content\Jtf\Form\Rule;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('JPATH_PLATFORM') or die;
@@ -18,7 +18,7 @@ use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormRule;
 use Joomla\Registry\Registry;
-use Jtf\Form\Form;
+use JoomTools\Plugin\Content\Jtf\Form\Form;
 
 /**
  * Form Rule class for the Joomla Platform

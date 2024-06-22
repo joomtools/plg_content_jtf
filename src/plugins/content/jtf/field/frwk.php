@@ -57,7 +57,7 @@ class JFormFieldFrwk extends ListField
                 continue;
             }
 
-            $framework    = 'Jtf\\Framework\\' . ucfirst($fileName);
+            $framework    = 'JoomTools\\Plugin\\Content\\Jtf\\Framework\\' . ucfirst($fileName);
             $fileRealName = $framework::$name;
 
             $tmp = array(

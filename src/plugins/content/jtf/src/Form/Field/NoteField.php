@@ -8,14 +8,14 @@
  * @license      GNU General Public License version 3 or later
  */
 
-namespace Jtf\Form\Field;
+namespace JoomTools\Plugin\Content\Jtf\Form\Field;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('JPATH_PLATFORM') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Form\Field\NoteField as JoomlaNoteField;
-use Jtf\Form\FormFieldExtension;
+use JoomTools\Plugin\Content\Jtf\Form\FormFieldExtension;
 
 /**
  * Form Field class for the Joomla Platform.

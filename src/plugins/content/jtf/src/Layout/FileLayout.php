@@ -8,7 +8,7 @@
  * @license      GNU General Public License version 3 or later
  */
 
-namespace Jtf\Layout;
+namespace JoomTools\Plugin\Content\Jtf\Layout;
 
 defined('JPATH_PLATFORM') or die;
 

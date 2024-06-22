@@ -10,7 +10,7 @@
 
 defined('_JEXEC') or die;
 
-use Jtf\Form\Field\CheckboxField;
+use JoomTools\Plugin\Content\Jtf\Form\Field\CheckboxField;
 
 extract($displayData);
 

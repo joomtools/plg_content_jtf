@@ -8,7 +8,7 @@
  * @license      GNU General Public License version 3 or later
  */
 
-namespace Jtf\Form\Field;
+namespace JoomTools\Plugin\Content\Jtf\Form\Field;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('JPATH_PLATFORM') or die;
@@ -18,7 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CalendarField as JoomlaCalendarField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
-use Jtf\Form\FormFieldExtension;
+use JoomTools\Plugin\Content\Jtf\Form\FormFieldExtension;
 
 if (version_compare(JVERSION, '4', 'lt')) {
     FormHelper::loadFieldClass('calendar');

@@ -8,7 +8,7 @@
  * @license      GNU General Public License version 3 or later
  */
 
-namespace Jtf\Form;
+namespace JoomTools\Plugin\Content\Jtf\Form;
 
 defined('JPATH_PLATFORM') or die;
 

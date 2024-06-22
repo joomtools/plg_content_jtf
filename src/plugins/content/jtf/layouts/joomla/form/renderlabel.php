@@ -11,8 +11,8 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 extract($displayData);
 
@@ -20,21 +20,21 @@ extract($displayData);
  * Layout variables
  * ---------------------
  *
- * @var   string   $text                    The label text
- * @var   string   $description             An optional description to use in a tooltip
- * @var   string   $for                     The id of the input this label is for
- * @var   boolean  $required                True if a required field
- * @var   array    $classes                 A list of classes
- * @var   string   $position                The tooltip position. Bottom for alias
- * @var   string   $fieldMarker             Field type to mark (required/optional)
- * @var   string   $fieldMarkerPlace        Place to set the field marker
- * @var   string   $showFieldDescriptionAs  Show description as tooltip or as text attached on the field
+ * @var   string  $text                   The label text
+ * @var   string  $description            An optional description to use in a tooltip
+ * @var   string  $for                    The id of the input this label is for
+ * @var   boolean $required               True if a required field
+ * @var   array   $classes                A list of classes
+ * @var   string  $position               The tooltip position. Bottom for alias
+ * @var   string  $fieldMarker            Field type to mark (required/optional)
+ * @var   string  $fieldMarkerPlace       Place to set the field marker
+ * @var   string  $showFieldDescriptionAs Show description as tooltip or as text attached on the field
  */
 
 $classes = array_filter((array) $classes);
-
-$id    = $for . '-lbl';
-$title = '';
+$star    = Text::_('JTF_FIELD_MARKED_LABEL_' . strtoupper($fieldMarker));
+$id      = $for . '-lbl';
+$title   = '';
 
 if (!empty($description) && $showFieldDescriptionAs == 'tooltip') {
     if ($text && $text !== $description) {
@@ -43,7 +43,7 @@ if (!empty($description) && $showFieldDescriptionAs == 'tooltip') {
         $title     = ' title="' . htmlspecialchars(trim($text, ':')) . '"'
             . ' data-content="' . htmlspecialchars($description) . '"';
 
-        if (!$position && Factory::getLanguage()->isRtl()) {
+        if (!$position && Factory::getApplication()->getLanguage()->isRtl()) {
             $position = ' data-placement="left" ';
         }
     } else {
@@ -68,8 +68,7 @@ if ($required) {
     <?php echo $text; ?>
     <?php if ($fieldMarkerPlace == 'label') : ?>
         <?php if (($required && $fieldMarker == 'required') || (!$required && $fieldMarker == 'optional')) : ?>
-			<span
-				class="star marker">&#160;<?php echo Text::_('JTF_FIELD_MARKED_LABEL_' . strtoupper($fieldMarker)); ?></span>
+			<span class="star marker">&#160;<?php echo $star; ?></span>
         <?php endif; ?>
     <?php endif; ?>
 </label>
