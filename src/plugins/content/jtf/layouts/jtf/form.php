@@ -56,10 +56,10 @@ if ($fillouttime > 0) {
     $jsToAdd .= "jtfTtf." . $id . " = " . $fillouttime . ";";
     $jsToAdd .= "jtfBadgeClass." . $id . " = '" . $jtfBadgeClass[$frwk] . "';";
 
-    HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfTimeToFill.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+    HTMLHelper::_('script', 'plg_content_jtf/jtfTimeToFill.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
 }
 
-$cssToAdd = ".hidden{display:none;visibility:hidden;}
+$cssToAdd = ".jtf .hidden[data-showon]{display:none!important;}
 	.jtfhp{position:absolute;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0);border:0!important;float:none!important;}
 	.jtf .invalid:not(label):not(fieldset):not(.marker){border-color:" . $invalidColor . "!important;background-color:" . $invalidBackgroundColor . "!important;}
 	.jtf .invalid,.jtf .invalid::placeholder{color:" . $invalidColor . ";}
@@ -68,16 +68,24 @@ $cssToAdd = ".hidden{display:none;visibility:hidden;}
 	.jtf .marker{font-weight:bold;}
 	.jtf [disabled]{pointer-events:none;}
 	.jtf .inline{display:inline-block!important;line-height:150%;}
-	.jtf select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:#fff url('data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A') no-repeat 100% 50% !important;padding-right:20px!important;}
+	.jtf select,.choices[data-type*=\"select-one\"] .choices__inner, .choices[data-type*=\"select-multiple\"] .choices__inner{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:#fff url('data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%236C6D74%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A') no-repeat 100% 50% !important;padding-right:20px!important;}
 	.jtf .uk-form-icon > [class*=\"uk-icon-\"]{z-index:1;}";
 
-Factory::getApplication()->getDocument()->getWebAssetManager()->addInline('script', $jsToAdd);
-Factory::getApplication()->getDocument()->getWebAssetManager()->addInline('style', $cssToAdd);
+if ($frwk == 'bs5') {
+    $cssToAdd .= '.jtf .subform-repeatable-group{margin-left:calc(var(--gutter-x) * .5);margin-right:calc(var(--gutter-x) * .5)}
+    .jtf .subform-repeatable-group[class*="col-"]{flex:content;}';
+}
+
+/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+
+$wa->addInline('script', $jsToAdd);
+$wa->addInline('style', $cssToAdd);
 
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfScrollToError.min.js', array('version' => 'auto'), array('defer' => 'defer'));
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfInvalidMarker.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+HTMLHelper::_('script', 'plg_content_jtf/jtfScrollToError.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
+HTMLHelper::_('script', 'plg_content_jtf/jtfInvalidMarker.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
 
 ?>
 <div class="jtf contact-form">

@@ -14,16 +14,27 @@ namespace JoomTools\Plugin\Content\Jtf\Form\Field;
 \defined('JPATH_PLATFORM') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use Joomla\CMS\Form\Field\ComboField as JoomlaComboField;
-use JoomTools\Plugin\Content\Jtf\Form\FormFieldExtension;
-
 /**
  * Form Field class for the Joomla Platform.
  * Implements a combo box field.
  *
  * @since  4.0.0
  */
-class ComboField extends JoomlaComboField
+class ComboField extends ListField
 {
-    use FormFieldExtension;
+    /**
+     * Name of the layout being used to render the field
+     *
+     * @var    string
+     * @since  4.0.0
+     */
+    protected $layout = 'joomla.form.field.list-fancy-select';
+
+    /**
+     * Name of the layout being used to render the field
+     *
+     * @var    string
+     * @since  4.0.0
+     */
+    protected $dataAttributes = ['allow-custom' => 'true'];
 }

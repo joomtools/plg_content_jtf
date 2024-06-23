@@ -8,7 +8,7 @@
  * @license      GNU General Public License version 3 or later
  */
 
-defined('JPATH_BASE') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -17,7 +17,6 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
- *
  * @var   string   $autocomplete    Autocomplete attribute for the field.
  * @var   boolean  $autofocus       Is autofocus enabled?
  * @var   string   $class           Classes for the input.
@@ -45,27 +44,34 @@ extract($displayData);
  * @var   boolean  $hasValue        Has this field a value assigned?
  * @var   array    $options         Options available for this field.
  * @var   array    $inputType       Options available for this field.
+ * @var   string   $dataAttribute   Miscellaneous data attributes preprocessed for HTML output
+ * @var   array    $dataAttributes  Miscellaneous data attribute for eg, data-*
  */
 
-$html = array();
+$html = [];
 $attr = '';
 
 // Initialize the field attributes.
-$attr .= !empty($class) ? ' class="' . $class . '"' : '';
+$attr .= !empty($class) ? ' class="form-select ' . $class . '"' : ' class="form-select"';
+#$attr .= !empty($class) ? ' class="' . $class . '"' : '';
 $attr .= !empty($size) ? ' size="' . $size . '"' : '';
 $attr .= $multiple ? ' multiple' : '';
 $attr .= $required ? ' required' : '';
 $attr .= $autofocus ? ' autofocus' : '';
 $attr .= $onchange ? ' onchange="' . $onchange . '"' : '';
+$attr .= !empty($description) ? ' aria-describedby="' . ($id ?: $name) . '-desc"' : '';
+$attr .= $dataAttribute;
 
 // To avoid user's confusion, readonly="readonly" should imply disabled="disabled".
 if ($readonly || $disabled) {
     $attr .= ' disabled="disabled"';
 }
 
+$selectHelper = HTMLHelper::getServiceRegistry()->getService('select');
+
 // Create a read-only list (no name) with hidden input(s) to store the value(s).
 if ($readonly) {
-    $html[] = HTMLHelper::_('select.genericlist', $options, '', trim($attr), 'value', 'text', $value, $id);
+    $html[] = $selectHelper::genericlist($options, '', trim($attr), 'value', 'text', $value, $id);
 
     // E.g. form field type tag sends $this->value as array
     if ($multiple && is_array($value)) {
@@ -77,11 +83,18 @@ if ($readonly) {
             $html[] = '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($val, ENT_COMPAT, 'UTF-8') . '">';
         }
     } else {
-        $html[] = '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '">';
+        $html[] = '<input type="hidden" id="' . $id . '-value" name="' . $name . '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '">';
     }
-} else // Create a regular list.
-{
-    $html[] = HTMLHelper::_('select.genericlist', $options, $name, trim($attr), 'value', 'text', $value, $id, true);
+} else { // Create a regular list passing the arguments in an array.
+    $listoptions = [];
+    $listoptions['option.key'] = 'value';
+    $listoptions['option.text'] = 'text';
+    $listoptions['list.select'] = $value;
+    $listoptions['id'] = $id;
+    $listoptions['list.translate'] = false;
+    $listoptions['option.attr'] = 'optionattr';
+    $listoptions['list.attr'] = trim($attr);
+    $html[] = $selectHelper::genericlist($options, $name, $listoptions);
 }
 
 echo implode($html);

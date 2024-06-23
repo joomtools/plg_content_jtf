@@ -256,7 +256,9 @@ class FrameworkHelper
     private function setFrameworkCss(string $css)
     {
         if (self::$frameworkCssSet !== true) {
-            Factory::getDocument()->addStyleDeclaration($css);
+            /** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+            $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+            $wa->addInline('style', $css);
             self::$frameworkCssSet = true;
         }
     }
@@ -572,7 +574,7 @@ class FrameworkHelper
         $fieldName = $field->getAttribute('name');
 
         $frwkClassesOptionsFields = array(
-            'checkboxes', 'radio', 'buttongroup', 'switcher'
+            'checkboxes', 'radio', 'buttongroup', 'switcher',
         );
 
         $frwkClassesDefaultFields = array(

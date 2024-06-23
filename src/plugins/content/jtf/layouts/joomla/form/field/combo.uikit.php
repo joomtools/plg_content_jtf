@@ -47,7 +47,7 @@ extract($displayData);
  * @var   array    $inputType       Options available for this field.
  */
 
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfCombo.uikit.min.js', array('version' => 'auto'));
+HTMLHelper::_('script', 'plg_content_jtf/jtfCombo.uikit.min.js', ['version' => 'auto', 'relative' => true]);
 
 $attr = !empty($class) ? ' class="combobox ' . $class . '"' : ' class="combobox"';
 $attr .= !empty($size) ? ' size="' . $size . '"' : '';

@@ -160,7 +160,7 @@ $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 			<label <?php echo $optionLabelAttributes ?>
 				<?php if (!empty($option->optionattr)) :
 					Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
-					HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+					HTMLHelper::_('script', 'plg_content_jtf/jtfShowon.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
 
 					echo $option->optionattr; ?>
 				<?php endif; ?>

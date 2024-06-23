@@ -52,10 +52,10 @@ extract($displayData);
  * @var   array    $dataAttributes  Miscellaneous data attribute for eg, data-*.
  */
 
-HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/jtfRange.min.css', array('version' => 'auto'));
+HTMLHelper::_('stylesheet', 'plg_content_jtf/jtfRange.min.css', ['version' => 'auto', 'relative' => true]);
 
 if (version_compare(JVERSION, '4', 'lt')) {
-    // Including fallback code for HTML5 non supported browsers.
+    // Including fallback code for HTML5 non-supported browsers.
     HTMLHelper::_('jquery.framework');
     HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
 }

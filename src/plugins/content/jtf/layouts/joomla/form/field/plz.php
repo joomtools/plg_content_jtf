@@ -41,7 +41,7 @@ extract($displayData);
  * @var   boolean  $hasValue      Has this field a value assigned?
  */
 
-HtmlHelper::_('script', 'plugins/content/jtf/assets/js/jtfPlz.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+HtmlHelper::_('script', 'plg_content_jtf/jtfPlz.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
 
 $autocomplete = !$autocomplete ? 'autocomplete="off"' : 'autocomplete="' . $autocomplete . '"';
 $autocomplete = $autocomplete === 'autocomplete="on"' ? '' : $autocomplete;

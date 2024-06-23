@@ -25,10 +25,12 @@ extract($displayData);
  * @var   int     $unique_subform_id  Whether group the subform fields by it`s fieldset
  */
 
-$subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : ''; ?>
+$subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : '';
+$subformClass .= ' subform-repeatable-group-' . $unique_subform_id;
+?>
 
 <div
-	class="subform-repeatable-group <?php echo $subformClass; ?> subform-repeatable-group-<?php echo $unique_subform_id; ?>"
+	class="subform-repeatable-group <?php echo $subformClass; ?>"
 	data-base-name="<?php echo $basegroup; ?>"
 	data-group="<?php echo $group; ?>">
 

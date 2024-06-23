@@ -26,7 +26,7 @@ extract($displayData);
 
 if (!empty($options['showonEnabled'])) {
     Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
-    HTMLHelper::_('script', 'plg_content_jtf/jtfShowon.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+    HTMLHelper::_('script', 'plg_content_jtf/jtfShowon.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
 }
 
 $required         = $options['required'];

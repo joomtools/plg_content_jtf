@@ -67,12 +67,11 @@ class Bs5
         $classes['default'][]        = 'form-control';
         $classes['gridgroup']        = [
             'form-group',
-            'd-flex',
             'align-items-center',
         ];
         $classes['gridlabel'][]      = 'col-form-label';
         $classes['fieldset']         = [
-            'labelclass' => [
+            'labelclass'       => [
                 'col-form-label-test',
             ],
             'descriptionclass' => [
@@ -107,7 +106,7 @@ class Bs5
 
         $classes['list'] = [
             'class' => [
-                'custom-select',
+                //'custom-select',
             ],
         ];
 
@@ -141,7 +140,6 @@ class Bs5
             ],
             'options' => [
                 'class'      => [
-                    'form-control',
                     'form-check-input',
                 ],
                 'labelclass' => [
@@ -213,6 +211,7 @@ class Bs5
         $orientation = $this->_orientation;
 
         if ($orientation == 'horizontal') {
+            $classes['gridgroup'][] = 'd-flex';
             $classes['note']['gridfield'][] = 'col-sm-12';
         }
 
@@ -237,9 +236,10 @@ class Bs5
     public function getCss()
     {
         $css   = [];
-        $css[] = '.switcher .toggle-outside {border: var(--border-width) solid var(--template-bg-dark-20];border-radius: var(--border-radius];}';
+        $css[] = '.jtf .switcher .toggle-outside{border: var(--border-width) solid var(--template-bg-dark-20];border-radius: var(--border-radius];}';
+        //$css[] = '.jtf .subform-repeatable-group{margin-left:calc(var(--gutter-x) * .5);}';
 
-        return implode('', $css);
+        return implode(' ', $css);
     }
 
     private function getOrientationFieldsetClasses()

@@ -166,8 +166,8 @@ if (!$disabled || !$readonly)
 			->useScript('field.calendar');
 	}
 
-	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfMoment.min.js', array('version' => 'auto'), array('defer' => 'defer'));
-	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfValidateDateFormat.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+	HTMLHelper::_('script', 'plg_content_jtf/jtfMoment.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
+	HTMLHelper::_('script', 'plg_content_jtf/jtfValidateDateFormat.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
 }
 
 // Build the button attributes array.

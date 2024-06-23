@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="horizontal">
-	<fieldset name="block1"
+<form orientation="stacked">
+	<fieldset orientation="horizontal"
+	          name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
 	          label="JTF_FIELDSET_DEFAULT_LABEL"
 	>
@@ -90,7 +91,7 @@
 		       type="radio"
 		       description="JTF_SHW_SWITCH_DESC"
 		       label="JTF_SHW_SWITCH_LABEL"
-		       default="JNO"
+		       default="JOFF"
 		       validate="options"
 		       inline="true"
 		       notmail="1"

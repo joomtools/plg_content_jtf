@@ -11,6 +11,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use JoomTools\Plugin\Content\Jtf\Form\Form;
 use JoomTools\Plugin\Content\Jtf\Framework\FrameworkHelper;
 
@@ -35,8 +36,8 @@ extract($displayData);
 // Add script
 if ($multiple) {
     if (version_compare(JVERSION, 4, 'lt')) {
-        JHtml::_('jquery.ui', array('core', 'sortable'));
-        JHtml::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
+        HTMLHelper::_('jquery.ui', array('core', 'sortable'));
+        HTMLHelper::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
     } else {
         Factory::getDocument()->getWebAssetManager()
             ->useScript('webcomponent.field-subform');

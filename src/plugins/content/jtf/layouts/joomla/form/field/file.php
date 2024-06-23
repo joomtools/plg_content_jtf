@@ -64,9 +64,9 @@ Text::script('JTF_JS_UPLOAD_ALLOWED_FILES_EXT', true);
 Text::script('JTF_JS_UPLOAD_LIST_WRAPPER_' . strtoupper($framework));
 Text::script('JTF_JS_ERROR_WRAPPER_' . strtoupper($framework));
 
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfLite2.min.js', array('version' => 'auto'));
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfUploadFile.min.js', array('version' => 'auto'));
-HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/jtfUploadFile.min.css', array('version' => 'auto'));
+HTMLHelper::_('script', 'plg_content_jtf/jtfLite2.min.js', ['version' => 'auto', 'relative' => true]);
+HTMLHelper::_('script', 'plg_content_jtf/jtfUploadFile.min.js', ['version' => 'auto', 'relative' => true]);
+HTMLHelper::_('stylesheet', 'plg_content_jtf/jtfUploadFile.min.css', ['version' => 'auto', 'relative' => true]);
 
 ?>
 <div class="uploader-wrapper">
