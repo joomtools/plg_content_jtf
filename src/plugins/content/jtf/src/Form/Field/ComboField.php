@@ -23,6 +23,14 @@ namespace JoomTools\Plugin\Content\Jtf\Form\Field;
 class ComboField extends ListField
 {
     /**
+     * The form field type.
+     *
+     * @var    string
+     * @since  4.0.0
+     */
+    protected $type = 'Combo';
+
+    /**
      * Name of the layout being used to render the field
      *
      * @var    string

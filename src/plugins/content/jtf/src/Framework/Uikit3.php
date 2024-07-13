@@ -182,6 +182,8 @@ class Uikit3
         $css[] = '.jtf .checkbox, .radio {padding-left: 0 !important;}';
         $css[] = '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}';
         $css[] = '.jtf .minicolors-theme-bootstrap .hex{height:auto;}';
+        $css[] = '.jtf .is-focused .choices__inner{color: var(--lt-color-text-default);}';
+        $css[] = '.jtf .choices__inner{color: var(--lt-color-text-default);}';
 
         return implode('', $css);
     }
