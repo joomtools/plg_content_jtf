@@ -7,6 +7,8 @@
  * @license      GNU General Public License version 3 or later
  */
 
+"use strict";
+
 document.addEventListener('DOMContentLoaded', () => {
 	let forms = document.querySelectorAll('.jtf.contact-form form'),
 		jtfTtf = window.jtfTtf || {},

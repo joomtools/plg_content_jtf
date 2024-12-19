@@ -7,6 +7,8 @@
  * @license      GNU General Public License version 3 or later
  */
 
+"use strict";
+
 const jtfSetNovalidate = (field) => {
 		if (!field.classList.contains('novalidate')) {
 			field.classList.add('novalidate');

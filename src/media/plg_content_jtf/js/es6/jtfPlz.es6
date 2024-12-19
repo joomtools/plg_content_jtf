@@ -7,6 +7,8 @@
  * @license      GNU General Public License version 3 or later
  */
 
+"use strict";
+
 document.addEventListener('DOMContentLoaded', () => {
 	document.formvalidator.setHandler('plz', (value) => {
 		let regex = /^\d{5}$/;

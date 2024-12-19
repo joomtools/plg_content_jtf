@@ -7,6 +7,8 @@
  * @license      GNU General Public License version 3 or later
  */
 
+"use strict";
+
 let jtfUploadFile = (elm, optionlist) => {
 	// console.log('elm', elm);
 	// console.log('optionlist', optionlist);
