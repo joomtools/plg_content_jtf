@@ -10,6 +10,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -65,8 +66,7 @@ Text::script('JTF_JS_UPLOAD_LIST_WRAPPER_' . strtoupper($framework));
 Text::script('JTF_JS_ERROR_WRAPPER_' . strtoupper($framework));
 
 HTMLHelper::_('script', 'plg_content_jtf/jtfLite2.min.js', ['version' => 'auto', 'relative' => true]);
-HTMLHelper::_('script', 'plg_content_jtf/jtfUploadFile.min.js', ['version' => 'auto', 'relative' => true]);
-HTMLHelper::_('stylesheet', 'plg_content_jtf/jtfUploadFile.min.css', ['version' => 'auto', 'relative' => true]);
+Factory::getApplication()->getDocument()->getWebAssetManager()->usePreset('jtf.jtfUploadFile');
 
 ?>
 <div class="uploader-wrapper">
