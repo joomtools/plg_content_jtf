@@ -34,11 +34,11 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Version;
 use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Input\Input;
 use Joomla\Utilities\ArrayHelper;
 use JoomTools\Plugin\Content\Jtf\Form\Form;
 use JoomTools\Plugin\Content\Jtf\Framework\FrameworkHelper;
@@ -168,21 +168,18 @@ final class Jtf extends CMSPlugin
      *
      * @param   DispatcherInterface      $dispatcher  The object to observe -- event dispatcher.
      * @param   array                    $config      An optional associative array of configuration settings.
-     * @param   CMSApplicationInterface  $app         The app
-     * @param   DatabaseInterface        $db          The db
      *
      * @since  4.0.0
      */
-    public function __construct(DispatcherInterface $dispatcher, array $config, CMSApplicationInterface $app, DatabaseInterface $db)
+    public function __construct(DispatcherInterface $dispatcher, array $config, Input $input)
     {
         parent::__construct($dispatcher, $config);
 
-        $this->setApplication($app);
-        $this->setDatabase($db);
+        $app = $this->getApplication();
 
         $this->debug = (boolean) $this->params->get('debug', 0);
-        $option      = $app->input->getCmd('option');
-        $isEdit      = $app->input->getCmd('layout') == 'edit';
+        $option      = $input->getCmd('option');
+        $isEdit      = $input->getCmd('layout') == 'edit';
 
         if (\in_array($option, $this->excludeOnExtensions) || $isEdit) {
             $this->doNotLoad = true;
@@ -205,6 +202,7 @@ final class Jtf extends CMSPlugin
      */
     public function onContentPrepare($context, &$article, $params, $page = 0)
     {
+        /** @var CMSApplicationInterface $app */
         $app = $this->getApplication();
 
         // Don't run in administration Panel or when the content is being indexed

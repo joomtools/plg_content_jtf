@@ -13,6 +13,7 @@
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\WebAsset\WebAssetRegistry;
 use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
@@ -34,12 +35,21 @@ return new class () implements ServiceProviderInterface {
         $container->set(
             PluginInterface::class,
             function (Container $container) {
-                return new Jtf(
+                $app        = Factory::getApplication();
+
+                $plugin = new Jtf(
                     $container->get(DispatcherInterface::class),
                     (array) PluginHelper::getPlugin('content', 'jtf'),
-                    Factory::getApplication(),
-                    $container->get(DatabaseInterface::class)
+                    $app->getInput()
                 );
+
+                $plugin->setApplication($app);
+                $plugin->setDatabase($container->get(DatabaseInterface::class));
+
+                $wa = $container->get(WebAssetRegistry::class);
+                $wa->addRegistryFile('media/plg_content_jtf/joomla.asset.json');
+
+                return $plugin;
             }
         );
     }
