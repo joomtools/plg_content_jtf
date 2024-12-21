@@ -58,9 +58,9 @@ extract($displayData);
 
 $maxSize = HTMLHelper::_('number.bytes', $uploadMaxSize);
 
-Text::sprintf('JTF_JS_UPLOAD_ERROR_MESSAGE_SIZE', $maxSize, array('jsSafe' => true, 'interpretBackSlashes' => true, 'script' => true));
-Text::script('JTF_JS_UPLOAD_ERROR_FILE_NOT_ALLOWED', true);
-Text::script('JTF_JS_UPLOAD_ALLOWED_FILES_EXT', true);
+Text::script('JTF_JS_UPLOAD_ERROR_MESSAGE_SIZE');
+Text::script('JTF_JS_UPLOAD_ERROR_FILE_NOT_ALLOWED');
+Text::script('JTF_JS_UPLOAD_ALLOWED_FILES_EXT');
 Text::script('JTF_JS_UPLOAD_LIST_WRAPPER_' . strtoupper($framework));
 Text::script('JTF_JS_ERROR_WRAPPER_' . strtoupper($framework));
 

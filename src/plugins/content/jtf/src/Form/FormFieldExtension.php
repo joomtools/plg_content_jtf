@@ -580,7 +580,7 @@ trait FormFieldExtension
      *
      * @since  4.0.0
      */
-    public function validate($value = null, $group = null, Registry $input = null)
+    public function validate($value = null, $group = null, ?Registry $input = null)
     {
         // Make sure there is a valid SimpleXMLElement.
         if (!($this->element instanceof \SimpleXMLElement)) {

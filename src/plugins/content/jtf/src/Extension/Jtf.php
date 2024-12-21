@@ -16,6 +16,9 @@ namespace JoomTools\Plugin\Content\Jtf\Extension;
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Cache\CacheController;
+use Joomla\CMS\Cache\CacheControllerFactoryInterface;
+use Joomla\CMS\Cache\Exception\CacheExceptionInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\FormHelper;
@@ -35,6 +38,7 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Utilities\ArrayHelper;
 use JoomTools\Plugin\Content\Jtf\Form\Form;
 use JoomTools\Plugin\Content\Jtf\Framework\FrameworkHelper;
@@ -180,7 +184,7 @@ final class Jtf extends CMSPlugin
         $option      = $app->input->getCmd('option');
         $isEdit      = $app->input->getCmd('layout') == 'edit';
 
-        if (in_array($option, $this->excludeOnExtensions) || $isEdit) {
+        if (\in_array($option, $this->excludeOnExtensions) || $isEdit) {
             $this->doNotLoad = true;
         }
     }
@@ -205,7 +209,7 @@ final class Jtf extends CMSPlugin
 
         // Don't run in administration Panel or when the content is being indexed
         if (empty($article->text)
-            || strpos($article->text, '{jtf') === false
+            || \strpos($article->text, '{jtf') === false
             || ($context == 'com_content.category' && $app->input->getCmd('layout') != 'blog')
             || $context == 'com_finder.indexer'
             || $this->doNotLoad
@@ -214,18 +218,18 @@ final class Jtf extends CMSPlugin
         }
 
         // Get all matches or return
-        if (!preg_match_all(self::PLUGIN_REGEX1, $article->text, $matches)) {
+        if (!\preg_match_all(self::PLUGIN_REGEX1, $article->text, $matches)) {
             return;
         }
 
         $this->context = $context;
 
         switch (true) {
-            case !is_object($app->getUserState('plugins.content.jtf.' . $context)):
+            case !\is_object($app->getUserState('plugins.content.jtf.' . $context)):
                 $app->setUserState('plugins.content.jtf.' . $context, null);
-            case !is_object($app->getUserState('plugins.content.jtf.hp')):
+            case !\is_object($app->getUserState('plugins.content.jtf.hp')):
                 $app->setUserState('plugins.content.jtf.hp', null);
-            case !is_object($app->getUserState('plugins.content.jtf.start')):
+            case !\is_object($app->getUserState('plugins.content.jtf.start')):
                 $app->setUserState('plugins.content.jtf.start', null);
             default:
                 break;
@@ -239,18 +243,18 @@ final class Jtf extends CMSPlugin
         $langTag = $app->get('language');
 
         // Exclude <code/> and <pre/> matches
-        $code = array_keys($matches[1], '<code>');
-        $pre  = array_keys($matches[1], '<pre>');
+        $code = \array_keys($matches[1], '<code>');
+        $pre  = \array_keys($matches[1], '<pre>');
 
         if (!empty($code) || !empty($pre)) {
-            array_walk($matches,
+            \array_walk($matches,
                 function (&$array, $key, $tags) {
                     foreach ($tags as $tag) {
                         if ($tag !== null && $tag !== false) {
                             unset($array[$tag]);
                         }
                     }
-                },     array_merge($code, $pre)
+                },     \array_merge($code, $pre)
             );
         }
 
@@ -275,7 +279,8 @@ final class Jtf extends CMSPlugin
             }
 
             $formTheme = $this->uParams['theme'] . (int) self::$count;
-            $formLang  = $this->getThemePath('language/' . $langTag . '/' . $langTag . '.jtf_theme.ini');
+            //$formLang  = $this->getThemePath('language/' . $langTag . '/' . $langTag . '.jtf_theme.ini');
+            $this->loadThemeLanguage('jtf_theme');
 
             $jtfHp = $app->getUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme);
             $app->setUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme, null);
@@ -285,10 +290,6 @@ final class Jtf extends CMSPlugin
 
             $token = UserHelper::genRandomPassword(32);
             $app->setUserState('plugins.content.jtf.' . $context . '.' . $formTheme, $token);
-
-            if (!empty($formLang)) {
-                Factory::getLanguage()->load('jtf_theme', $formLang);
-            }
 
             // Get form submit task
             $formSubmitted = ($app->input->getCmd('formTask') == $formTheme . "_sendmail") ? true : false;
@@ -302,7 +303,7 @@ final class Jtf extends CMSPlugin
                 $honeypot        = $submittedValues[$jtfHp];
                 $fillOutTime     = $this->debug || JDEBUG || $this->uParams['fillouttime'] == 0
                     ? 100000
-                    : microtime(1) - $startTime;
+                    : \microtime(1) - $startTime;
                 $notSpamBot      = $fillOutTime > $this->uParams['fillouttime'];
 
                 if ($honeypot !== '' || !$notSpamBot || !$checkToken || !$checkFormToken) {
@@ -312,7 +313,7 @@ final class Jtf extends CMSPlugin
                 if (!empty($_FILES)) {
                     $jInput          = new Files;
                     $submittedFiles  = $jInput->get($formTheme);
-                    $submittedValues = array_merge_recursive($submittedValues, $submittedFiles);
+                    $submittedValues = \array_merge_recursive($submittedValues, $submittedFiles);
                 }
 
                 $this->getForm()->bind($submittedValues);
@@ -324,7 +325,7 @@ final class Jtf extends CMSPlugin
                     if (!empty($submittedFiles)) {
                         $validatedValues = $this->getForm()->getData()->toArray();
                         $validatedFiles  = $this->cleanSubmittedFiles($submittedFiles, $validatedValues);
-                        $newBind         = array_merge($validatedValues, $validatedFiles);
+                        $newBind         = \array_merge($validatedValues, $validatedFiles);
 
                         $this->getForm()->resetData();
                         $this->getForm()->bind($newBind);
@@ -361,14 +362,14 @@ final class Jtf extends CMSPlugin
 
             $html .= $this->getTmpl('form');
 
-            $startPos = strpos($article->text, $replacement);
-            $endPos   = strlen($replacement);
+            $startPos = \strpos($article->text, $replacement);
+            $endPos   = \strlen($replacement);
 
-            $article->text = substr_replace($article->text, $html, $startPos, $endPos);
+            $article->text = \substr_replace($article->text, $html, $startPos, $endPos);
             self::$count++;
 
             $this->clearOldFiles();
-            $app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, microtime(1));
+            $app->setUserState('plugins.content.jtf.start.' . $context . '.' . $formTheme, \microtime(1));
         }
 
         $this->removeCache($context);
@@ -391,7 +392,7 @@ final class Jtf extends CMSPlugin
         $this->resetUserParams();
 
         if (!empty($userParams)) {
-            $vars = explode('|', $userParams);
+            $vars = \explode('|', $userParams);
 
             // Set user params
             $this->setUserParams($vars);
@@ -414,7 +415,7 @@ final class Jtf extends CMSPlugin
 
         // Set default minimum fill out time
         $this->uParams['fillouttime'] = 0;
-        $fillOutTimeOnOff             = filter_var(
+        $fillOutTimeOnOff             = \filter_var(
             $this->params->get('filloutTime_onoff'),
             FILTER_VALIDATE_BOOLEAN
         );
@@ -433,7 +434,7 @@ final class Jtf extends CMSPlugin
         $this->uParams['field_marker_place'] = $this->params->get('field_marker_place');
 
         // Set the default option to display the required field description.
-        $this->uParams['show_required_field_description'] = filter_var(
+        $this->uParams['show_required_field_description'] = \filter_var(
             $this->params->get('show_required_field_description'),
             FILTER_VALIDATE_BOOLEAN
         );
@@ -443,7 +444,7 @@ final class Jtf extends CMSPlugin
         }
 
         // Set default option to show captcha
-        $this->uParams['captcha'] = filter_var(
+        $this->uParams['captcha'] = \filter_var(
             $this->params->get('captcha'),
             FILTER_VALIDATE_BOOLEAN
         );
@@ -479,11 +480,11 @@ final class Jtf extends CMSPlugin
         $this->uParams['file_clear'] = (int) $this->params->get('file_clear', 30);
 
         // Set default path in images to save uploaded files
-        $this->uParams['file_path'] = trim($this->params->get('file_path', 'uploads'), '\\/');
+        $this->uParams['file_path'] = \trim($this->params->get('file_path', 'uploads'), '\\/');
 
         // Set default framework value
         if ($this->params->get('framework') == 'joomla' || empty($this->uParams['framework'] = (array) $this->params->get('framework'))) {
-            if (version_compare(JVERSION, '4', 'ge')) {
+            if (\version_compare(JVERSION, '4', 'ge')) {
                 $this->uParams['framework'] = array('bs5');
             } else {
                 $this->uParams['framework'] = array('bs2');
@@ -506,23 +507,23 @@ final class Jtf extends CMSPlugin
 
         if (!empty($vars)) {
             foreach ($vars as $var) {
-                $var = trim($var);
+                $var = \trim($var);
 
                 if (empty($var)) {
                     continue;
                 }
 
-                list($key, $value) = explode('=', $var);
+                list($key, $value) = \explode('=', $var);
 
-                $key   = trim(strtolower($key));
-                $value = trim($value, '\/');
+                $key   = \trim(strtolower($key));
+                $value = \trim($value, '\/');
 
                 if (!in_array($key, $this->uParamsAllowedOverride)) {
                     continue;
                 }
 
                 if ($key == 'framework') {
-                    $value = explode(',', $value);
+                    $value = \explode(',', $value);
                     $value = ArrayHelper::arrayUnique($value);
                 }
 
@@ -531,13 +532,69 @@ final class Jtf extends CMSPlugin
         }
 
         // Merge user params width default params
-        $this->uParams = array_merge($this->uParams, $uParams);
+        $this->uParams = \array_merge($this->uParams, $uParams);
+    }
+
+    /**
+     * Get absolute theme filepath.
+     *
+     * @param   string  $file     Name of the file (jtf_theme.ini)
+     *
+     * @return  void
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    private function loadThemeLanguage($fileName)
+    {
+        $app          = $this->getApplication();
+        $templateBase = $app->getTemplate();
+        $template     = $templateBase;
+        $files        = array();
+        $absPaths     = array();
+
+        foreach ($this->uParams['framework'] as $frwk) {
+            $files[] = $fileName . '.' . $frwk;
+        }
+
+        $files[] = $fileName;
+        $files   = ArrayHelper::arrayUnique($files);
+
+        if ($templateBase == 'yootheme') {
+            $tParams = \json_decode($app->getTemplate(true)->params->get('config'));
+
+            empty($tParams->child_theme) ? null : $template .= '_' . $tParams->child_theme;
+        }
+
+        // Build template override path for child theme
+        $absPaths[] = JPATH_THEMES . '/' . $template
+            . '/html/plg_content_jtf/'
+            . $this->uParams['theme'];
+
+        // Build template override path for parent theme
+        $absPaths[] = JPATH_THEMES . '/' . $templateBase
+            . '/html/plg_content_jtf/'
+            . $this->uParams['theme'];
+
+        // Build plugin path for theme
+        $absPaths[] = JPATH_PLUGINS . '/content/jtf/tmpl/'
+            . $this->uParams['theme'];
+
+        $absPaths = ArrayHelper::arrayUnique($absPaths);
+
+        foreach ($files as $langFileName) {
+            foreach ($absPaths as $absPath) {
+                // Set the right theme path
+                if (\is_dir($absPath)) {
+                  $this->loadLanguage($langFileName, $absPath);
+                }
+            }
+        }
     }
 
     /**
      * Get absolute theme filepath
      *
-     * @param   string  $filePath  Filepath relative from inside of the theme
+     * @param   string  $filePath  Filepath relative from inside the theme
      *
      * @return  boolean|string  False on error
      *
@@ -548,7 +605,7 @@ final class Jtf extends CMSPlugin
         $app      = $this->getApplication();
         $error    = array();
         $files    = array();
-        $pathInfo = pathinfo($filePath);
+        $pathInfo = \pathinfo($filePath);
         $ext      = $pathInfo['extension'];
         $file     = $pathInfo['filename'];
         $template = $app->getTemplate();
@@ -561,7 +618,7 @@ final class Jtf extends CMSPlugin
         $files   = ArrayHelper::arrayUnique($files);
 
         if ($template == 'yootheme') {
-            $tParams = json_decode($app->getTemplate(true)->params->get('config'));
+            $tParams = \json_decode($app->getTemplate(true)->params->get('config'));
 
             empty($tParams->child_theme) ? null : $template .= '_' . $tParams->child_theme;
         }
@@ -582,12 +639,12 @@ final class Jtf extends CMSPlugin
         foreach ($files as $filename) {
             foreach ($absPaths as $absPath) {
                 // Set the right theme path
-                if (is_dir($absPath)) {
+                if (\is_dir($absPath)) {
                     if (!empty($error['path'])) {
                         unset($error['path']);
                     }
 
-                    if (file_exists($absPath . '/' . $filename)) {
+                    if (\file_exists($absPath . '/' . $filename)) {
                         if ($ext == 'ini') {
                             return $absPath;
                         }
@@ -609,7 +666,7 @@ final class Jtf extends CMSPlugin
 
         if (!empty($error['file']) && $ext != 'ini') {
             $app->enqueueMessage(
-                Text::sprintf('JTF_FORM_XML_FILE_ERROR', implode(', ', $files), $this->uParams['theme']),
+                Text::sprintf('JTF_FORM_XML_FILE_ERROR', \implode(', ', $files), $this->uParams['theme']),
                 'error'
             );
         }
@@ -692,7 +749,7 @@ final class Jtf extends CMSPlugin
         $fields = $form->getFieldset();
 
         foreach ($fields as $field) {
-            $fieldType = strtolower($field->type);
+            $fieldType = \strtolower($field->type);
             $fieldName = $field->fieldname;
 
             if ($fieldType == 'subform') {
@@ -706,9 +763,9 @@ final class Jtf extends CMSPlugin
                 continue;
             }
 
-            if (in_array($fieldType, $setValidationFor)) {
+            if (\in_array($fieldType, $setValidationFor)) {
                 if ($field->validate == '') {
-                    if (in_array($fieldType, array('checkboxes', 'list', 'radio'))) {
+                    if (\in_array($fieldType, array('checkboxes', 'list', 'radio'))) {
                         $form->setFieldAttribute($fieldName, 'validate', 'options');
                     } else {
                         $form->setFieldAttribute($fieldName, 'validate', $fieldType);
@@ -740,10 +797,10 @@ final class Jtf extends CMSPlugin
                     continue;
                 }
 
-                if (is_array($value)) {
+                if (\is_array($value)) {
                     if (isset($value['error']) && $value['error'] === 0) {
                         if ($savedFile = $this->saveFiles($value)) {
-                            $validatedFiles = array_merge($validatedFiles, $savedFile);
+                            $validatedFiles = \array_merge($validatedFiles, $savedFile);
 
                             continue;
                         } else {
@@ -773,10 +830,10 @@ final class Jtf extends CMSPlugin
     private function saveFiles($validatedFile)
     {
         $nowPath     = date('Ymd');
-        $uniqueToken = md5(microtime());
+        $uniqueToken = \md5(microtime());
         $filePath    = 'images/' . $this->uParams['file_path'] . '/' . $nowPath . '/' . $uniqueToken;
         $uploadBase  = JPATH_BASE . '/' . $filePath;
-        $uploadURL   = rtrim(JUri::base(), '/') . '/' . $filePath;
+        $uploadURL   = rtrim(Uri::base(), '/') . '/' . $filePath;
 
         if (!is_dir($uploadBase)) {
             Folder::create($uploadBase);
@@ -957,7 +1014,7 @@ final class Jtf extends CMSPlugin
                 continue;
             }
 
-            $items = explode(';', (string) $this->uParams[$name]);
+            $items = \explode(';', (string) $this->uParams[$name]);
 
             if ($name == 'visitor_email') {
                 $items = array($items[0]);
@@ -971,11 +1028,11 @@ final class Jtf extends CMSPlugin
                 $value = null;
 
                 if (strpos($item, '@') !== false) {
-                    $value = trim($item);
+                    $value = \trim($item);
                 }
 
                 if (strpos($item, '#') !== false) {
-                    $value = str_replace('#', '@', trim($item));
+                    $value = str_replace('#', '@', \trim($item));
                 }
 
                 if (!empty($value)) {
@@ -994,19 +1051,19 @@ final class Jtf extends CMSPlugin
 
                 $value = array_values(array_filter($value));
 
-                array_walk($value,
+                \array_walk($value,
                     function (&$email) {
-                        $email = str_replace('#', '@', trim($email));
+                        $email = str_replace('#', '@', \trim($email));
                     }
                 );
 
-                $recipient = array_merge($recipient, $value);
+                $recipient = \array_merge($recipient, $value);
             }
 
-            $recipients[$name] = is_array($recipient) ? ArrayHelper::arrayUnique($recipient) : $recipient;
+            $recipients[$name] = \is_array($recipient) ? ArrayHelper::arrayUnique($recipient) : $recipient;
 
-            if (in_array($name, array('visitor_name', 'visitor_email'))) {
-                $recipients[$name] = trim(implode(' ', $recipients[$name]));
+            if (\in_array($name, array('visitor_name', 'visitor_email'))) {
+                $recipients[$name] = \trim(implode(' ', $recipients[$name]));
             }
         }
 
@@ -1052,7 +1109,7 @@ final class Jtf extends CMSPlugin
             'form'          => $form,
             'formClass'     => $formClass,
             'enctype'       => $enctype,
-            'controlFields' => implode('', $controlFields),
+            'controlFields' => \implode('', $controlFields),
             'fillouttime'   => $this->uParams['fillouttime'],
         );
 
@@ -1090,7 +1147,7 @@ final class Jtf extends CMSPlugin
             null
         );
 
-        if (in_array($activeLang, array_keys($assocArticle))) {
+        if (\in_array($activeLang, \array_keys($assocArticle))) {
             $itemId = $assocArticle[$activeLang]->id;
         }
 
@@ -1184,7 +1241,7 @@ final class Jtf extends CMSPlugin
     private function setCaptcha($captcha)
     {
         $form  = $this->getForm();
-        $jtfHp = md5('jtfhp' . Factory::getSession()->getToken());
+        $jtfHp = \md5('jtfhp' . Factory::getSession()->getToken());
 
         // Set captcha to submit fieldset
         if (!empty($this->uParams['captcha'])) {
@@ -1218,9 +1275,9 @@ final class Jtf extends CMSPlugin
         }
 
         $operators = array('-', '+', '*');
-        $operator  = $operators[rand(0, 2)];
-        $number    = rand(1, 10);
-        $hint      = $number . ' ' . $operator . ' ' . rand(1, $number);
+        $operator  = $operators[\rand(0, 2)];
+        $number    = \rand(1, 10);
+        $hint      = $number . ' ' . $operator . ' ' . \rand(1, $number);
         $hField    = new \SimpleXMLElement(
             '<field name="' . $jtfHp . '" type="text" label="JTF_CAPTCHA_MATH" size="10" hint="' . $hint . '" gridgroup="jtfhp" notmail="1"></field>'
         );
@@ -1278,31 +1335,29 @@ final class Jtf extends CMSPlugin
      */
     private function clearOldFiles()
     {
-        jimport('joomla.filesystem.folder');
-
         if (!$fileClear = (int) $this->uParams['file_clear']) {
             return;
         }
 
         $bugUploadBase = JPATH_BASE . '/images/0';
 
-        if (is_dir($bugUploadBase)) {
+        if (\is_dir($bugUploadBase)) {
             $this->bugfixUploadFolder();
         }
 
         $uploadBase = JPATH_BASE . '/images/' . $this->uParams['file_path'];
 
-        if (!is_dir($uploadBase)) {
+        if (!\is_dir($uploadBase)) {
             return;
         }
 
         $folders = Folder::folders($uploadBase);
-        $nowPath = date('Ymd');
-        $now     = new DateTime($nowPath);
+        $nowPath = \date('Ymd');
+        $now     = new \DateTime($nowPath);
 
         foreach ($folders as $folder) {
-            $date  = new DateTime($folder);
-            $clear = date_diff($now, $date)->days;
+            $date  = new \DateTime($folder);
+            $clear = \date_diff($now, $date)->days;
 
             if ($clear >= $fileClear) {
                 Folder::delete($uploadBase . '/' . $folder);
@@ -1329,7 +1384,7 @@ final class Jtf extends CMSPlugin
             $moved  = false;
             $copied = false;
 
-            if (is_dir($dest)) {
+            if (\is_dir($dest)) {
                 $copied = Folder::copy($src, $dest, '', true);
             } else {
                 $moved = Folder::move($src, $dest);
@@ -1363,9 +1418,9 @@ final class Jtf extends CMSPlugin
             return;
         }
 
-        $key         = (array) JUri::getInstance()->toString();
-        $key         = md5(serialize($key));
-        $group       = strstr($context, '.', true);
+        $key         = (array) Uri::getInstance()->toString();
+        $key         = \md5(serialize($key));
+        $group       = \strstr($context, '.', true);
         $cacheGroups = array();
 
         if ($cacheIsActive) {
@@ -1381,7 +1436,26 @@ final class Jtf extends CMSPlugin
         }
 
         foreach ($cacheGroups as $group => $handler) {
-            $cache = Factory::getCache($group, $handler);
+            try {
+                // $cache = Factory::getCache($group, $handler);
+                /** @var CacheControllerFactoryInterface $cacheControllerFactory */
+                $cacheControllerFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
+
+                if (empty($cacheControllerFactory)) {
+                    throw new \RuntimeException('JTF: Cannot get Joomla cache controller factory');
+                }
+
+                /** @var CacheController $cache */
+                $cache = $cacheControllerFactory->createCacheController($handler, ['defaultgroup' => $group]);
+
+                if (empty($cache) || !\property_exists($cache, 'cache') || !\method_exists($cache->cache, 'remove')) {
+                    throw new \RuntimeException('JTF: Cannot get Joomla cache controller');
+                }
+            }
+            catch (CacheExceptionInterface|\Throwable $e) {
+                continue;
+            }
+
             $cache->cache->remove($key);
             $cache->cache->setCaching(false);
         }
@@ -1390,7 +1464,7 @@ final class Jtf extends CMSPlugin
     /**
      * Checks for a form token in the request.
      *
-     * Use in conjunction with \JHtml::_('form.token') or Session::getFormToken.
+     * Use in conjunction with Html::_('form.token') or Session::getFormToken.
      *
      * @param   string  $formTheme  The theme name of the form.
      *

@@ -10,9 +10,22 @@
 "use strict";
 
 var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
-  // console.log('elm', elm);
-  // console.log('optionlist', optionlist);
-
+  console.log('elm', elm);
+  console.log('optionlist', optionlist);
+  var humanReadableSize = function humanReadableSize(bytes) {
+    var si = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    var thresh = si ? 1000 : 1024;
+    if (Math.abs(bytes) < thresh) {
+      return bytes + ' B';
+    }
+    var units = si ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'],
+      u = -1;
+    do {
+      bytes /= thresh;
+      ++u;
+    } while (Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1) + ' ' + units[u];
+  };
   var Joomla = window.Joomla || {},
     mimelite = window.mimelite || {},
     acceptedType = '',
@@ -25,16 +38,18 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
     accept = fileInput.getAttribute('accept').split(','),
     maxsize = optionlist.uploadMaxSize,
     msgAllowedExt = Joomla.Text._('JTF_JS_UPLOAD_ALLOWED_FILES_EXT', ''),
-    errorFileSize = Joomla.Text._('JTF_JS_UPLOAD_ERROR_MESSAGE_SIZE', ''),
+    errorFileSize = Joomla.Text._('JTF_JS_UPLOAD_ERROR_MESSAGE_SIZE', '').replace('%s', humanReadableSize(maxsize)),
     errorFileType = Joomla.Text._('JTF_JS_UPLOAD_ERROR_FILE_NOT_ALLOWED', '');
-
-  // console.log('allowedExt', allowedExt);
-  // console.log('dragarea', dragarea);
-  // console.log('fileInput', fileInput);
-  // console.log('uploadList', uploadList);
-  // console.log('label', label);
-  // console.log('accept', accept);
-  // console.log('maxsize', maxsize);
+  console.log('JS TEXT: msgAllowedExt', msgAllowedExt);
+  console.log('JS TEXT: errorFileSize', errorFileSize);
+  console.log('JS TEXT: errorFileType', errorFileType);
+  console.log('allowedExt', allowedExt);
+  console.log('dragarea', dragarea);
+  console.log('fileInput', fileInput);
+  console.log('uploadList', uploadList);
+  console.log('label', label);
+  console.log('accept', accept);
+  console.log('maxsize', maxsize);
 
   // Set list of mimetype and file extension
   for (var i = 0, sep = ''; i < accept.length; ++i) {
@@ -43,15 +58,11 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
     if (mimeType === null) {
       mimeType = mimelite.getTypes(accept[i]);
     }
-
-    // console.log('mimeType', mimeType);
-
+    console.log('mimeType', mimeType);
     if (fileExt === null) {
       fileExt = accept[i].replace('.', '');
     }
-
-    // console.log('fileExt', fileExt);
-
+    console.log('fileExt', fileExt);
     if (fileExt !== null) {
       sep = acceptedExt ? ',' : '';
       acceptedExt += sep + fileExt;
@@ -102,20 +113,6 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
     fileInput.classList.remove('invalid');
     fileInput.setAttribute('aria-invalid', false);
   };
-  var humanReadableSize = function humanReadableSize(bytes) {
-    var si = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-    var thresh = si ? 1000 : 1024;
-    if (Math.abs(bytes) < thresh) {
-      return bytes + ' B';
-    }
-    var units = si ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'],
-      u = -1;
-    do {
-      bytes /= thresh;
-      ++u;
-    } while (Math.abs(bytes) >= thresh && u < units.length - 1);
-    return bytes.toFixed(1) + ' ' + units[u];
-  };
   var dateiauswahl = function dateiauswahl(elm) {
     var files = {},
       output = [],
@@ -127,13 +124,9 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
     } else {
       files = elm.target.files;
     }
-
-    // console.log('dateiauswahl -> files', files);
-
+    console.log('dateiauswahl -> files', files);
     var uploadsize = getTotalFilesSize(files);
-
-    // console.log('dateiauswahl -> uploadsize', uploadsize);
-
+    console.log('dateiauswahl -> uploadsize', uploadsize);
     for (var _i2 = 0, c = 1, f; _i2 < files.length; _i2++, c++) {
       f = files[_i2];
       var filename = '<strong>' + f.name + '</strong> ';
@@ -145,10 +138,8 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
     if (uploadsize > maxsize) {
       uploadError.push('<li><strong>' + humanReadableSize(uploadsize) + '</strong> - ' + errorFileSize + '</li>');
     }
-
-    // console.log('output', output);
-    // console.log('uploadError', uploadError);
-
+    console.log('output', output);
+    console.log('uploadError', uploadError);
     if (output.length > 0) {
       uploadListWrapper = Joomla.Text._('JTF_JS_UPLOAD_LIST_WRAPPER_' + jtfFrwk, '').replace('%s', '<ol>' + output.join('') + '</ol>');
       unsetInvalid();
@@ -163,14 +154,12 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
         return false;
       });
     }
-
-    // console.log('errorWrapper', errorWrapper);
-    // console.log('uploadListWrapper', uploadListWrapper);
-
+    console.log('errorWrapper', errorWrapper);
+    console.log('uploadListWrapper', uploadListWrapper);
     uploadList.innerHTML = errorWrapper + uploadListWrapper;
   };
   if (label && dragarea) {
-    // console.info('label Eventhandler aufgerufen.');
+    console.info('label Eventhandler aufgerufen.');
     var prevClassState = label.classList.contains('invalid'),
       labelClassObserver = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
@@ -179,10 +168,10 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
             if (prevClassState !== currentClassState) {
               prevClassState = currentClassState;
               if (currentClassState) {
-                // console.log("class added!");
+                console.log("class added!");
                 setInvalid();
               } else {
-                // console.log("class removed!");
+                console.log("class removed!");
                 unsetInvalid();
               }
             }
@@ -194,7 +183,7 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
     });
   }
   if (typeof fileInput !== 'undefined') {
-    // console.info('fileInput Eventhandler aufgerufen.');
+    console.info('fileInput Eventhandler aufgerufen.');
     fileInput.addEventListener('change', function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -205,9 +194,7 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
 var jtfFrwk = window.jtfFrwk || 'BS2';
 document.addEventListener('DOMContentLoaded', function () {
   var uploaderWrapper = document.querySelectorAll('.uploader-wrapper');
-
-  // console.log('uploaderWrapper', uploaderWrapper);
-
+  console.log('uploaderWrapper', uploaderWrapper);
   Array.prototype.forEach.call(uploaderWrapper, function (elm) {
     jtfUploadFile(elm, {
       id: elm.querySelector('input[type="file"].file-uplaoder').getAttribute('id'),
