@@ -19,7 +19,6 @@ extract($displayData);
 /**
  * Layout variables
  * -----------------
- *
  * @var   string  $autocomplete   Autocomplete attribute for the field.
  * @var   boolean $autofocus      Is autofocus enabled?
  * @var   string  $class          Classes for the input.
@@ -60,6 +59,7 @@ $attr .= !empty($size) ? ' size="' . $size . '"' : '';
 $attr .= $multiple ? ' multiple' : '';
 $attr .= $autofocus ? ' autofocus' : '';
 $attr .= $onchange ? ' onchange="' . $onchange . '"' : '';
+$attr .= $dataAttribute;
 
 // To avoid user's confusion, readonly="readonly" should imply disabled="disabled".
 if ($readonly || $disabled) {
@@ -72,11 +72,11 @@ if (!empty($class)) {
 
 $attr2 = '';
 $attr2 .= ' placeholder="' . $this->escape($hint ?: Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS')) . '" ';
-$attr2 .= $dataAttribute;
 
 if ($required) {
     $attr  .= ' required';
     $attr2 .= ' required';
+    $fieldClasses[] = 'required';
 }
 
 $attr .= !empty($fieldClasses) ? ' class="' . implode(' ', $fieldClasses) . '"' : '';
@@ -115,7 +115,7 @@ Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
 Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
 
 Factory::getApplication()->getDocument()->getWebAssetManager()
-    ->usePreset('choicesjs')
+    ->usePreset('jtf.choicesjs')
     ->useScript('webcomponent.field-fancy-select');
 
 ?>

@@ -181,7 +181,9 @@ class Uikit3
         $css[] = '.jtf .checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
         $css[] = '.jtf .checkbox, .radio {padding-left: 0 !important;}';
         $css[] = '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}';
-        $css[] = '.jtf .minicolors-theme-bootstrap .hex{height:auto;}';
+        $css[] = '.jtf .minicolors-theme-bootstrap .hex{height: auto;}';
+        $css[] = '.jtf .choices{border: 1px solid #ced4da;border-radius: .25rem;}';
+        $css[] = '.jtf .choices[data-type*="select-one"] .choices__button_joomla{margin-block-start: -15px;margin-inline-end:1.5rem;}';
         $css[] = '.jtf .is-focused .choices__inner{color: var(--lt-color-text-default);}';
         $css[] = '.jtf .choices__inner{color: var(--lt-color-text-default);}';
 
