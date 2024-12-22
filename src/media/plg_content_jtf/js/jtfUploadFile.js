@@ -148,7 +148,7 @@ var jtfUploadFile = function jtfUploadFile(elm, optionlist) {
       });
     }
     if (uploadError.length > 0) {
-      errorWrapper = Joomla.Text._('JTF_JS_ERROR_WRAPPER_' + jtfFrwk, '').replace('%s', uploadError.join('<br />'));
+      errorWrapper = Joomla.Text._('JTF_JS_ERROR_WRAPPER_' + jtfFrwk, '').replace('%s', '<ul>' + uploadError.join('') + '</ul>');
       setInvalid();
       document.formvalidator.setHandler('file', function () {
         return false;

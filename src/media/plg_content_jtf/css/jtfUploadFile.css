@@ -50,6 +50,15 @@
 	text-align: left;
 }
 
+.upload-list ul {
+	margin: 0;
+	padding-left: 0;
+}
+
+.upload-list ul li {
+	list-style: none;
+}
+
 .legacy-uploader input[type='file'] {
 	position: absolute;
 	top: 0;
