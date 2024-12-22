@@ -237,9 +237,8 @@ class Bs5
     {
         $css   = [];
         $css[] = '.jtf .switcher .toggle-outside{border: var(--border-width) solid var(--template-bg-dark-20];border-radius: var(--border-radius];}';
-        //$css[] = '.jtf .subform-repeatable-group{margin-left:calc(var(--gutter-x) * .5);}';
 
-        return implode(' ', $css);
+        return implode('', $css);
     }
 
     private function getOrientationFieldsetClasses()

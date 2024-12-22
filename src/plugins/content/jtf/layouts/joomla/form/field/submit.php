@@ -26,7 +26,7 @@ extract($displayData);
 <button id="<?php echo $id; ?>" class="validate<?php echo !empty($buttonClass) ? ' ' . $buttonClass : ''; ?>"
 		type="submit">
     <?php if (!empty($buttonIcon)) : ?>
-		<span class="<?php echo $buttonIcon; ?>">&nbsp;</span>
+        <?php echo $this->sublayout('icon', array('icon' => $buttonIcon)); ?>
     <?php endif; ?>
 
     <?php echo $label; ?>

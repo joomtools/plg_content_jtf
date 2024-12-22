@@ -130,9 +130,9 @@ class Uikit3
             'uploadicon'  => array('upload;ratio:2'),
             'buttonclass' => array(
                 'uk-button',
-                'uk-button-success',
+                'uk-button-primary',
             ),
-            'buttonicon'  => array('copy'),
+            'buttonicon'  => array('copy;ratio:1.5'),
         );
 
         $classes['submit'] = array(
@@ -183,8 +183,9 @@ class Uikit3
         $css[] = '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}';
         $css[] = '.jtf .minicolors-theme-bootstrap .hex{height: auto;}';
         $css[] = '.jtf .choices{border: 1px solid #ced4da;border-radius: .25rem;}';
-        $css[] = '.jtf .choices[data-type*="select-one"] .choices__button_joomla{margin-block-start: -15px;margin-inline-end:1.5rem;}';
+        $css[] = '.jtf .choices[data-type*="select-one"] .choices__button_joomla{margin-block-start: -15px;margin-inline-end: 1.5rem;}';
         $css[] = '.jtf .is-focused .choices__inner{color: var(--lt-color-text-default);}';
+        $css[] = '.jtf .choices__list--dropdown{border-color: #b7b7b7;margin-top: 0;}';
         $css[] = '.jtf .choices__inner{color: var(--lt-color-text-default);}';
 
         return implode('', $css);

@@ -20,5 +20,5 @@ extract($displayData);
  */
 
 ?>
-<span class="uk-inline <?php echo $icon; ?>" aria-hidden="true"></span>
+<span class="<?php echo $icon; ?>" aria-hidden="true"></span>
 

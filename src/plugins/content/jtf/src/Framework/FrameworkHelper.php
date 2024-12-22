@@ -255,10 +255,11 @@ class FrameworkHelper
      */
     private function setFrameworkCss(string $css)
     {
+        $name = strtolower((new \ReflectionClass($this->_frwk))->getShortName());
         if (self::$frameworkCssSet !== true) {
             /** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
             $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
-            $wa->addInline('style', $css);
+            $wa->addInline('style', $css, [], ['data-jtf' => $name . '.css']);
             self::$frameworkCssSet = true;
         }
     }

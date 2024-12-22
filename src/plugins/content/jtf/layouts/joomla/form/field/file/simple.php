@@ -10,6 +10,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -57,15 +58,14 @@ extract($displayData);
 $maxSize         = HTMLHelper::_('number.bytes', $uploadMaxSize);
 $uploadInfoClass = !empty($uploadInfoClass) ? ' ' . $uploadInfoClass : null;
 
-Text::sprintf('JTF_JS_UPLOAD_ERROR_MESSAGE_SIZE', $maxSize, array('jsSafe' => true, 'interpretBackSlashes' => true, 'script' => true));
-Text::script('JTF_JS_UPLOAD_ERROR_FILE_NOT_ALLOWED', true);
-Text::script('JTF_JS_UPLOAD_ALLOWED_FILES_EXT', true);
+Text::script('JTF_JS_UPLOAD_ERROR_MESSAGE_SIZE');
+Text::script('JTF_JS_UPLOAD_ERROR_FILE_NOT_ALLOWED');
+Text::script('JTF_JS_UPLOAD_ALLOWED_FILES_EXT');
 Text::script('JTF_JS_UPLOAD_LIST_WRAPPER_' . strtoupper($framework));
 Text::script('JTF_JS_ERROR_WRAPPER_' . strtoupper($framework));
 
 HTMLHelper::_('script', 'plg_content_jtf/jtfLite2.min.js', ['version' => 'auto', 'relative' => true]);
-HTMLHelper::_('script', 'plg_content_jtf/jtfUploadFile.min.js', ['version' => 'auto', 'relative' => true]);
-HTMLHelper::_('stylesheet', 'plg_content_jtf/jtfUploadFile.min.css', ['version' => 'auto', 'relative' => true]);
+Factory::getApplication()->getDocument()->getWebAssetManager()->usePreset('jtf.jtfUploadFile');
 
 ?>
 <div class="uploader-wrapper">

@@ -82,8 +82,8 @@ if ($frwk == 'bs5') {
 /** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
 
-$wa->addInline('script', $jsToAdd);
-$wa->addInline('style', $cssToAdd);
+$wa->addInline('script', $jsToAdd, [], ['data-jtf' => 'form.js']);
+$wa->addInline('style', $cssToAdd, [], ['data-jtf' => 'form.css']);
 
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');

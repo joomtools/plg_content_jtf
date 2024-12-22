@@ -79,7 +79,7 @@ Factory::getApplication()->getDocument()->getWebAssetManager()->usePreset('jtf.j
                 <?php echo Text::_('JTF_DRAG_FILE_HERE'); ?>
 			<noscript class="invalid"><br/><?php echo Text::_('JTF_DRAG_FILE_HERE_NOSCRIPT'); ?></noscript>
 			</p>
-			<p>
+			<p class="upload-button">
 				<button type="button" class="<?php echo $buttonClass; ?> select-file-button">
                     <?php echo $this->sublayout('icon', array('icon' => $buttonIcon)); ?>
                     <?php echo Text::_('JTF_SELECT_FILE'); ?>
