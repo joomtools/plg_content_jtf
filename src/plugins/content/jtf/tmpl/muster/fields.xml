@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form orientation="horizontal">
-	<fieldset name="block1"
+<form orientation="stacked">
+	<fieldset orientation="horizontal"
+	          name="block1"
 	          description="JTF_FIELDSET_DEFAULT_DESC"
 	          label="JTF_FIELDSET_DEFAULT_LABEL"
 	>
 		<field name="list"
 		       type="list"
-		       icon="icon-list"
+		       icon="fa fa-list"
 		       description="JTF_LIST_DESC"
 		       label="JTF_LIST_LABEL"
 		       default=""
 		       validate="options"
 		       required="true"
-		       descriptionclass="testDescClass"
 		>
 			<option value="">JTF_OPTION_NONE</option>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
@@ -36,11 +36,10 @@
 		       type="checkboxes"
 		       description="JTF_CHK_DESC"
 		       label="JTF_CHK_LABEL"
-		       validate="options"
-		       hiddenlabel="true"
+		       required="true"
 		       optionlabelclass="optionLabelClass"
 		       optionclass="optionClass"
-		       required="true"
+		       validate="options"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -65,11 +64,10 @@
 		       type="radio"
 		       description="JTF_RADIO_DESC"
 		       label="JTF_RADIO_LABEL"
-		       default=""
-		       validate="options"
+		       default="JTF_OPTION1"
 		       optionlabelclass="optionLabelClass"
 		       optionclass="optionClass"
-		       required="true"
+		       validate="options"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -81,9 +79,9 @@
 		       label="JTF_RADIO_INLINE_LABEL"
 		       default="JTF_OPTION2"
 		       validate="options"
+		       inline="true"
 		       optionlabelclass="optionLabelClass"
 		       optionclass="optionClass"
-		       inline="true"
 		>
 			<option value="JTF_OPTION1">JTF_OPTION1</option>
 			<option value="JTF_OPTION2">JTF_OPTION2</option>
@@ -93,51 +91,48 @@
 		       type="radio"
 		       description="JTF_SHW_SWITCH_DESC"
 		       label="JTF_SHW_SWITCH_LABEL"
-		       default="JNO"
+		       default="JOFF"
 		       validate="options"
 		       inline="true"
 		       notmail="1"
 		>
-			<option value="JYES">JON</option>
-			<option value="JNO">JOFF</option>
+			<option value="JON">JON</option>
+			<option value="JOFF">JOFF</option>
 		</field>
 
 		<field name="showon_text"
 		       type="text"
-		       icon="icon-pencil"
-		       maxlength="30"
+		       icon="fa fa-pencil-alt"
+		       maxlength="60"
 		       description="JTF_SHW_TXT_DESC"
 		       label="JTF_SHW_TXT_LABEL"
 		       required="true"
-		       showon="showon_switch:JYES"
+		       showon="showon_switch:JON"
 		/>
 
 		<field name="text"
 		       type="text"
-		       icon="icon-pencil"
-		       maxlength="30"
+		       icon="fa fa-pencil-alt"
+		       maxlength="60"
 		       description="JTF_TXT_DESC"
 		       label="JTF_TXT_LABEL"
 		       required="true"
-		       hiddenlabel="true"
-		       hint="Platzhaltertext"
 		/>
 
 		<field name="email"
 		       type="email"
-		       icon="icon-envelope"
-		       maxlength="30"
+		       icon="fa fa-envelope"
+		       maxlength="60"
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
 		       validate="email"
 		       required="true"
-		       hiddenlabel="true"
 		/>
 
 		<field name="tel"
 		       type="tel"
-		       icon="icon-phone"
-		       maxlength="30"
+		       icon="fa fa-phone"
+		       maxlength="60"
 		       description="JTF_TEL_DESC"
 		       label="JTF_TEL_LABEL"
 		       validate="tel"
@@ -146,15 +141,15 @@
 
 		<field name="subject"
 		       type="text"
-		       icon="icon-pencil"
-		       maxlength="30"
+		       icon="fa fa-pencil-alt"
+		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
 		/>
 
 		<field name="textarea"
 		       type="textarea"
-		       cols="30"
+		       cols="60"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
 		       label="JTF_MESSAGE_LABEL"
@@ -168,7 +163,7 @@
 	>
 		<field name="note"
 		       type="note"
-		       class="alert alert-info"
+		       class="alert alert-primary"
 		       description="JTF_NOTE_DESC"
 		       label="JTF_NOTE_LABEL"
 		       close="true"
@@ -177,8 +172,8 @@
 
 		<field name="plz"
 		       type="plz"
-		       icon="icon-location"
-		       maxlength="30"
+		       icon="fa fa-map-marker"
+		       maxlength="60"
 		       description="JTF_PLZ_DESC"
 		       label="JTF_PLZ_LABEL"
 		       validate="plz"
@@ -200,12 +195,13 @@
 
 		<field name="subform"
 		       type="subform"
-		       formsource="plugins/content/jtf/tmpl/muster/subforms/subform.xml"
+		       formsource="plugins/content/jtf/tmpl/muster/subforms/subform.bs5.xml"
 		       multiple="true"
 		       description="JTF_SUBFORM_DESC"
 		       label="JTF_SUBFORM_LABEL"
 		       required="true"
 		       showon="subform_showon:JYES"
+		       layout="joomla.form.field.subform.repeatable"
 		       buttons="add,remove"
 		       min="1"
 		/>
@@ -235,7 +231,7 @@
 
 		<field name="color"
 		       type="color"
-		       default="#eee"
+		       default="#eeeeee"
 		       description="JTF_COLOR_DESC"
 		       label="JTF_COLOR_LABEL"
 		/>
@@ -264,6 +260,7 @@
 		       extension="com_content"
 		       description="JTF_CATEGORY_DESC"
 		       label="JTF_CATEGORY_LABEL"
+		       icon="fa fa-th-list"
 		/>
 
 		<field name="file_simple"

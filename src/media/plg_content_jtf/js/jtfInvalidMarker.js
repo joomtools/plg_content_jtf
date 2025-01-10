@@ -3,9 +3,10 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
+
 "use strict";
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -21,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('isInvalid: ', isInvalid);
         var jtfMarker = mutation.target.parentNode.parentNode.querySelector('.marker');
         console.log('jtfMarker: ', jtfMarker);
-
         if (null !== jtfMarker) {
           if (isInvalid) {
             jtfMarker.classList.add('invalid');

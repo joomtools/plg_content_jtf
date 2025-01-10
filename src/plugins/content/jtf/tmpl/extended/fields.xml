@@ -4,7 +4,6 @@
 		<field name="anrede"
 		       type="list"
 		       icon="icon-list"
-		       class="span12"
 		       description="JTF_ANREDE_DESC"
 		       label="JTF_ANREDE_LABEL"
 		       default=""
@@ -14,11 +13,11 @@
 			<option value="">JTF_ANREDE_OPTION_NONE</option>
 			<option value="JTF_ANREDE_OPTION_HERR">JTF_ANREDE_OPTION_HERR</option>
 			<option value="JTF_ANREDE_OPTION_FRAU">JTF_ANREDE_OPTION_FRAU</option>
+			<option value="JTF_ANREDE_OPTION_UNDEFINED">JTF_ANREDE_OPTION_UNDEFINED</option>
 		</field>
 		<field name="vorname"
 		       type="text"
 		       icon="icon-user"
-		       class="span12"
 		       maxlength="60"
 		       description="JTF_VNAME_DESC"
 		       label="JTF_VNAME_LABEL"
@@ -27,7 +26,6 @@
 		<field name="nachname"
 		       type="text"
 		       icon="icon-user"
-		       class="span12"
 		       maxlength="60"
 		       description="JTF_NAME_DESC"
 		       label="JTF_NAME_LABEL"
@@ -36,7 +34,6 @@
 		<field name="email"
 		       type="email"
 		       icon="icon-envelope"
-		       class="span12"
 		       maxlength="60"
 		       description="JTF_EMAIL_DESC"
 		       label="JTF_EMAIL_LABEL"
@@ -45,8 +42,7 @@
 		/>
 		<field name="tel"
 		       type="tel"
-		       icon="icon-phone"
-		       class="span12"
+		       icon="icon-phone-2"
 		       maxlength="60"
 		       description="JTF_TEL_DESC"
 		       label="JTF_TEL_LABEL"
@@ -55,7 +51,6 @@
 		<field name="subject"
 		       type="text"
 		       icon="icon-pencil"
-		       class="span12"
 		       maxlength="60"
 		       description="JTF_SUBJECT_DESC"
 		       label="JTF_SUBJECT_LABEL"
@@ -63,7 +58,7 @@
 		/>
 		<field name="message"
 		       type="textarea"
-		       cols="30"
+		       class="col-sm-12"
 		       rows="10"
 		       description="JTF_MESSAGE_DESC"
 		       label="JTF_MESSAGE_LABEL"
