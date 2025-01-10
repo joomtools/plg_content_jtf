@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -107,7 +107,7 @@ final class Jtf extends CMSPlugin
      *
      * @since  4.0.0
      */
-    private $uParams = array();
+    private $uParams = [];
 
     /**
      * Array with extension names (URL option) where jtf should not be executed.
@@ -154,7 +154,7 @@ final class Jtf extends CMSPlugin
      *
      * @since  4.0.0
      */
-    private $tokens = array();
+    private $tokens = [];
 
     /**
      * @var   boolean
@@ -234,7 +234,6 @@ final class Jtf extends CMSPlugin
         }
 
         FormHelper::addFieldPrefix('JoomTools\\Plugin\\Content\\Jtf\\Form\\Field');
-        FormHelper::addRulePath(JPATH_PLUGINS . '/content/jtf/libraries/jtf/Form/Rule');
         FormHelper::addRulePrefix('JoomTools\\Plugin\\Content\\Jtf\\Form\\Rule');
 
         // Get language tag
@@ -276,8 +275,11 @@ final class Jtf extends CMSPlugin
                 return;
             }
 
+            // Add override paths for form fields and rules
+            FormHelper::addFieldPath($this->getFormFieldOverridePaths('field'));
+            FormHelper::addRulePath($this->getFormFieldOverridePaths('rule'));
+
             $formTheme = $this->uParams['theme'] . (int) self::$count;
-            //$formLang  = $this->getThemePath('language/' . $langTag . '/' . $langTag . '.jtf_theme.ini');
             $this->loadThemeLanguage('jtf_theme');
 
             $jtfHp = $app->getUserState('plugins.content.jtf.hp.' . $context . '.' . $formTheme);
@@ -396,7 +398,7 @@ final class Jtf extends CMSPlugin
             $this->setUserParams($vars);
         }
 
-        $this->uParams['formXmlPath'] = $this->getThemePath('fields.xml', true);
+        $this->uParams['formXmlPath'] = $this->getThemeFile('fields.xml', true);
     }
 
     /**
@@ -408,7 +410,7 @@ final class Jtf extends CMSPlugin
      */
     private function resetUserParams()
     {
-        $this->uParams = array();
+        $this->uParams = [];
         $this->_form   = null;
 
         // Set default minimum fill out time
@@ -501,7 +503,7 @@ final class Jtf extends CMSPlugin
      */
     private function setUserParams(array $vars)
     {
-        $uParams = array();
+        $uParams = [];
 
         if (!empty($vars)) {
             foreach ($vars as $var) {
@@ -536,48 +538,16 @@ final class Jtf extends CMSPlugin
     /**
      * Get absolute theme filepath.
      *
-     * @param   string  $file     Name of the file (jtf_theme.ini)
+     * @param   string  $filename  Name of the language file (jtf_theme.ini).
      *
      * @return  void
      *
      * @since  __DEPLOY_VERSION__
      */
-    private function loadThemeLanguage($fileName)
+    private function loadThemeLanguage($filename)
     {
-        $app          = $this->getApplication();
-        $templateBase = $app->getTemplate();
-        $template     = $templateBase;
-        $files        = array();
-        $absPaths     = array();
-
-        foreach ($this->uParams['framework'] as $frwk) {
-            $files[] = $fileName . '.' . $frwk;
-        }
-
-        $files[] = $fileName;
-        $files   = ArrayHelper::arrayUnique($files);
-
-        if ($templateBase == 'yootheme') {
-            $tParams = \json_decode($app->getTemplate(true)->params->get('config'));
-
-            empty($tParams->child_theme) ? null : $template .= '_' . $tParams->child_theme;
-        }
-
-        // Build template override path for child theme
-        $absPaths[] = JPATH_THEMES . '/' . $template
-            . '/html/plg_content_jtf/'
-            . $this->uParams['theme'];
-
-        // Build template override path for parent theme
-        $absPaths[] = JPATH_THEMES . '/' . $templateBase
-            . '/html/plg_content_jtf/'
-            . $this->uParams['theme'];
-
-        // Build plugin path for theme
-        $absPaths[] = JPATH_PLUGINS . '/content/jtf/tmpl/'
-            . $this->uParams['theme'];
-
-        $absPaths = ArrayHelper::arrayUnique($absPaths);
+        $files    = $this->getFilenames($filename);
+        $absPaths = $this->getThemePaths();
 
         foreach ($files as $langFileName) {
             foreach ($absPaths as $absPath) {
@@ -592,36 +562,65 @@ final class Jtf extends CMSPlugin
     /**
      * Get absolute theme filepath
      *
-     * @param   string  $filePath  Filepath relative from inside the theme
+     * @return  boolean|string  False if not a YT child template is used, else the child template name.
      *
-     * @return  boolean|string  False on error
-     *
-     * @since  4.0.0
+     * @since  __DEPLOY_VERSION__
      */
-    private function getThemePath($filePath)
+    private function getYTChildTemplate()
     {
         $app      = $this->getApplication();
-        $error    = array();
-        $files    = array();
-        $pathInfo = \pathinfo($filePath);
-        $ext      = $pathInfo['extension'];
-        $file     = $pathInfo['filename'];
+        $template = $app->getTemplate();
+        $tParams  = \json_decode($app->getTemplate(true)->params->get('config'));
+
+        return empty($tParams->child_theme) ? false : $template . '_' . $tParams->child_theme;
+    }
+
+    /**
+     * Get absolute theme filepath
+     *
+     * @param   string  $type  Type of field path to add (field|rule).
+     *
+     * @return  string[]  Array of strings with absolute paths for searching of overrides.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    private function getFormFieldOverridePaths($type) {
+        $absPaths = $this->getThemePaths();
+        \array_pop($absPaths);
+        $absPaths = \array_reverse($absPaths);
+        $ucfType = \ucfirst($type);
+        $return = [];
+
+        foreach ($absPaths as $absPath) {
+            $return[] = $absPath . '/Form/'.$ucfType;
+        }
+
+        return $return;
+    }
+
+    /**
+     * Get absolute theme filepath
+     *
+     * @return  string[]  Array of strings with absolute paths for searching of themes.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    private function getThemePaths() {
+        $app      = $this->getApplication();
         $template = $app->getTemplate();
 
-        foreach ($this->uParams['framework'] as $frwk) {
-            $files[] = $file . '.' . $frwk . '.' . $ext;
-        }
-
-        $files[] = $filePath;
-        $files   = ArrayHelper::arrayUnique($files);
-
         if ($template == 'yootheme') {
-            $tParams = \json_decode($app->getTemplate(true)->params->get('config'));
-
-            empty($tParams->child_theme) ? null : $template .= '_' . $tParams->child_theme;
+            $ytChild = $this->getYTChildTemplate();
         }
 
-        $absPaths = array();
+        $absPaths = [];
+
+        if (!empty($ytChild)) {
+            // Build template override path for YT child template
+            $absPaths[] = JPATH_THEMES . '/' . $ytChild
+                . '/html/plg_content_jtf/'
+                . $this->uParams['theme'];
+        }
 
         // Build template override path for theme
         $absPaths[] = JPATH_THEMES . '/' . $template
@@ -632,9 +631,56 @@ final class Jtf extends CMSPlugin
         $absPaths[] = JPATH_PLUGINS . '/content/jtf/tmpl/'
             . $this->uParams['theme'];
 
+        return ArrayHelper::arrayUnique($absPaths);
+    }
+
+    /**
+     * Get absolute theme filepath
+     *
+     * @param   string  $filename  Filename
+     *
+     * @return  string[]  Array of strings with the filename combination to search for.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    private function getFilenames($filename)
+    {
+        $files    = [];
+        $pathInfo = \pathinfo($filename);
+        $ext     = !empty($pathInfo['extension']) ? $pathInfo['extension'] : null;
+        $file    = $pathInfo['filename'];
+
+        foreach ($this->uParams['framework'] as $frwk) {
+            if (empty($ext) || $ext == 'ini') {
+                $files[] = $file . '.' . $frwk;
+            } else {
+                $files[] = $file . '.' . $frwk . '.' . $ext;
+            }
+        }
+
+        $files[] = $filename;
+
+        return ArrayHelper::arrayUnique($files);
+    }
+
+    /**
+     * Get absolute theme filepath
+     *
+     * @param   string  $filename  Filepath relative from inside the theme
+     *
+     * @return  boolean|string  False on error
+     *
+     * @since  4.0.0
+     */
+    private function getThemeFile($filename)
+    {
+        $app           = $this->getApplication();
+        $error         = [];
+        $files         = $this->getFilenames($filename);
+        $absPaths      = $this->getThemePaths();
         $error['path'] = true;
 
-        foreach ($files as $filename) {
+        foreach ($files as $file) {
             foreach ($absPaths as $absPath) {
                 // Set the right theme path
                 if (\is_dir($absPath)) {
@@ -642,12 +688,8 @@ final class Jtf extends CMSPlugin
                         unset($error['path']);
                     }
 
-                    if (\file_exists($absPath . '/' . $filename)) {
-                        if ($ext == 'ini') {
-                            return $absPath;
-                        }
-
-                        return $absPath . '/' . $filename;
+                    if (\file_exists($absPath . '/' . $file)) {
+                        return $absPath . '/' . $file;
                     }
 
                     $error['file'] = true;
@@ -655,14 +697,14 @@ final class Jtf extends CMSPlugin
             }
         }
 
-        if (!empty($error['path']) && $ext != 'ini') {
+        if (!empty($error['path'])) {
             $app->enqueueMessage(
                 Text::sprintf('JTF_THEME_ERROR', $this->uParams['theme']),
                 'error'
             );
         }
 
-        if (!empty($error['file']) && $ext != 'ini') {
+        if (!empty($error['file'])) {
             $app->enqueueMessage(
                 Text::sprintf('JTF_FORM_XML_FILE_ERROR', \implode(', ', $files), $this->uParams['theme']),
                 'error'
@@ -687,19 +729,33 @@ final class Jtf extends CMSPlugin
 
         $app                 = $this->getApplication();
         $template            = $app->getTemplate();
+        $ytChildTemplate     = $this->getYTChildTemplate();
         $formName            = $this->uParams['theme'] . (int) self::$count;
         $formXmlPath         = $this->uParams['formXmlPath'];
         $form                = Form::getInstance($formName, $formXmlPath, array('control' => $formName));
         $form->framework     = $this->uParams['framework'];
         $form->rendererDebug = $this->debug;
-        $form->layoutPaths   = array(
-            JPATH_THEMES . '/' . $template . '/html/plg_content_jtf/' . $this->uParams['theme'],
-            JPATH_THEMES . '/' . $template . '/html/layouts/plugin/content/jtf',
-            JPATH_THEMES . '/' . $template . '/html/layouts',
-            JPATH_PLUGINS . '/content/jtf/layouts/jtf',
-            JPATH_PLUGINS . '/content/jtf/layouts/joomla' . Version::MAJOR_VERSION,
-            JPATH_PLUGINS . '/content/jtf/layouts',
-            JPATH_SITE . '/layouts',
+        $form->layoutPaths   = [];
+
+        if (!empty($ytChildTemplate)) {
+            $form->layoutPaths = array(
+                JPATH_THEMES . '/' . $ytChildTemplate . '/html/plg_content_jtf/' . $this->uParams['theme'],
+                JPATH_THEMES . '/' . $ytChildTemplate . '/html/layouts/plugin/content/jtf',
+                JPATH_THEMES . '/' . $ytChildTemplate . '/html/layouts',
+            );
+        }
+
+        $form->layoutPaths = \array_merge(
+            $form->layoutPaths,
+            array(
+                JPATH_THEMES . '/' . $template . '/html/plg_content_jtf/' . $this->uParams['theme'],
+                JPATH_THEMES . '/' . $template . '/html/layouts/plugin/content/jtf',
+                JPATH_THEMES . '/' . $template . '/html/layouts',
+                JPATH_PLUGINS . '/content/jtf/layouts/jtf',
+                JPATH_PLUGINS . '/content/jtf/layouts/joomla' . Version::MAJOR_VERSION,
+                JPATH_PLUGINS . '/content/jtf/layouts',
+                JPATH_SITE . '/layouts',
+            )
         );
 
         $form->showRequiredFieldDescription = $this->uParams['show_required_field_description'];
@@ -785,12 +841,12 @@ final class Jtf extends CMSPlugin
      */
     private function cleanSubmittedFiles($submittedFiles, $submittedValues)
     {
-        $validatedFiles = array();
+        $validatedFiles = [];
 
         foreach ($submittedFiles as $key => $value) {
             if (isset($submittedValues[$key])) {
                 if (empty($value)) {
-                    $validatedFiles[$key] = array();
+                    $validatedFiles[$key] = [];
 
                     continue;
                 }
@@ -841,7 +897,7 @@ final class Jtf extends CMSPlugin
             File::write($uploadBase . '/.htaccess', Text::_('JTF_SET_ATTACHMENT_HTACCESS'));
         }
 
-        $return = array();
+        $return = [];
 
         $save     = null;
         $fileName = File::stripExt($validatedFile['name']);
@@ -996,11 +1052,11 @@ final class Jtf extends CMSPlugin
     private function getEmailCredentials()
     {
         $app        = $this->getApplication();
-        $recipients = array();
+        $recipients = [];
 
         foreach (array('mailto', 'cc', 'bcc', 'visitor_name', 'visitor_email') as $name) {
             $recipients[$name] = null;
-            $recipient         = array();
+            $recipient         = [];
 
             if (empty($this->uParams[$name]) && $name == 'mailto') {
                 if (!empty($app->get('replyto'))) {
@@ -1089,7 +1145,7 @@ final class Jtf extends CMSPlugin
         $token     = $app->getUserState('plugins.content.jtf.' . $this->context);
         $formName  = $id . $index;
 
-        $controlFields   = array();
+        $controlFields   = [];
         $controlFields[] = '<input type="hidden" name="option" value="' . $app->input->get('option') . '" />';
         $controlFields[] = '<input type="hidden" name="formTask" value="' . $formName . '_sendmail" />';
         $controlFields[] = '<input type="hidden" name="view" value="' . $app->input->get('view') . '" />';
@@ -1181,8 +1237,8 @@ final class Jtf extends CMSPlugin
     private function setSubmit()
     {
         $form           = $this->getForm();
-        $captcha        = array();
-        $button         = array();
+        $captcha        = [];
+        $button         = [];
         $submitFieldset = $form->getFieldset('submit');
 
         if (!empty($submitFieldset)) {
@@ -1419,7 +1475,7 @@ final class Jtf extends CMSPlugin
         $key         = (array) Uri::getInstance()->toString();
         $key         = \md5(serialize($key));
         $group       = \strstr($context, '.', true);
-        $cacheGroups = array();
+        $cacheGroups = [];
 
         if ($cacheIsActive) {
             $cacheGroups = array(

@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -579,7 +579,7 @@ class FrameworkHelper
         );
 
         $frwkClassesDefaultFields = array(
-            'text', 'email', 'plz', 'tel', 'list', 'combo', 'category', 'calendar',
+            'text', 'email', 'plz', 'tel', 'list', 'combo', 'category', 'calendar', 'color',
         );
 
         $buttonWithIconFields = array(

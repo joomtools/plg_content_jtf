@@ -1,11 +1,11 @@
 <?php
-
 /**
- * @package         Joomla.Site
- * @subpackage      Layout
+ * @package      Joomla.Plugin
+ * @subpackage   Content.Jtf
  *
- * @copyright   (C) 2018 Open Source Matters, Inc. <https://www.joomla.org>
- * @license         GNU General Public License version 2 or later; see LICENSE.txt
+ * @author       Guido De Gobbis <support@joomtools.de>
+ * @copyright    2025 JoomTools.de - All rights reserved.
+ * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
@@ -59,7 +59,7 @@ $attr .= !empty($size) ? ' size="' . $size . '"' : '';
 $attr .= $multiple ? ' multiple' : '';
 $attr .= $autofocus ? ' autofocus' : '';
 $attr .= $onchange ? ' onchange="' . $onchange . '"' : '';
-$attr .= $dataAttribute;
+$attr .= strlen($hint) ? ' placeholder="' . $this->escape($hint) . '"' : '';
 
 // To avoid user's confusion, readonly="readonly" should imply disabled="disabled".
 if ($readonly || $disabled) {
@@ -71,7 +71,8 @@ if (!empty($class)) {
 }
 
 $attr2 = '';
-$attr2 .= ' placeholder="' . $this->escape($hint ?: Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS')) . '" ';
+$attr2 .= implode(' ', (array) $dataAttribute);
+$attr2 .= ' search-placeholder="' . $this->escape($hint ?: Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS')) . '" ';
 
 if ($required) {
     $attr  .= ' required';

@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -14,7 +14,7 @@ namespace JoomTools\Plugin\Content\Jtf\Form\Field;
 \defined('JPATH_PLATFORM') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use Joomla\CMS\Form\Field\CalendarField as JoomlaCalendarField;
+use Joomla\CMS\Form\Field\CategoryField as JoomlaCategoryField;
 use JoomTools\Plugin\Content\Jtf\Form\FormFieldExtension;
 
 /**
@@ -23,7 +23,7 @@ use JoomTools\Plugin\Content\Jtf\Form\FormFieldExtension;
  *
  * @since  4.0.0
  */
-class CategoryField extends JoomlaCalendarField
+class CategoryField extends JoomlaCategoryField
 {
 	use FormFieldExtension;
 }

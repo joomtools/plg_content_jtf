@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -122,6 +122,10 @@ class Uikit3
             'class' => array('uk-select'),
         );
 
+        $classes['color'] = array(
+            'class' => array('uk-width-1-4'),
+        );
+
         $classes['category'] = array(
             'class' => array('uk-select'),
         );
@@ -178,10 +182,10 @@ class Uikit3
         $css[] = '.jtf .field-calendar input {margin-right: 40px;padding-right: 40px;}';
         $css[] = '.jtf .uk-form-stacked .uk-form-label {width: auto !important; float: none !important;}';
         $css[] = '.jtf .uk-form-stacked .uk-form-controls {width: 100% !important; margin-left: 0 !important;}';
-        $css[] = '.jtf .checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
-        $css[] = '.jtf .checkbox, .radio {padding-left: 0 !important;}';
-        $css[] = '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 40px;}';
-        $css[] = '.jtf .minicolors-theme-bootstrap .hex{height: auto;}';
+        //$css[] = '.jtf .checkbox input[type=checkbox], .radio input[type=radio] {margin-left: 0 !important;}';
+        //$css[] = '.jtf .checkbox, .radio {padding-left: 0 !important;}';
+        $css[] = '.jtf .minicolors.minicolors-theme-bootstrap.minicolors-position-default input{padding-left: 3em;}';
+        $css[] = '.jtf .minicolors-theme-bootstrap .minicolors-swatch{top: 0.5em;left: 0.75em}';
         $css[] = '.jtf .choices{border: 1px solid #ced4da;border-radius: .25rem;}';
         $css[] = '.jtf .choices[data-type*="select-one"] .choices__button_joomla{margin-block-start: -15px;margin-inline-end: 1.5rem;}';
         $css[] = '.jtf .is-focused .choices__inner{color: var(--lt-color-text-default);}';
