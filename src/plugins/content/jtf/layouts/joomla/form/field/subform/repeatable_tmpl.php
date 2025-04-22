@@ -39,7 +39,9 @@ if ($multiple) {
         HTMLHelper::_('jquery.ui', array('core', 'sortable'));
         HTMLHelper::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
     } else {
-        Factory::getDocument()->getWebAssetManager()
+        Factory::getApplication()
+            ->getDocument()
+            ->getWebAssetManager()
             ->useScript('webcomponent.field-subform');
     }
 }
@@ -58,7 +60,7 @@ foreach ($forms as $k => $form) {
 } ?>
 
 <?php if ($multiple) : ?>
-	<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section hidden">
+	<template class="subform-repeatable-template-section hidden">
         <?php $tmpl = FrameworkHelper::setFrameworkClasses($tmpl, true);
         echo $this->sublayout('section',
                               array(

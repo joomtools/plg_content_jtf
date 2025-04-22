@@ -23,12 +23,14 @@ $layout->setDebug($displayData['tmpl']->rendererDebug);
 
 <div class="uk-grid">
 	<div class="subform-repeatable-wrapper subform-layout uk-width-1-1">
-		<div class="subform-repeatable uk-grid"
-			 data-bt-add="a.group-add-<?php echo $displayData['unique_subform_id']; ?>"
-			 data-bt-remove="a.group-remove-<?php echo $displayData['unique_subform_id']; ?>"
-			 data-bt-move="a.group-move-<?php echo $displayData['unique_subform_id']; ?>"
-			 data-minimum="<?php echo $displayData['min']; ?>"
-			 data-maximum="<?php echo $displayData['max']; ?>">
+		<joomla-field-subform class="subform-repeatable uk-grid"
+							  name="<?php echo $displayData['name']; ?>"
+							  button-add="a.group-add-<?php echo $displayData['unique_subform_id']; ?>"
+							  button-remove="a.group-remove-<?php echo $displayData['unique_subform_id']; ?>"
+							  button-move="a.group-move-<?php echo $displayData['unique_subform_id']; ?>"
+							  repeatable-element=".subform-repeatable-group"
+							  minimum="<?php echo $displayData['min']; ?>"
+							  maximum="<?php echo $displayData['max']; ?>">
 
             <?php if (!empty($displayData['buttons']['add'])) : ?>
 				<div class="uk-margin-bottom uk-width-1-1">
@@ -42,6 +44,6 @@ $layout->setDebug($displayData['tmpl']->rendererDebug);
             <?php endif; ?>
 
             <?php echo $layout->render($displayData); ?>
-		</div>
+		</joomla-field-subform>
 	</div>
 </div>
