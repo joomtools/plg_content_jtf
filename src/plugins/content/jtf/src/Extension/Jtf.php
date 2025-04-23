@@ -570,7 +570,11 @@ final class Jtf extends CMSPlugin
     {
         $app      = $this->getApplication();
         $template = $app->getTemplate();
-        $tParams  = \json_decode($app->getTemplate(true)->params->get('config'));
+        $tParams  = null;
+
+        if ($template == 'yootheme') {
+            $tParams  = \json_decode($app->getTemplate(true)->params->get('config'));
+        }
 
         return empty($tParams->child_theme) ? false : $template . '_' . $tParams->child_theme;
     }
@@ -608,10 +612,7 @@ final class Jtf extends CMSPlugin
     private function getThemePaths() {
         $app      = $this->getApplication();
         $template = $app->getTemplate();
-
-        if ($template == 'yootheme') {
-            $ytChild = $this->getYTChildTemplate();
-        }
+        $ytChild  = $this->getYTChildTemplate();
 
         $absPaths = [];
 
