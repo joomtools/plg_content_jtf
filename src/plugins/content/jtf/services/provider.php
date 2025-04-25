@@ -35,7 +35,7 @@ return new class () implements ServiceProviderInterface {
         $container->set(
             PluginInterface::class,
             function (Container $container) {
-                $app        = Factory::getApplication();
+                $app = Factory::getApplication();
 
                 $plugin = new Jtf(
                     $container->get(DispatcherInterface::class),

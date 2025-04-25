@@ -10,8 +10,11 @@
 
 namespace JoomTools\Plugin\Content\Jtf\Form;
 
-defined('JPATH_PLATFORM') or die;
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form as JoomlaForm;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
@@ -138,7 +141,7 @@ class Form extends JoomlaForm
      * @since  4.0.0
      *
      */
-    public static function getInstance($name, $data = null, $options = array(), $replace = true, $xpath = false)
+    public static function getInstance($name, $data = null, $options = [], $replace = true, $xpath = false)
     {
         // Reference to array with form instances
         $forms = &self::$forms;
@@ -148,29 +151,20 @@ class Form extends JoomlaForm
             $data = trim($data);
 
             if (empty($data)) {
-                throw new \InvalidArgumentException(
-                    sprintf('%1$s(%2$s, *%3$s*)', __METHOD__, $name, gettype($data))
-                );
+                throw new \InvalidArgumentException(\sprintf('%1$s(%2$s, *%3$s*)', __METHOD__, $name, \gettype($data)));
             }
 
             // Instantiate the form.
-            $forms[$name] = new self($name, $options);
+            $forms[$name] = Factory::getContainer()->get(FormFactoryInterface::class)->createForm($name, $options);
 
             // Load the data.
-            if (substr($data, 0, 1) == '<') {
+            if (str_starts_with($data, '<')) {
                 if ($forms[$name]->load($data, $replace, $xpath) == false) {
-                    throw new \RuntimeException(
-                        sprintf('%s() could not load form', __METHOD__)
-                    );
+                    throw new \RuntimeException(\sprintf('%s() could not load form', __METHOD__));
                 }
             } else {
-                if ($forms[$name]->loadFile($data, $replace, $xpath) === false) {
-                    throw new \RuntimeException(
-                        sprintf(
-                            '%s() could not load file %s', __METHOD__,
-                            str_replace(JPATH_ROOT, '', $data)
-                        )
-                    );
+                if ($forms[$name]->loadFile($data, $replace, $xpath) == false) {
+                    throw new \RuntimeException(\sprintf('%s() could not load file', __METHOD__));
                 }
             }
         }

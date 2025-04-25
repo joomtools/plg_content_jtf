@@ -34,6 +34,8 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Version;
 use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
+use Joomla\DI\Container;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
@@ -41,6 +43,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Input\Input;
 use Joomla\Utilities\ArrayHelper;
 use JoomTools\Plugin\Content\Jtf\Form\Form;
+use JoomTools\Plugin\Content\Jtf\Form\FormFactory;
+use JoomTools\Plugin\Content\Jtf\Form\FormFactoryInterface;
 use JoomTools\Plugin\Content\Jtf\Framework\FrameworkHelper;
 use JoomTools\Plugin\Content\Jtf\Input\Files;
 use JoomTools\Plugin\Content\Jtf\Layout\FileLayout;
@@ -166,16 +170,28 @@ final class Jtf extends CMSPlugin
     /**
      * Constructor
      *
-     * @param   DispatcherInterface      $dispatcher  The object to observe -- event dispatcher.
-     * @param   array                    $config      An optional associative array of configuration settings.
+     * @param   DispatcherInterface  $dispatcher  The object to observe -- event dispatcher.
+     * @param   array                $config      An optional associative array of configuration settings.
+     * @param   Input                $input       The input data.
      *
      * @since  4.0.0
      */
     public function __construct(DispatcherInterface $dispatcher, array $config, Input $input)
     {
-        parent::__construct($dispatcher, $config);
+        $container = Factory::getContainer();
+        $container->alias(FormFactory::class, FormFactoryInterface::class)
+            ->set(
+                FormFactoryInterface::class,
+                function (Container $container) {
+                    $factory = new FormFactory();
+                    $factory->setDatabase($container->get(DatabaseInterface::class));
 
-        $app = $this->getApplication();
+                    return $factory;
+                },
+                true
+            );
+
+        parent::__construct($dispatcher, $config);
 
         $this->debug = (boolean) $this->params->get('debug', 0);
         $option      = $input->getCmd('option');
