@@ -19,6 +19,7 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Cache\CacheController;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Cache\Exception\CacheExceptionInterface;
+use Joomla\CMS\Event\Content\ContentPrepareEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\FormHelper;
@@ -37,6 +38,8 @@ use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\Event\DispatcherInterface;
+use Joomla\Event\Event;
+use Joomla\Event\SubscriberInterface;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 use Joomla\CMS\Uri\Uri;
@@ -55,7 +58,7 @@ use JoomTools\Plugin\Content\Jtf\Layout\FileLayout;
  *
  * @since        4.0.0
  */
-final class Jtf extends CMSPlugin
+final class Jtf extends CMSPlugin implements SubscriberInterface
 {
     use DatabaseAwareTrait;
 
@@ -203,21 +206,36 @@ final class Jtf extends CMSPlugin
     }
 
     /**
-     * Plugin to generates Forms within content
+     * Returns an array of events this subscriber will listen to.
      *
-     * @param   string    $context  The context of the content being passed to the plugin.
-     * @param   object   &$article  The article object.  Note $article->text is also available
-     * @param   mixed     $params   The article params
-     * @param   integer   $page     The 'page' number
+     * @return  array
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onContentPrepare' => 'onContentPrepare',
+        ];
+    }
+
+    /**
+     * Plugin that retrieves contact information for contact
+     *
+     * @param   ContentPrepareEvent $event  The event instance.
      *
      * @return  void
      *
      * @throws  \Exception
-     * @since  4.0.0
+     * @since  __DEPLOY_VERSION__
      *
      */
-    public function onContentPrepare($context, &$article, $params, $page = 0)
+    public function onContentPrepare(ContentPrepareEvent $event)
     {
+        $context = $event->getContext();
+        $article = $event->getItem();
+        $params  = $event->getParams();
+
         /** @var CMSApplicationInterface $app */
         $app = $this->getApplication();
 
