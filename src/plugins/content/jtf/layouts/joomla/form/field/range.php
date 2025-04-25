@@ -11,7 +11,6 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 
 extract($displayData);
@@ -52,13 +51,8 @@ extract($displayData);
  * @var   array    $dataAttributes  Miscellaneous data attribute for eg, data-*.
  */
 
-HTMLHelper::_('stylesheet', 'plg_content_jtf/jtfRange.min.css', ['version' => 'auto', 'relative' => true]);
-
-if (version_compare(JVERSION, '4', 'lt')) {
-    // Including fallback code for HTML5 non-supported browsers.
-    HTMLHelper::_('jquery.framework');
-    HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
-}
+// Add Stylesheet
+Factory::getApplication()->getDocument()->getWebAssetManager()->useStyle('jtf.jtfRange');
 
 // Initialize some field attributes.
 $attributes          = array();
@@ -72,16 +66,14 @@ $autofocus ? $attributes['autofocus'] = 'autofocus' : null;
 !empty($min) ? $attributes['min'] = $min : null;
 $value = is_numeric($value) ? (float) $value : $min;
 ?>
-	<input
-		type="range"
-		name="<?php echo $name; ?>"
-		id="<?php echo $id; ?>"
-		oninput="this.nextElementSibling.value=this.value"
-		value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-        <?php echo ArrayHelper::toString($attributes); ?>
-        <?php if (version_compare(JVERSION, '4', 'ge')) : ?>
-            <?php echo $dataAttribute; ?>
-        <?php endif; ?>
-	/>
-	<output class="range-desc"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></output>
+<input
+	type="range"
+	name="<?php echo $name; ?>"
+	id="<?php echo $id; ?>"
+	oninput="this.nextElementSibling.value=this.value"
+	value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
+    <?php echo ArrayHelper::toString($attributes); ?>
+    <?php echo $dataAttribute; ?>
+/>
+<output class="range-desc"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></output>
 <?php echo $description ? ' <span class="range-desc">' . htmlspecialchars($description, ENT_COMPAT, 'UTF-8') . '</span>' : null; ?>

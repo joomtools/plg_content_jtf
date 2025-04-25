@@ -6,6 +6,13 @@
   "license": "GPL-3.0-or-later",
   "assets": [
     {
+      "name": "jtf.jtfRange",
+      "type": "style",
+      "uri": "plg_content_jtf/jtfRange.min.css",
+      "package": "jtfRange",
+      "version": "5.0.1"
+    },
+    {
       "name": "jtf.jtfUploadFile",
       "type": "style",
       "uri": "plg_content_jtf/jtfUploadFile.min.css",
