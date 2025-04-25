@@ -12,7 +12,6 @@ namespace JoomTools\Plugin\Content\Jtf\Extension;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
-
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Application\CMSApplicationInterface;
@@ -37,6 +36,8 @@ use Joomla\CMS\Version;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
+use Joomla\Event\DispatcherAwareInterface;
+use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
@@ -58,9 +59,10 @@ use JoomTools\Plugin\Content\Jtf\Layout\FileLayout;
  *
  * @since        4.0.0
  */
-final class Jtf extends CMSPlugin implements SubscriberInterface
+final class Jtf extends CMSPlugin implements SubscriberInterface, DispatcherAwareInterface
 {
     use DatabaseAwareTrait;
+    use DispatcherAwareTrait;
 
     /**
      * The regular expression to identify Plugin call.
@@ -228,7 +230,6 @@ final class Jtf extends CMSPlugin implements SubscriberInterface
      *
      * @throws  \Exception
      * @since  __DEPLOY_VERSION__
-     *
      */
     public function onContentPrepare(ContentPrepareEvent $event)
     {
@@ -320,7 +321,7 @@ final class Jtf extends CMSPlugin implements SubscriberInterface
                 if (\is_dir($formOverridePath)) {
                     \JLoader::registerNamespace('JoomTools\\Override\\Plugin\\Content\\Jtf', $formOverridePath, false, true);
                 }
-                }
+            }
 
             $formTheme = $this->uParams['theme'] . (int) self::$count;
             $this->loadThemeLanguage('jtf_theme');
@@ -377,6 +378,16 @@ final class Jtf extends CMSPlugin implements SubscriberInterface
                     $sendmail = $this->sendMail();
 
                     if ($sendmail === true) {
+
+                        // Definiere den Namen deines Events
+                        $eventName = 'onAfterJtfMailSend';
+
+                        // Erstelle das Event-Objekt
+                        $event = new Event($eventName, ['formName' => $formTheme, 'formValues' => $this->getForm()->getData()->toArray()]);
+
+                        // Dispatche das Event
+                        $this->getDispatcher()->dispatch('onAfterJtfMailSend', $event);
+
                         if ($this->uParams['redirect_menuid'] !== null) {
                             $this->uParams['message_article'] = null;
                         }
@@ -625,8 +636,6 @@ final class Jtf extends CMSPlugin implements SubscriberInterface
     /**
      * Get absolute theme filepath
      *
-     * @param   string  $type  Type of field path to add (field|rule).
-     *
      * @return  string[]  Array of strings with absolute paths for searching of overrides.
      *
      * @since  __DEPLOY_VERSION__
@@ -636,7 +645,6 @@ final class Jtf extends CMSPlugin implements SubscriberInterface
         \array_pop($absPaths);
         $absPaths = \array_reverse($absPaths);
         $return   = [];
-        $return = [];
 
         foreach ($absPaths as $absPath) {
             $return[] = $absPath;
