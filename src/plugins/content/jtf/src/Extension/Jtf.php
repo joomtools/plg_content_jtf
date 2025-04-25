@@ -268,7 +268,11 @@ final class Jtf extends CMSPlugin implements SubscriberInterface
         }
 
         FormHelper::addFieldPrefix('JoomTools\\Plugin\\Content\\Jtf\\Form\\Field');
+        FormHelper::addFieldPrefix('JoomTools\\Override\\Plugin\\Content\\Jtf\\Form\\Field');
         FormHelper::addRulePrefix('JoomTools\\Plugin\\Content\\Jtf\\Form\\Rule');
+        FormHelper::addRulePrefix('JoomTools\\Override\\Plugin\\Content\\Jtf\\Form\\Rule');
+        FormHelper::addFilterPrefix('JoomTools\\Plugin\\Content\\Jtf\\Form\\Filter');
+        FormHelper::addFilterPrefix('JoomTools\\Override\\Plugin\\Content\\Jtf\\Form\\Filter');
 
         // Get language tag
         $langTag = $app->get('language');
@@ -309,9 +313,14 @@ final class Jtf extends CMSPlugin implements SubscriberInterface
                 return;
             }
 
+            $formOverridePaths = $this->getFormOverridePaths();
+
             // Add override paths for form fields and rules
-            FormHelper::addFieldPath($this->getFormFieldOverridePaths('field'));
-            FormHelper::addRulePath($this->getFormFieldOverridePaths('rule'));
+            foreach ($formOverridePaths as $formOverridePath) {
+                if (\is_dir($formOverridePath)) {
+                    \JLoader::registerNamespace('JoomTools\\Override\\Plugin\\Content\\Jtf', $formOverridePath, false, true);
+                }
+                }
 
             $formTheme = $this->uParams['theme'] . (int) self::$count;
             $this->loadThemeLanguage('jtf_theme');
@@ -622,15 +631,16 @@ final class Jtf extends CMSPlugin implements SubscriberInterface
      *
      * @since  __DEPLOY_VERSION__
      */
-    private function getFormFieldOverridePaths($type) {
+    private function getFormOverridePaths() {
         $absPaths = $this->getThemePaths();
         \array_pop($absPaths);
         $absPaths = \array_reverse($absPaths);
-        $ucfType = \ucfirst($type);
+        $return   = [];
         $return = [];
 
         foreach ($absPaths as $absPath) {
-            $return[] = $absPath . '/Form/'.$ucfType;
+            $return[] = $absPath;
+            $return[] = $absPath . '/libraries/';
         }
 
         return $return;
@@ -774,8 +784,9 @@ final class Jtf extends CMSPlugin implements SubscriberInterface
 
         if (!empty($ytChildTemplate)) {
             $form->layoutPaths = array(
+                JPATH_THEMES . '/' . $ytChildTemplate . '/html/plg_content_jtf/' . $this->uParams['theme'] . '/layouts',
                 JPATH_THEMES . '/' . $ytChildTemplate . '/html/plg_content_jtf/' . $this->uParams['theme'],
-                JPATH_THEMES . '/' . $ytChildTemplate . '/html/layouts/plugin/content/jtf',
+                JPATH_THEMES . '/' . $ytChildTemplate . '/html/layouts/plugins/content/jtf',
                 JPATH_THEMES . '/' . $ytChildTemplate . '/html/layouts',
             );
         }
@@ -783,6 +794,7 @@ final class Jtf extends CMSPlugin implements SubscriberInterface
         $form->layoutPaths = \array_merge(
             $form->layoutPaths,
             array(
+                JPATH_THEMES . '/' . $template . '/html/plg_content_jtf/' . $this->uParams['theme'] . '/layouts',
                 JPATH_THEMES . '/' . $template . '/html/plg_content_jtf/' . $this->uParams['theme'],
                 JPATH_THEMES . '/' . $template . '/html/layouts/plugin/content/jtf',
                 JPATH_THEMES . '/' . $template . '/html/layouts',
