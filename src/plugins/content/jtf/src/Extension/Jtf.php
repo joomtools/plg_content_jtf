@@ -1028,8 +1028,8 @@ final class Jtf extends CMSPlugin implements SubscriberInterface, DispatcherAwar
             $replayToName = $app->get('fromname');
         }
 
-        $hBody = $this->getTmpl('message.html');
-        $pBody = $this->getTmpl('message.plain');
+        $hBody = $this->getTmpl('jtf.message.html');
+        $pBody = $this->getTmpl('jtf.message.plain');
 
         $mailer->setSender($app->get('mailfrom'), $replayToName);
         $mailer->addReplyTo($replayToEmail, $replayToName);
