@@ -20,4 +20,24 @@
         <targetplatform name="joomla" version="[45].[1234567890]"/>
         <php_minimum>7.2</php_minimum>
     </update>
+    <update>
+        <name>JT - Formulator</name>
+        <description>First tests with Joomla! v6.0.0 with B/C Plugin on.</description>
+        <element>jtf</element>
+        <type>plugin</type>
+        <folder>content</folder>
+        <client>site</client>
+        <version>5.0.1-rc1</version>
+        <downloads>
+            <downloadurl type="full" format="zip">https://github.com/joomtools/plg_content_jtf/releases/download/5.0.1-rc1/plg_content_jtf-5.0.1-rc1.zip</downloadurl>
+        </downloads>
+        <tags>
+            <tag>stable</tag>
+        </tags>
+        <sha256>b222e4ed1d79b95dfe1a1861cf02308c09219c1ff5de9d9b6aa05dc10906c539</sha256>
+        <sha512>0fec843fcc86ee8a8b5357c5331a81e75c603d296b70ada2af7e02c901f027a574dd1fb0c0eebd89ef9b27cd26b8b52c32a395c037ae36fe2902074be8ada719</sha512>
+        <maintainer>Guido De Gobbis</maintainer>
+        <targetplatform name="joomla" version="[56].[1234567890]"/>
+        <php_minimum>8.3</php_minimum>
+    </update>
 </updates>
