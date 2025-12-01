@@ -23,6 +23,9 @@ Desktop.ini
 .project
 .settings
 
+#VSCode
+.vscode
+
 # Temp files
 *.tmp
 *.bak
