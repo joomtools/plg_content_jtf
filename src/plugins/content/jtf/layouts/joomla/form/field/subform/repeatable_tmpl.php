@@ -4,15 +4,16 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Jtf\Form\Form;
-use Jtf\Framework\FrameworkHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use JoomTools\Plugin\Content\Jtf\Form\Form;
+use JoomTools\Plugin\Content\Jtf\Framework\FrameworkHelper;
 
 extract($displayData);
 
@@ -35,10 +36,12 @@ extract($displayData);
 // Add script
 if ($multiple) {
     if (version_compare(JVERSION, 4, 'lt')) {
-        JHtml::_('jquery.ui', array('core', 'sortable'));
-        JHtml::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
+        HTMLHelper::_('jquery.ui', array('core', 'sortable'));
+        HTMLHelper::_('script', 'system/subform-repeatable.js', array('version' => 'auto', 'relative' => true));
     } else {
-        Factory::getDocument()->getWebAssetManager()
+        Factory::getApplication()
+            ->getDocument()
+            ->getWebAssetManager()
             ->useScript('webcomponent.field-subform');
     }
 }
@@ -57,7 +60,7 @@ foreach ($forms as $k => $form) {
 } ?>
 
 <?php if ($multiple) : ?>
-	<template type="text/subform-repeatable-template-section" class="subform-repeatable-template-section hidden">
+	<template class="subform-repeatable-template-section hidden">
         <?php $tmpl = FrameworkHelper::setFrameworkClasses($tmpl, true);
         echo $this->sublayout('section',
                               array(

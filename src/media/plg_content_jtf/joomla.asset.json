@@ -1,0 +1,70 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "jtf",
+  "version": "5.0.1",
+  "description": "This file contains details of the assets used by JT - Formulator.",
+  "license": "GPL-3.0-or-later",
+  "assets": [
+    {
+      "name": "jtf.jtfRange",
+      "type": "style",
+      "uri": "plg_content_jtf/jtfRange.min.css",
+      "package": "jtfRange",
+      "version": "5.0.1"
+    },
+    {
+      "name": "jtf.jtfUploadFile",
+      "type": "style",
+      "uri": "plg_content_jtf/jtfUploadFile.min.css",
+      "package": "jtfUploadFile",
+      "version": "5.0.1"
+    },
+    {
+      "name": "jtf.jtfUploadFile",
+      "type": "script",
+      "uri": "plg_content_jtf/jtfUploadFile.min.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "jtfUploadFile",
+      "version": "5.0.1"
+    },
+    {
+      "name": "jtf.jtfUploadFile",
+      "type": "preset",
+      "dependencies": [
+        "jtf.jtfUploadFile#style",
+        "jtf.jtfUploadFile#script"
+      ],
+      "package": "jtfUploadFile",
+      "version": "5.0.1"
+    },
+    {
+      "name": "jtf.choicesjs",
+      "type": "style",
+      "uri": "media/templates/site/cassiopeia/css/vendor/choicesjs/choices.min.css",
+      "package": "choices.js",
+      "version": "9.1.0"
+    },
+    {
+      "name": "jtf.choicesjs",
+      "type": "script",
+      "uri": "vendor/choicesjs/choices.min.js",
+      "attributes": {
+        "defer": true
+      },
+      "package": "choices.js",
+      "version": "9.1.0"
+    },
+    {
+      "name": "jtf.choicesjs",
+      "type": "preset",
+      "dependencies": [
+        "jtf.choicesjs#style",
+        "jtf.choicesjs#script"
+      ],
+      "package": "choices.js",
+      "version": "9.1.0"
+    }
+  ]
+}

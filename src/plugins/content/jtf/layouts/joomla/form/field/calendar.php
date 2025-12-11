@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -166,8 +166,8 @@ if (!$disabled || !$readonly)
 			->useScript('field.calendar');
 	}
 
-	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfMoment.min.js', array('version' => 'auto'), array('defer' => 'defer'));
-	HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfValidateDateFormat.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+	HTMLHelper::_('script', 'plg_content_jtf/jtfMoment.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
+	HTMLHelper::_('script', 'plg_content_jtf/jtfValidateDateFormat.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
 }
 
 // Build the button attributes array.

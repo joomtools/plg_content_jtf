@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -21,9 +21,9 @@ extract($displayData);
  */
 
 ?>
-<div class="input-prepend">
-	<span class="add-on">
+<div class="input-group">
+	<div class="input-group-text">
 		<span class="<?php echo $icon; ?>"></span>
-	</span>
+	</div>
     <?php echo $input; ?>
 </div>

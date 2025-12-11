@@ -4,14 +4,14 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use Jtf\Form\Form;
+use JoomTools\Plugin\Content\Jtf\Form\Form;
 
 extract($displayData);
 
@@ -28,7 +28,7 @@ extract($displayData);
 $subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : ''; ?>
 
 <div
-	class="subform-repeatable-group<?php echo $subformClass; ?> subform-repeatable-group-<?php echo $unique_subform_id; ?> uk-margin-large-bottom uk-width-1-1 uk-width-1-2@s uk-width-1-4@m"
+	class="subform-repeatable-group subform-repeatable-group-<?php echo $unique_subform_id; ?> <?php echo $subformClass; ?> uk-margin-large-bottom uk-width-1-1 uk-width-1-2@s uk-width-1-4@m"
 	data-base-name="<?php echo $basegroup; ?>"
 	data-group="<?php echo $group; ?>">
 
@@ -57,19 +57,19 @@ $subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute
 		<div class="uk-margin-top uk-width-1-1 uk-text-right">
 			<div class="uk-button-group">
                 <?php if (!empty($buttons['add'])) : ?>
-					<a class="group-add uk-button uk-button-small uk-button-primary group-add-<?php echo $unique_subform_id; ?>"
+					<a class="uk-button uk-button-small uk-button-primary group-add-<?php echo $unique_subform_id; ?>"
 					   aria-label="<?php echo Text::_('JGLOBAL_FIELD_ADD'); ?>">
 						<span uk-icon="icon: plus"></span>
 					</a>
                 <?php endif; ?>
                 <?php if (!empty($buttons['remove'])) : ?>
-					<a class="group-remove uk-button uk-button-small uk-button-danger group-remove-<?php echo $unique_subform_id; ?>"
+					<a class="uk-button uk-button-small uk-button-danger group-remove-<?php echo $unique_subform_id; ?>"
 					   aria-label="<?php echo Text::_('JGLOBAL_FIELD_REMOVE'); ?>">
 						<span uk-icon="icon: minus"></span>
 					</a>
                 <?php endif; ?>
                 <?php if (!empty($buttons['move'])) : ?>
-					<a class="group-move uk-button uk-button-small uk-button-secondary group-move-<?php echo $unique_subform_id; ?>"
+					<a class="uk-button uk-button-small uk-button-secondary group-move-<?php echo $unique_subform_id; ?>"
 					   aria-label="<?php echo Text::_('JGLOBAL_FIELD_MOVE'); ?>">
 						<span uk-icon="icon: move"></span>
 					</a>

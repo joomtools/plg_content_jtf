@@ -248,7 +248,7 @@
 		       type="combo"
 		       description="JTF_COMBO_DESC"
 		       label="JTF_COMBO_LABEL"
-		       size="7"
+		       maxlength="50"
 		>
 			<option value="1">Option 1</option>
 			<option value="2">Option 2</option>

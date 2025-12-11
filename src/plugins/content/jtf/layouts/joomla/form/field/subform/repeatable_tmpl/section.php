@@ -4,14 +4,14 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use Jtf\Form\Form;
+use JoomTools\Plugin\Content\Jtf\Form\Form;
 
 extract($displayData);
 
@@ -25,10 +25,12 @@ extract($displayData);
  * @var   int     $unique_subform_id  Whether group the subform fields by it`s fieldset
  */
 
-$subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : ''; ?>
+$subformClass = !empty($form->getAttribute('class')) ? ' ' . $form->getAttribute('class') : '';
+$subformClass .= ' subform-repeatable-group-' . $unique_subform_id;
+?>
 
 <div
-	class="subform-repeatable-group <?php echo $subformClass; ?> subform-repeatable-group-<?php echo $unique_subform_id; ?>"
+	class="subform-repeatable-group <?php echo $subformClass; ?>"
 	data-base-name="<?php echo $basegroup; ?>"
 	data-group="<?php echo $group; ?>">
 

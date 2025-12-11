@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form orientation="stacked"
-      class="col-sm-6"
+      class="col-sm-12 col-md-6"
 >
 
 	<field name="list"

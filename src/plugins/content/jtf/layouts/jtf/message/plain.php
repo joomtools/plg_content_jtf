@@ -4,14 +4,14 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use Jtf\Form\Form;
+use JoomTools\Plugin\Content\Jtf\Form\Form;
 
 extract($displayData);
 

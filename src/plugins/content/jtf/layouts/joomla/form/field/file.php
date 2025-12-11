@@ -4,12 +4,13 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -58,15 +59,14 @@ extract($displayData);
 
 $maxSize = HTMLHelper::_('number.bytes', $uploadMaxSize);
 
-Text::sprintf('JTF_JS_UPLOAD_ERROR_MESSAGE_SIZE', $maxSize, array('jsSafe' => true, 'interpretBackSlashes' => true, 'script' => true));
-Text::script('JTF_JS_UPLOAD_ERROR_FILE_NOT_ALLOWED', true);
-Text::script('JTF_JS_UPLOAD_ALLOWED_FILES_EXT', true);
+Text::script('JTF_JS_UPLOAD_ERROR_MESSAGE_SIZE');
+Text::script('JTF_JS_UPLOAD_ERROR_FILE_NOT_ALLOWED');
+Text::script('JTF_JS_UPLOAD_ALLOWED_FILES_EXT');
 Text::script('JTF_JS_UPLOAD_LIST_WRAPPER_' . strtoupper($framework));
 Text::script('JTF_JS_ERROR_WRAPPER_' . strtoupper($framework));
 
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfLite2.min.js', array('version' => 'auto'));
-HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfUploadFile.min.js', array('version' => 'auto'));
-HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/jtfUploadFile.min.css', array('version' => 'auto'));
+HTMLHelper::_('script', 'plg_content_jtf/jtfLite2.min.js', ['version' => 'auto', 'relative' => true]);
+Factory::getApplication()->getDocument()->getWebAssetManager()->usePreset('jtf.jtfUploadFile');
 
 ?>
 <div class="uploader-wrapper">
@@ -79,7 +79,7 @@ HTMLHelper::_('stylesheet', 'plugins/content/jtf/assets/css/jtfUploadFile.min.cs
                 <?php echo Text::_('JTF_DRAG_FILE_HERE'); ?>
 			<noscript class="invalid"><br/><?php echo Text::_('JTF_DRAG_FILE_HERE_NOSCRIPT'); ?></noscript>
 			</p>
-			<p>
+			<p class="upload-button">
 				<button type="button" class="<?php echo $buttonClass; ?> select-file-button">
                     <?php echo $this->sublayout('icon', array('icon' => $buttonIcon)); ?>
                     <?php echo Text::_('JTF_SELECT_FILE'); ?>

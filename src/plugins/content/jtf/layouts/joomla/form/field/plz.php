@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -41,7 +41,7 @@ extract($displayData);
  * @var   boolean  $hasValue      Has this field a value assigned?
  */
 
-HtmlHelper::_('script', 'plugins/content/jtf/assets/js/jtfPlz.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+HtmlHelper::_('script', 'plg_content_jtf/jtfPlz.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
 
 $autocomplete = !$autocomplete ? 'autocomplete="off"' : 'autocomplete="' . $autocomplete . '"';
 $autocomplete = $autocomplete === 'autocomplete="on"' ? '' : $autocomplete;

@@ -4,7 +4,7 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
@@ -26,7 +26,7 @@ extract($displayData);
 <button id="<?php echo $id; ?>" class="validate<?php echo !empty($buttonClass) ? ' ' . $buttonClass : ''; ?>"
 		type="submit">
     <?php if (!empty($buttonIcon)) : ?>
-		<span class="<?php echo $buttonIcon; ?>">&nbsp;</span>
+        <?php echo $this->sublayout('icon', array('icon' => $buttonIcon)); ?>
     <?php endif; ?>
 
     <?php echo $label; ?>

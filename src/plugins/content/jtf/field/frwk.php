@@ -4,27 +4,22 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
 defined('JPATH_PLATFORM') or die;
 
-JLoader::registerNamespace('Jtf', JPATH_PLUGINS . '/content/jtf/libraries/jtf', false, false, 'psr4');
-
-if (version_compare(JVERSION, 4, 'lt')) {
-    JFormHelper::loadFieldClass('list');
-}
-
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
+use Joomla\CMS\Form\Field\ListField;
 
 /**
  * List of supported frameworks
  *
  * @since   4.0.0
  */
-class JFormFieldFrwk extends JFormFieldList
+class JFormFieldFrwk extends ListField
 {
     /**
      * The form field type.
@@ -50,7 +45,7 @@ class JFormFieldFrwk extends JFormFieldList
      */
     protected function getOptions()
     {
-        $frwkPath = JPATH_PLUGINS . '/content/jtf/libraries/jtf/Framework';
+        $frwkPath = JPATH_PLUGINS . '/content/jtf/src/Framework';
         $frwk     = Folder::files($frwkPath);
 
         $options = array();
@@ -62,7 +57,7 @@ class JFormFieldFrwk extends JFormFieldList
                 continue;
             }
 
-            $framework    = 'Jtf\\Framework\\' . ucfirst($fileName);
+            $framework    = 'JoomTools\\Plugin\\Content\\Jtf\\Framework\\' . ucfirst($fileName);
             $fileRealName = $framework::$name;
 
             $tmp = array(
@@ -86,7 +81,7 @@ class JFormFieldFrwk extends JFormFieldList
      * @param   \SimpleXMLElement  $element  The SimpleXMLElement object representing the `<field>` tag for the form
      *                                       field object.
      * @param   mixed              $value    The form field value to validate.
-     * @param   string             $group    The field name group control value. This acts as as an array container for
+     * @param   string             $group    The field name group control value. This acts as an array container for
      *                                       the field. For example if the field has name="foo" and the group value is
      *                                       set to "bar" then the full field name would end up being "bar[foo]".
      *
@@ -99,11 +94,7 @@ class JFormFieldFrwk extends JFormFieldList
         parent::setup($element, $value, $group);
 
         if (empty($this->value)) {
-            $this->value = 'bs2';
-
-            if (version_compare(JVERSION, '4', 'ge')) {
-                $this->value = 'bs4';
-            }
+            $this->value = 'bs5';
         }
 
         return true;

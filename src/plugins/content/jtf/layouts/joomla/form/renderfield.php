@@ -4,11 +4,11 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
-defined('JPATH_BASE') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -25,13 +25,8 @@ extract($displayData);
  */
 
 if (!empty($options['showonEnabled'])) {
-    if (version_compare(JVERSION, 4, 'lt')) {
-        HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
-    } else {
-        Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
-    }
-
-    HTMLHelper::_('script', 'plugins/content/jtf/assets/js/jtfShowon.min.js', array('version' => 'auto'), array('defer' => 'defer'));
+    Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
+    HTMLHelper::_('script', 'plg_content_jtf/jtfShowon.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
 }
 
 $required         = $options['required'];
@@ -100,13 +95,13 @@ if (!empty($options['gridField'])) {
 
         <?php if ($showfieldMarkerDesc) : ?>
 			<div id="<?php echo $options['id'] . '-marker'; ?>" class="marker <?php echo $descriptionClass; ?>">
-				<small><?php echo $fieldMarkerDesc; ?></small><br/>
+				<?php echo $fieldMarkerDesc; ?>
 			</div>
         <?php endif; ?>
 
         <?php if ($showFieldDescription) : ?>
-			<div id="<?php echo $options['id'] . '-desc'; ?>" class="description <?php echo $descriptionClass; ?>">
-				<small><?php echo $description; ?></small>
+			<div id="<?php echo $options['id'] . '-desc'; ?>" class="field-description <?php echo $descriptionClass; ?>">
+				<?php echo $description; ?>
 			</div>
         <?php endif; ?>
         <?php if (!empty($gridField)) : ?>

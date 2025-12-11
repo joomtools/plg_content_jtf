@@ -4,13 +4,14 @@
  * @subpackage   Content.Jtf
  *
  * @author       Guido De Gobbis <support@joomtools.de>
- * @copyright    2023 JoomTools.de - All rights reserved.
+ * @copyright    2025 JoomTools.de - All rights reserved.
  * @license      GNU General Public License version 3 or later
  */
 
-defined('_JEXEC') or die;
+defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 
 extract($displayData);
@@ -44,7 +45,7 @@ extract($displayData);
  * @var   string   $value           Value attribute of the field.
  * @var   array    $options         Options available for this field.
  * @var   string   $dataAttribute   Miscellaneous data attributes preprocessed for HTML output
- * @var   array    $dataAttributes  Miscellaneous data attributes for eg, data-*.
+ * @var   array    $dataAttributes  Miscellaneous data attribute for eg, data-*.
  */
 
 // If there are no options don't render anything
@@ -55,51 +56,104 @@ if (empty($options)) {
 // Load the css files
 Factory::getApplication()->getDocument()->getWebAssetManager()->useStyle('switcher');
 
-/**
- * The format of the input tag to be filled in using sprintf.
- *     %1 - id
- *     %2 - name
- *     %3 - value
- *     %4 = any other attributes
- */
-$input = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s>';
-
 // Build the fieldset attributes array.
-$fieldsetAttributes          = array();
+$fieldsetAttributes          = [];
+$fieldsetAttributes['class'] = ['switcher switcher-group mb-0'];
 $fieldsetAttributes['id']    = $id;
-$fieldsetAttributes['class'] = array('switcher', 'switcher-group');
 
-$readonly || $disabled ? $fieldsetAttributes['class'][] = 'disabled' : null;
-in_array($framework, array('uikit', 'uikit3')) ? $fieldsetAttributes['class'][] = 'uk-fieldset' : null;
+// Add the fieldset class on UIKit framework
+!in_array($framework, array('uikit', 'uikit3')) ? null : $fieldsetAttributes['class'][] = 'uk-fieldset';
+
+if ($required) {
+    $fieldsetAttributes['required']      = 'required';
+    $fieldsetAttributes['aria-required'] = 'true';
+    $fieldsetAttributes['class'][]       = 'required';
+}
 
 $fieldsetAttributes['class'] = implode(' ', $fieldsetAttributes['class']);
 
-$onchange ? $fieldsetAttributes['onchange'] = $onchange : null;
-$readonly ? $fieldsetAttributes['readonly'] = 'readonly' : null;
-$disabled ? $fieldsetAttributes['disabled'] = 'disabled' : null;
-$autofocus ? $fieldsetAttributes['autofocus'] = 'autofocus' : null;
+!$readonly ? null : $fieldsetAttributes['readonly'] = 'readonly';
+!$disabled ? null : $fieldsetAttributes['disabled'] = 'disabled';
+!$autofocus ? null : $fieldsetAttributes['autofocus'] = 'autofocus';
 
 $fieldsetAttributes = ArrayHelper::toString($fieldsetAttributes);
 ?>
-<fieldset <?php echo $fieldsetAttributes; ?>>
-	<legend class="jtfhp">
+<fieldset <?php echo $fieldsetAttributes; ?><?php echo $dataAttribute ? ' ' . $dataAttribute : ''; ?>>
+	<legend class="visually-hidden">
         <?php echo $label; ?>
 	</legend>
-    <?php foreach ($options as $i => $option) : ?>
-        <?php
-        // False value casting as string returns an empty string so assign it 0
-        if (empty($value) && $option->value == '0') {
-            $value = '0';
-        }
+    <?php
+    $switchGroupElement            = [];
+    $switchGroupElement['class'][] = 'switcher switcher-group';
+    $switchGroupElement['class'][] = trim($class);
+    $switchGroupElement['class']   = implode(' ', $switchGroupElement['class']);
 
-        // Initialize some option attributes.
-        $optionValue = (string) $option->value;
-        $optionId    = $id . $i;
-        $attributes  = $optionValue == $value ? 'checked class="active"' : '';
-        $attributes  .= $optionValue != $value && $readonly || $disabled ? ' disabled' : '';
-        ?>
-        <?php echo sprintf($input, $optionId, $name, $this->escape($optionValue), $attributes); ?>
-        <?php echo '<label for="' . $optionId . '">' . $option->text . '</label>'; ?>
-    <?php endforeach; ?>
-	<span class="toggle-outside"><span class="toggle-inside"></span></span>
+    $switchGroupElement = ArrayHelper::toString($switchGroupElement);
+
+    ?>
+	<div <?php echo $switchGroupElement; ?>>
+        <?php foreach ($options as $i => $option) :
+			if ($i > 1) {
+				continue;
+			}
+
+            $optionId = $id . $i;
+
+            // Build the label attributes array.
+            $optionLabelAttributes          = [];
+            $optionLabelAttributes['class'] = [];
+            $optionLabelAttributes['for']   = $optionId;
+
+            !($option->value === $value) ? null : $optionLabelAttributes['class'][] = 'active';
+            empty($option->labelclass) ? null : $optionLabelAttributes['class'][] = $option->labelclass;
+
+            $optionLabelAttributes['class'] = implode(' ', $optionLabelAttributes['class']);
+
+            empty($option->disable) ? null : $optionLabelAttributes['disabled'] = 'disabled';
+
+            if ($disabled || $readonly){
+                $optionLabelAttributes['style'] = 'pointer-events: none';
+            }
+
+            // Build the option attributes array.
+            $optionAttributes          = [];
+            $optionAttributes['class'] = [];
+            $optionAttributes['type']  = 'radio';
+            $optionAttributes['role']  = 'switch';
+            $optionAttributes['id']    = $optionId;
+            $optionAttributes['name']  = $name;
+            $optionAttributes['value'] = $option->value;
+
+            if (!is_numeric($option->value) && !empty($option->value)) {
+                $optionAttributes['value'] = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
+            }
+
+            empty($option->class) ? null : $optionAttributes['class'][] = $option->class;
+            !($option->value === $value) ? null : $optionAttributes['class'][] = 'active';
+
+            $optionAttributes['class'] = implode(' ', $optionAttributes['class']);
+
+            empty($option->onclick) ? null : $optionAttributes['onclick'] = $option->onclick;
+            empty($option->onchange) ? null : $optionAttributes['onchange'] = $option->onchange;
+            empty($option->disable) ? null : $optionAttributes['disabled'] = 'disabled';
+            !($option->value === $value) ? null : $optionAttributes['checked'] = 'checked';
+
+            $optionAttributes      = ArrayHelper::toString($optionAttributes);
+            $optionLabelAttributes = ArrayHelper::toString($optionLabelAttributes);
+            ?>
+
+			<input <?php echo $optionAttributes; ?> />
+			<label <?php echo $optionLabelAttributes ?>
+                <?php if (!empty($option->optionattr)) :
+                    Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('showon');
+                    HTMLHelper::_('script', 'plg_content_jtf/jtfShowon.min.js', ['version' => 'auto', 'relative' => true], ['defer' => 'defer']);
+
+                    echo $option->optionattr; ?>
+                <?php endif; ?>
+			>
+                <?php echo $option->text; ?>
+			</label>
+        <?php endforeach; ?>
+		<span class="toggle-outside"><span class="toggle-inside"></span></span>
+	</div>
 </fieldset>
